@@ -71,6 +71,10 @@
 	padding-left: 5px;
 }
 
+.titlebar {
+	height:40px; !important
+}
+
 /* :..[ Social Icons ]..: */
 
 .demo {margin-left: auto; margin-right: auto; display: block; width: 200px; height: auto; padding:20px 0px 0 0 }
@@ -126,6 +130,10 @@ button, .button, .css_button, ul.button-bar li a {
 	background: -moz-linear-gradient(top,  #FFF,  #DDD);
 	/* We could have this in IE with ('gradient') filters, but we will not... */
 }
+
+/* Ugly hack: but Fx needs this to have INPUT elements the same height as A elements (?) */
+button, input.button, ul.button-bar li a,  x:-moz-any-link { padding: .35em 1em; }
+
 
 .large {
 	font: bold 1em/2em Arial, Helvetica;
