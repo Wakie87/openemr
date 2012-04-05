@@ -950,6 +950,8 @@ CREATE TABLE `facility` (
   `postal_code` varchar(11) default NULL,
   `country_code` varchar(10) default NULL,
   `federal_ein` varchar(15) default NULL,
+  `website` varchar(255) default NULL,
+  `email` varchar(255) default NULL,
   `service_location` tinyint(1) NOT NULL default '1',
   `billing_location` tinyint(1) NOT NULL default '0',
   `accepts_assignment` tinyint(1) NOT NULL default '0',
