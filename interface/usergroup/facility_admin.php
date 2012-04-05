@@ -174,8 +174,8 @@ function displayAlert()
           </span></td><td><input type=entry size=20 name=facility_npi value="<?php echo htmlspecialchars($facility{"facility_npi"}, ENT_QUOTES) ?>"></td>
         </tr>
 		 <tr>
-            <td><span class=text><?php xl('Website','e'); ?>: </span></td><td><input type=entry size=20 name=state value="<?php echo htmlspecialchars($facility{"website"}, ENT_QUOTES) ?>"></td>
-            <td><span class=text><?php xl('Email','e'); ?>: </span></td><td><input type=entry size=20 name=state value="<?php echo htmlspecialchars($facility{"email"}, ENT_QUOTES) ?>"></td>
+            <td><span class=text><?php xl('Website','e'); ?>: </span></td><td><input type=entry size=20 name=website value="<?php echo htmlspecialchars($facility{"website"}, ENT_QUOTES) ?>"></td>
+            <td><span class=text><?php xl('Email','e'); ?>: </span></td><td><input type=entry size=20 name=email value="<?php echo htmlspecialchars($facility{"email"}, ENT_QUOTES) ?>"></td>
         </tr>
 		
          <tr>

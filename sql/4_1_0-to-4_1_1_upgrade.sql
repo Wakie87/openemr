@@ -114,11 +114,11 @@ ALTER TABLE `insurance_data` ADD COLUMN `policy_type` varchar(25) NOT NULL defau
 #EndIf
 
 #IfMissingColumn facility website
-ALTER TABLE `facility` ADD COLUMN `website` varchar(255) default NULL '';
+ALTER TABLE `facility` ADD COLUMN `website` varchar(255) default NULL;
 #EndIf
 
 #IfMissingColumn facility email
-ALTER TABLE `facility` ADD COLUMN `email` varchar(255) default NULL '';
+ALTER TABLE `facility` ADD COLUMN `email` varchar(255) default NULL;
 #EndIf
 
 #IfMissingColumn drugs max_level

@@ -202,9 +202,9 @@ function displayAlert()
         </span></td><td><input type=entry size=20 name=facility_npi value=""></td>
         </tr>
 		<tr>
-        <td><span class="text"><?php xl('Website','e'); ?>: </span></td><td><input type=entry size=20 name=state value=""></td>
+        <td><span class="text"><?php xl('Website','e'); ?>: </span></td><td><input type=entry size=20 name=website value=""></td>
         <td>&nbsp;</td>
-        <td><span class="text"><?php xl('Email','e'); ?>: </span></td><td><input type=entry size=20 name=postal_code value=""></td>
+        <td><span class="text"><?php xl('Email','e'); ?>: </span></td><td><input type=entry size=20 name=email value=""></td>
         </tr>
 
         <tr>
