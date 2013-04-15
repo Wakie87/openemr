@@ -54,6 +54,7 @@ include_once("$srcdir/md5.js");
 	</head>
 
 	<body>
+		<div class="container">
 		<div class="wrapper-header">
 			<div class="logobar">
 				<img style="position:absolute;top:0;left:0;"src=" <?php echo $GLOBALS['webroot']?>/interface/pic/logo.gif" />
@@ -227,5 +228,6 @@ include_once("$srcdir/md5.js");
 				</div>
 			</div>
 		</div>
+	</div> <!--	end container -->
 	</body>
 </html>
