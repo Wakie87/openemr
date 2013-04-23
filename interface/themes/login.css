@@ -4,33 +4,6 @@
 *
 *============================================================*/
 
-.login-box {
-	padding: 20px 20px 0px 20px;
-	overflow: hidden;
-	margin: 10px auto 30px;
-	text-align: left;
-	border: solid 1px #bebebe; 
-	background: #f0f0f0;
-	border-radius: 8px; 
-	-webkit-border-radius: 8px; 
-	-moz-border-radius: 8px; 
-	box-shadow: 0px 1px 2px #f3f3f3;
-	-webkit-box-shadow: 0px 1px 2px #f3f3f3;
-	-moz-box-shadow: 0px 1px 2px #f3f3f3;
-	width: 330px;
-}
-
-.wrapper-login {
-	padding: 10% 0;
-}
-
-.clear{
-	clear: both;
-}
-
-.header{
-	margin-bottom: 20px;
-}
 
 .version {
 	float: left;
@@ -39,22 +12,211 @@
 	padding-left: 10px;
 }
 
-.title_name {
-	padding: 10px 0px 0px 5px;
-	font-family: sans-serif;
-    font-size: 12pt;
-    font-weight: bold;
-    text-decoration: none;
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
 }
 
-.titlebar {
-	height:40px; !important
-	padding-top: 10px;
-	background-color: #8497BF;
+.login_body {
+  background: #d7d7d7;
 }
 
-.inner {
-	overflow: hidden;
-	margin: 0 auto;
-	width: 960px;
+.login_body .wrap {
+  width: 390px;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -300px 0 0 -200px;
+  -webkit-border-radius: 8px 8px 8px 8px;
+  -moz-border-radius: 8px 8px 8px 8px;
+  border-radius: 8px 8px 8px 8px;
+  -webkit-box-shadow: 0 0 10px 0 #999999;
+  -moz-box-shadow: 0 0 10px 0 #999999;
+  box-shadow: 0 0 10px 0 #999999;
+  z-index: 1000;
+}
+.login_body .wrap .alert {
+  margin: 20px;
+}
+.login_body .wrap h2 {
+  margin: 15px 20px 0 20px;
+}
+.login_body .wrap h4 {
+  margin: -3px 0 30px 20px;
+  color: #999;
+  font-size: 14px;
+}
+.login_body .wrap form {
+  margin: 0;
+}
+.login_body .wrap .submit {
+  *zoom: 1;
+  margin-bottom: 15px;
+}
+.login_body .wrap .submit:before,
+.login_body .wrap .submit:after {
+  display: table;
+  content: "";
+}
+.login_body .wrap .submit:after {
+  clear: both;
+}
+.login_body .wrap .submit button {
+  float: right;
+  margin-right: 20px;
+}
+.login_body .wrap .submit a {
+  float: left;
+  margin: 7px 20px;
+}
+.login_body .wrap .login {
+  background: #eee;
+  padding: 10px;
+  margin: 5px 15px 15px 15px;
+  -webkit-border-radius: 6px 6px 6px 6px;
+  -moz-border-radius: 6px 6px 6px 6px;
+  border-radius: 6px 6px 6px 6px;
+  *zoom: 1;
+}
+.login_body .wrap .login .remember {
+  margin: 15px 0 0 105px;
+}
+.login_body .wrap .login:before,
+.login_body .wrap .login:after {
+  display: table;
+  content: "";
+}
+.login_body .wrap .login:after {
+  clear: both;
+}
+.login_body .wrap .login .username {
+  margin-top: 5px;
+}
+.login_body .wrap .login .password ,
+.login_body .wrap .login .language {
+  margin-top: 15px;
+}
+
+.login_body .wrap .login .username,
+.login_body .wrap .login .language,
+.login_body .wrap .login .password {
+  *zoom: 1;
+}
+.login_body .wrap .login .username .input-prepend,
+.login_body .wrap .login .language .input-prepend,
+.login_body .wrap .login .password .input-prepend {
+  margin: 0;
+}
+.login_body .wrap .login .username:before,
+.login_body .wrap .login .password:before,
+.login_body .wrap .login .language:before,
+.login_body .wrap .login .username:after,
+.login_body .wrap .login .language:after,
+.login_body .wrap .login .password:after {
+  display: table;
+  content: "";
+}
+.login_body .wrap .login .username:after,
+.login_body .wrap .login .language:after,
+.login_body .wrap .login .password:after {
+  clear: both;
+}
+.login_body .wrap .login .username label,
+.login_body .wrap .login .language label,
+.login_body .wrap .login .password label {
+  float: left;
+  margin: 10px 5px;
+  font-weight: bold;
+  width: 80px;
+}
+.login_body .wrap .login .username label.error,
+.login_body .wrap .login .language label.error,
+.login_body .wrap .login .password label.error {
+  width: auto;
+  font-weight: normal;
+}
+.login_body .wrap .login .username-input,
+.login_body .wrap .login .language-input,
+.login_body .wrap .login .password-input {
+  float: right;
+  padding: 5px;
+  background: #ddd;
+  -webkit-border-radius: 3px 3px 3px 3px;
+  -moz-border-radius: 3px 3px 3px 3px;
+  border-radius: 3px 3px 3px 3px;
+}
+.login_body .wrap .login .username-input input,
+.login_body .wrap .login .language-input input,
+.login_body .wrap .login .password-input input {
+  margin: 0;
+  width: 190px !important;
+}
+.login_body .wrap .login .username-input .control-group,
+.login_body .wrap .login .language-input .control-group,
+.login_body .wrap .login .password-input .control-group {
+  margin: 0;
+}
+
+@media (max-height: 650px) {
+ .login_body .wrap {
+    margin-top: -150px;
+  }
+  
+  .login_body .wrap h2 {
+  margin: 5px 20px 0 10px;
+}
+.login_body .wrap h4 {
+  margin: -3px 0 10px 10px;
+  color: #999;
+  font-size: 14px;
+}
+.login_body .wrap .submit {
+  *zoom: 1;
+  margin-bottom: 5px;
+}
+.login_body .wrap .login {
+  background: #eee;
+  padding: 5px;
+  margin: 5px 10px 10px 10px;
+  -webkit-border-radius: 6px 6px 6px 6px;
+  -moz-border-radius: 6px 6px 6px 6px;
+  border-radius: 6px 6px 6px 6px;
+  *zoom: 1;
+}
+
+}
+
+@media (max-width: 467px) {
+  .mobile-hide {
+    display: none;
+  }
+  .login_body .wrap {
+    width: 290px;
+    margin: 30px 30px 60px 15px;
+    top: auto;
+    left: auto;
+  }
+  .login_body .wrap h2 {
+    font-size: 24px;
+  }
+  .login_body .wrap h4 {
+    font-size: 12px;
+  }
+  .login_body .wrap .login .username label,
+  .login_body .wrap .login .language label,
+  .login_body .wrap .login .password label {
+    width: 100%;
+    margin: 5px;
+    display: block;
+  }
+  
+
 }
