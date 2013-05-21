@@ -82,7 +82,7 @@ function showhideMenu() {
 		<div class="title_left">
 			<?php if ($GLOBALS['concurrent_layout']) { ?>
 				<div class="menu_hide" style="float:left; margin: 5px 10px 5px;" >	
-					<a class="btn" href='main_title.php' id='showMenuLink' onclick='javascript:showhideMenu();return false;'><?php xl('Hide Menu','e'); ?></a>
+					<a class="btn" href='main_title.php' id='showMenuLink' style='width:73px' onclick='javascript:showhideMenu();return false;'><?php xl('Hide Menu','e'); ?></a>
 					<?php if (acl_check('patients','demo','',array('write','addonly') )) { ?>
 					<a class="btn" href='' id='new0' onClick=" return top.window.parent.left_nav.loadFrame2('new0','RTop','new/new.php')"><?php xl('New Patient','e'); ?></a>
 					<a class="btn" href='' style="margin:0px;vertical-align:top;display:none;" id='clear_active' onClick="javascript:parent.left_nav.clearactive();return false;"><?php xl('Clear Active Patient','e'); ?></a>
@@ -102,8 +102,8 @@ function showhideMenu() {
 			</div>
 			
 		
-			<div style='display:none' class='text' id="current_encounter_block" >
-				<span class='text'><?php xl('Selected Encounter','e'); ?></span><span class='title_bar_top' id="current_encounter"><b><?php xl('None','e'); ?></b></span>
+			<div style='margin: 10px; float:left; display:none' id="current_encounter_block" >
+				<span class='text'><?php xl('Selected Encounter: ','e'); ?></span><span class='title_bar_top' id="current_encounter"><b><?php xl('None','e'); ?></b></span>
 			</div>
 	
 		</div>

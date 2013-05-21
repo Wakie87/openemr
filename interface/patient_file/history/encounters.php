@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <?php
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -119,15 +120,23 @@ function generatePageElement($start,$pagesize,$billing,$issue,$text)
 }
 ?>
 <html>
+
 <head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+		<!--<link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">-->
+		<link rel=stylesheet href="../../../library/css/bootstrap.css" type="text/css">
+		<script language='JavaScript' src="../../../library/js/jquery-1.9.1.min.js"></script>
+		<script language='JavaScript' src="../../../library/js/bootstrap.js"></script>
+<!--<head>
 <?php html_header_show();?>
-<!-- Main style sheet comes after the page-specific stylesheet to facilitate overrides. -->
+<!-- Main style sheet comes after the page-specific stylesheet to facilitate overrides. 
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/encounters.css" type="text/css">
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/ajtooltip.js"></script>
-
+-->
 <script language="JavaScript">
 
 //function toencounter(enc, datestr) {
@@ -203,8 +212,8 @@ function efmouseover(elem, ptid, encid, formname, formid) {
 
 </head>
 
-<body class="body_bottom">
-<div id="encounters"> <!-- large outer DIV -->
+<body class="body_bottom" style="margin:8px">
+<div class="container-fluid" id="encounters"> <!-- large outer DIV -->
 
 <?php if ($GLOBALS['concurrent_layout']) { ?>
 <!-- <a href='encounters_full.php'> -->
@@ -294,7 +303,8 @@ $getStringForPage="&pagesize=".$pagesize."&pagestart=".$pagestart;
 
 <br>
 
-<table>
+<table class="table table-hover">
+<thead>
  <tr class='text'>
   <th><?php echo htmlspecialchars( xl('Date'), ENT_NOQUOTES); ?></th>
 
@@ -323,7 +333,7 @@ $getStringForPage="&pagesize=".$pagesize."&pagestart=".$pagestart;
 <?php } ?>
 
  </tr>
-
+</thead>
 <?php
 $drow = false;
 if (!$billing_view) {

@@ -23,12 +23,12 @@ $fake_register_globals=false;
  // form parameter docid can be passed to restrict the display to a document.
  $docid = empty($_REQUEST['docid']) ? 0 : 0 + $_REQUEST['docid'];
 ?>
-<ul class="tabNav">
-  <li class="current" ><a href="#"><?php echo htmlspecialchars(xl('Inbox'),ENT_NOQUOTES); ?></a></li>
-  <li><a href="#"><?php echo htmlspecialchars(xl('Sent Items'),ENT_NOQUOTES); ?></a></li>
+<ul class="nav nav-tabs">
+  <li class='active' ><a href='#inbox' data-toggle='tab'><?php echo xl('Inbox','e'); ?></a></li>
+  <li><a href='#sent' data-toggle='tab'><?php echo xl('Sent Items','e'); ?></a></li>
 </ul>
-<div class='tabContainer' >
-  <div class='tab current' >
+<div class='tab-content' >
+  <div class='tab-pane active' id='home' >
     <?php
     //display all of the notes for the day, as well as others that are active from previous dates, up to a certain number, $N
     $N = 3; ?>
@@ -124,7 +124,7 @@ $fake_register_globals=false;
 
 <?php } ?>
   </div>
-  <div class='tab'>
+  <div class='tab-pane' id='sent' >
     <?php
     //display all of the notes for the day, as well as others that are active from previous dates, up to a certain number, $N
     $M = 3; ?>

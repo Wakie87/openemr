@@ -1682,8 +1682,8 @@ function display_layout_tabs($formtype, $result1, $result2='') {
 	  $this_group = $frow['group_name'];
       $group_name = substr($this_group, 1);
       ?>
-		<li <?php echo $first ? 'class="current"' : '' ?>>
-			<a href="/play/javascript-tabbed-navigation/" id="header_tab_<?php echo ".htmlspecialchars($group_name,ENT_QUOTES)."?>">
+		<li <?php echo $first ? 'class="active"' : '' ?>>
+			<a href="#tab_<?php echo $this_group?>" data-toggle='tab'>
                         <?php echo htmlspecialchars(xl_layout_label($group_name),ENT_NOQUOTES); ?></a>
 		</li>
 	  <?php
@@ -1713,7 +1713,7 @@ function display_layout_tabs_data($formtype, $result1, $result2='') {
 		"ORDER BY seq", array($formtype, $this_group) );
 	?>
 
-		<div class="tab <?php echo $first ? 'current' : '' ?>">
+		<div id="tab_<?php echo $this_group?>" class="tab-pane <?php echo $first ? 'active' : '' ?>" >
 			<table border='0' cellpadding='0'>
 
 			<?php
@@ -2153,47 +2153,53 @@ function dropdown_facility($selected = '', $name = 'form_facility', $allow_unspe
 //
 function expand_collapse_widget($title, $label, $buttonLabel, $buttonLink, $buttonClass, $linkMethod, $bodyClass, $auth, $fixedWidth, $forceExpandAlways=false) {
   if ($fixedWidth) {
-    echo "<div class='section-header'>";
+  echo "<div class='accordion-group'>";
+    echo "<div class='accordion-heading'>";
   }
   else {
-    echo "<div class='section-header-dynamic'>";
+    echo "<div class='accordion-group'>";
+		echo "<div class='accordion-heading'>";
   }
-  echo "<table><tr>";
+  //echo "<table><tr>";
   if ($auth) {
     // show button, since authorized
     // first prepare class string
     if ($buttonClass) {
-      $class_string = "css_button_small ".htmlspecialchars( $buttonClass, ENT_NOQUOTES);
+      $class_string = "btn ".htmlspecialchars( $buttonClass, ENT_NOQUOTES);
     }
     else {
-      $class_string = "css_button_small";
+      $class_string = "btn";
     }
     // next, create the link
     if ($linkMethod == "javascript") {
-      echo "<td><a class='" . $class_string . "' href='javascript:;' onclick='" . $buttonLink . "'";
+      echo "<a style='display:inline-block; margin-left:5px' class='" . $class_string . "' data-toggle='collapse' data-parent='#accordion2'" . "' href='".$label."' onclick='" . $buttonLink . "'";
+	  //echo "<td><a class='" . $class_string . "' href='javascript:;' onclick='" . $buttonLink . "'";
     }
     else {
-      echo "<td><a class='" . $class_string . "' href='" . $buttonLink . "'";
+      echo "<a style='display:inline-block; margin-left:5px' class='" . $class_string . "' href='" . $buttonLink . "'";
       if (!isset($_SESSION['patient_portal_onsite'])) {
-        // prevent an error from occuring when calling the function from the patient portal
+        // prevent an error from occuring when calling the function from the patient portal 
         echo " onclick='top.restoreSession()'";
       }
     }
     if (!$GLOBALS['concurrent_layout']) {
       echo " target='Main'";
     }
-    echo "><span>" .
-      htmlspecialchars( $buttonLabel, ENT_NOQUOTES) . "</span></a></td>";
+    echo ">" .
+      htmlspecialchars( $buttonLabel, ENT_NOQUOTES) . "</a>";
   }
   if ($forceExpandAlways){
     // Special case to force the widget to always be expanded
-    echo "<td><span class='text'><b>" . htmlspecialchars( $title, ENT_NOQUOTES) . "</b></span>";
+    echo "=<span class='text'><b>" . htmlspecialchars( $title, ENT_NOQUOTES) . "</b></span>";
     $indicatorTag ="style='display:none'";
   }
   $indicatorTag = isset($indicatorTag) ?  $indicatorTag : "";
-  echo "<td><a " . $indicatorTag . " href='javascript:;' class='small' onclick='toggleIndicator(this,\"" .
-    htmlspecialchars( $label, ENT_QUOTES) . "_ps_expand\")'><span class='text'><b>";
-  echo htmlspecialchars( $title, ENT_NOQUOTES) . "</b></span>";
+  echo "<a style='display:inline-block' class='accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#" .$label. "_ps_expand'>". $title;
+ // echo htmlspecialchars( $title, ENT_NOQUOTES) . "</b></span>";
+  
+  //echo "<td><a " . $indicatorTag . " href='javascript:;' class='small' onclick='toggleIndicator(this,\"" .
+   // htmlspecialchars( $label, ENT_QUOTES) . "_ps_expand\")'><span class='text'><b>";
+  //echo htmlspecialchars( $title, ENT_NOQUOTES) . "</b></span>";
 
   if (isset($_SESSION['patient_portal_onsite'])) {
     // collapse all entries in the patient portal
@@ -2205,10 +2211,13 @@ function expand_collapse_widget($title, $label, $buttonLabel, $buttonLink, $butt
   else {
     $text = xl('expand');
   }
-  echo " (<span class='indicator'>" . htmlspecialchars($text, ENT_QUOTES) .
-    "</span>)</a></td>";
-  echo "</tr></table>";
+
+  echo //htmlspecialchars($text, ENT_QUOTES) .
+   "</a>";
+  //echo "</tr></table>";
   echo "</div>";
+  
+  
   if ($forceExpandAlways) {
     // Special case to force the widget to always be expanded
     $styling = "";
@@ -2221,7 +2230,7 @@ function expand_collapse_widget($title, $label, $buttonLabel, $buttonLink, $butt
     $styling = "";
   }
   else {
-    $styling = "style='display:none'";
+    $styling = "";
   }
   if ($bodyClass) {
     $styling .= " class='" . $bodyClass . "'";

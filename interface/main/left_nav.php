@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <?php
 /* Copyright (C) 2006-2012 Rod Roark <rod@sunsetsystems.com>
  *
@@ -184,7 +185,7 @@
   global $primary_docs, $disallowed;
   if (empty($disallowed[$name])) {
    $id = $name . $primary_docs[$name][1];
-   echo "<li><a href='' id='$id' onclick=\"";
+   echo "<li class='nav-header'><a href='' id='$id' onclick=\"";
    if ($mono) {
     if ($frame == 'RTop')
      echo "forceSpec(true,false);";
@@ -199,7 +200,7 @@
   global $disallowed;
   if (empty($disallowed[$name])) {
    $id = $name . $level;
-   echo "<li><a href='' id='$id' onclick=\"";
+   echo "<li class='nav-header'><a href='' id='$id' onclick=\"";
    if ($mono) {
     if ($frame == 'RTop')
      echo "forceSpec(true,false);";
@@ -305,8 +306,13 @@ function genFindBlock() {
 <html>
 <head>
 <title>Navigation</title>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+		<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/css/bootstrap.css);</style>
+		<script language='JavaScript' src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
+		<script language='JavaScript' src="<?php echo $GLOBALS['webroot'] ?>/library/js/bootstrap.js"></script>
 
+<!--<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <style type="text/css">
  body {
   font-size:8pt;
@@ -356,8 +362,9 @@ function genFindBlock() {
 <link rel="stylesheet" href="../../library/js/jquery.treeview-1.4.1/jquery.treeview.css" />
 <script src="../../library/js/jquery-1.6.4.min.js" type="text/javascript"></script>
 <script src="../../library/js/jquery.treeview-1.4.1/jquery.treeview.js" type="text/javascript"></script>
-
+-->
 <script type="text/javascript" src="../../library/dialog.js"></script>
+
 
 <script language='JavaScript'>
  
@@ -957,7 +964,8 @@ $(document).ready(function(){
 </head>
 
 <body class="body_nav">
-
+	<div class="container-fluid">
+		
 <form method='post' name='find_patient' target='RTop'
  action='<?php echo $rootdir ?>/main/finder/patient_select.php'>
 
@@ -968,7 +976,7 @@ if ($GLOBALS['athletic_team']) {
   echo "<hr />\n";
 }
 ?>
-
+<div class="row-fluid">
 <?php if ( ( $GLOBALS['concurrent_layout'] == 2) || ($GLOBALS['concurrent_layout'] == 3) ) { ?>
 <center>
 <select name='sel_frame' style='background-color:transparent;font-size:9pt;width:<?php echo $GLOBALS['athletic_team'] ? 47 : 100; ?>%;'>
@@ -978,7 +986,8 @@ if ($GLOBALS['athletic_team']) {
 </select>
 <?php if ($GLOBALS['athletic_team']) genPopupsList('width:47%'); ?>
 </center>
-
+</div>
+<div class="row-fluid">
 <table cellpadding='0' cellspacing='0' border='0' width='100%'>
  <tr>
   <td class='smalltext' nowrap>
@@ -991,9 +1000,11 @@ if ($GLOBALS['athletic_team']) {
   </td>
  </tr>
 </table>
-
+</div>
+	
+<div class="row-fluid">
 <?php if ( $GLOBALS['concurrent_layout'] == 3) { ?>
-  <ul id="navigation-slide">
+  <ul class="nav nav-list" id="accordion2" >
 <?php } else { // ($GLOBALS['concurrent_layout'] == 2) ?>
   <ul id="navigation">
 <?php } ?>
@@ -1001,21 +1012,21 @@ if ($GLOBALS['athletic_team']) {
 <?php if ($GLOBALS['athletic_team']) { // Tree menu for athletic teams ?>
 
   <?php genTreeLink('RBot','msg',xl('Messages')); ?>
-  <li><a class="collapsed" id="patimg" ><span><?php xl('View','e') ?></span></a>
+  <li class="nav-header"><a class="collapsed" id="patimg" ><?php xl('View','e') ?></a>
     <ul>
       <?php genTreeLink('RTop','ros',xl('Weekly Exposures'),true); ?>
       <?php genMiscLink('RTop','ros','0',xl('Team Roster'),'reports/old_players_report.php?embed=1',true); ?>
       <?php if (!$GLOBALS['disable_calendar']) genTreeLink('RTop','cal',xl('Calendar'),true); ?>
     </ul>
   </li>
-  <li class="open"><a class="collapsed" id="patimg" ><span><?php xl('Demographics','e') ?></span></a>
+  <li class="open active nav-header"><a class="collapsed" id="patimg" ><?php xl('Demographics','e') ?></a>
     <ul>
       <?php genMiscLink('RTop','fin','0',xl('Patients'),'main/finder/dynamic_finder.php'); ?>
       <?php genTreeLink('RTop','new',($GLOBALS['full_new_patient_form'] ? xl('New/Search') : xl('New'))); ?>
       <?php genTreeLink('RTop','dem',xl('Current')); ?>
     </ul>
   </li>
-  <li class="open"><a class="expanded" id="patimg" ><span><?php xl('Medical Records','e') ?></span></a>
+  <li class="open active nav-header"><a class="expanded" id="patimg" ><?php xl('Medical Records','e') ?></a>
     <ul>
       <?php genDualLink('iss','ens',xl('All Injuries/Problems/Issues')); // with ens on bottom ?>
 <?php
@@ -1137,7 +1148,10 @@ if ($GLOBALS['athletic_team']) {
   <?php genTreeLink('RBot','msg',xl('Messages')); ?> 
   <?php if ($GLOBALS['lab_exchange_enable']) genTreeLink('RTop', 'lab', xl('Check Lab Results'));?>
   <?php if($GLOBALS['portal_offsite_enable'] && $GLOBALS['portal_offsite_address'] && acl_check('patientportal','portal'))  genTreeLink('RTop','app',xl('Portal Activity')); ?>
-  <li class="open"><a class="expanded" id="patimg" ><span><?php xl('Patient/Client','e') ?></span></a>
+ 
+	<li class="open nav-header">
+		<a class="expanded accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="patimg" ><?php xl('Patient/Client','e') ?></a>
+	<div id="collapseOne" class="collapse in">
     <ul>
       <?php genMiscLink('RTop','fin','0',xl('Patients'),'main/finder/dynamic_finder.php'); ?>
       <?php genTreeLink('RTop','new',($GLOBALS['full_new_patient_form'] ? xl('New/Search') : xl('New'))); ?>
@@ -1193,7 +1207,9 @@ if (!empty($reg)) {
 <?php } // end if gbl_nav_visit_forms ?>
 
     </ul>
+	
   </li>
+  </div>
   <?php // TajEmo Work by CB 2012/06/21 10:41:15 AM hides fees if disabled in globals ?>
   <?php if(!isset($GLOBALS['enable_fees_in_left_menu']) || $GLOBALS['enable_fees_in_left_menu'] == 1){ ?>
   <li><a class="collapsed" id="feeimg" ><span><?php xl('Fees','e') ?></span></a>
@@ -1418,6 +1434,7 @@ if (!empty($reg)) {
 <?php } // end not athletic team ?>
 
 </ul>
+</div>
 
 <?php } else { // end ($GLOBALS['concurrent_layout'] == 2 || $GLOBALS['concurrent_layout'] == 3) ?>
 
@@ -1503,6 +1520,6 @@ if (!$GLOBALS['athletic_team']) {
 <script language='JavaScript'>
 syncRadios();
 </script>
-
+</div>
 </body>
 </html>

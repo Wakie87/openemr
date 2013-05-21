@@ -42,7 +42,7 @@ if (!$thisauth) {
     }
 </script>
 
-<table id="patient_stats_issues">
+<div id="patient_stats_issues">
 	
 <?php
 $numcols = '1';
@@ -75,7 +75,7 @@ foreach ($ISSUE_TYPES as $key => $arr) {
 		$widgetButtonLink = '';
 		$widgetAuth = false;
 		$widgetButtonClass = '';
-		$bodyClass = "summary_item small";
+		$bodyClass = "accordion-body collapse";
 		$fixedWidth = false;
 		expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel , $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass, $widgetAuth, $fixedWidth);
 	    }
@@ -150,7 +150,7 @@ foreach ($ISSUE_TYPES as $key => $arr) {
 	    }
 	    $widgetButtonClass = "";
             $linkMethod = "javascript";
-            $bodyClass = "summary_item small";
+            $bodyClass = "accordion-body collapse";
             $widgetAuth = true;
             $fixedWidth = false;
             expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel , $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass, $widgetAuth, $fixedWidth);
@@ -165,7 +165,7 @@ foreach ($ISSUE_TYPES as $key => $arr) {
             </td>
             </tr>
         <?php }
-        echo "<table>";    
+        echo "<div>";    
 	if (sqlNumRows($pres) == 0) {
           if ( getListTouch($pid,$key) ) {
             // Data entry has happened to this type, so can display an explicit None.
@@ -202,7 +202,8 @@ foreach ($ISSUE_TYPES as $key => $arr) {
 
             echo " </tr>\n";
         }
-	echo "</table>";
+	echo "</div>";
+	echo "</div>";
 	if ($_POST['embeddedScreen']) {
 	    echo "</div></td></tr>";
         }
@@ -210,9 +211,10 @@ foreach ($ISSUE_TYPES as $key => $arr) {
     }
 }
 ?>
-</table> <!-- end patient_stats_issues -->
+
+</div> <!-- end patient_stats_issues -->
 	
-<table id="patient_stats_spreadsheets">
+<div id="patient_stats_spreadsheets">
 <?php
 
 // Show spreadsheet forms if any are present.
@@ -248,11 +250,11 @@ foreach (array('treatment_protocols','injury_log') as $formname) {
     }
 }
 ?>
-</table> <!-- end patient_stats_spreadsheets -->
+</div> <!-- end patient_stats_spreadsheets -->
 
 <?php if (!$GLOBALS['disable_immunizations'] && !$GLOBALS['weight_loss_clinic']) { ?>
 <div>
-<table id="patient_stats_imm">
+<div id="patient_stats_imm">
 <tr>
 <?php if ($_POST['embeddedScreen']) {
     echo "<td>";
@@ -324,13 +326,13 @@ else { ?>
 
 </td>
 </tr>
-</table> <!-- end patient_stats_imm-->
+</div> <!-- end patient_stats_imm-->
 </div>
 <?php } ?>
 
 <?php if (!$GLOBALS['disable_prescriptions']) { ?>
 <div>
-<table id="patient_stats_prescriptions">
+<div id="patient_stats_prescriptions">
 <?php if($GLOBALS['erx_enable'] && $display_current_medications_below==1){ ?>
 <tr><td>
 <?php if ($_POST['embeddedScreen']) {
@@ -459,6 +461,6 @@ if($erx_upload_complete == 1){
 }
 
 ?>
-</table> <!-- end patient_stats_prescriptions -->
+</div> <!-- end patient_stats_prescriptions -->
 </div>
 </div> <!-- end patient_stats_summary -->
