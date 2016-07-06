@@ -38,7 +38,7 @@ require_once "$srcdir/clinical_rules.php";
 <html>
 
 <head>
-<?php html_header_show();?>
+
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 

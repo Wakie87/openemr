@@ -65,7 +65,7 @@ $grand_total_amt_balance  = 0;
 <html>
 <head>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<?php html_header_show();?>
+
 
 <style type="text/css">
 /* specifically include & exclude from printing */

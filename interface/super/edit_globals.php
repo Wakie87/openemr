@@ -113,7 +113,6 @@ function checkBackgroundServices(){
 <head>
 <?php
 
-html_header_show();
 
 // If we are saving user_specific globals.
 //

@@ -27,7 +27,7 @@ function generateDateQualifierSelect($name,$options,$obj)
 }
 ?>
 <html><head>
-<?php html_header_show(); ?>
+
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 </head>
 <body class="body_top">

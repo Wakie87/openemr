@@ -37,7 +37,7 @@ if ($record['sig_date'] != "") {
 ?>
 
 <html><head>
-<?php html_header_show();?>
+
 
 <!-- supporting javascript code -->
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>

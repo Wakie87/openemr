@@ -101,7 +101,7 @@ if (!empty($_POST['bn_delete'])) {
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 
 <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
 <title><?php echo xlt('Portal Requests'); ?></title>

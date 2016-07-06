@@ -170,7 +170,7 @@ function generatePageElement($start,$pagesize,$billing,$issue,$text)
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <!-- Main style sheet comes after the page-specific stylesheet to facilitate overrides. -->
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/encounters.css" type="text/css">
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">

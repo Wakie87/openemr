@@ -121,7 +121,7 @@ if ($_POST['print_pdf'] || $_POST['print_html']) {
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title>
 <?php xl('CAMOS','e'); ?>
 </title>
@@ -398,7 +398,7 @@ else {
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title>
 <?php xl('CAMOS','e'); ?>
 </title>

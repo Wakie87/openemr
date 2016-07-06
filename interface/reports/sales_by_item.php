@@ -269,7 +269,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <style type="text/css">
 
 /* specifically include & exclude from printing */

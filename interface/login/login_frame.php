@@ -4,7 +4,7 @@ include_once ("../globals.php");
 ?>
 <HTML>
 <head>
-<?php html_header_show(); ?>
+
 <TITLE><?php xl ('Login','e'); ?></TITLE>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">

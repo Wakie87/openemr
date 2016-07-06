@@ -70,7 +70,7 @@
 ?>
 <html>
 	<head>
-		<?php html_header_show();?>
+		
 		<title>
 			<?php echo xlt('Patient List Creation'); ?>
 		</title>

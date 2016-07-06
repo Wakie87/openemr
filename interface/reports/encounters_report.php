@@ -130,7 +130,7 @@ $res = sqlStatement($query);
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php echo xlt('Encounters Report'); ?></title>
 
 <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>

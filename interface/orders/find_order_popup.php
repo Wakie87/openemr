@@ -72,7 +72,7 @@ window.close();
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <title><?php echo xlt('Procedure Picker'); ?></title>
 <link rel="stylesheet" href='<?php echo attr($css_header) ?>' type='text/css'>
 

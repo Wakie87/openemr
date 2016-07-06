@@ -10,7 +10,7 @@
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title>Referrals</title>
 </head>
 <body>

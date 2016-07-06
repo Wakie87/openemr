@@ -13,7 +13,7 @@ $esignApi = new Esign\Api();
 <html>
 <head>
 <?php } ?>
-<?php html_header_show();?>
+
 <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
 
 <script language="JavaScript">

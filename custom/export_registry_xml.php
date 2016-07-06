@@ -188,7 +188,7 @@ $xml->close_submission();
 
 <html>
 <head>
-<?php html_header_show();?>
+
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
 <title><?php echo htmlspecialchars( xl('Export PQRI Report'), ENT_NOQUOTES); ?></title>
 </head>

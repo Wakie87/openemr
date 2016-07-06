@@ -49,7 +49,7 @@ if ($_REQUEST['searchby'] && $_REQUEST['searchparm']) {
 
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php echo htmlspecialchars( xl('Patient Finder'), ENT_NOQUOTES); ?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 

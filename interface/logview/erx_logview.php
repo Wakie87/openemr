@@ -73,7 +73,7 @@ if($filename) {
 ?>
 <html>
 	<head>
-		<?php html_header_show(); ?>
+		
 		<link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
 		<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar.css" type="text/css">
 		<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>

@@ -51,7 +51,7 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php echo xlt('Patient Encounter'); ?></title>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">

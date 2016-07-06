@@ -56,7 +56,7 @@ $check_res = $formid ? $check_res : array();
 ?>
 <html>
     <head>
-        <?php html_header_show(); ?>
+        
         <!-- pop up calendar -->
         <style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>

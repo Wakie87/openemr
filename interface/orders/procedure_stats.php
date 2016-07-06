@@ -251,7 +251,7 @@ function process_result_code($row) {
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <title><?php echo $report_title; ?></title>
 <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <style type="text/css">

@@ -129,7 +129,7 @@ $DateFormat=DateFormatRead();
 ?>
 <html>
 <head>
-<?php if (function_exists('html_header_show')) html_header_show(); ?>
+
 
 <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="../../library/dialog.js"></script>

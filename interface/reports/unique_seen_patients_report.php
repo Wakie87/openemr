@@ -28,7 +28,7 @@ require_once("$srcdir/formatting.inc.php");
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <style type="text/css">
 /* specifically include & exclude from printing */
 @media print {

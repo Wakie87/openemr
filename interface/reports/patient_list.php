@@ -42,7 +42,7 @@ else {
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php xl('Patient List','e'); ?></title>
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js?v=<?php echo $v_js_includes; ?>"></script>

@@ -250,7 +250,7 @@ $ignoreAuth = 1;
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <title><?php xl('Find Available Appointments','e'); ?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 

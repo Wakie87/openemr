@@ -76,7 +76,7 @@ require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
 ?>
 <html>
 <head>
-<?php if (function_exists('html_header_show')) html_header_show(); ?>
+
 <style type="text/css">
 /* specifically include & exclude from printing */
 @media print {

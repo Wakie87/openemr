@@ -753,7 +753,7 @@ $billresult = getBillingByEncounter($pid, $encounter, "*");
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <style>
 .billcell { font-family: sans-serif; font-size: 10pt }

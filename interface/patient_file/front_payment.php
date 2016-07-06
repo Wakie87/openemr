@@ -26,7 +26,7 @@ $pid = $_REQUEST['hidden_patient_code'] > 0 ? $_REQUEST['hidden_patient_code'] :
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 <?php
 // Format dollars for display.

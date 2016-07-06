@@ -41,7 +41,7 @@ $from_page = isset($_REQUEST['from_page']) ? $_REQUEST['from_page'] : "";
 
 <html>
 <head>
-<?php html_header_show();?>
+
 
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
 <style>

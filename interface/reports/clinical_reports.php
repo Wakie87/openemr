@@ -63,7 +63,7 @@ $fake_register_globals=false;
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title>
 <?php echo htmlspecialchars(xl('Clinical Reports'),ENT_NOQUOTES); ?>
 </title>

@@ -53,7 +53,7 @@ global $ignoreAuth;
 <html>
 <head>
 <title><?php echo xlt('Patient Information'); ?></title>
-<?php html_header_show(); ?>
+
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" type="text/css" href="<?php echo $web_root; ?>/library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="<?php echo $web_root; ?>/library/dynarch_calendar.css">

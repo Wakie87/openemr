@@ -39,7 +39,7 @@ $obj = $formid ? formFetch("form_aftercare_plan", $formid) : array();
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <script type="text/javascript" src="../../../library/dialog.js"></script>
 <!-- pop up calendar -->
 <style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>

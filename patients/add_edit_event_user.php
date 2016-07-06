@@ -669,7 +669,7 @@ sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <title><?php echo $eid ? "Edit" : "Add New" ?> <?php xl('Event','e');?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 
