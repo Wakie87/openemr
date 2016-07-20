@@ -34,7 +34,7 @@ $sanitize_all_escapes=true;
 require_once("../globals.php");
 require_once("$srcdir/classes/PDF_Label.php");
 require_once("$srcdir/formatting.inc.php");
-require_once("$srcdir/classes/php-barcode.php");
+//require_once("$srcdir/classes/php-barcode.php");
   
 //Get the data to place on labels
  
@@ -84,7 +84,7 @@ $bartype = $GLOBALS['barcode_label_type'] ; // Get barcode type
  			    $type     = 'code93';
                 break;
             case '9':
- 			    $type     = 'code128';
+ 			    $type     = 'C128';
                 break;
             case '10':
  			    $type     = 'codabar';
@@ -124,23 +124,44 @@ $width    = 1;    // barcode height in 1D ; not use in 2D
 //            ALLOCATE FPDF RESSOURCE
 // -------------------------------------------------- //
 
-$pdf = new eFPDF('P', 'mm',array(102,252)); // set the orentation, unit of measure and size of the page
+$pdf = new TCPDF('L', 'mm',array(102,252), true, 'UTF-8'); // set the orentation, unit of measure and size of the page
+$pdf->SetPrintHeader(false);
+$pdf->SetPrintFooter(false);
 $pdf->AddPage();
  
 // -------------------------------------------------- //
 //                      BARCODE
 // -------------------------------------------------- //
   
-$data = Barcode::fpdf($pdf, $black, $x, $y, $angle, $type, array('code'=>$code), $width, $height);
-$pdf->SetFont('Arial','B',$fontSize);
+//$data = Barcode::fpdf($pdf, $black, $x, $y, $angle, $type, array('code'=>$code), $width, $height);
+$pdf->SetFont($pdf->font,'',$fontSize);
 $pdf->SetTextColor(0, 0, 0);
-$len = $pdf->GetStringWidth($data['hri']);
-Barcode::rotate(-$len / 2, ($data['height'] / 2) + $fontSize + $marge, $angle, $xt, $yt);
+//$len = $pdf->GetStringWidth($data['hri']);
+//Barcode::rotate(-$len / 2, ($data['height'] / 2) + $fontSize + $marge, $angle, $xt, $yt);
  
 // -------------------------------------------------- //
 //                      OUTPUT
 // -------------------------------------------------- //
  
-$pdf->TextWithRotation($x + $xt, $y + $yt, $data['hri'], $angle);
+//$pdf->TextWithRotation($x + $xt, $y + $yt, $data['hri'], $angle);
+// define barcode style
+$style = array(
+    'position' => '',
+    'align' => 'C',
+    'stretch' => false,
+    'fitwidth' => true,
+    'cellfitalign' => '',
+    'border' => true,
+    'hpadding' => 'auto',
+    'vpadding' => 'auto',
+    'fgcolor' => array(0,0,0),
+    'bgcolor' => false, //array(255,255,255),
+    'text' => true,
+    'font' => 'helvetica',
+    'fontsize' => 28,
+    'stretchtext' => 4
+);
+$pdf->write1DBarcode($code, $type, '', '', 60, 40, '0.4', $style);
+
 $pdf->Output();
 ?>
