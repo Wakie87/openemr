@@ -32,14 +32,10 @@ $sanitize_all_escapes=true;
 
 require_once("../globals.php");
 require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/patient.inc");
 
 //Get the data to place on labels
-
-$patdata = sqlQuery("SELECT " .
-  "p.fname, p.mname, p.lname, p.pubpid, p.DOB, " .
-  "p.street, p.city, p.state, p.postal_code, p.pid " .
-  "FROM patient_data AS p " .
-  "WHERE p.pid = ? LIMIT 1", array($pid));
+$patdata = getPatientData($pid, "fname,lname,street,city,state,postal_code");
 
 $pdf = new TCPDF('L', 'mm',array(102,252), true, 'UTF-8'); // set the orentation, unit of measure and size of the page
 $pdf->SetPrintHeader(false);
@@ -49,7 +45,7 @@ $pdf->SetFont($pdf->font, '', 50);
 
 $text1 = sprintf("%s %s\n",  $patdata['fname'], $patdata['lname']);
 $text2 = sprintf("%s \n", $patdata['street']);
-$text3 = sprintf("%s , %s , %s \n", $patdata['city'], $patdata['state'], $patdata['postal_code']);
+$text3 = sprintf("%s, %s, %s \n", $patdata['city'], $patdata['state'], $patdata['postal_code']);
 
 $pdf->setXY(52,5);
 $pdf->writeHTML($text1);
