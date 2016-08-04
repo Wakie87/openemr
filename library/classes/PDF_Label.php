@@ -30,6 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Modified to function in Open-emr 8-19-2014 Terry Hill terry@lillysystems.com
+// Modified to use TCPDF in OpenEmr 04/08/2016 Scott Wakefield scott@npclinics.com.au
 
 /**
  * PDF_Label - PDF label editing
@@ -37,6 +38,7 @@
  * @author Laurent PASSEBECQ
  * @copyright 2003 Laurent PASSEBECQ
 **/
+
 
 class PDF_Label extends TCPDF {
 
@@ -79,10 +81,10 @@ class PDF_Label extends TCPDF {
 			$Tformat = $this->_Avery_Labels[$format];
 		}
 
-		parent::__construct('P', $unit, $Tformat['paper-size']);
+		parent::__construct('P', $unit, $format, true, 'UTF-8', false);
 		$this->_Metric_Doc = $unit;
 		$this->_Set_Format($Tformat);
-		$this->SetFont('Arial');
+		$this->SetFont('freesans');
 		$this->SetMargins(0,0); 
 		$this->SetAutoPageBreak(false); 
 		$this->_COUNTX = $posX-2;
@@ -150,12 +152,4 @@ class PDF_Label extends TCPDF {
 		$this->MultiCell($this->_Width - $this->_Padding, $this->_Line_Height, $text, 0, 'L');
 	}
 
-	function _putcatalog()
-	{
-		parent::_putcatalog();
-		// Disable the page scaling option in the printing dialog
-		$this->_out('/ViewerPreferences <</PrintScaling /None>>');
-	}
-
 }
-?>
