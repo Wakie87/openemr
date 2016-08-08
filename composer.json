@@ -12,7 +12,8 @@
     "require": {
 
         "smarty/smarty": "2.6.29",
-        "adodb/adodb-php": "5.20.2"
+        "adodb/adodb-php": "5.20.2",
+        "mpdf/mpdf": "6.1.0"
         
     },
     "require-dev": {

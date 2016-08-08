@@ -49,18 +49,21 @@ $GLOBALS['PATIENT_REPORT_ACTIVE'] = true;
 $PDF_OUTPUT = empty($_POST['pdf']) ? 0 : intval($_POST['pdf']);
 
 if ($PDF_OUTPUT) {
-  require_once("$srcdir/html2pdf/vendor/autoload.php");
-  $pdf = new HTML2PDF ($GLOBALS['pdf_layout'],
-                       $GLOBALS['pdf_size'],
-                       $GLOBALS['pdf_language'],
-                       true, // default unicode setting is true
-                       'UTF-8', // default encoding setting is UTF-8
-                       array($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin'],$GLOBALS['pdf_bottom_margin']),
-                       $_SESSION['language_direction'] == 'rtl' ? true : false
-                      );
-  //set 'dejavusans' for now. which is supported by a lot of languages - http://dejavu-fonts.org/wiki/Main_Page
-  //TODO: can have this selected as setting in globals after we have more experience with this to fully support internationalization.
-  $pdf->setDefaultFont('dejavusans');
+  $pdf = new mPDF   ('UTF-8',                           // mode - default ''
+                     $GLOBALS['pdf_size'],              // format - A4, for example, default ''
+                     0,                                 // font size - default 0
+                     '',                      // default font family
+                     $GLOBALS['pdf_left_margin'],       // margin_left
+                     $GLOBALS['pdf_right_margin'],      // margin right
+                     $GLOBALS['pdf_top_margin'],        // margin top
+                     $GLOBALS['pdf_bottom_margin'],     // margin bottom
+                     9,                                 // margin header
+                     9,                                 // margin footer
+                     $GLOBALS['pdf_layout']);           // L - landscape, P - portrait
+if ($_SESSION['language_direction'] == 'rtl'){
+    $pdf->SetDirectionality('rtl');
+  }
+
 
   ob_start();
 }
@@ -864,14 +867,15 @@ foreach ($ar as $key => $val) {
             $content = getContent();
             // $pdf->setDefaultFont('Arial');
             $pdf->writeHTML($content, false);
-            $pagecount = $pdf->pdf->setSourceFile($from_file);
+            $pdf->SetImportUse();
+            $pagecount = $pdf->setSourceFile($from_file);
             for($i = 0; $i < $pagecount; ++$i){
-              $pdf->pdf->AddPage();  
-              $itpl = $pdf->pdf->importPage($i + 1, '/MediaBox');
-              $pdf->pdf->useTemplate($itpl);
+              $pdf->AddPage();  
+              $itpl = $pdf->importPage($i + 1, '/MediaBox');
+              $pdf->useTemplate($itpl);
             }
             // Make sure whatever follows is on a new page.
-            $pdf->pdf->AddPage();
+            $pdf->AddPage();
             // Resume output buffering and the above-closed tags.
             ob_start();
             echo "<div><div class='text documents'>\n";
