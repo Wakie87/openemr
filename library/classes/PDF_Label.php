@@ -61,7 +61,7 @@ require_once("$srcdir/fpdf/fpdf.php");
   }
 
 
-class PDF_Label extends FPDF {
+class PDF_Label extends mPDF {
 
 	// Private properties
 	var $_Margin_Left;			// Left margin of labels
@@ -102,10 +102,10 @@ class PDF_Label extends FPDF {
 			$Tformat = $this->_Avery_Labels[$format];
 		}
 
-		parent::__construct('P', $unit, $Tformat['paper-size']);
-		$this->_Metric_Doc = $unit;
+		parent::__construct('', $Tformat['paper-size'], 0, '', 15, 15, 16, 16, 9, 9, 'L');
+		//$this->_Metric_Doc = $unit;
 		$this->_Set_Format($Tformat);
-		$this->SetFont('Arial');
+		//$this->SetFont('Arial');
 		$this->SetMargins(0,0); 
 		$this->SetAutoPageBreak(false); 
 		$this->_COUNTX = $posX-2;
