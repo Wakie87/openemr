@@ -49,18 +49,29 @@ $GLOBALS['PATIENT_REPORT_ACTIVE'] = true;
 $PDF_OUTPUT = empty($_POST['pdf']) ? 0 : intval($_POST['pdf']);
 
 if ($PDF_OUTPUT) {
-  require_once("$srcdir/html2pdf/vendor/autoload.php");
-  $pdf = new HTML2PDF ($GLOBALS['pdf_layout'],
-                       $GLOBALS['pdf_size'],
-                       $GLOBALS['pdf_language'],
-                       true, // default unicode setting is true
-                       'UTF-8', // default encoding setting is UTF-8
-                       array($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin'],$GLOBALS['pdf_bottom_margin']),
-                       $_SESSION['language_direction'] == 'rtl' ? true : false
-                      );
-  //set 'dejavusans' for now. which is supported by a lot of languages - http://dejavu-fonts.org/wiki/Main_Page
-  //TODO: can have this selected as setting in globals after we have more experience with this to fully support internationalization.
-  $pdf->setDefaultFont('dejavusans');
+  $pdf = new mPDF   ('UTF-8',                           // mode - default ''
+                     $GLOBALS['pdf_size'],              // format - A4, for example, default ''
+                     '',                                // font size - default 0
+                     '',                                // default font family
+                     $GLOBALS['pdf_left_margin'],       // margin_left
+                     $GLOBALS['pdf_right_margin'],      // margin right
+                     $GLOBALS['pdf_top_margin'],        // margin top
+                     $GLOBALS['pdf_bottom_margin'],     // margin bottom
+                     9,                                 // margin header
+                     9,                                 // margin footer
+                     $GLOBALS['pdf_layout']             // L - landscape, P - portrait
+                     );          
+
+
+  if ($_SESSION['language_direction'] == 'rtl') {  
+      $pdf->SetDirectionality('rtl');
+    }
+
+  $pdf->autoScriptToLang = true;
+  $pdf->baseScript = 1;
+  $pdf->autoVietnamese = true;
+  $pdf->autoArabic = true;
+  $pdf->autoLangToFont = true;
 
   ob_start();
 }
@@ -88,7 +99,7 @@ $first_issue = 1;
 function getContent() {
   global $web_root, $webserver_root;
   $content = ob_get_clean();
-  // Fix a nasty html2pdf bug - it ignores document root!
+  // Fix a pdf bug - it ignores document root!
   $i = 0;
   $wrlen = strlen($web_root);
   $wsrlen = strlen($webserver_root);
@@ -485,7 +496,7 @@ if ($printable) {
   if (!$results->EOF) {
     $facility = $results->fields;
   }
-  // Setup Headers and Footers for html2PDF only Download
+  // Setup Headers and Footers for mPDF only Download
   // in HTML view it's just one line at the top of page 1
   echo '<page_header style="text-align:right;" class="custom-tag"> ' . xlt("PATIENT") . ':' . text($titleres['lname']) . ', ' . text($titleres['fname']) . ' - ' . $titleres['DOB_TS'] . '</page_header>    ';
   echo '<page_footer style="text-align:right;" class="custom-tag">' . xlt('Generated on') . ' ' . oeFormatShortDate() . ' - ' . text($facility['name']) . ' ' . text($facility['phone']) . '</page_footer>';
@@ -840,7 +851,7 @@ foreach ($ar as $key => $val) {
                 if ($extension == ".png" || $extension == ".jpg" || $extension == ".jpeg" || $extension == ".gif") {
                   if ($PDF_OUTPUT) {
                     // OK to link to the image file because it will be accessed by the
-                    // HTML2PDF parser and not the browser.
+                    // mPDF parser and not the browser.
                     $from_rel = $web_root . substr($from_file, strlen($webserver_root));
                     echo "<img src='$from_rel'";
                     // Flag images with excessive width for possible stylesheet action.
@@ -864,14 +875,15 @@ foreach ($ar as $key => $val) {
             $content = getContent();
             // $pdf->setDefaultFont('Arial');
             $pdf->writeHTML($content, false);
-            $pagecount = $pdf->pdf->setSourceFile($from_file);
+            $pdf->SetImportUse();
+            $pagecount = $pdf->setSourceFile($from_file);
             for($i = 0; $i < $pagecount; ++$i){
-              $pdf->pdf->AddPage();  
-              $itpl = $pdf->pdf->importPage($i + 1, '/MediaBox');
-              $pdf->pdf->useTemplate($itpl);
+              $pdf->AddPage();  
+              $itpl = $pdf->importPage($pagecount);
+              $pdf->useTemplate($itpl);
             }
             // Make sure whatever follows is on a new page.
-            $pdf->pdf->AddPage();
+            $pdf->AddPage();
             // Resume output buffering and the above-closed tags.
             ob_start();
             echo "<div><div class='text documents'>\n";
@@ -881,7 +893,7 @@ foreach ($ar as $key => $val) {
             if (is_file($to_file)) {
               if ($PDF_OUTPUT) {
                 // OK to link to the image file because it will be accessed by the
-                // HTML2PDF parser and not the browser.
+                // mPDF parser and not the browser.
                 echo "<img src='$to_file'><br><br>";
               }
               else {

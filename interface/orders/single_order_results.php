@@ -52,10 +52,29 @@ if (!empty($_POST['form_sign']) && !empty($_POST['form_sign_list'])) {
 // This mess generates a PDF report and sends it to the patient.
 if (!empty($_POST['form_send_to_portal'])) {
   // Borrowing the general strategy here from custom_report.php.
-  // See also: http://wiki.spipu.net/doku.php?id=html2pdf:en:v3:output
-  require_once("$srcdir/html2pdf/html2pdf.class.php");
   require_once($GLOBALS["include_root"] . "/cmsportal/portal.inc.php");
-  $pdf = new HTML2PDF('P', 'Letter', 'en');
+    $pdf = new mPDF   ('UTF-8',                           // mode - default ''
+                     $GLOBALS['pdf_size'],              // format - A4, for example, default ''
+                     '',                                // font size - default 0
+                     '',                                // default font family
+                     $GLOBALS['pdf_left_margin'],       // margin_left
+                     $GLOBALS['pdf_right_margin'],      // margin right
+                     $GLOBALS['pdf_top_margin'],        // margin top
+                     $GLOBALS['pdf_bottom_margin'],     // margin bottom
+                     9,                                 // margin header
+                     9,                                 // margin footer
+                     $GLOBALS['pdf_layout']             // L - landscape, P - portrait
+                     );          
+    
+  if ($_SESSION['language_direction'] == 'rtl') {  
+      $pdf->SetDirectionality('rtl');
+    }
+
+  $pdf->autoScriptToLang = true;
+  $pdf->baseScript = 1;
+  $pdf->autoVietnamese = true;
+  $pdf->autoArabic = true;
+  $pdf->autoLangToFont = true;
   ob_start();
   echo "<link rel='stylesheet' type='text/css' href='$webserver_root/interface/themes/style_pdf.css'>\n";
   echo "<link rel='stylesheet' type='text/css' href='$webserver_root/library/ESign/css/esign_report.css'>\n";
