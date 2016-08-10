@@ -10,6 +10,25 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
         'bf9f5270ae66ac6fa0290b4bf47867b7' => __DIR__ . '/..' . '/adodb/adodb-php/adodb.inc.php',
     );
 
+    public static $prefixLengthsPsr4 = array (
+        'C' => 
+        array (
+            'Com\\Tecnick\\Color\\' => 18,
+            'Com\\Tecnick\\Barcode\\' => 20,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Com\\Tecnick\\Color\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tecnickcom/tc-lib-color/src',
+        ),
+        'Com\\Tecnick\\Barcode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tecnickcom/tc-lib-barcode/src',
+        ),
+    );
+
     public static $classMap = array (
         'CGIF' => __DIR__ . '/..' . '/mpdf/mpdf/classes/gif.php',
         'CGIFCOLORTABLE' => __DIR__ . '/..' . '/mpdf/mpdf/classes/gif.php',
@@ -51,6 +70,8 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInit22ddb69348c7ed922c96325249cef3d0::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit22ddb69348c7ed922c96325249cef3d0::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInit22ddb69348c7ed922c96325249cef3d0::$classMap;
 
         }, null, ClassLoader::class);
