@@ -49,20 +49,47 @@ $GLOBALS['PATIENT_REPORT_ACTIVE'] = true;
 $PDF_OUTPUT = empty($_POST['pdf']) ? 0 : intval($_POST['pdf']);
 
 if ($PDF_OUTPUT) {
-  require_once("$srcdir/html2pdf/vendor/autoload.php");
-  $pdf = new HTML2PDF ($GLOBALS['pdf_layout'],
-                       $GLOBALS['pdf_size'],
-                       $GLOBALS['pdf_language'],
-                       true, // default unicode setting is true
-                       'UTF-8', // default encoding setting is UTF-8
-                       array($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin'],$GLOBALS['pdf_bottom_margin']),
-                       $_SESSION['language_direction'] == 'rtl' ? true : false
-                      );
-  //set 'dejavusans' for now. which is supported by a lot of languages - http://dejavu-fonts.org/wiki/Main_Page
-  //TODO: can have this selected as setting in globals after we have more experience with this to fully support internationalization.
-  $pdf->setDefaultFont('dejavusans');
+  // require_once("$srcdir/html2pdf/vendor/autoload.php");
+  // $pdf = new HTML2PDF ($GLOBALS['pdf_layout'],
+  //                      $GLOBALS['pdf_size'],
+  //                      $GLOBALS['pdf_language'],
+  //                      true, // default unicode setting is true
+  //                      'UTF-8', // default encoding setting is UTF-8
+  //                      array($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin'],$GLOBALS['pdf_bottom_margin']),
+  //                      $_SESSION['language_direction'] == 'rtl' ? true : false
+  //                     );
+  // //set 'dejavusans' for now. which is supported by a lot of languages - http://dejavu-fonts.org/wiki/Main_Page
+  // //TODO: can have this selected as setting in globals after we have more experience with this to fully support internationalization.
+  // 
 
-  ob_start();
+  $pdf = new FPDI($GLOBALS['pdf_layout'], 'mm', $GLOBALS['pdf_size'], true, 'UTF-8', false);
+  // set margins
+  $pdf->SetMargins($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin']);
+  $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+
+  //$pdf->setRTL($_SESSION['language_direction'] == 'rtl' ? true : false);
+  // set some language dependent data:
+    $lg = Array();
+    $lg['a_meta_language'] = $GLOBALS['pdf_language'];
+    $lg['a_meta_dir'] = $_SESSION['language_direction'] == 'rtl' ? true : false;
+  // set some language-dependent strings (optional)
+  $pdf->setLanguageArray($lg);
+
+
+
+
+  $pdf->SetFont('dejavusans', '', 10);
+
+
+
+
+
+
+  $pdf->AddPage();
+
+
+  //ob_start();
 }
 
 // get various authorization levels
@@ -842,11 +869,17 @@ foreach ($ar as $key => $val) {
                     // OK to link to the image file because it will be accessed by the
                     // HTML2PDF parser and not the browser.
                     $from_rel = $web_root . substr($from_file, strlen($webserver_root));
-                    echo "<img src='$from_rel'";
-                    // Flag images with excessive width for possible stylesheet action.
-                    $asize = getimagesize($from_file);
-                    if ($asize[0] > 750) echo " class='bigimage'";
-                    echo " /><br><br>";
+
+                    // Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false)
+                    $pdf->AddPage();
+                    $pdf->Image($from_rel, 15, 140, 75, 113, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
+                    
+
+                      // echo "<img src='$from_rel'";
+                      // // Flag images with excessive width for possible stylesheet action.
+                      // $asize = getimagesize($from_file);
+                      // if ($asize[0] > 750) echo " class='bigimage'";
+                      echo "<br><br>";
                   }
                   else {
                     echo "<img src='" . $GLOBALS['webroot'] .
@@ -864,14 +897,14 @@ foreach ($ar as $key => $val) {
             $content = getContent();
             // $pdf->setDefaultFont('Arial');
             $pdf->writeHTML($content, false);
-            $pagecount = $pdf->pdf->setSourceFile($from_file);
+            $pagecount = $pdf->setSourceFile($from_file);
             for($i = 0; $i < $pagecount; ++$i){
-              $pdf->pdf->AddPage();  
-              $itpl = $pdf->pdf->importPage($i + 1, '/MediaBox');
-              $pdf->pdf->useTemplate($itpl);
+              $pdf->AddPage();  
+              $itpl = $pdf->importPage($pagecount);
+              $pdf->useTemplate($itpl);
             }
             // Make sure whatever follows is on a new page.
-            $pdf->pdf->AddPage();
+            $pdf->AddPage();
             // Resume output buffering and the above-closed tags.
             ob_start();
             echo "<div><div class='text documents'>\n";
@@ -883,11 +916,14 @@ foreach ($ar as $key => $val) {
                 // OK to link to the image file because it will be accessed by the
                 // HTML2PDF parser and not the browser.
                 echo "<img src='$to_file'><br><br>";
+
               }
               else {
-                echo "<img src='" . $GLOBALS['webroot'] .
-                  "/controller.php?document&retrieve&patient_id=&document_id=" .
-                  $document_id . "&as_file=false&original_file=false'><br><br>";
+
+                
+                // echo "<img src='" . $GLOBALS['webroot'] .
+                //   "/controller.php?document&retrieve&patient_id=&document_id=" .
+                //   $document_id . "&as_file=false&original_file=false'><br><br>";
               }
             } else {
               echo "<b>NOTE</b>: " . xl('Document') . "'" . $fname . "' " .
