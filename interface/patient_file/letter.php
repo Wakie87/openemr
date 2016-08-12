@@ -141,55 +141,54 @@ if ($_POST['formaction']=="generate") {
     $cpstring = str_replace('{'.$FIELD_TAG['PT_DOB'].'}'          , $patdata['DOB'], $cpstring);
     
     if ($form_format == "pdf") {
-      // documentation for ezpdf is here --> http://www.ros.co.nz/pdf/
-      require_once ($GLOBALS['fileroot'] . "/library/classes/class.ezpdf.php");
-      $pdf = new Cezpdf($GLOBALS['rx_paper_size']);
-      $pdf->ezSetMargins($GLOBALS['rx_top_margin']
-                      ,$GLOBALS['rx_bottom_margin']
-                      ,$GLOBALS['rx_left_margin']
-                      ,$GLOBALS['rx_right_margin']
-                      );
-      if (file_exists("$template_dir/custom_pdf.php")) {
-        include("$template_dir/custom_pdf.php");
-      }
-      else {
-        $pdf->selectFont($GLOBALS['fileroot'] . "/library/fonts/Helvetica.afm");
-        $pdf->ezText($cpstring, 12); 
-      }
-      $pdf->ezStream();
-      exit;
+        $pdf = new TCPDF($GLOBALS['pdf_layout'], 'mm', $GLOBALS['pdf_size'], true, 'UTF-8', false);
+        // set margins
+        $pdf->SetMargins($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin']);
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+        $pdf->SetPrintHeader(false);
+        $pdf->SetPrintFooter(false);
+        // set some language dependent data:
+        $lg = Array();
+        $lg['a_meta_language'] = $GLOBALS['pdf_language'];
+        $lg['a_meta_dir'] = $_SESSION['language_direction'] == 'rtl' ? true : false;
+        // set some language-dependent strings (optional)
+        $pdf->setLanguageArray($lg);
+        $pdf->SetFont('dejavusans', '', 10);
+        $pdf->AddPage();
+        $pdf->Write('',$cpstring);
+        $pdf->Output('Letter.pdf', $GLOBALS['pdf_output']); // D = Download, I = Inline
     }
     else { // $form_format = html
         $cpstring = text($cpstring); //escape to prevent stored cross script attack
-	$cpstring = str_replace("\n", "<br>", $cpstring);
-	$cpstring = str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $cpstring);
-    ?>
+    	$cpstring = str_replace("\n", "<br>", $cpstring);
+    	$cpstring = str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $cpstring);
+        ?>
         <html>
-        <head>
-        <style>
-        body {
-	 font-family: sans-serif;
-	 font-weight: normal;
-	 font-size: 12pt;
-	 background: white;
-	 color: black;
-	}	
-	.paddingdiv {
-	 width: 524pt;
-	 padding: 0pt;
-	 margin-top: 50pt;
-	}
-	.navigate {
-	 margin-top: 2.5em;
-	}	
-	@media print {
-	 .navigate {
-	  display: none;
-	 }	
-	}	
-	</style>	
-	<title><?php xl('Letter','e'); ?></title>
-	</head>
+            <head>
+                <style>
+                    body {
+                        font-family: sans-serif;
+                        font-weight: normal;
+                        font-size: 12pt;
+                        background: white;
+                        color: black;
+                    }	
+                    .paddingdiv {
+                        width: 524pt;
+                        padding: 0pt;
+                        margin-top: 50pt;
+                    }
+                    .navigate {
+                        margin-top: 2.5em;
+                    }	
+                    @media print {
+                        .navigate {
+                            display: none;
+                        }	
+                    }	
+                </style>	
+            <title><?php xl('Letter','e'); ?></title>
+        </head>
         <body>
 	<div class='paddingdiv'>
 	<?php echo $cpstring; ?>
@@ -201,8 +200,8 @@ if ($_POST['formaction']=="generate") {
 	</script>
 	</body>
 	</div>
-	<?php
-	exit;
+    	<?php
+    	exit;
     }
 }
 else if (isset($_GET['template']) && $_GET['template'] != "") {
