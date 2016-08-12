@@ -49,18 +49,6 @@ $GLOBALS['PATIENT_REPORT_ACTIVE'] = true;
 $PDF_OUTPUT = empty($_POST['pdf']) ? 0 : intval($_POST['pdf']);
 
 if ($PDF_OUTPUT) {
-  // require_once("$srcdir/html2pdf/vendor/autoload.php");
-  // $pdf = new HTML2PDF ($GLOBALS['pdf_layout'],
-  //                      $GLOBALS['pdf_size'],
-  //                      $GLOBALS['pdf_language'],
-  //                      true, // default unicode setting is true
-  //                      'UTF-8', // default encoding setting is UTF-8
-  //                      array($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin'],$GLOBALS['pdf_bottom_margin']),
-  //                      $_SESSION['language_direction'] == 'rtl' ? true : false
-  //                     );
-  // //set 'dejavusans' for now. which is supported by a lot of languages - http://dejavu-fonts.org/wiki/Main_Page
-  // //TODO: can have this selected as setting in globals after we have more experience with this to fully support internationalization.
-  // 
 
   $pdf = new FPDI($GLOBALS['pdf_layout'], 'mm', $GLOBALS['pdf_size'], true, 'UTF-8', false);
   // set margins
@@ -68,7 +56,6 @@ if ($PDF_OUTPUT) {
   $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 
-  //$pdf->setRTL($_SESSION['language_direction'] == 'rtl' ? true : false);
   // set some language dependent data:
     $lg = Array();
     $lg['a_meta_language'] = $GLOBALS['pdf_language'];
@@ -76,18 +63,9 @@ if ($PDF_OUTPUT) {
   // set some language-dependent strings (optional)
   $pdf->setLanguageArray($lg);
 
-
-
-
   $pdf->SetFont('dejavusans', '', 10);
 
-
-
-
-
-
   $pdf->AddPage();
-
 
   //ob_start();
 }
@@ -115,7 +93,7 @@ $first_issue = 1;
 function getContent() {
   global $web_root, $webserver_root;
   $content = ob_get_clean();
-  // Fix a nasty html2pdf bug - it ignores document root!
+  // Fix a nasty pdf bug - it ignores document root!
   $i = 0;
   $wrlen = strlen($web_root);
   $wsrlen = strlen($webserver_root);
@@ -512,7 +490,7 @@ if ($printable) {
   if (!$results->EOF) {
     $facility = $results->fields;
   }
-  // Setup Headers and Footers for html2PDF only Download
+  // Setup Headers and Footers for PDF only Download
   // in HTML view it's just one line at the top of page 1
   echo '<page_header style="text-align:right;" class="custom-tag"> ' . xlt("PATIENT") . ':' . text($titleres['lname']) . ', ' . text($titleres['fname']) . ' - ' . $titleres['DOB_TS'] . '</page_header>    ';
   echo '<page_footer style="text-align:right;" class="custom-tag">' . xlt('Generated on') . ' ' . oeFormatShortDate() . ' - ' . text($facility['name']) . ' ' . text($facility['phone']) . '</page_footer>';
@@ -867,19 +845,13 @@ foreach ($ar as $key => $val) {
                 if ($extension == ".png" || $extension == ".jpg" || $extension == ".jpeg" || $extension == ".gif") {
                   if ($PDF_OUTPUT) {
                     // OK to link to the image file because it will be accessed by the
-                    // HTML2PDF parser and not the browser.
+                    // PDF parser and not the browser.
                     $from_rel = $web_root . substr($from_file, strlen($webserver_root));
-
-                    // Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false)
-                    $pdf->AddPage();
-                    $pdf->Image($from_rel, 15, 140, 75, 113, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
-                    
-
-                      // echo "<img src='$from_rel'";
-                      // // Flag images with excessive width for possible stylesheet action.
-                      // $asize = getimagesize($from_file);
-                      // if ($asize[0] > 750) echo " class='bigimage'";
-                      echo "<br><br>";
+                    echo '<img src="'.$from_rel.'"';
+                    // Flag images with excessive width for possible stylesheet action.
+                    $asize = getimagesize($from_file);
+                    if ($asize[0] > 750) echo " class='bigimage'";
+                    echo " /><br><br>";
                   }
                   else {
                     echo "<img src='" . $GLOBALS['webroot'] .
@@ -914,16 +886,13 @@ foreach ($ar as $key => $val) {
             if (is_file($to_file)) {
               if ($PDF_OUTPUT) {
                 // OK to link to the image file because it will be accessed by the
-                // HTML2PDF parser and not the browser.
-                echo "<img src='$to_file'><br><br>";
-
+                // PDF parser and not the browser.
+                echo '<img src="'.$to_file.'""><br><br>';
               }
               else {
-
-                
-                // echo "<img src='" . $GLOBALS['webroot'] .
-                //   "/controller.php?document&retrieve&patient_id=&document_id=" .
-                //   $document_id . "&as_file=false&original_file=false'><br><br>";
+                echo "<img src='" . $GLOBALS['webroot'] .
+                  "/controller.php?document&retrieve&patient_id=&document_id=" .
+                  $document_id . "&as_file=false&original_file=false'><br><br>";
               }
             } else {
               echo "<b>NOTE</b>: " . xl('Document') . "'" . $fname . "' " .
