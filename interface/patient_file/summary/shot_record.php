@@ -33,9 +33,190 @@ $data = convertToDataArray($res3);
 
 $title = xl('Shot Record as of:','','',' ') . date('m/d/Y h:i:s a');
 
-//if ($_GET['output'] == "html") { 
+if ($_GET['output'] == "html") { 
+  printHTML($res, $res2, $data);
+}
+else {
+  printPDF($res, $res2, $data);
+}
 
-  //printHTML($res, $res2, $data);
+
+function convertToDataArray($data_array) {  
+  $current = 0;
+  while ($row = sqlFetchArray($data_array)) {
+    //admin date
+    $temp_date = new DateTime($row['administered_date']);
+    $data[$current][xl('Date') . "\n" . xl('Admin')] = $temp_date->format('Y-m-d H:i'); //->format('%Y-%m-%d %H:%i');
+
+    //Vaccine
+        // Figure out which name to use (ie. from cvx list or from the custom list)
+        if ($GLOBALS['use_custom_immun_list']) {
+        $vaccine_display = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
+        }
+        else {
+            if (!empty($row['code_text_short'])) {
+              $vaccine_display = htmlspecialchars( xl($row['code_text_short']), ENT_NOQUOTES);
+            }
+            else {
+                $vaccine_display = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
+            }
+        }     
+    $data[$current][xl('Vaccine')] = $vaccine_display;
+    
+    //Amount
+                if ($row['amount_administered'] > 0) {
+            $data[$current][xl('Amount') . "\n" . xl('Admin')] = $row['amount_administered'] . " " . 
+              generate_display_field(array('data_type'=>'1','list_id'=>'drug_units'), $row['amount_administered_unit']);
+                }
+                else {
+                        $data[$current][xl('Amount') . "\n" . xl('Admin')] = "";
+                }
+    
+    //expiration date fixed by checking for empty value, smw 040214
+    if (isset($row['expiration_date'])) {
+    $temp_date = new DateTime($row['expiration_date']);
+    $data[$current][xl('Expiration') . "\n" . xl('Date')] = $temp_date->format('Y-m-d');
+    }
+    else{
+    $data[$current][xl('Expiration') . "\n" . xl('Date')] = '';//$temp_date->format('Y-m-d');
+    }
+    
+    //Manufacturer
+    $data[$current][xl('Manufacturer')] = $row['manufacturer'];
+    
+    //Lot Number
+    $data[$current][xl('Lot') . "\n" . xl('Number')] = $row['lot_number'];
+
+    //Admin By
+    $data[$current][xl('Admin') . "\n" . xl('By')] = $row['administered_by'];
+    
+    //education date
+    $temp_date = new DateTime($row['education_date']);
+    $data[$current][xl('Patient') . "\n" . xl('Education') . "\n" . xl('Date')] = $temp_date->format('Y-m-d');    
+
+    //Route
+    $data[$current][xl('Route')] = generate_display_field(array('data_type'=>'1','list_id'=>'drug_route'), $row['route']); 
+    
+    //Admin Site
+    $data[$current][xl('Admin') . "\n" . xl('Site')] = generate_display_field(array('data_type'=>'1','list_id'=>'proc_body_site'), $row['administration_site']);
+    
+    //Comments
+    $data[$current][xl('Comments')] = $row['note'];
+    $current ++;
+  }
+  return $data; 
+}
+
+function printPDF($res, $res2, $data) {
+
+
+
+
+  $pdf = new TCPDF($GLOBALS['pdf_layout'], 'mm', $GLOBALS['pdf_size'], true, 'UTF-8', false);
+  // set margins
+  $pdf->SetMargins($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin']);
+  $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+  // set some language dependent data:
+    $lg = Array();
+    $lg['a_meta_language'] = $GLOBALS['pdf_language'];
+    $lg['a_meta_dir'] = $_SESSION['language_direction'] == 'rtl' ? true : false;
+  // set some language-dependent strings (optional)
+  $pdf->setLanguageArray($lg);
+  $pdf->SetFont('dejavusans', '', 10);
+  $pdf->AddPage();
+  $pdf->Write('', $res['facility_address']);
+  
+  $pdf->Write('', "\n" . $res2['patient_name'] . "\n" . xl('Date of Birth') . ": " . $res2['patient_DOB'] . "\n" . $res2['patient_address']);
+  $pdf->Ln(20);
+
+    
+ 
+
+
+
+  //$pdf->Ln(20);
+  $linesPerPage=15;
+  $countTotalPages = (ceil((count($data))/$linesPerPage));
+  $html = '<table cellspacing="0" ccellpadding="1" border="1">';
+  $html.= "<tr>\n";
+    //display header
+
+    foreach ($data[0] as $key => $value) {
+    //convert end of line characters to space
+      $patterns = array ('/\n/');
+      $replace = array (' ');
+      $key = preg_replace($patterns, $replace, $key);
+      $html.="<th>".htmlspecialchars( $key, ENT_NOQUOTES)."</th>\n";
+    }
+    $html.="</tr>\n";
+    
+    //display shot data
+    for ($j=0;$j<$linesPerPage;$j++) {
+      if ($rowData = array_shift($data)) {
+        $html.="<tr>";
+        foreach ($rowData as $key => $value) {
+          //shading of cells
+          if ($j==0) {
+            $html.="<td>";
+          }
+          elseif ($j%2) {
+            $html.="<td class ='odd'>";
+          }
+          else {
+            $html.="<td>";   
+          }
+          // output data of cell
+          $html.= ($value == "") ? "&nbsp;" : htmlspecialchars($value, ENT_NOQUOTES);
+          $html.= "</td>";
+          
+          }
+        $html.= "</tr>";
+      }
+      
+      else {
+      //done displaying shot data, so leave loop
+      break;      
+      }
+    }
+    $html.= "</table>\n";
+
+
+    $html.= "<div class='sign'>" . htmlspecialchars( xl('Signature'), ENT_NOQUOTES) . ":________________________________" . "</div>\n";
+  
+    if ($countTotalPages > 1) {
+      //display page number if greater than one page
+      $html.= "<div class='pageNumber'>" . htmlspecialchars( xl('Page') . " " . ($i+1) . "/" . $countTotalPages, ENT_NOQUOTES) . "</div>\n";
+    }
+
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+  // require_once ($GLOBALS['fileroot'] . "/library/classes/class.ezpdf.php");
+  
+  // $pdf = new Cezpdf("LETTER");
+  // $pdf->ezSetMargins(72,30,50,30);
+  // $pdf->selectFont($GLOBALS['fileroot'] . "/library/fonts/Helvetica.afm");
+  
+  // $opts = array('justification' => "center");
+  // $pdf->ezText($res['facility_address'] ,"",$opts);
+  
+  // $pdf->ezText("\n" . $res2['patient_name'] . "\n" . xl('Date of Birth') . ": " . $res2['patient_DOB'] . "\n" . $res2['patient_address']);
+  // $pdf->ezText("\n");
+  
+  // $opts = array('maxWidth' => 550, 'fontSize' => 8);
+  
+  // $pdf->ezTable($data, "", $title, $opts);
+  // $pdf->ezText("\n\n\n\n" . xl('Signature') . ":________________________________","",array('justification' => 'right'));
+  // $pdf->ezStream();
+  
+  $pdf->Output('shot_record.pdf', 'I'); // D = Download, I = Inline
+}
+
+
+function printHTML($res, $res2, $data) {
+//print html css
+    
+  //convert end of line characters to html (escape for html output first)
   $patterns = array ('/\n/');
   $replace = array ('<br>');
   $res['facility_address'] = htmlspecialchars( $res['facility_address'], ENT_NOQUOTES);
@@ -147,7 +328,7 @@ $title = xl('Shot Record as of:','','',' ') . date('m/d/Y h:i:s a');
     echo "</tr>\n";
     
     //display shot data
-    for ($j=0;$j<$linesPerPage;$j++) {
+  for ($j=0;$j<$linesPerPage;$j++) {
       if ($rowData = array_shift($data)) {
   echo "<tr>";
   foreach ($rowData as $key => $value) {
@@ -198,96 +379,7 @@ $title = xl('Shot Record as of:','','',' ') . date('m/d/Y h:i:s a');
   </body>
   </html>
   <?php
-//}
-
-
-else {
-  //printPDF($res, $res2, $data_array);
-
-  $pdf = new TCPDF($GLOBALS['pdf_layout'], 'mm', $GLOBALS['pdf_size'], true, 'UTF-8', false);
-  // set margins
-  $pdf->SetMargins($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin']);
-  $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-
-  // set some language dependent data:
-    $lg = Array();
-    $lg['a_meta_language'] = $GLOBALS['pdf_language'];
-    $lg['a_meta_dir'] = $_SESSION['language_direction'] == 'rtl' ? true : false;
-  // set some language-dependent strings (optional)
-  $pdf->setLanguageArray($lg);
-  $pdf->SetFont('dejavusans', '', 10);
-  $pdf->AddPage();
-  $pdf->WriteHTML($data, true, false, true, false, '');
-
-$pdf->output();
-
-
- }
-
-
-function convertToDataArray($data_array) {  
-  $current = 0;
-  while ($row = sqlFetchArray($data_array)) {
-    //admin date
-    $temp_date = new DateTime($row['administered_date']);
-    $data[$current][xl('Date') . "\n" . xl('Admin')] = $temp_date->format('Y-m-d H:i'); //->format('%Y-%m-%d %H:%i');
-
-    //Vaccine
-        // Figure out which name to use (ie. from cvx list or from the custom list)
-        if ($GLOBALS['use_custom_immun_list']) {
-        $vaccine_display = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
-        }
-        else {
-            if (!empty($row['code_text_short'])) {
-              $vaccine_display = htmlspecialchars( xl($row['code_text_short']), ENT_NOQUOTES);
-            }
-            else {
-                $vaccine_display = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
-            }
-        }     
-    $data[$current][xl('Vaccine')] = $vaccine_display;
-    
-    //Amount
-                if ($row['amount_administered'] > 0) {
-            $data[$current][xl('Amount') . "\n" . xl('Admin')] = $row['amount_administered'] . " " . 
-              generate_display_field(array('data_type'=>'1','list_id'=>'drug_units'), $row['amount_administered_unit']);
-                }
-                else {
-                        $data[$current][xl('Amount') . "\n" . xl('Admin')] = "";
-                }
-    
-    //expiration date fixed by checking for empty value, smw 040214
-    if (isset($row['expiration_date'])) {
-    $temp_date = new DateTime($row['expiration_date']);
-    $data[$current][xl('Expiration') . "\n" . xl('Date')] = $temp_date->format('Y-m-d');
-    }
-    else{
-    $data[$current][xl('Expiration') . "\n" . xl('Date')] = '';//$temp_date->format('Y-m-d');
-    }
-    
-    //Manufacturer
-    $data[$current][xl('Manufacturer')] = $row['manufacturer'];
-    
-    //Lot Number
-    $data[$current][xl('Lot') . "\n" . xl('Number')] = $row['lot_number'];
-
-    //Admin By
-    $data[$current][xl('Admin') . "\n" . xl('By')] = $row['administered_by'];
-    
-    //education date
-    $temp_date = new DateTime($row['education_date']);
-    $data[$current][xl('Patient') . "\n" . xl('Education') . "\n" . xl('Date')] = $temp_date->format('Y-m-d');    
-
-    //Route
-    $data[$current][xl('Route')] = generate_display_field(array('data_type'=>'1','list_id'=>'drug_route'), $row['route']); 
-    
-    //Admin Site
-    $data[$current][xl('Admin') . "\n" . xl('Site')] = generate_display_field(array('data_type'=>'1','list_id'=>'proc_body_site'), $row['administration_site']);
-    
-    //Comments
-    $data[$current][xl('Comments')] = $row['note'];
-    $current ++;
-  }
-  return $data; 
 }
+
+
+?>
