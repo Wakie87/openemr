@@ -129,12 +129,10 @@ function printPDF($res, $res2, $data) {
   
   $pdf->Write('', "\n" . $res2['patient_name'] . "\n" . xl('Date of Birth') . ": " . $res2['patient_DOB'] . "\n" . $res2['patient_address']);
   $pdf->Ln(20);
-
-    
- 
-
-
-
+  $title = xl('Shot Record as of:','','',' ') . date('m/d/Y h:i:s a');
+  $pdf->Write('', $title);
+  $pdf->Ln(6);
+  $pdf->SetFontSize(8);
   //$pdf->Ln(20);
   $linesPerPage=15;
   $countTotalPages = (ceil((count($data))/$linesPerPage));
@@ -147,7 +145,7 @@ function printPDF($res, $res2, $data) {
       $patterns = array ('/\n/');
       $replace = array (' ');
       $key = preg_replace($patterns, $replace, $key);
-      $html.="<th>".htmlspecialchars( $key, ENT_NOQUOTES)."</th>\n";
+      $html.="<th style='padding: 2pt 3pt 2pt 3pt;'>".htmlspecialchars( $key, ENT_NOQUOTES)."</th>\n";
     }
     $html.="</tr>\n";
     
