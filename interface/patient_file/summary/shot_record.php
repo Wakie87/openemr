@@ -1,12 +1,25 @@
 <?php
+/** 
+* Copyright (C) 2016 Scott Wakefield <scott@npclinics.com.au>
+*
+* LICENSE: This program is free software; you can redistribute it and/or 
+* modify it under the terms of the GNU General Public License 
+* as published by the Free Software Foundation; either version 3 
+* of the License, or (at your option) any later version. 
+* This program is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of 
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+* GNU General Public License for more details. 
+* You should have received a copy of the GNU General Public License 
+* along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+* 
+* @package OpenEMR 
+* @author Scott Wakefield <scott@npclinics.com.au>
+* @link http://www.open-emr.org 
+*/
 
-//SANITIZE ALL ESCAPES
 $sanitize_all_escapes=true;
-//
-
-//STOP FAKE REGISTER GLOBALS
 $fake_register_globals=false;
-//
 
 include_once("../../globals.php");
 include_once("$srcdir/sql.inc");
@@ -14,109 +27,84 @@ include_once("$srcdir/options.inc.php");
 include_once("$srcdir/immunization_helper.php");
 
 //collect facility data
-$res = sqlQuery("select concat(f.name,'\n',f.street,'\n',f.city,', ',f.state,' ',f.postal_code) as facility_address ".
-                " from facility f, users u ".
-                " where u.facility = f.name ".
-                " and u.id = ?", array($_SESSION['authId'])
-                );
-
+$facdata = getFacility('', -1);
+$facility = "<div class='clinicAddress'>\n" . $facdata['name'] . "<br />\n" . $facdata['street'] . "<br />\n" . $facdata['city'] . ', ' . $facdata['state'] . ' ' . $facdata['postal_code'] . "</div>\n";
 //collect patient data
-$res2 = sqlQuery("select concat(p.lname,', ',p.fname,' ',p.mname) patient_name ".
-                ",date_format(p.DOB,'%c/%e/%Y') as patient_DOB ".
-                ",concat(p.street,'\n',p.city,', ',p.state,' ',p.postal_code) as patient_address".
-                " from patient_data p where p.pid = ?", array($pid)
-                );
+$patdata = getPatientData($pid);
+$patient = "<div class='patientAddress'>\n" . $patdata['fname'] . ' ' . $patdata['mname'] . ' ' . $patdata['lname'] . "<br />\n" . xl('Date of Birth: ', 'r') . $patdata['DOB']. "<br />\n". $patdata['street'] . "<br />\n". $patdata['city'] . ', ' . $patdata['state'] . ' ' . $patdata['postal_code'] . "</div>\n";
 
 //collect immunizations
 $res3 = getImmunizationList($pid, $_GET['sortby'], false);
 $data = convertToDataArray($res3);
 
-$title = xl('Shot Record as of:','','',' ') . date('m/d/Y h:i:s a');
-
 if ($_GET['output'] == "html") { 
-  printHTML($res, $res2, $data);
+  printHTML($facility, $patient, $data);
 }
 else {
-  printPDF($res, $res2, $data);
+  printPDF($facility, $patient, $data);
 }
-
 
 function convertToDataArray($data_array) {  
   $current = 0;
-  while ($row = sqlFetchArray($data_array)) {
-    //admin date
-    $temp_date = new DateTime($row['administered_date']);
-    $data[$current][xl('Date') . "\n" . xl('Admin')] = $temp_date->format('Y-m-d H:i'); //->format('%Y-%m-%d %H:%i');
-
-    //Vaccine
-        // Figure out which name to use (ie. from cvx list or from the custom list)
-        if ($GLOBALS['use_custom_immun_list']) {
+    while ($row = sqlFetchArray($data_array)) {
+      //admin date
+      $temp_date = new DateTime($row['administered_date']);
+      $data[$current][xl('Date') . "\n" . xl('Admin')] = $temp_date->format('Y-m-d H:i'); //->format('%Y-%m-%d %H:%i');
+      //Vaccine Figure out which name to use (ie. from cvx list or from the custom list)
+      if ($GLOBALS['use_custom_immun_list']) {
         $vaccine_display = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
+      }
+      else {
+        if (!empty($row['code_text_short'])) {
+          $vaccine_display = htmlspecialchars( xl($row['code_text_short']), ENT_NOQUOTES);
         }
         else {
-            if (!empty($row['code_text_short'])) {
-              $vaccine_display = htmlspecialchars( xl($row['code_text_short']), ENT_NOQUOTES);
-            }
-            else {
-                $vaccine_display = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
-            }
-        }     
-    $data[$current][xl('Vaccine')] = $vaccine_display;
-    
-    //Amount
-                if ($row['amount_administered'] > 0) {
-            $data[$current][xl('Amount') . "\n" . xl('Admin')] = $row['amount_administered'] . " " . 
-              generate_display_field(array('data_type'=>'1','list_id'=>'drug_units'), $row['amount_administered_unit']);
-                }
-                else {
-                        $data[$current][xl('Amount') . "\n" . xl('Admin')] = "";
-                }
-    
-    //expiration date fixed by checking for empty value, smw 040214
-    if (isset($row['expiration_date'])) {
-    $temp_date = new DateTime($row['expiration_date']);
-    $data[$current][xl('Expiration') . "\n" . xl('Date')] = $temp_date->format('Y-m-d');
+            $vaccine_display = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
+        }
+      }
+      $data[$current][xl('Vaccine')] = $vaccine_display;
+      //Amount
+      if ($row['amount_administered'] > 0) {
+        $data[$current][xl('Amount') . "\n" . xl('Admin')] = $row['amount_administered'] . " " . 
+        generate_display_field(array('data_type'=>'1','list_id'=>'drug_units'), $row['amount_administered_unit']);
+      }
+      else {
+        $data[$current][xl('Amount') . "\n" . xl('Admin')] = "";
+      }
+      //expiration date fixed by checking for empty value, smw 040214
+      if (isset($row['expiration_date'])) {
+        $temp_date = new DateTime($row['expiration_date']);
+        $data[$current][xl('Expiration') . "\n" . xl('Date')] = $temp_date->format('Y-m-d');
+      }
+      else {
+        $data[$current][xl('Expiration') . "\n" . xl('Date')] = '';//$temp_date->format('Y-m-d');
+      }
+      //Manufacturer
+      $data[$current][xl('Manufacturer')] = $row['manufacturer'];
+      //Lot Number
+      $data[$current][xl('Lot') . "\n" . xl('Number')] = $row['lot_number'];
+      //Admin By
+      $data[$current][xl('Admin') . "\n" . xl('By')] = $row['administered_by'];
+      //education date
+      $temp_date = new DateTime($row['education_date']);
+      $data[$current][xl('Patient') . "\n" . xl('Education') . "\n" . xl('Date')] = $temp_date->format('Y-m-d');    
+      //Route
+      $data[$current][xl('Route')] = generate_display_field(array('data_type'=>'1','list_id'=>'drug_route'), $row['route']); 
+      //Admin Site
+      $data[$current][xl('Admin') . "\n" . xl('Site')] = generate_display_field(array('data_type'=>'1','list_id'=>'proc_body_site'), $row['administration_site']);
+      //Comments
+      $data[$current][xl('Comments')] = $row['note'];
+      $current ++;
     }
-    else{
-    $data[$current][xl('Expiration') . "\n" . xl('Date')] = '';//$temp_date->format('Y-m-d');
-    }
-    
-    //Manufacturer
-    $data[$current][xl('Manufacturer')] = $row['manufacturer'];
-    
-    //Lot Number
-    $data[$current][xl('Lot') . "\n" . xl('Number')] = $row['lot_number'];
-
-    //Admin By
-    $data[$current][xl('Admin') . "\n" . xl('By')] = $row['administered_by'];
-    
-    //education date
-    $temp_date = new DateTime($row['education_date']);
-    $data[$current][xl('Patient') . "\n" . xl('Education') . "\n" . xl('Date')] = $temp_date->format('Y-m-d');    
-
-    //Route
-    $data[$current][xl('Route')] = generate_display_field(array('data_type'=>'1','list_id'=>'drug_route'), $row['route']); 
-    
-    //Admin Site
-    $data[$current][xl('Admin') . "\n" . xl('Site')] = generate_display_field(array('data_type'=>'1','list_id'=>'proc_body_site'), $row['administration_site']);
-    
-    //Comments
-    $data[$current][xl('Comments')] = $row['note'];
-    $current ++;
-  }
   return $data; 
 }
 
-function printPDF($res, $res2, $data) {
-
-
-
-
-  $pdf = new TCPDF($GLOBALS['pdf_layout'], 'mm', $GLOBALS['pdf_size'], true, 'UTF-8', false);
+function printPDF($facility, $patient, $data) {
+  $pdf = new TCPDF(L, 'mm', $GLOBALS['pdf_size'], true, 'UTF-8', false);
   // set margins
   $pdf->SetMargins($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin']);
   $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
+    $pdf->SetPrintHeader(false);
   // set some language dependent data:
     $lg = Array();
     $lg['a_meta_language'] = $GLOBALS['pdf_language'];
@@ -125,108 +113,58 @@ function printPDF($res, $res2, $data) {
   $pdf->setLanguageArray($lg);
   $pdf->SetFont('dejavusans', '', 10);
   $pdf->AddPage();
-  $pdf->Write('', $res['facility_address']);
-  
-  $pdf->Write('', "\n" . $res2['patient_name'] . "\n" . xl('Date of Birth') . ": " . $res2['patient_DOB'] . "\n" . $res2['patient_address']);
-  $pdf->Ln(20);
-  $title = xl('Shot Record as of:','','',' ') . date('m/d/Y h:i:s a');
-  $pdf->Write('', $title);
+  $html = $facility;
+  $pdf->WriteHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
   $pdf->Ln(6);
-  $pdf->SetFontSize(8);
-  //$pdf->Ln(20);
+  $html = $patient;
+  $pdf->WriteHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+  $pdf->Ln(10);
+  $html = xl('Shot Record as of:') . date('m/d/Y h:i:s a');
+  $pdf->WriteHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+  $pdf->Ln(6);  
+  $pdf->SetFontSize(7);
   $linesPerPage=15;
   $countTotalPages = (ceil((count($data))/$linesPerPage));
-  $html = '<table cellspacing="0" ccellpadding="1" border="1">';
-  $html.= "<tr>\n";
+  $html = '<table cellspacing="0" cellpadding="2" border="1" width="100%">';
+  $html.= '<tr>'; 
     //display header
-
     foreach ($data[0] as $key => $value) {
     //convert end of line characters to space
       $patterns = array ('/\n/');
       $replace = array (' ');
       $key = preg_replace($patterns, $replace, $key);
-      $html.="<th style='padding: 2pt 3pt 2pt 3pt;'>".htmlspecialchars( $key, ENT_NOQUOTES)."</th>\n";
+      $html.="<th>".htmlspecialchars( $key, ENT_NOQUOTES)."</th>";
     }
-    $html.="</tr>\n";
-    
+    $html.="</tr>";
     //display shot data
     for ($j=0;$j<$linesPerPage;$j++) {
       if ($rowData = array_shift($data)) {
         $html.="<tr>";
         foreach ($rowData as $key => $value) {
-          //shading of cells
-          if ($j==0) {
-            $html.="<td>";
-          }
-          elseif ($j%2) {
-            $html.="<td class ='odd'>";
-          }
-          else {
-            $html.="<td>";   
-          }
+          $html.="<td style='white-space:nowrap;'>";
           // output data of cell
           $html.= ($value == "") ? "&nbsp;" : htmlspecialchars($value, ENT_NOQUOTES);
           $html.= "</td>";
-          
-          }
+        }
         $html.= "</tr>";
       }
-      
-      else {
-      //done displaying shot data, so leave loop
-      break;      
-      }
     }
-    $html.= "</table>\n";
-
-
-    $html.= "<div class='sign'>" . htmlspecialchars( xl('Signature'), ENT_NOQUOTES) . ":________________________________" . "</div>\n";
-  
+    $html.= "</table><br><br><br><br>";
+    $pdf->SetFontSize(10);
+    $html.= "<div class='sign'>" . htmlspecialchars( xl('Signature'), ENT_NOQUOTES) . ":________________________________" . "</div><br>";
     if ($countTotalPages > 1) {
       //display page number if greater than one page
-      $html.= "<div class='pageNumber'>" . htmlspecialchars( xl('Page') . " " . ($i+1) . "/" . $countTotalPages, ENT_NOQUOTES) . "</div>\n";
+      $html.= "<div class='pageNumber'>" . htmlspecialchars( xl('Page') . " " . ($i+1) . "/" . $countTotalPages, ENT_NOQUOTES) . "</div><br>";
     }
-
-    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
-
-  // require_once ($GLOBALS['fileroot'] . "/library/classes/class.ezpdf.php");
-  
-  // $pdf = new Cezpdf("LETTER");
-  // $pdf->ezSetMargins(72,30,50,30);
-  // $pdf->selectFont($GLOBALS['fileroot'] . "/library/fonts/Helvetica.afm");
-  
-  // $opts = array('justification' => "center");
-  // $pdf->ezText($res['facility_address'] ,"",$opts);
-  
-  // $pdf->ezText("\n" . $res2['patient_name'] . "\n" . xl('Date of Birth') . ": " . $res2['patient_DOB'] . "\n" . $res2['patient_address']);
-  // $pdf->ezText("\n");
-  
-  // $opts = array('maxWidth' => 550, 'fontSize' => 8);
-  
-  // $pdf->ezTable($data, "", $title, $opts);
-  // $pdf->ezText("\n\n\n\n" . xl('Signature') . ":________________________________","",array('justification' => 'right'));
-  // $pdf->ezStream();
-  
+  $pdf->writeHTML($html, true, false, true, false, '');
   $pdf->Output('shot_record.pdf', 'I'); // D = Download, I = Inline
+
 }
 
+function printHTML($facility, $patient, $data) {
 
-function printHTML($res, $res2, $data) {
-//print html css
-    
-  //convert end of line characters to html (escape for html output first)
-  $patterns = array ('/\n/');
-  $replace = array ('<br>');
-  $res['facility_address'] = htmlspecialchars( $res['facility_address'], ENT_NOQUOTES);
-  $res['facility_address'] = preg_replace($patterns, $replace, $res['facility_address']);
-  $res2['patient_address'] = htmlspecialchars( $res2['patient_address'], ENT_NOQUOTES);
-  $res2['patient_address'] = preg_replace($patterns, $replace, $res2['patient_address']);
-  
-  //deal with bug (last array index is empty)
-  //array_pop($data);
-    
   ?>  
-  
+  //print html css
   <html>
   <head>
   <style>
@@ -294,81 +232,66 @@ function printHTML($res, $res2, $data) {
   <body>
   
   <?php
+  $title = xl('Shot Record as of:') . date('m/d/Y');
   //plan 15 lines per page
   $linesPerPage=15;
   $countTotalPages = (ceil((count($data))/$linesPerPage));
   for ($i=0;$i<$countTotalPages;$i++) {
-    echo "<div class='paddingdiv'>\n";
-      
+    echo "<div class='paddingdiv'>\n"; 
     //display facility information (Note it is already escaped)
-    echo "<div class='clinicAddress'>" . $res['facility_address'] . "</div>\n";
-    
+    echo $facility;
     //display patient information (Note patient address is already escaped)
-    echo "<div class='patientAddress'>" . htmlspecialchars( $res2['patient_name'], ENT_NOQUOTES) . "<br>" .
-      htmlspecialchars( xl('Date of Birth') . ": " . $res2['patient_DOB'], ENT_NOQUOTES) . "<br>" .
-      $res2['patient_address'] . "</div>\n";
-
+    echo $patient;
     //display table title
     echo "<div class='tabletitle'>" . htmlspecialchars( $title, ENT_NOQUOTES) . "</div>\n";
-      
-    echo "<table cellspacing='0' cellpadding='0'>\n";
-      
+    echo "<table cellspacing='0' cellpadding='0' width='100%''>\n"; 
     //display header
     echo "<tr>\n";
     foreach ($data[0] as $key => $value) {
-
-  //convert end of line characters to space
-  $patterns = array ('/\n/');
-  $replace = array (' ');
-  $key = preg_replace($patterns, $replace, $key);
-        echo "<th>".htmlspecialchars( $key, ENT_NOQUOTES)."</th>\n";
+      //convert end of line characters to space
+      $patterns = array ('/\n/');
+      $replace = array (' ');
+      $key = preg_replace($patterns, $replace, $key);
+      echo "<th>".htmlspecialchars( $key, ENT_NOQUOTES)."</th>\n";
     }
     echo "</tr>\n";
     
     //display shot data
-  for ($j=0;$j<$linesPerPage;$j++) {
+    for ($j=0; $j<$linesPerPage; $j++) {
       if ($rowData = array_shift($data)) {
-  echo "<tr>";
-  foreach ($rowData as $key => $value) {
-
-    //shading of cells
-    if ($j==0) {
-      echo "<td>";
+        echo "<tr>";
+        foreach ($rowData as $key => $value) {
+          //shading of cells
+          if ($j==0) {
+            echo "<td>";
+          }
+          elseif ($j%2) {
+            echo "<td class ='odd'>";
+          }
+          else {
+            echo "<td>";   
+          }
+          // output data of cell
+          echo ($value == "") ? "&nbsp;" : htmlspecialchars($value, ENT_NOQUOTES);
+          echo "</td>";
+        }
+      echo "</tr>";
     }
-    elseif ($j%2) {
-      echo "<td class ='odd'>";
-    }
-    else {
-      echo "<td>";   
-    }
-      
-    // output data of cell
-      echo ($value == "") ? "&nbsp;" : htmlspecialchars($value, ENT_NOQUOTES);
-    echo "</td>";
-  }
-      }
-      else {
+  else {
   //done displaying shot data, so leave loop
-        break;      
+      break;      
       }
-    }
-  
-    echo "</table>\n";
-    
-    //display signature line
-    echo "<div class='sign'>" . htmlspecialchars( xl('Signature'), ENT_NOQUOTES) .
-      ":________________________________" . "</div>\n";
-  
-    if ($countTotalPages > 1) {
-      //display page number if greater than one page
-      echo "<div class='pageNumber'>" .
-        htmlspecialchars( xl('Page') . " " . ($i+1) . "/" . $countTotalPages, ENT_NOQUOTES) .
-  "</div>\n";
-    }
-      
-    echo "</div>\n";    
   }
   
+  echo "</table>\n";
+  //display signature line
+  echo "<div class='sign'>" . htmlspecialchars( xl('Signature'), ENT_NOQUOTES) . ":________________________________" . "</div>\n";
+  if ($countTotalPages > 1) {
+    //display page number if greater than one page
+    echo "<div class='pageNumber'>" .  htmlspecialchars( xl('Page') . " " . ($i+1) . "/" . $countTotalPages, ENT_NOQUOTES) . "</div>\n";
+  }
+  echo "</div>\n";    
+  }
   ?>
     
   <script language='JavaScript'>
@@ -376,8 +299,4 @@ function printHTML($res, $res2, $data) {
   </script>
   </body>
   </html>
-  <?php
-}
-
-
-?>
+  <?php } ?>
