@@ -34,31 +34,32 @@ $ippf_specific = false;
 
 // If this script was invoked with no site ID, then ask for one.
 if (!$COMMAND_LINE && empty($_REQUEST['site'])) {
-    echo "<html>\n";
-    echo "<head>\n";
-    echo "<title>OpenEMR Setup Tool</title>\n";
-    echo "<link rel='stylesheet' href='interface/themes/style_blue.css'>\n";
-    echo "</head>\n";
-    echo "<body>\n";
-    echo "<p><b>Optional Site ID Selection</b></p>\n";
-    echo '<p>Most OpenEMR installations support only one site.  If that is '.
-    "true for you then ignore the rest of this text and just click Continue.</p>\n";
-    echo "<p>Otherwise please enter a unique Site ID here.</p>\n";
-    echo '<p>A Site ID is a short identifier with no spaces or special '.
-    'characters other than periods or dashes. It is case-sensitive and we '.
-    "suggest sticking to lower case letters for ease of use.</p>\n";
-    echo '<p>If each site will have its own host/domain name, then use that '.
-    "name as the Site ID (e.g. www.example.com).</p>\n";
-    echo '<p>The site ID is used to identify which site you will log in to. '.
-    'If it is a hostname then it is taken from the hostname in the URL. '.
-    'Otherwise you must append "?site=<i>siteid</i>" to the URL used for '.
-    "logging in.</p>\n";
-    echo '<p>It is OK for one of the sites to have "default" as its ID. This '.
-    "is the ID that will be used if it cannot otherwise be determined.</p>\n";
-    echo "<form method='post'><input type='hidden' name='state' value='0'>".
-    "Site ID: <input type='text' name='site' value='default'>&nbsp;".
-    "<input type='submit' value='Continue'><br></form><br>\n";
-    echo "</body></html>\n";
+    ?>
+<html>
+<head>
+  <title>OpenEMR Setup Tool</title>
+  <link rel='stylesheet' href='interface/themes/style_blue.css'>
+</head>
+<body>
+  <p><b>Optional Site ID Selection</b></p>
+  <p>Most OpenEMR installations support only one site. If that is true for you then ignore the rest of this text and just click Continue.</p>
+  <p>Otherwise please enter a unique Site ID here.</p>
+  <p>A Site ID is a short identifier with no spaces or special characters other than periods or dashes. It is case-sensitive and we suggest sticking to lower case letters for ease of use.</p>
+  <p>If each site will have its own host/domain name, then use that name as the Site ID (e.g. www.example.com).</p>
+  <p>The site ID is used to identify which site you will log in to. If it is a hostname then it is taken from the hostname in the URL. Otherwise you must append ?site=<i>siteid</i> to the URL used for logging in.</p>
+  <p>It is OK for one of the sites to have default as its ID. This is the ID that will be used if it cannot otherwise be determined.</p>
+  <form method='post'>
+    <p>Site ID:</p>
+    <input type='text' name='site' value='default'>
+    <input type='hidden' name='state' value='0'>
+    <input type='submit' value='Continue'>
+    <br>
+  </form>
+  <br>
+</body>
+</html>
+
+    <?php
     exit();
 }
 
@@ -183,8 +184,8 @@ if ($state == 7) {
 We recommend you print these instructions for future reference.
 </p>
 <?php if (empty($installer->clone_database)) {
-         echo "<p><b>The initial OpenEMR user is '".$installer->iuser."' and the password is '".$installer->iuserpass."'</b></p>";
-         echo '<p>If you edited the PHP or Apache configuration files during this installation process, then we recommend you restart your Apache server before following below OpenEMR link.</p>';
+        echo "<p><b>The initial OpenEMR user is '".$installer->iuser."' and the password is '".$installer->iuserpass."'</b></p>";
+        echo '<p>If you edited the PHP or Apache configuration files during this installation process, then we recommend you restart your Apache server before following below OpenEMR link.</p>';
 } ?>
 <p>
  <a href='./?site=<?php echo $site_id; ?>'>Click here to start using OpenEMR. </a>
@@ -270,7 +271,7 @@ if (($config == 1) && ($state < 4)) {
                 // and group stuff below.
                 $dh = opendir($OE_SITES_BASE);
             if (!$dh) {
-                  die("Cannot read directory '$OE_SITES_BASE'.");
+                die("Cannot read directory '$OE_SITES_BASE'.");
             }
                 $siteslist = array();
             while (false !== ($sfname = readdir($dh))) {
@@ -283,22 +284,22 @@ if (($config == 1) && ($state < 4)) {
                 if ($sfname == $site_id) {
                     continue;
                 }
-                  $sitedir = "$OE_SITES_BASE/$sfname";
+                $sitedir = "$OE_SITES_BASE/$sfname";
                 if (!is_dir($sitedir)) {
                     continue;
                 }
                 if (!is_file("$sitedir/sqlconf.php")) {
                     continue;
                 }
-                  $siteslist[$sfname] = $sfname;
+                $siteslist[$sfname] = $sfname;
             }
                 closedir($dh);
                 // If this is not the first site...
             if (!empty($siteslist)) {
-                  ksort($siteslist);
-                  echo "<tr valign='top'>\n";
-                  echo " <td class='text'>Source Site: </td>\n";
-                  echo " <td class='text'><select name='source_site_id'>";
+                ksort($siteslist);
+                echo "<tr valign='top'>\n";
+                echo " <td class='text'>Source Site: </td>\n";
+                echo " <td class='text'><select name='source_site_id'>";
                 foreach ($siteslist as $sfname) {
                     echo "<option value='$sfname'";
                     if ($sfname == 'default') {
@@ -306,14 +307,14 @@ if (($config == 1) && ($state < 4)) {
                     }
                     echo ">$sfname</option>";
                 }
-                  echo "</select></td>\n";
-                  echo " <td class='text'>(The site directory that will be a model for the new site.)</td>\n";
-                  echo "</tr>\n";
-                  echo "<tr valign='top'>\n";
-                  echo " <td class='text'>Clone Source Database: </td>\n";
-                  echo " <td class='text'><input type='checkbox' name='clone_database' onclick='cloneClicked()' /></td>\n";
-                  echo " <td class='text'>(Clone the source site's database instead of creating a fresh one.)</td>\n";
-                  echo "</tr>\n";
+                echo "</select></td>\n";
+                echo " <td class='text'>(The site directory that will be a model for the new site.)</td>\n";
+                echo "</tr>\n";
+                echo "<tr valign='top'>\n";
+                echo " <td class='text'>Clone Source Database: </td>\n";
+                echo " <td class='text'><input type='checkbox' name='clone_database' onclick='cloneClicked()' /></td>\n";
+                echo " <td class='text'>(Clone the source site's database instead of creating a fresh one.)</td>\n";
+                echo "</tr>\n";
             }
 
                 echo "<TR VALIGN='TOP' class='noclone'><TD COLSPAN=2><font color='red'>OPENEMR USER:</font></TD></TR>";
@@ -343,23 +344,23 @@ if (($config == 1) && ($state < 4)) {
             }
 
             if (!$installer->char_is_valid($_REQUEST['port'])) {
-                  $pass_step2_validation = false;
-                  $error_step2_message .= 'Database Server Port, ';
+                $pass_step2_validation = false;
+                $error_step2_message .= 'Database Server Port, ';
             }
             if (!$installer->char_is_valid($_REQUEST['dbname'])) {
-                  $pass_step2_validation = false;
-                  $error_step2_message .= 'Database Name, ';
+                $pass_step2_validation = false;
+                $error_step2_message .= 'Database Name, ';
             }
             if (!$installer->char_is_valid($_REQUEST['login'])) {
-                  $pass_step2_validation = false;
-                  $error_step2_message .= 'Database Login Name, ';
+                $pass_step2_validation = false;
+                $error_step2_message .= 'Database Login Name, ';
             }
             if (!$installer->char_is_valid($_REQUEST['pass'])) {
-                  $pass_step2_validation = false;
-                  $error_step2_message .= 'Database Login Password, ';
+                $pass_step2_validation = false;
+                $error_step2_message .= 'Database Login Password, ';
             }
             if (!$pass_step2_validation) {
-                  die($error_step2_message);
+                die($error_step2_message);
             }
 
             if (empty($installer->clone_database)) {
@@ -380,9 +381,9 @@ if (($config == 1) && ($state < 4)) {
                 }
             }
             if (!$installer->password_is_valid()) {
-                  echo "ERROR. Please pick a proper 'Password'.<br>\n";
-                  echo "Click Back in browser to re-enter.<br>\n";
-                  break;
+                echo "ERROR. Please pick a proper 'Password'.<br>\n";
+                echo "Click Back in browser to re-enter.<br>\n";
+                break;
             }
 
                 echo "<b>Step $state</b><br><br>\n";
@@ -390,8 +391,8 @@ if (($config == 1) && ($state < 4)) {
 
                 // Skip below if database shell has already been created.
             if ($inst != 2) {
-                  echo "Connecting to MySQL Server...\n";
-                  flush();
+                echo "Connecting to MySQL Server...\n";
+                flush();
                 if (!$installer->root_database_connection()) {
                     echo "ERROR.  Check your login credentials.\n";
                     echo $installer->error_message;
@@ -404,8 +405,8 @@ if (($config == 1) && ($state < 4)) {
 
                 // Only pertinent if cloning another installation database
             if (!empty($installer->clone_database)) {
-                  echo 'Dumping source database...';
-                  flush();
+                echo 'Dumping source database...';
+                flush();
                 if (!$installer->create_dumpfiles()) {
                     echo $installer->error_message;
                     break;
@@ -417,7 +418,7 @@ if (($config == 1) && ($state < 4)) {
 
                 // Only pertinent if mirroring another installation directory
             if (!empty($installer->source_site_id)) {
-                  echo 'Creating site directory...';
+                echo 'Creating site directory...';
                 if (!$installer->create_site_directory()) {
                     echo $installer->error_message;
                     break;
@@ -429,8 +430,8 @@ if (($config == 1) && ($state < 4)) {
 
                 // Skip below if database shell has already been created.
             if ($inst != 2) {
-                  echo "Creating database...\n";
-                  flush();
+                echo "Creating database...\n";
+                flush();
                 if (!$installer->create_database()) {
                     echo "ERROR.  Check your login credentials.\n";
                     echo $installer->error_message;
@@ -440,8 +441,8 @@ if (($config == 1) && ($state < 4)) {
                     flush();
                 }
 
-                  echo "Creating user with permissions for database...\n";
-                  flush();
+                echo "Creating user with permissions for database...\n";
+                flush();
                 if (!$installer->grant_privileges()) {
                     echo "ERROR when granting privileges to the specified user.\n";
                     echo $installer->error_message;
@@ -451,45 +452,45 @@ if (($config == 1) && ($state < 4)) {
                     flush();
                 }
 
-                  echo "Reconnecting as new user...\n";
-                  flush();
-                  $installer->disconnect();
+                echo "Reconnecting as new user...\n";
+                flush();
+                $installer->disconnect();
             } else {
-                  echo "Connecting to MySQL Server...\n";
+                echo "Connecting to MySQL Server...\n";
             }
             if (!$installer->user_database_connection()) {
-                  echo "ERROR.  Check your login credentials.\n";
-                  echo $installer->error_message;
-                  break;
+                echo "ERROR.  Check your login credentials.\n";
+                echo $installer->error_message;
+                break;
             } else {
-                  echo "OK.<br>\n";
-                  flush();
+                echo "OK.<br>\n";
+                flush();
             }
 
                 // Load the database files
                 $dump_results = $installer->load_dumpfiles();
             if (!$dump_results) {
-                  echo $installer->error_message;
-                  break;
+                echo $installer->error_message;
+                break;
             } else {
-                  echo $dump_results;
-                  flush();
+                echo $dump_results;
+                flush();
             }
 
                 echo "Writing SQL configuration...\n";
                 flush();
             if (!$installer->write_configuration_file()) {
-                  echo $installer->error_message;
-                  break;
+                echo $installer->error_message;
+                break;
             } else {
-                  echo "OK.<br>\n";
-                  flush();
+                echo "OK.<br>\n";
+                flush();
             }
 
                 // Only pertinent if not cloning another installation database
             if (empty($installer->clone_database)) {
-                  echo "Setting version indicators...\n";
-                  flush();
+                echo "Setting version indicators...\n";
+                flush();
                 if (!$installer->add_version_info()) {
                     echo "ERROR.\n";
                     echo $installer->error_message;
@@ -499,8 +500,8 @@ if (($config == 1) && ($state < 4)) {
                     flush();
                 }
 
-                  echo "Writing global configuration defaults...\n";
-                  flush();
+                echo "Writing global configuration defaults...\n";
+                flush();
                 if (!$installer->insert_globals()) {
                     echo "ERROR.\n";
                     echo $installer->error_message;
@@ -510,23 +511,23 @@ if (($config == 1) && ($state < 4)) {
                     flush();
                 }
 
-                  echo "Adding Initial User...\n";
-                  flush();
+                echo "Adding Initial User...\n";
+                flush();
                 if (!$installer->add_initial_user()) {
                     echo $installer->error_message;
                     break;
                 }
-                  echo "OK<br>\n";
-                  flush();
+                echo "OK<br>\n";
+                flush();
             }
 
             if (!empty($installer->clone_database)) {
-                  // Database was cloned, skip ACL setup.
+                // Database was cloned, skip ACL setup.
                 echo "Click 'continue' for further instructions.";
-                  $next_state = 7;
+                $next_state = 7;
             } else {
-                  echo "\n<br>Next step will install and configure access controls (php-GACL).<br>\n";
-                  $next_state = 4;
+                echo "\n<br>Next step will install and configure access controls (php-GACL).<br>\n";
+                $next_state = 4;
             }
 
                 echo "
@@ -550,7 +551,7 @@ if (($config == 1) && ($state < 4)) {
                 echo $installer->error_message;
                 break;
             } else {
-                  // display the status information for gacl setup
+                // display the status information for gacl setup
                 echo $installer->debug_message;
             }
 
@@ -597,7 +598,7 @@ if (($config == 1) && ($state < 4)) {
 
             echo "<li>In order to take full advantage of the patient documents capability you must make sure that settings in php.ini file include \"file_uploads = On\", that \"upload_max_filesize\" is appropriate for your use and that \"upload_tmp_dir\" is set to a correct value that will work on your system.</li>\n";
             if (!$gotFileFlag) {
-                      echo "<li>If you are having difficulty finding your php.ini file, then refer to the <a href='Documentation/INSTALL' target='_blank'><span STYLE='text-decoration: underline;'>'INSTALL'</span></a> manual for suggestions.</li>\n";
+                echo "<li>If you are having difficulty finding your php.ini file, then refer to the <a href='Documentation/INSTALL' target='_blank'><span STYLE='text-decoration: underline;'>'INSTALL'</span></a> manual for suggestions.</li>\n";
             }
             echo '</ul>';
 
