@@ -22,7 +22,11 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
         'S' => 
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Component\\Routing\\' => 26,
+            'Symfony\\Component\\HttpKernel\\' => 29,
             'Symfony\\Component\\HttpFoundation\\' => 33,
+            'Symfony\\Component\\EventDispatcher\\' => 34,
+            'Symfony\\Component\\Debug\\' => 24,
         ),
         'O' => 
         array (
@@ -39,13 +43,39 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
+        'Symfony\\Component\\Routing\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/routing',
+        ),
+        'Symfony\\Component\\HttpKernel\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/http-kernel',
+        ),
         'Symfony\\Component\\HttpFoundation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/http-foundation',
         ),
+        'Symfony\\Component\\EventDispatcher\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
+        ),
+        'Symfony\\Component\\Debug\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/debug',
+        ),
         'OpenEMR\\Framework\\' => 
         array (
             0 => __DIR__ . '/../..' . '/library/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'Psr\\Log\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/psr/log',
+            ),
         ),
     );
 
@@ -68,6 +98,7 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit22ddb69348c7ed922c96325249cef3d0::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit22ddb69348c7ed922c96325249cef3d0::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit22ddb69348c7ed922c96325249cef3d0::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit22ddb69348c7ed922c96325249cef3d0::$classMap;
 
         }, null, ClassLoader::class);

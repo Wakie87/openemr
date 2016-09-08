@@ -16,7 +16,9 @@
         "phpmailer/phpmailer": "5.2.16",
         "rospdf/pdf-php": "0.12.22",
         "phpseclib/phpseclib": "2.0.2",
-        "symfony/http-foundation": "3.1"
+        "symfony/http-foundation": "3.1",
+        "symfony/routing": "3.1",
+        "symfony/http-kernel": "3.1"
 
     },
     "require-dev": {
