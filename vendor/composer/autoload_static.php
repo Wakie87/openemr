@@ -24,6 +24,10 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\HttpFoundation\\' => 33,
         ),
+        'O' => 
+        array (
+            'OpenEMR\\Framework\\' => 18,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -38,6 +42,10 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
         'Symfony\\Component\\HttpFoundation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/http-foundation',
+        ),
+        'OpenEMR\\Framework\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/library/src',
         ),
     );
 
