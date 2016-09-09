@@ -28,7 +28,7 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenEMR\\Framework\\": "library/src/"
+            "OpenEMR\\Framework\\": "library/Framework/src/"
         }
     }
 }

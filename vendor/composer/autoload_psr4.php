@@ -13,5 +13,5 @@ return array(
     'Symfony\\Component\\HttpFoundation\\' => array($vendorDir . '/symfony/http-foundation'),
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
     'Symfony\\Component\\Debug\\' => array($vendorDir . '/symfony/debug'),
-    'OpenEMR\\Framework\\' => array($baseDir . '/library/src'),
+    'OpenEMR\\Framework\\' => array($baseDir . '/library/Framework/src'),
 );

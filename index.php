@@ -27,10 +27,10 @@ use OpenEMR\Framework\Http\Response;
 $request = Request::createFromGlobals();
 $response = new Response();
 
-if (!empty($_GET['site']))
-    $site_id = $_GET['site'];
-else if (is_dir("sites/" . $_SERVER['HTTP_HOST']))
-    $site_id = $_SERVER['HTTP_HOST'];
+if ($request->query->has('site'))
+    $site_id = $request->query->get('site');
+else if (is_dir("sites/" . $request->getHttpHost()))
+    $site_id = $request->getHttpHost();
 else
     $site_id = 'default';
 
@@ -48,3 +48,4 @@ if ($config == 1) {
 }
 
 $response->send();
+

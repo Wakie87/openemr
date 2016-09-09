@@ -65,7 +65,7 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
         ),
         'OpenEMR\\Framework\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/library/src',
+            0 => __DIR__ . '/../..' . '/library/Framework/src',
         ),
     );
 
