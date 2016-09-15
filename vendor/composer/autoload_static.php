@@ -100,6 +100,7 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
     );
 
     public static $classMap = array (
+        'ADODB_mysqli_log' => __DIR__ . '/../..' . '/library/sql.inc',
         'Config_File' => __DIR__ . '/..' . '/smarty/smarty/libs/Config_File.class.php',
         'Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'EasyPeasyICS' => __DIR__ . '/..' . '/phpmailer/phpmailer/extras/EasyPeasyICS.php',
@@ -115,6 +116,7 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
         'SMTP' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.smtp.php',
         'Smarty' => __DIR__ . '/..' . '/smarty/smarty/libs/Smarty.class.php',
         'Smarty_Compiler' => __DIR__ . '/..' . '/smarty/smarty/libs/Smarty_Compiler.class.php',
+        'database' => __DIR__ . '/../..' . '/classes/database.class.php',
         'ntlm_sasl_client_class' => __DIR__ . '/..' . '/phpmailer/phpmailer/extras/ntlm_sasl_client.php',
         'phpmailerException' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmailer.php',
     );

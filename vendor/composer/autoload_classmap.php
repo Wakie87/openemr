@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ADODB_mysqli_log' => $baseDir . '/library/sql.inc',
     'Config_File' => $vendorDir . '/smarty/smarty/libs/Config_File.class.php',
     'Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
     'EasyPeasyICS' => $vendorDir . '/phpmailer/phpmailer/extras/EasyPeasyICS.php',
@@ -21,6 +22,7 @@ return array(
     'SMTP' => $vendorDir . '/phpmailer/phpmailer/class.smtp.php',
     'Smarty' => $vendorDir . '/smarty/smarty/libs/Smarty.class.php',
     'Smarty_Compiler' => $vendorDir . '/smarty/smarty/libs/Smarty_Compiler.class.php',
+    'database' => $baseDir . '/classes/database.class.php',
     'ntlm_sasl_client_class' => $vendorDir . '/phpmailer/phpmailer/extras/ntlm_sasl_client.php',
     'phpmailerException' => $vendorDir . '/phpmailer/phpmailer/class.phpmailer.php',
 );

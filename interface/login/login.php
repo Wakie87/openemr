@@ -55,7 +55,7 @@ function imsubmitted() {
  olddate.setFullYear(olddate.getFullYear() - 1);
  document.cookie = '<?php echo session_name() . '=' . session_id() ?>; path=/; expires=' + olddate.toGMTString();
 <?php } ?>
-    return false; //Currently the submit action is handled by the encrypt_form(). 
+    return false; //Currently the submit action is handled by the encrypt_form().
 }
 </script>
 
@@ -96,7 +96,7 @@ else {
 $_SESSION['language_choice'] = $defaultLangID;
 // collect languages if showing language menu
 if ($GLOBALS['language_menu_login']) {
-    
+
         // sorting order of language titles depends on language translation options.
         $mainLangID = empty($_SESSION['language_choice']) ? '1' : $_SESSION['language_choice'];
         if ($mainLangID == '1' && !empty($GLOBALS['skip_english_translation']))
@@ -116,7 +116,7 @@ if ($GLOBALS['language_menu_login']) {
             "ORDER BY IF(LENGTH(ld.definition),ld.definition,ll.lang_description), ll.lang_id";
           $res3=SqlStatement($sql, array($mainLangID));
 	}
-    
+
         for ($iter = 0;$row = sqlFetchArray($res3);$iter++)
                $result3[$iter] = $row;
         if (count($result3) == 1) {
@@ -125,7 +125,7 @@ if ($GLOBALS['language_menu_login']) {
         }
 }
 else {
-        echo "<input type='hidden' name='languageChoice' value='".attr($defaultLangID)."' />\n";   
+        echo "<input type='hidden' name='languageChoice' value='".attr($defaultLangID)."' />\n";
 }
 ?>
 
@@ -146,8 +146,8 @@ else {
 <?php } ?>
 </div>
 
-<?php if ($GLOBALS['extra_logo_login']) { ?>  
-        <div class="logo-left"><?php echo $logocode;?></div> 
+<?php if ($GLOBALS['extra_logo_login']) { ?>
+        <div class="logo-left"><?php echo $logocode;?></div>
 <?php } ?>
 
 <div class="table-right" <?php if ($GLOBALS['extra_logo_login']) echo "style='padding: 20px 20px;'"; //make room for the extra logo ?> >

@@ -15,7 +15,7 @@
 * GNU General Public License for more details.
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://opensource.org/licenses/gpl-license.php>.
-* 
+*
 * @package   OpenEMR
 * @link      http://www.open-emr.org
 */
@@ -23,6 +23,7 @@
 require_once(dirname(__FILE__) . "/sqlconf.php");
 require_once(dirname(__FILE__) . "/../vendor/adodb/adodb-php/adodb.inc.php");
 require_once(dirname(__FILE__) . "/../vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php");
+require_once(dirname(__FILE__) . "/../classes/database.class.php");
 require_once(dirname(__FILE__) . "/log.inc");
 
 /**
@@ -115,48 +116,58 @@ class ADODB_mysqli_log extends ADODB_mysqli
                 return $this->genID;
         }
 }
-if (!defined('ADODB_FETCH_ASSOC')) define('ADODB_FETCH_ASSOC', 2);
-$database = NewADOConnection("mysqli_log"); // Use the subclassed driver which logs execute events
-// Below clientFlags flag is telling the mysql connection to allow local_infile setting,
-// which is needed to import data in the Administration->Other->External Data Loads feature.
-// Note this is a specific bug to work in Ubuntu 12.04, of which the Data Load feature does not
-// work and is suspicious for a bug in PHP of that OS; Setting this clientFlags fixes this bug
-// and appears to not cause problems in other operating systems.
-$database->clientFlags = 128;
-$database->port = $port;
-$database->PConnect($host, $login, $pass, $dbase);
-$GLOBALS['adodb']['db'] = $database;
-$GLOBALS['dbh'] = $database->_connectionID;
 
-// Modified 5/2009 by BM for UTF-8 project ---------
-if (!$disable_utf8_flag) {
- $success_flag = $database->Execute("SET NAMES 'utf8'");
-  if (!$success_flag) {
-   error_log("PHP custom error: from openemr library/sql.inc  - Unable to set up UTF8 encoding with mysql database: ".getSqlLastError(), 0);
-  }
-}
+    $database = database::getInstance();
+    $GLOBALS['adodb']['db'] = $database->getConnection();
+    //print_r($GLOBALS['adodb']);
 
-// Turn off STRICT SQL
-$sql_strict_set_success = $database->Execute("SET sql_mode = ''");
-if (!$sql_strict_set_success) {
- error_log("Unable to set strict sql setting: ".getSqlLastError(), 0);
-}
 
-// set up associations in adodb calls (not sure why above define
-//  command does not work)
-$GLOBALS['adodb']['db']->SetFetchMode(ADODB_FETCH_ASSOC);
+// if (!defined('ADODB_FETCH_ASSOC')) define('ADODB_FETCH_ASSOC', 2);
+// $database = NewADOConnection("mysqli_log"); // Use the subclassed driver which logs execute events
+// // Below clientFlags flag is telling the mysql connection to allow local_infile setting,
+// // which is needed to import data in the Administration->Other->External Data Loads feature.
+// // Note this is a specific bug to work in Ubuntu 12.04, of which the Data Load feature does not
+// // work and is suspicious for a bug in PHP of that OS; Setting this clientFlags fixes this bug
+// // and appears to not cause problems in other operating systems.
+// $database->clientFlags = 128;
+// $database->port = $port;
+// $database->PConnect($host, $login, $pass, $dbase);
+// $GLOBALS['adodb']['db'] = $database;
+ //$GLOBALS['dbh'] = $database->_connectionID;
 
-//fmg: This makes the login screen informative when no connection can be made
-if (!$GLOBALS['dbh']) {
-  //try to be more helpful
-  if ($host == "localhost") {
-    echo "Check that mysqld is running.<p>";
-  } else {
-    echo "Check that you can ping the server '".text($host)."'.<p>";
-  }//if local
-  HelpfulDie("Could not connect to server!", getSqlLastError());
-  exit;
-}//if no connection
+// // Modified 5/2009 by BM for UTF-8 project ---------
+// if (!$disable_utf8_flag) {
+//  $success_flag = $database->Execute("SET NAMES 'utf8'");
+//   if (!$success_flag) {
+//    error_log("PHP custom error: from openemr library/sql.inc  - Unable to set up UTF8 encoding with mysql database: ".getSqlLastError(), 0);
+//   }
+// }
+
+// // Turn off STRICT SQL
+// $sql_strict_set_success = $database->Execute("SET sql_mode = ''");
+// if (!$sql_strict_set_success) {
+//  error_log("Unable to set strict sql setting: ".getSqlLastError(), 0);
+// }
+
+// // set up associations in adodb calls (not sure why above define
+// //  command does not work)
+// $GLOBALS['adodb']['db']->SetFetchMode(ADODB_FETCH_ASSOC);
+
+// //fmg: This makes the login screen informative when no connection can be made
+// if (!$GLOBALS['dbh']) {
+//   //try to be more helpful
+//   if ($host == "localhost") {
+//     echo "Check that mysqld is running.<p>";
+//   } else {
+//     echo "Check that you can ping the server '".text($host)."'.<p>";
+//   }//if local
+//   HelpfulDie("Could not connect to server!", getSqlLastError());
+//   exit;
+// }//if no connection
+//
+
+
+
 
 /**
 * Standard sql query in OpenEMR.
@@ -194,7 +205,7 @@ function sqlStatement($statement, $binds=false )
 * Function that will allow use of the adodb binding
 * feature to prevent sql-injection. Will continue to
 * be compatible with previous function calls that do
-* not use binding. It is equivalent to the 
+* not use binding. It is equivalent to the
 * sqlStatement() function, EXCEPT it skips the
 * audit engine. This function should only be used
 * in very special situations.
@@ -223,7 +234,7 @@ function sqlStatementNoLog($statement, $binds=false )
 * sqlStatement() function wrapper for CDR engine in OpenEMR.
 * Allows option to turn on/off auditing specifically for the
 * CDR engine.
-* 
+*
 * @param  string  $statement  query
 * @param  array   $binds      binded variables array (optional)
 * @return recordset/resource
@@ -269,9 +280,9 @@ function sqlFetchArray($r)
 
 /**
  * Wrapper for ADODB getAssoc
- * 
+ *
  * @see http://adodb.org/dokuwiki/doku.php?id=v5:reference:connection:getassoc
- * 
+ *
  * @param string $sql
  * @param string[] $bindvars
  * @param boolean $forceArray
@@ -279,9 +290,9 @@ function sqlFetchArray($r)
  * @return array
  */
 function sqlGetAssoc( $sql, $bindvars=false, $forceArray=false, $first2Cols=false ) {
-  
+
   return $GLOBALS['adodb']['db']->getAssoc( $sql, $bindvars, $forceArray, $first2Cols  );
-  
+
 }
 
 /**
@@ -531,7 +542,7 @@ function HelpfulDie ($statement, $sqlerr='')
   }
   $logMsg.="==>".$backtrace[1]["file"]." at ".$backtrace[1]["line"].":".$backtrace[1]["function"];
   error_log($logMsg);
-  
+
   exit;
 }
 
