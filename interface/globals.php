@@ -158,6 +158,9 @@ $GLOBALS['login_screen'] = $GLOBALS['rootdir'] . "/login_screen.php";
 // Variable set for Eligibility Verification [EDI-271] path
 $GLOBALS['edi_271_file_path'] = $GLOBALS['OE_SITE_DIR'] . "/edi/";
 
+// Includes compoaser autoload
+require_once $GLOBALS['vendor_dir'] ."/autoload.php";
+
 // Include the translation engine. This will also call sql.inc to
 //  open the openemr mysql connection.
 require_once (dirname(__FILE__) . "/../library/translation.inc.php");
@@ -174,9 +177,6 @@ require_once (dirname(__FILE__) . "/../library/sanitize.inc.php");
 // Includes functions for date internationalization
 require_once (dirname(__FILE__) . "/../library/date_functions.php");
 
-// Includes compoaser autoload
-require_once $GLOBALS['vendor_dir'] ."/autoload.php";
-
 // Includes functions for page validation
 require_once (dirname(__FILE__) . "/../library/validation/validate_core.php");
 
@@ -189,7 +189,8 @@ $GLOBALS['cene_specific'] = false;
 $GLOBALS['inhouse_pharmacy'] = false;
 $GLOBALS['sell_non_drug_products'] = 0;
 
-$glrow = sqlQuery("SHOW TABLES LIKE 'globals'");
+$db = new sql();
+$glrow = $db->sqlQuery("SHOW TABLES LIKE 'globals'");
 if (!empty($glrow)) {
   // Collect user specific settings from user_settings table.
   //
@@ -202,7 +203,7 @@ if (!empty($glrow)) {
   }
   else {
     if (!empty($_POST['authUser'])) {
-      $temp_sql_ret = sqlQuery("SELECT `id` FROM `users` WHERE `username` = ?", array($_POST['authUser']) );
+      $temp_sql_ret = $db->sqlQuery("SELECT `id` FROM `users` WHERE `username` = ?", array($_POST['authUser']) );
       if (!empty($temp_sql_ret['id'])) {
         //Set the user id from the login variable
         $temp_authuserid = $temp_sql_ret['id'];
@@ -210,11 +211,11 @@ if (!empty($glrow)) {
     }
   }
   if (!empty($temp_authuserid)) {
-    $glres_user = sqlStatement("SELECT `setting_label`, `setting_value` " .
+    $glres_user = $db->sqlStatement("SELECT `setting_label`, `setting_value` " .
       "FROM `user_settings` " .
       "WHERE `setting_user` = ? " .
       "AND `setting_label` LIKE 'global:%'", array($temp_authuserid) );
-    for($iter=0; $row=sqlFetchArray($glres_user); $iter++) {
+    for($iter=0; $row=$db->sqlFetchArray($glres_user); $iter++) {
       //remove global_ prefix from label
       $row['setting_label'] = substr($row['setting_label'],7);
       $gl_user[$iter]=$row;
@@ -224,9 +225,9 @@ if (!empty($glrow)) {
   // Some parameters require custom handling.
   //
   $GLOBALS['language_menu_show'] = array();
-  $glres = sqlStatement("SELECT gl_name, gl_index, gl_value FROM globals " .
+  $glres = $db->sqlStatement("SELECT gl_name, gl_index, gl_value FROM globals " .
     "ORDER BY gl_name, gl_index");
-  while ($glrow = sqlFetchArray($glres)) {
+  while ($glrow = $db->sqlFetchArray($glres)) {
     $gl_name  = $glrow['gl_name'];
     $gl_value = $glrow['gl_value'];
     // Adjust for user specific settings
@@ -281,7 +282,7 @@ if (!empty($glrow)) {
 
     else {
         //$_SESSION['language_direction'] is not set, so will use the default language
-        $default_lang_id = sqlQuery('SELECT lang_id FROM lang_languages WHERE lang_description = ?',array($GLOBALS['language_default']));
+        $default_lang_id = $db->sqlQuery('SELECT lang_id FROM lang_languages WHERE lang_description = ?',array($GLOBALS['language_default']));
 
         if ( getLanguageDir( $default_lang_id['lang_id'] ) === 'rtl' && !strpos($GLOBALS['css_header'], 'rtl')) { // @todo eliminate 1 SQL query
             $rtl_override = true;

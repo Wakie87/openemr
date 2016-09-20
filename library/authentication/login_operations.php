@@ -1,7 +1,7 @@
 <?php
 /**
  * This is a library of commonly used functions for managing data for authentication
- * 
+ *
  * Copyright (C) 2013 Kevin Yeh <kevin.y@integralemr.com> and OEMR <www.oemr.org>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@ require_once("$srcdir/authentication/common_operations.php");
 
 
 /**
- * 
+ *
  * @param type $username
  * @param type $password    password is passed by reference so that it can be "cleared out"
  *                          as soon as we are done with it.
@@ -33,35 +33,36 @@ require_once("$srcdir/authentication/common_operations.php");
  */
 function validate_user_password($username,&$password,$provider)
 {
+    $
     $ip=$_SERVER['REMOTE_ADDR'];
-    
+    $privDB = new privDB();
     $valid=false;
     $getUserSecureSQL= " SELECT " . implode(",",array(COL_ID,COL_PWD,COL_SALT))
                        ." FROM ".TBL_USERS_SECURE
                        ." WHERE BINARY ".COL_UNM."=?";
                        // Use binary keyword to require case sensitive username match
-    $userSecure=privQuery($getUserSecureSQL,array($username));
+    $userSecure = $privDB->privQuery($getUserSecureSQL,array($username));
     if(is_array($userSecure))
     {
         $phash=oemr_password_hash($password,$userSecure[COL_SALT]);
         if($phash!=$userSecure[COL_PWD])
         {
-            
+
             return false;
         }
         $valid=true;
     }
     else
-    {  
+    {
         if((!isset($GLOBALS['password_compatibility'])||$GLOBALS['password_compatibility']))           // use old password scheme if allowed.
         {
             $getUserSQL="select username,id, password from users where BINARY username = ?";
-            $userInfo = privQuery($getUserSQL,array($username));
+            $userInfo = $privDB->privQuery($getUserSQL,array($username));
             if($userInfo===false)
             {
                 return false;
             }
-                
+
             $username=$userInfo['username'];
             $dbPasswordLen=strlen($userInfo['password']);
             if($dbPasswordLen==32)
@@ -85,23 +86,23 @@ function validate_user_password($username,&$password,$provider)
                 return false;
             }
         }
-        
+
     }
     $getUserSQL="select id, authorized, see_auth".
                         ", cal_ui, active ".
                         " from users where BINARY username = ?";
-    $userInfo = privQuery($getUserSQL,array($username));
-    
+    $userInfo = $privDB->privQuery($getUserSQL,array($username));
+
     if ($userInfo['active'] != 1) {
         newEvent( 'login', $username, $provider, 0, "failure: $ip. user not active or not found in users table");
         $password='';
         return false;
-    }  
+    }
     // Done with the cleartext password at this point!
     $password='';
     if($valid)
     {
-        if ($authGroup = privQuery("select * from groups where user=? and name=?",array($username,$provider)))
+        if ($authGroup = $privDB->privQuery("select * from groups where user=? and name=?",array($username,$provider)))
         {
             $_SESSION['authUser'] = $username;
             $_SESSION['authPass'] = $phash;
@@ -119,9 +120,9 @@ function validate_user_password($username,&$password,$provider)
             newEvent( 'login', $username, $provider, 0, "failure: $ip. user not in group: $provider");
             $valid=false;
         }
-        
-        
-        
+
+
+
     }
     return $valid;
 }

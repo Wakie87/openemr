@@ -72,16 +72,17 @@ function imsubmitted() {
 
 <?php
 // collect groups
-$res = sqlStatement("select distinct name from groups");
-for ($iter = 0;$row = sqlFetchArray($res);$iter++)
+$db= new sql();
+$res = $db->sqlStatement("select distinct name from groups");
+for ($iter = 0;$row = $db->sqlFetchArray($res);$iter++)
 	$result[$iter] = $row;
 if (count($result) == 1) {
 	$resvalue = $result[0]{"name"};
 	echo "<input type='hidden' name='authProvider' value='" . attr($resvalue) . "' />\n";
 }
 // collect default language id
-$res2 = sqlStatement("select * from lang_languages where lang_description = ?",array($GLOBALS['language_default']));
-for ($iter = 0;$row = sqlFetchArray($res2);$iter++)
+$res2 = $db->sqlStatement("select * from lang_languages where lang_description = ?",array($GLOBALS['language_default']));
+for ($iter = 0;$row = $db->sqlFetchArray($res2);$iter++)
           $result2[$iter] = $row;
 if (count($result2) == 1) {
           $defaultLangID = $result2[0]{"lang_id"};
@@ -102,7 +103,7 @@ if ($GLOBALS['language_menu_login']) {
         if ($mainLangID == '1' && !empty($GLOBALS['skip_english_translation']))
         {
           $sql = "SELECT *,lang_description as trans_lang_description FROM lang_languages ORDER BY lang_description, lang_id";
-	  $res3=SqlStatement($sql);
+	  $res3=$db->SqlStatement($sql);
         }
         else {
           // Use and sort by the translated language name.
@@ -114,10 +115,10 @@ if ($GLOBALS['language_menu_login']) {
             "LEFT JOIN lang_definitions AS ld ON ld.cons_id = lc.cons_id AND " .
             "ld.lang_id = ? " .
             "ORDER BY IF(LENGTH(ld.definition),ld.definition,ll.lang_description), ll.lang_id";
-          $res3=SqlStatement($sql, array($mainLangID));
+          $res3=$db->SqlStatement($sql, array($mainLangID));
 	}
 
-        for ($iter = 0;$row = sqlFetchArray($res3);$iter++)
+        for ($iter = 0;$row = $db->sqlFetchArray($res3);$iter++)
                $result3[$iter] = $row;
         if (count($result3) == 1) {
 	       //default to english if only return one language

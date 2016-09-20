@@ -100,7 +100,7 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
     );
 
     public static $classMap = array (
-        'ADODB_mysqli_log' => __DIR__ . '/../..' . '/library/sql.inc',
+        'ADODB_mysqli_log' => __DIR__ . '/../..' . '/classes/adodb_mysql-log.class.php',
         'Config_File' => __DIR__ . '/..' . '/smarty/smarty/libs/Config_File.class.php',
         'Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'EasyPeasyICS' => __DIR__ . '/..' . '/phpmailer/phpmailer/extras/EasyPeasyICS.php',
@@ -113,12 +113,14 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
         'PHPMailerOAuth' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmaileroauth.php',
         'PHPMailerOAuthGoogle' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmaileroauthgoogle.php',
         'POP3' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.pop3.php',
+        'PrivDB' => __DIR__ . '/../..' . '/library/authentication/privDB.php',
         'SMTP' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.smtp.php',
         'Smarty' => __DIR__ . '/..' . '/smarty/smarty/libs/Smarty.class.php',
         'Smarty_Compiler' => __DIR__ . '/..' . '/smarty/smarty/libs/Smarty_Compiler.class.php',
         'database' => __DIR__ . '/../..' . '/classes/database.class.php',
         'ntlm_sasl_client_class' => __DIR__ . '/..' . '/phpmailer/phpmailer/extras/ntlm_sasl_client.php',
         'phpmailerException' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmailer.php',
+        'sql' => __DIR__ . '/../..' . '/library/sql.inc',
     );
 
     public static function getInitializer(ClassLoader $loader)

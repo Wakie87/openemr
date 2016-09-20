@@ -3,14 +3,26 @@ require_once(dirname(__FILE__) . "/../library/sqlconf.php");
 require_once(dirname(__FILE__) . "/../vendor/adodb/adodb-php/adodb.inc.php");
 require_once(dirname(__FILE__) . "/../vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php");
 
+define(ADODB_FETCH_ASSOC, 2);
+
 class database
 {
     private $_connection;
     private static $_instance;
-    // private $dbase;
-    // private $login;
-    // private $pass;
-    // private $port;
+
+    // Constructor
+    private function __construct()
+    {
+        global $sqlconf;
+        $this->server = $sqlconf['host'];
+        $this->login = $sqlconf['login'];
+        $this->pass = $sqlconf['pass'];
+        $this->port = $sqlconf['port'];
+        $this->dbname = $sqlconf['dbase'];
+        $this->collate = 'utf-8';
+        $this->_connection = false;
+        $this->user_database_connection();
+    }
 
     /*
     Get an instance of the Database
@@ -18,38 +30,12 @@ class database
     */
     public static function getInstance()
     {
-        if(!self::$_instance) { // If no instance then make one
+        if (!self::$_instance) { // If no instance then make one
             self::$_instance = new self();
         }
         return self::$_instance;
     }
 
-    // Constructor
-    private function __construct()
-    {
-        global $sqlconf;
-        //$host = $sqlconf['host'];
-        $this->_connection = NewADOConnection('mysqli_log');
-        $this->_connection->clientFlags = 128;
-        $this->_connection->port = $port;
-        $this->_connection->PConnect($sqlconf['host'], $sqlconf['login'], $sqlconf['pass'], $sqlconf['dbase']);
-        $this->_connection->SetFetchMode(ADODB_FETCH_ASSOC);
-
-        //$GLOBALS['adodb']['db'] =  $this->_connection;
-
-
-        // Error handling
-        // if (!$GLOBALS['dbh']) {
-        //   //try to be more helpful
-        //   if ($host == "localhost") {
-        //     echo "Check that mysqld is running.<p>";
-        //   } else {
-        //     echo "Check that you can ping the server '".text($host)."'.<p>";
-        //   }//if local
-        //   HelpfulDie("Could not connect to server!", getSqlLastError());
-        //   exit;
-        // }//if no connection
-    }
 
 
     // Get mysqli connection
@@ -58,4 +44,50 @@ class database
         return $this->_connection;
     }
 
+
+    public function user_database_connection()
+    {
+        $this->_dbh = $this->connect($this->server, $this->login, $this->pass, $this->port, $this->dbname);
+        if (! $this->_dbh) {
+            $this->error_message = "unable to connect to database as user: '$this->login'";
+            return false;
+        }
+        if (! $this->set_sql_strict()) {
+            $this->error_message = 'unable to set strict sql setting';
+            return false;
+        }
+        if (! $this->set_collation()) {
+            $this->error_message = 'unable to set sql collation';
+            return false;
+        }
+        return true;
+    }
+
+    private function connect($server, $login, $pass, $port, $dbname='')
+    {
+        if (!defined('ADODB_FETCH_ASSOC')) {
+            define('ADODB_FETCH_ASSOC', 2);
+        }
+        $this->_connection = NewADOConnection('mysqli_log');
+        $this->_connection->clientFlags = 128;
+        $this->_connection->port = $this->port;
+        $this->_connection->PConnect($this->server, $this->login, $this->pass, $this->dbname);
+        $this->_connection->SetFetchMode(ADODB_FETCH_ASSOC);
+
+        return $this->_connection;
+    }
+
+    private function set_sql_strict()
+    {
+        // Turn off STRICT SQL
+    return $this->_connection->Execute("SET sql_mode = ''");
+    }
+
+    private function set_collation()
+    {
+        if ($this->collate) {
+            return $this->_connection->Execute("SET NAMES 'utf8'");
+        }
+        return true;
+    }
 }

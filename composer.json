@@ -38,7 +38,11 @@
     "autoload": {
         "classmap": [
             "library/sql.inc",
-            "classes/"
+            "classes/adodb_mysql-log.class.php",
+            "classes/database.class.php",
+            "library/authentication/privDB.php"
+
+
         ]
     }
 }
