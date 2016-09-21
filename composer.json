@@ -34,5 +34,17 @@
         "preferred-install": {
             "doctrine/couchdb": "dist"
         }
+    },
+    "autoload":{
+        "classmap": ["library/classes/"],
+        "exclude-from-classmap": [
+            "library/classes/ClinicalTypes/",
+            "library/classes/rulesets/",
+            "library/classes/smtp/",
+            "library/classes/Filtreatment_class.php",
+            "library/classes/Installer.class.php",
+            "library/classes/PDF_Label.php",
+            "library/classes/php-barcode.php"
+        ]
     }
 }

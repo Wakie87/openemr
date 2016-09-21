@@ -1,7 +1,5 @@
 <?php
 
-require_once("Tree.class.php");
-
 /**
  * class CategoryTree
  * This is a class for storing general config using the MPTT implementation

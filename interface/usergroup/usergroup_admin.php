@@ -25,7 +25,6 @@ require_once("../../library/acl.inc");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/auth.inc");
 require_once("$srcdir/formdata.inc.php");
-require_once ($GLOBALS['srcdir'] . "/classes/postmaster.php");
 
 $alertmsg = '';
 $bg_msg = '';
@@ -43,7 +42,7 @@ if(($_GET['access_group'][$i] == "Emergency Login") && ($_GET['active'] == 'on')
 	$row = sqlFetchArray($res);
 	$uname=$row['username'];
 	$mail = new MyMailer();
-        $mail->From = "admin@".$mail_id[1].".".$mail_id[2];     
+        $mail->From = "admin@".$mail_id[1].".".$mail_id[2];
         $mail->FromName = "Administrator OpenEMR";
         $text_body  = "Hello Security Admin,\n\n The Emergency Login user ".$uname.
                                                 " was activated at ".date('l jS \of F Y h:i:s A')." \n\nThanks,\nAdmin OpenEMR.";
@@ -150,7 +149,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
           "' WHERE id = '" . formData('id','P') . "'");
       }
 
-     if ($_POST["adminPass"] && $_POST["clearPass"]) { 
+     if ($_POST["adminPass"] && $_POST["clearPass"]) {
         require_once("$srcdir/authentication/password_change.php");
         $clearAdminPass=$_POST['adminPass'];
         $clearUserPass=$_POST['clearPass'];
@@ -158,7 +157,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
         $success=update_password($_SESSION['authId'],$_POST['id'],$clearAdminPass,$clearUserPass,$password_err_msg);
         if(!$success)
         {
-            error_log($password_err_msg);    
+            error_log($password_err_msg);
             $alertmsg.=$password_err_msg;
         }
      }
@@ -166,11 +165,11 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
       $tqvar  = $_POST["authorized"] ? 1 : 0;
       $actvar = $_POST["active"]     ? 1 : 0;
       $calvar = $_POST["calendar"]   ? 1 : 0;
-  
+
       sqlStatement("UPDATE users SET authorized = $tqvar, active = $actvar, " .
         "calendar = $calvar, see_auth = ? WHERE " .
         "id = ? ", array($_POST['see_auth'], $_POST["id"]));
-      //Display message when Emergency Login user was activated 
+      //Display message when Emergency Login user was activated
       $bg_count=count($_POST['access_group']);
       for($i=0;$i<$bg_count;$i++){
         if(($_POST['access_group'][$i] == "Emergency Login") && ($_POST['pre_active'] == 0) && ($actvar == 1)){
@@ -183,7 +182,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
          $set_active_msg=1;
         }
       }
-    }	
+    }
       if ($_POST["comments"]) {
         $tqvar = formData('comments','P');
         sqlStatement("update users set info = '$tqvar' where id = ? ", array($_POST["id"]));
@@ -195,7 +194,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
 		$physician_type = formData('physician_type');
 		sqlStatement("update users set physician_type = '$physician_type' where id = ? ", array($_POST["id"]));
 	  }
-	  
+
       if (isset($phpgacl_location) && acl_check('admin', 'acl')) {
         // Set the access control group of user
         $user_data = sqlFetchArray(sqlStatement("select username from users where id= ?", array($_POST["id"])));
@@ -231,8 +230,8 @@ if (isset($_POST["mode"])) {
     $exp_days = $GLOBALS['password_expiration_days'];
     $exp_date = date('Y-m-d', strtotime("+$exp_days days"));
     }
-    
-    $insertUserSQL=            
+
+    $insertUserSQL=
             "insert into users set " .
             "username = '"         . trim(formData('rumple'       )) .
             "', password = '"      . 'NoLongerUsed'                  .
@@ -258,7 +257,7 @@ if (isset($_POST["mode"])) {
             "', calendar = '"      . $calvar                         .
             "', pwd_expiration_date = '" . trim("$exp_date") .
             "'";
-    
+
     $clearAdminPass=$_POST['adminPass'];
     $clearUserPass=$_POST['stiltskin'];
     $password_err_msg="";
@@ -282,7 +281,7 @@ if (isset($_POST["mode"])) {
       }
     }
 
-        
+
 
     } else {
       $alertmsg .= xl('User','','',' ') . trim(formData('rumple')) . xl('already exists.','',' ');
@@ -388,7 +387,7 @@ $(document).ready(function(){
 		'frameHeight' : 450,
 		'frameWidth' : 660
 	});
-	
+
 	$(function(){
 		// add drag and drop functionality to fancybox
 		$("#fancy_outer").easydrag();

@@ -108,7 +108,7 @@
  *  @version 1.0.0
  *  @since PHP 4.0.2
  */
-class html2text
+class HTML2Text
 {
 
     /**
@@ -276,7 +276,7 @@ class html2text
      *  @see _build_link_list()
      */
     var $_link_list = '';
-    
+
     /**
      *  Number of valid links detected in the text, used for plain text
      *  display (rendered similar to footnotes).

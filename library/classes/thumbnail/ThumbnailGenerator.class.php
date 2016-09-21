@@ -19,8 +19,6 @@
  */
 
 require_once dirname(__FILE__) . '/../../../interface/globals.php';
-require_once dirname(__FILE__) . '/Thumbnail.class.php';
-require_once dirname(__FILE__) . '/../CouchDB.class.php';
 
 /**
  * Class ThumbnailGenerator

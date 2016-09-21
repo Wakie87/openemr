@@ -6,7 +6,7 @@
  * session variables, because the session_write_close() function
  * is typically called before utilizing these functions.
  *
- * Functions for collection/displaying/sending patient reminders. This is 
+ * Functions for collection/displaying/sending patient reminders. This is
  * part of the CDR engine, which can be found at library/clinical_rules.php.
  *
  * Copyright (C) 2010-2012 Brady Miller <brady@sparmy.com>
@@ -31,7 +31,6 @@
  * Include the main CDR engine library, email class and maviq class
  */
 require_once(dirname(__FILE__) . "/clinical_rules.php");
-require_once(dirname(__FILE__) . "/classes/postmaster.php");
 require_once(dirname(__FILE__) . "/maviq_phone_api.php");
 
 /**
@@ -49,7 +48,7 @@ function patient_reminder_widget($patient_id,$dateTarget='') {
   update_reminders($dateTarget, $patient_id);
 
   // Fetch the active reminders
-  $listReminders = fetch_reminders($patient_id);  
+  $listReminders = fetch_reminders($patient_id);
 
   if (empty($listReminders)) {
     // No reminders to show.
@@ -75,7 +74,7 @@ function patient_reminder_widget($patient_id,$dateTarget='') {
         echo htmlspecialchars( xl('Reminder Sent On').": ".$reminder['date_sent'], ENT_NOQUOTES);
       }
     echo "</span></td></tr>";
-  } 
+  }
   echo "</table>";
 }
 
@@ -447,7 +446,7 @@ function fetch_reminders($patient_id='',$type='',$due_status='',$select='*') {
     $where = "`pid` IN (?) AND ";
     array_push($arraySqlBind,$patient_id);
   }
-    
+
   if (!empty($due_status)) {
     $where .= "`due_status`=? AND ";
     array_push($arraySqlBind,$due_status);
