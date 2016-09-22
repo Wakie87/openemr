@@ -41,7 +41,6 @@
             "library/classes/ClinicalTypes/",
             "library/classes/rulesets/",
             "library/classes/smtp/",
-            "library/classes/Filtreatment_class.php",
             "library/classes/Installer.class.php",
             "library/classes/PDF_Label.php",
             "library/classes/php-barcode.php"
