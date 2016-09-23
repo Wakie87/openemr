@@ -25,6 +25,8 @@
  * @link    http://www.open-emr.org
  */
 
+
+
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
 
@@ -55,7 +57,7 @@ function imsubmitted() {
  olddate.setFullYear(olddate.getFullYear() - 1);
  document.cookie = '<?php echo session_name() . '=' . session_id() ?>; path=/; expires=' + olddate.toGMTString();
 <?php } ?>
-    return false; //Currently the submit action is handled by the encrypt_form(). 
+    return false; //Currently the submit action is handled by the encrypt_form().
 }
 </script>
 
@@ -73,19 +75,23 @@ function imsubmitted() {
 <?php
 // collect groups
 $res = sqlStatement("select distinct name from groups");
-for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-	$result[$iter] = $row;
+foreach ($res as $row)
+{
+	$result = $row;
+}
 if (count($result) == 1) {
-	$resvalue = $result[0]{"name"};
+	$resvalue = $result['name'];
 	echo "<input type='hidden' name='authProvider' value='" . attr($resvalue) . "' />\n";
 }
 // collect default language id
 $res2 = sqlStatement("select * from lang_languages where lang_description = ?",array($GLOBALS['language_default']));
-for ($iter = 0;$row = sqlFetchArray($res2);$iter++)
-          $result2[$iter] = $row;
+foreach ($res2 as $row)
+{
+    $result2 = $row;
+}
 if (count($result2) == 1) {
-          $defaultLangID = $result2[0]{"lang_id"};
-          $defaultLangName = $result2[0]{"lang_description"};
+          $defaultLangID = $result2['lang_id'];
+          $defaultLangName = $result2['lang_description'];
 }
 else {
           //default to english if any problems
@@ -96,7 +102,7 @@ else {
 $_SESSION['language_choice'] = $defaultLangID;
 // collect languages if showing language menu
 if ($GLOBALS['language_menu_login']) {
-    
+
         // sorting order of language titles depends on language translation options.
         $mainLangID = empty($_SESSION['language_choice']) ? '1' : $_SESSION['language_choice'];
         if ($mainLangID == '1' && !empty($GLOBALS['skip_english_translation']))
@@ -116,9 +122,11 @@ if ($GLOBALS['language_menu_login']) {
             "ORDER BY IF(LENGTH(ld.definition),ld.definition,ll.lang_description), ll.lang_id";
           $res3=SqlStatement($sql, array($mainLangID));
 	}
-    
-        for ($iter = 0;$row = sqlFetchArray($res3);$iter++)
-               $result3[$iter] = $row;
+
+        foreach ($res3 as $row)
+        {
+            $result3 = $row;
+        }
         if (count($result3) == 1) {
 	       //default to english if only return one language
                echo "<input type='hidden' name='languageChoice' value='1' />\n";
@@ -127,6 +135,8 @@ if ($GLOBALS['language_menu_login']) {
 else {
         echo "<input type='hidden' name='languageChoice' value='".attr($defaultLangID)."' />\n";
 }
+
+
 ?>
 
 <table width="100%" height="99%">
@@ -146,8 +156,8 @@ else {
 <?php } ?>
 </div>
 
-<?php if ($GLOBALS['extra_logo_login']) { ?>  
-        <div class="logo-left"><?php echo $logocode;?></div> 
+<?php if ($GLOBALS['extra_logo_login']) { ?>
+        <div class="logo-left"><?php echo $logocode;?></div>
 <?php } ?>
 
 <div class="table-right" <?php if ($GLOBALS['extra_logo_login']) echo "style='padding: 20px 20px;'"; //make room for the extra logo ?> >
@@ -191,6 +201,7 @@ else {
 </td></tr>
 
 <?php
+var_dump($res3);
 if ($GLOBALS['language_menu_login']) {
 if (count($result3) != 1) { ?>
 <tr>

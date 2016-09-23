@@ -37,13 +37,13 @@ function xl($constant,$mode='r',$prepend='',$append='') {
     $row = SqlFetchArray($res);
     $string = $row['definition'];
     if ($string == '') { $string = "$constant"; }
-    
+
     // remove dangerous characters and remove comments
     $patterns = array ('/\n/','/\r/','/"/',"/'/",'/\{\{.*\}\}/');
     $replace = array (' ','','`','`','');
     $string = preg_replace($patterns, $replace, $string);
   }
-    
+
   $string = "$prepend" . "$string" . "$append";
   if ($mode=='e') {
     echo $string;
@@ -109,7 +109,7 @@ function xl_layout_label($constant,$mode='r',$prepend='',$append='') {
     }
   }
 }
-// Added 6-2009 by BM for translation of access control group labels 
+// Added 6-2009 by BM for translation of access control group labels
 //  (when applicable)
 // Only translates if the $GLOBALS['translate_gacl_groups'] is set to true.
 function xl_gacl_group($constant,$mode='r',$prepend='',$append='') {
@@ -220,10 +220,10 @@ function getLanguageTitle($val) {
  else {
    $lang_id = 1;
  }
- 
+
  // get language title
  $res = sqlStatement("select lang_description from lang_languages where lang_id =?",array($lang_id));
- for ($iter = 0;$row = sqlFetchArray($res);$iter++) $result[$iter] = $row;
+ for ($iter = 0;$row = $res;$iter++) $result[$iter] = $row;
  $languageTitle = $result[0]{"lang_description"};
  return $languageTitle;
 }
@@ -252,13 +252,13 @@ function getLanguageDir($lang_id) {
 /**
 HEADER HTML
 
-shows some informations for pages html header 
+shows some informations for pages html header
 
 @param none
 @return void
 */
 function html_header_show() {
-    
+
     // Below line was commented by the UTF-8 project on 05-2009 by BM.
     //  We commented this out since we are now standardizing encoding
     //  in the globals.php file.

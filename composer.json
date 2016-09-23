@@ -34,5 +34,10 @@
         "preferred-install": {
             "doctrine/couchdb": "dist"
         }
+    },
+    "autoload": {
+        "psr-4": {
+            "OpenEMR\\Framework\\": "library/Framework/src/"
+        }
     }
 }
