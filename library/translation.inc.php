@@ -34,7 +34,7 @@ function xl($constant,$mode='r',$prepend='',$append='') {
       "lang_definitions.cons_id = lang_constants.cons_id WHERE " .
       "lang_id=? AND constant_name = ? LIMIT 1";
     $res = sqlStatementNoLog($sql,array($lang_id,$constant));
-    $row = SqlFetchArray($res);
+    $row = $res;
     $string = $row['definition'];
     if ($string == '') { $string = "$constant"; }
 
@@ -223,9 +223,12 @@ function getLanguageTitle($val) {
 
  // get language title
  $res = sqlStatement("select lang_description from lang_languages where lang_id =?",array($lang_id));
- for ($iter = 0;$row = $res;$iter++) $result[$iter] = $row;
- $languageTitle = $result[0]{"lang_description"};
- return $languageTitle;
+ foreach ($res as $row)
+ {
+    $result = $row;
+    $languageTitle = $result["lang_description"];
+    return $languageTitle;
+}
 }
 
 

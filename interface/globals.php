@@ -217,10 +217,11 @@ if (!empty($glrow)) {
       "FROM `user_settings` " .
       "WHERE `setting_user` = ? " .
       "AND `setting_label` LIKE 'global:%'", array($temp_authuserid) );
-    for($iter=0; $row=sqlFetchArray($glres_user); $iter++) {
+    foreach($glres_user as $row)
+     {
       //remove global_ prefix from label
       $row['setting_label'] = substr($row['setting_label'],7);
-      $gl_user[$iter]=$row;
+      $gl_user = $row;
     }
   }
   // Set global parameters from the database globals table.
@@ -229,7 +230,7 @@ if (!empty($glrow)) {
   $GLOBALS['language_menu_show'] = array();
   $glres = sqlStatement("SELECT gl_name, gl_index, gl_value FROM globals " .
     "ORDER BY gl_name, gl_index");
-  while ($glrow = sqlFetchArray($glres)) {
+  foreach ($glres as $glrow) {
     $gl_name  = $glrow['gl_name'];
     $gl_value = $glrow['gl_value'];
     // Adjust for user specific settings
@@ -433,9 +434,9 @@ $SMTP_Auth = !empty($GLOBALS['SMTP_USER']);
 
 
 //module configurations
-$GLOBALS['baseModDir'] 	= "interface/modules/"; //default path of modules
-$GLOBALS['customModDir']= "custom_modules";	//non zend modules
-$GLOBALS['zendModDir']	= "zend_modules";	//zend modules
+$GLOBALS['baseModDir']  = "interface/modules/"; //default path of modules
+$GLOBALS['customModDir']= "custom_modules"; //non zend modules
+$GLOBALS['zendModDir']  = "zend_modules";   //zend modules
 
 // Don't change anything below this line. ////////////////////////////
 
@@ -472,12 +473,12 @@ ini_set("session.bug_compat_warn","off");
 
 /* If the includer didn't specify, assume they want us to "fake" register_globals. */
 if (!isset($fake_register_globals)) {
-	$fake_register_globals = TRUE;
+    $fake_register_globals = TRUE;
 }
 
 /* Pages with "myadmin" in the URL don't need register_globals. */
 $fake_register_globals =
-	$fake_register_globals && (strpos($_SERVER['REQUEST_URI'],"myadmin") === FALSE);
+    $fake_register_globals && (strpos($_SERVER['REQUEST_URI'],"myadmin") === FALSE);
 
 
 // Emulates register_globals = On.  Moved to the bottom of globals.php to prevent

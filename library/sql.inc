@@ -20,6 +20,7 @@
 * @link      http://www.open-emr.org
 */
 error_reporting(E_WARNING);
+ini_set("display_errors", 2);
 require_once(dirname(__FILE__) . "/sqlconf.php");
 require_once(dirname(__FILE__) . "/log.inc");
 require_once(dirname(__FILE__) . "/Framework/src/Database/Database.php");
@@ -39,7 +40,7 @@ require_once(dirname(__FILE__) . "/Framework/src/Database/Database.php");
 * @param  array   $params      binded variables array (optional)
 * @return recordset
 */
-function sqlStatement($statement, $params = [])
+function sqlStatement($statement, $params = null)
 {
   // Use adodb Execute with binding and return a recordset.
   //   Note that the auditSQLEvent function is embedded
@@ -48,9 +49,10 @@ function sqlStatement($statement, $params = [])
   if (!$recordset) {
     HelpfulDie("query failed: $statement", getSqlLastError());
   }
-  $rez = $recordset->Fetch(PDO::FETCH_LAZY);
+  $rez = $recordset->fetchAll(PDO::FETCH_ASSOC);
   return $rez;
   //return $recordset;
+
 }
 
 /**
@@ -71,16 +73,17 @@ function sqlStatement($statement, $params = [])
 * @param  array   $params      binded variables array (optional)
 * @return recordset
 */
-function sqlStatementNoLog($statement, $params )
+function sqlStatementNoLog($statement, $params = null )
 {
   // Use adodb ExecuteNoLog with binding and return a recordset.
   $recordset = DB::run( $statement, $params );
-  if ($recordset === FALSE) {
+  if (!$recordset) {
     HelpfulDie("query failed: $statement", getSqlLastError());
   }
-  $rez = $recordset->fetchAll();
+  $rez = $recordset->fetchAll(PDO::FETCH_ASSOC);
   return $rez;
   //return $recordset;
+
 }
 
 /**
@@ -119,7 +122,7 @@ function sqlFetchArray($r)
   foreach ($r as $row)
     {
         return false;
-        return $row;
+        return $row->Fetch();
     }
   //ensure it's an object (ie. is set)
   // if (!is_object($r))
@@ -211,17 +214,11 @@ function sqlQuery($statement, $params = [])
 function sqlQueryNoLog($statement, $params)
 {
 
-
-  $recordset = $GLOBALS['adodb']['db']->ExecuteNoLog( $statement, $params );
-
-  if ($recordset === FALSE) {
+  $recordset =  DB::run( $statement, $params );
+  if (!$recordset) {
     HelpfulDie("query failed: $statement", getSqlLastError());
   }
-  if ($recordset->EOF)
-   return FALSE;
-  $rez = $recordset->FetchRow();
-  if ($rez == FALSE)
-    return FALSE;
+  $rez = $recordset->Fetch();
   return $rez;
 }
 

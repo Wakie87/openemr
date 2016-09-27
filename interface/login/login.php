@@ -25,8 +25,6 @@
  * @link    http://www.open-emr.org
  */
 
-
-
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
 
@@ -74,21 +72,15 @@ function imsubmitted() {
 
 <?php
 // collect groups
-$res = sqlStatement("select distinct name from groups");
-foreach ($res as $row)
-{
-	$result = $row;
-}
+$result = sqlStatement("select distinct name from groups");
 if (count($result) == 1) {
-	$resvalue = $result['name'];
-	echo "<input type='hidden' name='authProvider' value='" . attr($resvalue) . "' />\n";
+    $resvalue = $result["name"];
+    echo "<input type='hidden' name='authProvider' value='" . attr($resvalue) . "' />\n";
 }
+
+
 // collect default language id
-$res2 = sqlStatement("select * from lang_languages where lang_description = ?",array($GLOBALS['language_default']));
-foreach ($res2 as $row)
-{
-    $result2 = $row;
-}
+$result2 = sqlQuery("select * from lang_languages where lang_description = ?",array($GLOBALS['language_default']));
 if (count($result2) == 1) {
           $defaultLangID = $result2['lang_id'];
           $defaultLangName = $result2['lang_description'];
@@ -108,35 +100,28 @@ if ($GLOBALS['language_menu_login']) {
         if ($mainLangID == '1' && !empty($GLOBALS['skip_english_translation']))
         {
           $sql = "SELECT *,lang_description as trans_lang_description FROM lang_languages ORDER BY lang_description, lang_id";
-	  $res3=SqlStatement($sql);
+      $result3=SqlStatement($sql);
         }
         else {
           // Use and sort by the translated language name.
           $sql = "SELECT ll.lang_id, " .
             "IF(LENGTH(ld.definition),ld.definition,ll.lang_description) AS trans_lang_description, " .
-	    "ll.lang_description " .
+        "ll.lang_description " .
             "FROM lang_languages AS ll " .
             "LEFT JOIN lang_constants AS lc ON lc.constant_name = ll.lang_description " .
             "LEFT JOIN lang_definitions AS ld ON ld.cons_id = lc.cons_id AND " .
             "ld.lang_id = ? " .
             "ORDER BY IF(LENGTH(ld.definition),ld.definition,ll.lang_description), ll.lang_id";
-          $res3=SqlStatement($sql, array($mainLangID));
-	}
-
-        foreach ($res3 as $row)
-        {
-            $result3 = $row;
-        }
+          $result3=SqlStatement($sql, array($mainLangID));
+    }
         if (count($result3) == 1) {
-	       //default to english if only return one language
+           //default to english if only return one language
                echo "<input type='hidden' name='languageChoice' value='1' />\n";
         }
 }
 else {
         echo "<input type='hidden' name='languageChoice' value='".attr($defaultLangID)."' />\n";
 }
-
-
 ?>
 
 <table width="100%" height="99%">
@@ -168,9 +153,9 @@ else {
 <td>
 <select name=authProvider>
 <?php
-	foreach ($result as $iter) {
-		echo "<option value='".attr($iter{"name"})."'>".text($iter{"name"})."</option>\n";
-	}
+    foreach ($result as $iter) {
+        echo "<option value='".attr($iter["name"])."'>".text($iter["name"])."</option>\n";
+    }
 ?>
 </select>
 </td></tr>
@@ -201,9 +186,9 @@ else {
 </td></tr>
 
 <?php
-var_dump($res3);
-if ($GLOBALS['language_menu_login']) {
-if (count($result3) != 1) { ?>
+ if ($GLOBALS['language_menu_login']) {
+ if (count($result3) != 1) { ?>
+
 <tr>
 <td><span class="text"><?php echo xlt('Language'); ?>:</span></td>
 <td>
@@ -211,21 +196,21 @@ if (count($result3) != 1) { ?>
 <?php
         echo "<option selected='selected' value='" . attr($defaultLangID) . "'>" . xlt('Default') . " - " . xlt($defaultLangName) . "</option>\n";
         foreach ($result3 as $iter) {
-	        if ($GLOBALS['language_menu_showall']) {
-                    if ( !$GLOBALS['allow_debug_language'] && $iter[lang_description] == 'dummy') continue; // skip the dummy language
+            if ($GLOBALS['language_menu_showall']) {
+                    if ( !$GLOBALS['allow_debug_language'] && $iter['lang_description'] == 'dummy') continue; // skip the dummy language
                     echo "<option value='".attr($iter['lang_id'])."'>".text($iter['trans_lang_description'])."</option>\n";
-		}
-	        else {
-		    if (in_array($iter[lang_description], $GLOBALS['language_menu_show'])) {
+        }
+            else {
+            if (in_array($iter['lang_description'], $GLOBALS['language_menu_show'])) {
                         if ( !$GLOBALS['allow_debug_language'] && $iter['lang_description'] == 'dummy') continue; // skip the dummy language
-		        echo "<option value='".attr($iter['lang_id'])."'>" . text($iter['trans_lang_description']) . "</option>\n";
-		    }
-		}
+                echo "<option value='".attr($iter['lang_id'])."'>" . text($iter['trans_lang_description']) . "</option>\n";
+            }
+        }
         }
 ?>
 </select>
 </td></tr>
-<?php }} ?>
+<?php  }} ?>
 
 <tr><td>&nbsp;</td><td>
 <input class="button large" type="submit" onClick="transmit_form()" value="<?php echo xla('Login');?>">
@@ -245,10 +230,10 @@ $ip=$_SERVER['REMOTE_ADDR'];
 </div>
 </div>
 <div class="demo">
-		<!-- Uncomment this for the OpenEMR demo installation
-		<p><center>login = admin
-		<br>password = pass
-		-->
+        <!-- Uncomment this for the OpenEMR demo installation
+        <p><center>login = admin
+        <br>password = pass
+        -->
 </div>
 </td>
 </tr>
