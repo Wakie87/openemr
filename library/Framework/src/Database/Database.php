@@ -5,6 +5,8 @@ define('DB_USER', 'openemr');
 define('DB_PASS', 'openemr');
 define('DB_CHAR', 'utf8');
 
+require_once(dirname(__FILE__) . "/../../../log.inc");
+
 class DB
 {
     protected static $instance = null;
@@ -36,6 +38,26 @@ class DB
     {
         $stmt = self::instance()->prepare($sql);
         $stmt->execute($args);
+        if ($stmt === false) {
+          $outcome = false;
+          // Stash the error into last_mysql_error so it doesn't get clobbered when we insert into the audit log.
+          $GLOBALS['last_mysql_error']=self::instance()->errorInfo();
+        }
+        else {
+          $outcome = true;
+        }
+        $GLOBALS['lastidado']=self::instance()->lastInsertId();
+        auditSQLEvent($sql,$outcome,$args);
         return $stmt;
     }
+
+    public static function runNoLog($sql, $args = [])
+    {
+        $stmt = self::instance()->prepare($sql);
+        $stmt->execute($args);
+        return $stmt;
+    }
+
+
+
 }

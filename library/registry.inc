@@ -30,7 +30,7 @@ function updateRegistered ( $id, $mod )
 {
 	return sqlInsert("update registry set
 		$mod,
-		date=NOW() 
+		date=NOW()
 	where
 		id='$id'
 	");
@@ -43,9 +43,9 @@ function getRegistered ( $state="1", $limit="unlimited", $offset="0")
 		$sql .= " limit $limit, $offset";
 	$res = sqlStatement($sql);
 	if ($res)
-	for($iter=0; $row=sqlFetchArray($res); $iter++)
+	foreach ($res as $row)
 	{
-		$all[$iter] = $row;
+		$all = $row;
 	}
 	else
 		return false;
@@ -71,18 +71,18 @@ function installSQL ( $dir )
 		   sqlStatement(rtrim("$sqlq"));
 		  }
 		}
-			
+
 		return true;
 	}else
 		return false;
 }
 
 
-/* 
+/*
  * is a form registered
  *  (optional - and active)
  * in the database?
- * 
+ *
  * NOTE - sometimes the Name of a form has a line-break at the end, thus this function might be better
  *
  *  INPUT =   directory => form directory

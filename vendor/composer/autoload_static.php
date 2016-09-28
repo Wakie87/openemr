@@ -22,6 +22,10 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
         array (
             'Zend\\' => 5,
         ),
+        'O' => 
+        array (
+            'OpenEMR\\Framework\\' => 18,
+        ),
         'D' => 
         array (
             'Dompdf\\' => 7,
@@ -37,6 +41,10 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
         'Zend\\' => 
         array (
             0 => __DIR__ . '/..' . '/zendframework/zendframework/library/Zend',
+        ),
+        'OpenEMR\\Framework\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/library/Framework/src',
         ),
         'Dompdf\\' => 
         array (

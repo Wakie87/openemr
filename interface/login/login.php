@@ -74,7 +74,7 @@ function imsubmitted() {
 // collect groups
 $result = sqlStatement("select distinct name from groups");
 if (count($result) == 1) {
-    $resvalue = $result["name"];
+    $resvalue = $result[0]['name'];
     echo "<input type='hidden' name='authProvider' value='" . attr($resvalue) . "' />\n";
 }
 
@@ -154,7 +154,7 @@ else {
 <select name=authProvider>
 <?php
     foreach ($result as $iter) {
-        echo "<option value='".attr($iter["name"])."'>".text($iter["name"])."</option>\n";
+        echo "<option value='".attr($iter['name'])."'>".text($iter['name'])."</option>\n";
     }
 ?>
 </select>

@@ -73,10 +73,10 @@ function sqlStatement($statement, $params = null)
 * @param  array   $params      binded variables array (optional)
 * @return recordset
 */
-function sqlStatementNoLog($statement, $params = null )
+function sqlStatementNoLog($statement, $params = null)
 {
-  // Use adodb ExecuteNoLog with binding and return a recordset.
-  $recordset = DB::run( $statement, $params );
+  // Use adodb runNoLog with binding and return a recordset.
+  $recordset = DB::runNoLog( $statement, $params );
   if (!$recordset) {
     HelpfulDie("query failed: $statement", getSqlLastError());
   }
@@ -214,7 +214,7 @@ function sqlQuery($statement, $params = [])
 function sqlQueryNoLog($statement, $params)
 {
 
-  $recordset =  DB::run( $statement, $params );
+  $recordset =  DB::runNoLog( $statement, $params );
   if (!$recordset) {
     HelpfulDie("query failed: $statement", getSqlLastError());
   }
@@ -241,17 +241,11 @@ function sqlQueryNoLogIgnoreError($statement, $params)
 {
 
 
-  $recordset = $GLOBALS['adodb']['db']->ExecuteNoLog( $statement, $params );
-
-  if ($recordset === FALSE) {
-    // ignore the error and return FALSE
-    return FALSE;
+  $recordset = DB::runNoLog( $statement, $params );
+  if (!$recordset) {
+    HelpfulDie("query failed: $statement", getSqlLastError());
   }
-  if ($recordset->EOF)
-   return FALSE;
-  $rez = $recordset->FetchRow();
-  if ($rez == FALSE)
-    return FALSE;
+  $rez = $recordset->Fetch();
   return $rez;
 }
 
@@ -286,7 +280,7 @@ function sqlQueryCdrEngine($statement, $params )
 function sqlInsertClean_audit($statement)
 {
 
-  $ret = $GLOBALS['adodb']['db']->ExecuteNoLog($statement);
+  $ret = DB::run($statement);
   if ($ret === FALSE) {
     HelpfulDie("insert failed: $statement", getSqlLastError());
   }
@@ -299,7 +293,7 @@ function sqlInsertClean_audit($statement)
 * @return  integer Last ID that was inserted into sql
 */
 function getSqlLastID() {
-    return $GLOBALS['lastidado'] > 0 ? $GLOBALS['lastidado'] : $GLOBALS['adodb']['db']->Insert_ID();
+    return $GLOBALS['lastidado'] > 0 ? $GLOBALS['lastidado'] : DB::lastInsertId();
 }
 
 /**
@@ -310,7 +304,7 @@ function getSqlLastID() {
 * @return  string        last mysql error
 */
 function getSqlLastError() {
-    return !empty($GLOBALS['last_mysql_error']) ? $GLOBALS['last_mysql_error'] : $GLOBALS['adodb']['db']->ErrorMsg();
+    return !empty($GLOBALS['last_mysql_error']) ? $GLOBALS['last_mysql_error'] : DB::errorInfo();
 }
 
 /**
@@ -349,7 +343,7 @@ function sqlListFields($table) {
 */
 function sqlNumRows($r)
 {
-  return $r->RecordCount();
+  return $r->rowCount();
 }
 
 /**
