@@ -343,7 +343,7 @@ function sqlListFields($table) {
 */
 function sqlNumRows($r)
 {
-  return $r->rowCount();
+  return DB::rowCount($r);
 }
 
 /**

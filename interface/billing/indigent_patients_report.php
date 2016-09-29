@@ -180,7 +180,7 @@ $form_end_date   = fixDate($_POST['form_end_date'], date("Y-m-d"));
       $where .= " AND e.date <= '$form_end_date'";
     }
 
-    $rez = sqlStatement("SELECT " .
+    $row = sqlStatement("SELECT " .
       "e.date, e.encounter, p.pid, p.lname, p.fname, p.mname, p.ss " .
       "FROM form_encounter AS e, patient_data AS p, insurance_data AS i " .
       "WHERE p.pid = e.pid AND i.pid = e.pid AND i.type = 'primary' " .

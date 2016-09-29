@@ -1,5 +1,5 @@
 <?php
-// +-----------------------------------------------------------------------------+ 
+// +-----------------------------------------------------------------------------+
 // Copyright (C) 2010 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 //
 //
@@ -19,13 +19,13 @@
 // openemr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 // Author:   Eldho Chacko <eldho@zhservices.com>
-//           Paul Simon K <paul@zhservices.com> 
+//           Paul Simon K <paul@zhservices.com>
 //
 // +------------------------------------------------------------------------------+
 //===============================================================================
-//Payments can be edited here.It includes deletion of an allocation,modifying the 
+//Payments can be edited here.It includes deletion of an allocation,modifying the
 //same or adding a new allocation.Log is kept for the deleted ones.
 //===============================================================================
 require_once("../globals.php");
@@ -787,7 +787,7 @@ return false;
  if($payment_id*1>0)
   {
   ?>
-    <?php 
+    <?php
 	require_once("payment_master.inc.php");  //Check/cash details are entered here.
 	?>
 <?php
@@ -821,7 +821,7 @@ return false;
 				$deductibletot=0;
 				$takebacktot=0;
 				$allowedtot=0;
-				if($RowSearchSub = sqlFetchArray($ResultSearchSub))
+				if($RowSearchSub = $ResultSearchSub)
 				 {
 					do
 					 {
@@ -840,16 +840,15 @@ return false;
                                                 }
 						$CodeMaster=$RowSearchSub['code'];
 						$ModifierMaster=$RowSearchSub['modifier'];
-					 	$res = sqlStatement("SELECT fname,lname,mname FROM patient_data	where pid ='$PId'");
-						$row = sqlFetchArray($res);
+					 	$row = sqlStatement("SELECT fname,lname,mname FROM patient_data	where pid ='$PId'");
 						$fname=$row['fname'];
 						$lname=$row['lname'];
 						$mname=$row['mname'];
 						$NameDB=$lname.' '.$fname.' '.$mname;
 						$ResultSearch = sqlStatement("SELECT billing.id,last_level_closed,billing.encounter,form_encounter.`date`,$sql_select_part_codetype billing.code,billing.modifier,fee
 						 FROM billing ,form_encounter
-						 where billing.encounter=form_encounter.encounter and billing.pid=form_encounter.pid and 
-						 code_type!='ICD9' and  code_type!='COPAY' and billing.activity!=0 and 
+						 where billing.encounter=form_encounter.encounter and billing.pid=form_encounter.pid and
+						 code_type!='ICD9' and  code_type!='COPAY' and billing.activity!=0 and
 						 form_encounter.pid ='$PId' and billing.pid ='$PId' and billing.encounter ='$EncounterMaster'
                                                   $sql_where_part_codetype
 						  and billing.code ='$CodeMaster'
@@ -883,7 +882,7 @@ return false;
 						  </tr>
 						  <?php
 						  }
-							while ($RowSearch = sqlFetchArray($ResultSearch))
+							foreach ($ResultSearch as $RowSearch)
 							 {
 								$CountIndex++;
 								$CountIndexAbove++;
@@ -898,19 +897,17 @@ return false;
 								 $ModifierString="";
 								$Fee=$RowSearch['fee'];
 								$Encounter=$RowSearch['encounter'];
-								
-								$resPayer = sqlStatement("SELECT  payer_type from ar_activity where  session_id ='$payment_id' and
+
+								$rowPayer = sqlStatement("SELECT  payer_type from ar_activity where  session_id ='$payment_id' and
 								pid ='$PId' and  encounter  ='$Encounter' and code_type='$Codetype' and code='$Code' and modifier='$Modifier' ");
-								$rowPayer = sqlFetchArray($resPayer);
 								$Ins=$rowPayer['payer_type'];
-					
+
 								//Always associating the copay to a particular charge.
 								$BillingId=$RowSearch['id'];
-								$resId = sqlStatement("SELECT id  FROM billing where code_type!='ICD9' and  code_type!='COPAY'  and
+								$rowId = sqlStatement("SELECT id  FROM billing where code_type!='ICD9' and  code_type!='COPAY'  and
 								pid ='$PId' and  encounter  ='$Encounter' and billing.activity!=0 order by id");
-								$rowId = sqlFetchArray($resId);
 								$Id=$rowId['id'];
-			
+
 								if($BillingId!=$Id)//multiple cpt in single encounter
 								 {
 									$Copay=0.00;
@@ -919,14 +916,14 @@ return false;
 								 {
 									$resCopay = sqlStatement("SELECT sum(fee) as copay FROM billing where
 									code_type='COPAY' and  pid ='$PId' and  encounter  ='$Encounter' and billing.activity!=0");
-									$rowCopay = sqlFetchArray($resCopay);
+									$rowCopay = $resCopay;
 									$Copay=$rowCopay['copay']*-1;
 
 									$resMoneyGot = sqlStatement("SELECT sum(pay_amount) as PatientPay FROM ar_activity where
 									pid ='$PId'  and  encounter  ='$Encounter' and  payer_type=0 and account_code='PCP'");//new fees screen copay gives account_code='PCP'
-									$rowMoneyGot = sqlFetchArray($resMoneyGot);
+									$rowMoneyGot = $resMoneyGot;
 									$PatientPay=$rowMoneyGot['PatientPay'];
-									
+
 									$Copay=$Copay+$PatientPay;
 								 }
 
@@ -934,15 +931,15 @@ return false;
 									if($Ins==0)
 									 {//Fetch all values
 										$resMoneyGot = sqlStatement("SELECT sum(pay_amount) as MoneyGot FROM ar_activity where
-										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'  and  encounter  ='$Encounter' and  !(payer_type=0 and 
+										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'  and  encounter  ='$Encounter' and  !(payer_type=0 and
 										account_code='PCP')");
 										//new fees screen copay gives account_code='PCP'
-										$rowMoneyGot = sqlFetchArray($resMoneyGot);
+										$rowMoneyGot = $resMoneyGot;
 										$MoneyGot=$rowMoneyGot['MoneyGot'];
-	
+
 										$resMoneyAdjusted = sqlStatement("SELECT sum(adj_amount) as MoneyAdjusted FROM ar_activity where
 										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'  and  encounter  ='$Encounter'");
-										$rowMoneyAdjusted = sqlFetchArray($resMoneyAdjusted);
+										$rowMoneyAdjusted = $resMoneyAdjusted;
 										$MoneyAdjusted=$rowMoneyAdjusted['MoneyAdjusted'];
 									 }
 									else//Fetch till that much got
@@ -951,34 +948,34 @@ return false;
 										//Used maily in  the case if primary/others pays once more.
 										$resSequence = sqlStatement("SELECT  sequence_no from ar_activity where  session_id ='$payment_id' and
 										pid ='$PId' and  encounter  ='$Encounter' order by sequence_no desc ");
-										$rowSequence = sqlFetchArray($resSequence);
+										$rowSequence = $resSequence;
 										$Sequence=$rowSequence['sequence_no'];
 
 										$resMoneyGot = sqlStatement("SELECT sum(pay_amount) as MoneyGot FROM ar_activity where
-										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'  and  encounter  ='$Encounter' and  
+										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'  and  encounter  ='$Encounter' and
 										payer_type > 0 and payer_type <='$Ins' and sequence_no<='$Sequence'");
-										$rowMoneyGot = sqlFetchArray($resMoneyGot);
+										$rowMoneyGot = $resMoneyGot;
 										$MoneyGot=$rowMoneyGot['MoneyGot'];
-	
+
 										$resMoneyAdjusted = sqlStatement("SELECT sum(adj_amount) as MoneyAdjusted FROM ar_activity where
-										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'   and  encounter  ='$Encounter' and  
+										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'   and  encounter  ='$Encounter' and
 										payer_type > 0 and payer_type <='$Ins' and sequence_no<='$Sequence'");
-										$rowMoneyAdjusted = sqlFetchArray($resMoneyAdjusted);
+										$rowMoneyAdjusted = $resMoneyAdjusted;
 										$MoneyAdjusted=$rowMoneyAdjusted['MoneyAdjusted'];
 									 }
 									$Remainder=$Fee-$Copay-$MoneyGot-$MoneyAdjusted;
-									
+
 									//For calculating RemainderJS.Used while restoring back the values.
 									if($Ins==0)
 									 {//Got just before Patient
 										$resMoneyGot = sqlStatement("SELECT sum(pay_amount) as MoneyGot FROM ar_activity where
 										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'  and  encounter  ='$Encounter' and  payer_type !=0");
-										$rowMoneyGot = sqlFetchArray($resMoneyGot);
+										$rowMoneyGot = $resMoneyGot;
 										$MoneyGot=$rowMoneyGot['MoneyGot'];
-	
+
 										$resMoneyAdjusted = sqlStatement("SELECT sum(adj_amount) as MoneyAdjusted FROM ar_activity where
 										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'  and  encounter  ='$Encounter' and payer_type !=0");
-										$rowMoneyAdjusted = sqlFetchArray($resMoneyAdjusted);
+										$rowMoneyAdjusted = $resMoneyAdjusted;
 										$MoneyAdjusted=$rowMoneyAdjusted['MoneyAdjusted'];
 									 }
 									else
@@ -987,19 +984,19 @@ return false;
 										//Used maily in  the case if primary/others pays once more.
 										$resSequence = sqlStatement("SELECT  sequence_no from ar_activity where  session_id ='$payment_id' and
 										pid ='$PId' and  encounter  ='$Encounter' order by sequence_no  ");
-										$rowSequence = sqlFetchArray($resSequence);
+										$rowSequence = $resSequence;
 										$Sequence=$rowSequence['sequence_no'];
 
 										$resMoneyGot = sqlStatement("SELECT sum(pay_amount) as MoneyGot FROM ar_activity where
-										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'   and  encounter  ='$Encounter' 
+										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'   and  encounter  ='$Encounter'
 										and payer_type > 0  and payer_type <='$Ins' and sequence_no<'$Sequence'");
-										$rowMoneyGot = sqlFetchArray($resMoneyGot);
+										$rowMoneyGot = $resMoneyGot;
 										$MoneyGot=$rowMoneyGot['MoneyGot'];
-	
+
 										$resMoneyAdjusted = sqlStatement("SELECT sum(adj_amount) as MoneyAdjusted FROM ar_activity where
-										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'   and  encounter  ='$Encounter' 
+										pid ='$PId' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'   and  encounter  ='$Encounter'
 										and payer_type <='$Ins' and sequence_no<'$Sequence' ");
-										$rowMoneyAdjusted = sqlFetchArray($resMoneyAdjusted);
+										$rowMoneyAdjusted = $resMoneyAdjusted;
 										$MoneyAdjusted=$rowMoneyAdjusted['MoneyAdjusted'];
 									 }
 									//Stored in hidden so that can be used while restoring back the values.
@@ -1007,37 +1004,37 @@ return false;
 
 									$resPayment = sqlStatement("SELECT  pay_amount from ar_activity where  session_id ='$payment_id' and
 									pid ='$PId' and  encounter  ='$Encounter' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'  and pay_amount>0");
-									$rowPayment = sqlFetchArray($resPayment);
+									$rowPayment = $resPayment;
 									$PaymentDB=$rowPayment['pay_amount']*1;
 									$PaymentDB=$PaymentDB == 0 ? '' : $PaymentDB;
 
 									$resPayment = sqlStatement("SELECT  pay_amount from ar_activity where  session_id ='$payment_id' and
 									pid ='$PId' and  encounter  ='$Encounter' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'  and pay_amount<0");
-									$rowPayment = sqlFetchArray($resPayment);
+									$rowPayment =$resPayment;
 									$TakebackDB=$rowPayment['pay_amount']*-1;
 									$TakebackDB=$TakebackDB == 0 ? '' : $TakebackDB;
 
 									$resPayment = sqlStatement("SELECT  adj_amount from ar_activity where  session_id ='$payment_id' and
 									pid ='$PId' and  encounter  ='$Encounter' and code_type='$Codetype' and code='$Code' and modifier='$Modifier'  and adj_amount!=0");
-									$rowPayment = sqlFetchArray($resPayment);
+									$rowPayment = $resPayment;
 									$AdjAmountDB=$rowPayment['adj_amount']*1;
 									$AdjAmountDB=$AdjAmountDB == 0 ? '' : $AdjAmountDB;
 
 									$resPayment = sqlStatement("SELECT  memo from ar_activity where  session_id ='$payment_id' and
 									pid ='$PId' and  encounter  ='$Encounter' and code_type='$Codetype' and  code='$Code' and modifier='$Modifier'  and memo like 'Deductable%'");
-									$rowPayment = sqlFetchArray($resPayment);
+									$rowPayment = $resPayment;
 									$DeductibleDB=$rowPayment['memo'];
 									$DeductibleDB=str_replace('Deductable $','',$DeductibleDB);
 
 									$resPayment = sqlStatement("SELECT  follow_up,follow_up_note from ar_activity where  session_id ='$payment_id' and
 									pid ='$PId' and  encounter  ='$Encounter' and code_type='$Codetype' and  code='$Code' and modifier='$Modifier'  and follow_up = 'y'");
-									$rowPayment = sqlFetchArray($resPayment);
+									$rowPayment = $resPayment;
 									$FollowUpDB=$rowPayment['follow_up'];
 									$FollowUpReasonDB=$rowPayment['follow_up_note'];
-									
+
 									$resPayment = sqlStatement("SELECT reason_code from ar_activity where  session_id ='$payment_id' and
 									pid ='$PId' and  encounter  ='$Encounter' and code_type='$Codetype' and  code='$Code' and modifier='$Modifier'");
-									$rowPayment = sqlFetchArray($resPayment);
+									$rowPayment = $resPayment;
 									$ReasonCodeDB=$rowPayment['reason_code'];
 
 									if($Ins==1)
@@ -1097,19 +1094,20 @@ return false;
 							<td class="<?php echo $StringClass; ?>" ><input  name="AdjAmount<?php echo $CountIndex; ?>"  onKeyDown="PreventIt(event)"   autocomplete="off"  id="AdjAmount<?php echo $CountIndex; ?>"  value="<?php echo htmlspecialchars($AdjAmountDB); ?>"   onChange="ValidateNumeric(this);ScreenAdjustment(this,<?php echo $CountIndex; ?>);UpdateTotalValues(1,<?php echo $TotalRows; ?>,'AdjAmount','AdjAmounttotal');RestoreValues(<?php echo $CountIndex; ?>)"  type="text"   style="width:70px;text-align:right; font-size:12px" /></td>
 							<td class="<?php echo $StringClass; ?>" ><input  name="Deductible<?php echo $CountIndex; ?>"  id="Deductible<?php echo $CountIndex; ?>"  onKeyDown="PreventIt(event)"  onChange="ValidateNumeric(this);UpdateTotalValues(1,<?php echo $TotalRows; ?>,'Deductible','deductibletotal');"  value="<?php echo htmlspecialchars($DeductibleDB); ?>"   autocomplete="off"   type="text"   style="width:60px;text-align:right; font-size:12px" /></td>
 							<td class="<?php echo $StringClass; ?>" ><input  name="Takeback<?php echo $CountIndex; ?>"  onKeyDown="PreventIt(event)"   autocomplete="off"   id="Takeback<?php echo $CountIndex; ?>"   value="<?php echo htmlspecialchars($TakebackDB); ?>"   onChange="ValidateNumeric(this);ScreenAdjustment(this,<?php echo $CountIndex; ?>);UpdateTotalValues(1,<?php echo $TotalRows; ?>,'Takeback','takebacktotal');RestoreValues(<?php echo $CountIndex; ?>)"   type="text"   style="width:60px;text-align:right; font-size:12px" /></td>
-							<td align="left" class="<?php echo $StringClass; ?>" ><input name="HiddenReasonCode<?php echo $CountIndex; ?>" id="HiddenReasonCode<?php echo $CountIndex; ?>"  value="<?php echo htmlspecialchars($ReasonCodeDB); ?>" type="hidden"/><?php echo generate_select_list( "ReasonCode$CountIndex", "msp_remit_codes", "$ReasonCodeDB", "MSP Code" ); ?></td>							
+							<td align="left" class="<?php echo $StringClass; ?>" ><input name="HiddenReasonCode<?php echo $CountIndex; ?>" id="HiddenReasonCode<?php echo $CountIndex; ?>"  value="<?php echo htmlspecialchars($ReasonCodeDB); ?>" type="hidden"/><?php echo generate_select_list( "ReasonCode$CountIndex", "msp_remit_codes", "$ReasonCodeDB", "MSP Code" ); ?></td>
 							<td align="center" class="<?php echo $StringClass; ?>" ><input type="checkbox" id="FollowUp<?php echo $CountIndex; ?>"  name="FollowUp<?php echo $CountIndex; ?>" value="y" onClick="ActionFollowUp(<?php echo $CountIndex; ?>)" <?php echo $FollowUpDB=='y' ? ' checked ' : ''; ?> /></td>
 							<td class="<?php echo $StringClass; ?> right" ><input  onKeyDown="PreventIt(event)" id="FollowUpReason<?php echo $CountIndex; ?>"    name="FollowUpReason<?php echo $CountIndex; ?>"  <?php echo $FollowUpDB=='y' ? '' : ' readonly '; ?>  type="text"  value="<?php echo htmlspecialchars($FollowUpReasonDB); ?>"    style="width:110px;font-size:12px" /></td>
 						  </tr>
 						<?php
 
-								
+
 							 }//while ($RowSearch = sqlFetchArray($ResultSearch))
 						?>
 						<?php
 						 }//if(sqlNumRows($ResultSearch)>0)
 
-						 }while ($RowSearchSub = sqlFetchArray($ResultSearchSub));
+						 }
+                         while ($RowSearchSub = $ResultSearchSub);
 						if($Table=='yes')
 						 {
 						?>
@@ -1117,7 +1115,7 @@ return false;
 						    <td align="left" colspan="9">&nbsp;</td>
 					        <td class="left bottom" bgcolor="#6699FF" id="allowtotal" align="right" ><?php echo htmlspecialchars(number_format($allowedtot,2)); ?></td>
 					        <td class="left bottom" bgcolor="#6699FF" id="paymenttotal" align="right" ><?php echo htmlspecialchars(number_format($paymenttot,2)); ?></td>
-	  						<td class="left bottom" bgcolor="#6699FF" id="AdjAmounttotal" align="right" ><?php echo htmlspecialchars(number_format($adjamttot,2)); ?></td>						
+	  						<td class="left bottom" bgcolor="#6699FF" id="AdjAmounttotal" align="right" ><?php echo htmlspecialchars(number_format($adjamttot,2)); ?></td>
 			      			<td class="left bottom" bgcolor="#6699FF" id="deductibletotal" align="right"><?php echo htmlspecialchars(number_format($deductibletot,2)); ?></td>
 						    <td class="left bottom right" bgcolor="#6699FF" id="takebacktotal" align="right"><?php echo htmlspecialchars(number_format($takebacktot,2)); ?></td>
 						    <td  align="center">&nbsp;</td>
@@ -1136,7 +1134,7 @@ return false;
 		  </tr>
 		  <tr>
 		    <td colspan="13" align="left" >
-				<?php 
+				<?php
 				require_once("payment_pat_sel.inc.php"); //Patient ajax section and listing of charges.
 				?>
 			</td>
