@@ -159,7 +159,7 @@ $today = date("Y-m-d");
 
     // This loops once for each invoice/encounter.
     //
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       $svcdate = substr($row['date'], 0, 10);
       $duedate = $svcdate; // TBD?
       $duncount = $row['stmt_count'];

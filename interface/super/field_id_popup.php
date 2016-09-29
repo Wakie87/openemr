@@ -220,7 +220,7 @@ else {
       array('LBF%', 'E'));
   }
   $last_field_id = '';
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     if ($row['field_id'] === $last_field_id) continue;
     $last_field_id = $row['field_id'];
     gen_sel_row($row);

@@ -73,17 +73,16 @@ function imsubmitted() {
 <?php
 // collect groups
 $result = sqlStatement("select distinct name from groups");
+
 if (count($result) == 1) {
-    $resvalue = $result[0]['name'];
+    $resvalue = $result[0]["name"];
     echo "<input type='hidden' name='authProvider' value='" . attr($resvalue) . "' />\n";
 }
-
-
 // collect default language id
-$result2 = sqlQuery("select * from lang_languages where lang_description = ?",array($GLOBALS['language_default']));
+$result2 = sqlStatement("select * from lang_languages where lang_description = ?",array($GLOBALS['language_default']));
 if (count($result2) == 1) {
-          $defaultLangID = $result2['lang_id'];
-          $defaultLangName = $result2['lang_description'];
+          $defaultLangID = $result2[0]["lang_id"];
+          $defaultLangName = $result2[0]["lang_description"];
 }
 else {
           //default to english if any problems
@@ -154,7 +153,7 @@ else {
 <select name=authProvider>
 <?php
     foreach ($result as $iter) {
-        echo "<option value='".attr($iter['name'])."'>".text($iter['name'])."</option>\n";
+        echo "<option value='".attr($iter["name"])."'>".text($iter["name"])."</option>\n";
     }
 ?>
 </select>
@@ -186,9 +185,8 @@ else {
 </td></tr>
 
 <?php
- if ($GLOBALS['language_menu_login']) {
- if (count($result3) != 1) { ?>
-
+if ($GLOBALS['language_menu_login']) {
+if (count($result3) != 1) { ?>
 <tr>
 <td><span class="text"><?php echo xlt('Language'); ?>:</span></td>
 <td>
@@ -210,7 +208,7 @@ else {
 ?>
 </select>
 </td></tr>
-<?php  }} ?>
+<?php }} ?>
 
 <tr><td>&nbsp;</td><td>
 <input class="button large" type="submit" onClick="transmit_form()" value="<?php echo xla('Login');?>">

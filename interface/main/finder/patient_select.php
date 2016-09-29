@@ -42,7 +42,7 @@ $from_page = isset($_REQUEST['from_page']) ? $_REQUEST['from_page'] : "";
 <html>
 <head>
 <?php html_header_show();?>
-<script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>    
+<script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
 <style>
@@ -58,11 +58,11 @@ form {
     font-weight: bold;
     padding: 3px;
 }
-#searchResultsHeader { 
+#searchResultsHeader {
     width: 100%;
     background-color: lightgrey;
 }
-#searchResultsHeader table { 
+#searchResultsHeader table {
     width: 96%;  /* not 100% because the 'searchResults' table has a scrollbar */
     border-collapse: collapse;
 }
@@ -103,7 +103,7 @@ form {
 }
 .oneResult { }
 .billing { color: red; font-weight: bold; }
-.highlight { 
+.highlight {
     background-color: #336699;
     color: white;
 }
@@ -157,7 +157,7 @@ if ($popup) {
   $fres = sqlStatement("SELECT * FROM layout_options " .
     "WHERE form_id = 'DEM' AND uor > 0 AND field_id != '' " .
     "ORDER BY group_name, seq");
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $field_id  = $frow['field_id'];
     if (strpos($field_id, 'em_') === 0) continue;
     $data_type = $frow['data_type'];
@@ -196,9 +196,7 @@ if ($popup) {
 
   $sql = "SELECT $given FROM patient_data " .
     "WHERE $where ORDER BY $orderby LIMIT $fstart, $sqllimit";
-  $rez = sqlStatement($sql,$sqlBindArray);
-  $result = array();
-  while ($row = sqlFetchArray($rez)) $result[] = $row;
+  $result = sqlStatement($sql,$sqlBindArray);
   _set_patient_inc_count($sqllimit, count($result), $where, $sqlBindArray);
 }
 else if ($from_page == "cdr_report") {
@@ -368,7 +366,7 @@ else {
     "field_id NOT LIKE 'DOB' AND " .
     "field_id NOT LIKE 'pubpid' " .
     "ORDER BY group_name, seq LIMIT 5");
-  while ($trow = sqlFetchArray($tres)) {
+  foreach ($tres as $trow) {
     $extracols[$trow['field_id']] = $trow;
     echo "<th class='srMisc'>" . htmlspecialchars(xl($trow['title']), ENT_NOQUOTES) . "</th>\n";
   }
@@ -407,20 +405,20 @@ if ($result) {
         //end of phone number display setup, now display the phone number(s)
         echo "<td class='srPhone' title='".htmlspecialchars( $all_other_phones, ENT_QUOTES)."'>" .
 	    htmlspecialchars( $iter['phone_home'], ENT_NOQUOTES) . "</td>\n";
-        
+
         echo "<td class='srSS'>" . htmlspecialchars( $iter['ss'], ENT_NOQUOTES) . "</td>";
         if ($iter{"DOB"} != "0000-00-00 00:00:00") {
             echo "<td class='srDOB'>" . htmlspecialchars( $iter['DOB_TS'], ENT_NOQUOTES) . "</td>";
         } else {
             echo "<td class='srDOB'>&nbsp;</td>";
         }
-        
+
         echo "<td class='srID'>" . htmlspecialchars( $iter['pubpid'], ENT_NOQUOTES) . "</td>";
 
         if (empty($GLOBALS['patient_search_results_style'])) {
 
           echo "<td class='srPID'>" . htmlspecialchars( $iter['pid'], ENT_NOQUOTES) . "</td>";
-          
+
           //setup for display of encounter date info
           $encounter_count = 0;
           $day_diff = '';
@@ -441,7 +439,7 @@ if ($result) {
                   "billing.code_type not like 'COPAY' where ".
                   "form_encounter.pid = ?";
           $statement= sqlStatement($query, array($iter{"pid"}) );
-          if ($results = sqlFetchArray($statement)) {
+          if ($results = $statement) {
               $last_date_seen = $results['mydate'];
               $day_diff = $results['day_diff'];
               $next_appt_date= xl($results['next_appt_day']).', '.$results['next_appt'];
@@ -456,7 +454,7 @@ if ($result) {
 	          " day) as next_appt_day from form_encounter " .
                   " where form_encounter.pid = ?";
           $statement= sqlStatement($query, array($iter{"pid"}) );
-          if ($results = sqlFetchArray($statement)) {
+          if ($results = $statement) {
               $last_date_seen = $results['mydate'];
               $day_diff = $results['day_diff'];
               $next_appt_date= xl($results['next_appt_day']).', '.$results['next_appt'];
@@ -469,7 +467,7 @@ if ($result) {
                    " where code_type not like 'COPAY' and activity = 1 " .
                    " and pid = ?";
           $statement= sqlStatement($query, array($iter{"pid"}) );
-          if ($results = sqlFetchArray($statement)) {
+          if ($results = $statement) {
               $encounter_count_billed = $results['encounter_count'];
           }
           // calculate count of encounters, regardless of billing
@@ -477,7 +475,7 @@ if ($result) {
                       " from form_encounter where ".
                       " pid = ?";
           $statement= sqlStatement($query, array($iter{"pid"}) );
-          if ($results = sqlFetchArray($statement)) {
+          if ($results = $statement) {
               $encounter_count = $results['encounter_count'];
           }
           echo "<td class='srNumEnc'>" . htmlspecialchars( $encounter_count, ENT_NOQUOTES) . "</td>\n";
@@ -517,7 +515,7 @@ $(document).ready(function(){
 });
 
 var SelectPatient = function (eObj) {
-<?php 
+<?php
 // The layout loads just the demographics frame here, which in turn
 // will set the pid and load all the other frames.
     $newPage = "../../patient_file/summary/demographics.php?set_pid=";

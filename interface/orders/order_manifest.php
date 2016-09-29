@@ -233,7 +233,7 @@ function generate_order_summary($orderid) {
 
   $encount = 0;
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $order_seq      = empty($row['procedure_order_seq']) ? 0 : ($row['procedure_order_seq'] + 0);
     $procedure_code = empty($row['procedure_code'  ]) ? '' : $row['procedure_code'];
     $procedure_name = empty($row['procedure_name'  ]) ? '' : $row['procedure_name'];

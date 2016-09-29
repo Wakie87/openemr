@@ -314,7 +314,7 @@ $(document).ready(function() {
  if ($res) {
   $docrow = array('docname' => '', 'charges' => 0, 'copays' => 0, 'encounters' => 0);
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
    $patient_id = $row['pid'];
    $encounter  = $row['encounter'];
    $docname    = $row['docname'] ? $row['docname'] : xl('Unknown');

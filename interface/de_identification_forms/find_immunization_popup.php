@@ -168,7 +168,7 @@ function check_search_str()
       "ORDER BY title";
    $res = sqlStatement($query);
 	$row_count = 0;
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
 	  $row_count = $row_count + 1;
       $itercode = addslashes($row['option_id']);
       $itertext = addslashes(ucfirst(strtolower(trim($row['title']))));

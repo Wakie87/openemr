@@ -223,7 +223,7 @@ require_once("$srcdir/formatting.inc.php");
   $res = sqlStatement($query);
 
   $prevpid = 0;
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
    if ($row['pid'] == $prevpid) continue;
    $prevpid = $row['pid'];
 

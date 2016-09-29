@@ -481,8 +481,8 @@ function genFindBlock() {
   if (i >= 0) url = url.substring(0,i) + active_pid + url.substring(i+5);
   if(f.sel_frame)
    {
-	  var fi = f.sel_frame.selectedIndex;
-	  if (fi == 1) frame = 'RTop'; else if (fi == 2) frame = 'RBot';
+      var fi = f.sel_frame.selectedIndex;
+      if (fi == 1) frame = 'RTop'; else if (fi == 2) frame = 'RBot';
    }
   if (!f.cb_bot.checked) frame = 'RTop'; else if (!f.cb_top.checked) frame = 'RBot';
   top.frames[frame].location = '<?php echo "$web_root/interface/" ?>' + url;
@@ -497,8 +497,8 @@ function genFindBlock() {
   if (i >= 0) url = url.substring(0,i) + active_pid + url.substring(i+5);
   if(f.sel_frame)
    {
-	  var fi = f.sel_frame.selectedIndex;
-	  if (fi == 1) frame = 'RTop'; else if (fi == 2) frame = 'RBot';
+      var fi = f.sel_frame.selectedIndex;
+      if (fi == 1) frame = 'RTop'; else if (fi == 2) frame = 'RBot';
    }
   if (!f.cb_bot.checked) frame = 'RTop'; else if (!f.cb_top.checked) frame = 'RBot';
   top.frames[frame].location = '<?php echo "$web_root/interface/" ?>' + url;
@@ -590,20 +590,20 @@ function goHome() {
 
 //Function to clear active patient and encounter in the server side
 function clearactive() {
-	top.restoreSession();
-	//Ajax call to clear active patient in session
-	$.ajax({
-	  type: "POST",
-	  url: "<?php echo $GLOBALS['webroot'] ?>/library/ajax/unset_session_ajax.php",
-	  data: { func: "unset_pid"},
-	  success:function( msg ) {
-		clearPatient();
-		top.frames['RTop'].location='<?php echo $GLOBALS['default_top_pane']?>';
-		top.frames['RBot'].location='messages/messages.php?form_active=1';
-	  }
-	});
+    top.restoreSession();
+    //Ajax call to clear active patient in session
+    $.ajax({
+      type: "POST",
+      url: "<?php echo $GLOBALS['webroot'] ?>/library/ajax/unset_session_ajax.php",
+      data: { func: "unset_pid"},
+      success:function( msg ) {
+        clearPatient();
+        top.frames['RTop'].location='<?php echo $GLOBALS['default_top_pane']?>';
+        top.frames['RBot'].location='messages/messages.php?form_active=1';
+      }
+    });
 
-	$(parent.Title.document.getElementById('clear_active')).hide();
+    $(parent.Title.document.getElementById('clear_active')).hide();
 }
  // Reference to the search.php window.
  var my_window;
@@ -812,11 +812,11 @@ function getEncounterTargetFrame( name ) {
     return r;
 }
 function isEncounterLocked( encounterId ) {
-	<?php if ( $esignApi->lockEncounters() ) { ?>
-	// If encounter locking is enabled, make a syncronous call (async=false) to check the
-	// DB to see if the encounter is locked.
-	// Call restore session, just in case
-	top.restoreSession();
+    <?php if ( $esignApi->lockEncounters() ) { ?>
+    // If encounter locking is enabled, make a syncronous call (async=false) to check the
+    // DB to see if the encounter is locked.
+    // Call restore session, just in case
+    top.restoreSession();
     $.ajax({
         type: 'POST',
         url: '<?php echo $GLOBALS['webroot']?>/interface/esign/index.php?module=encounter&method=esign_is_encounter_locked',
@@ -826,13 +826,13 @@ function isEncounterLocked( encounterId ) {
         },
         dataType: 'json',
         async:false
-	});
-	return encounter_locked;
-	<?php } else { ?>
-	// If encounter locking isn't enabled, just tell the left_nav that the encounter
+    });
+    return encounter_locked;
+    <?php } else { ?>
+    // If encounter locking isn't enabled, just tell the left_nav that the encounter
     // isn't locked.
-	return false;
-	<?php } ?>
+    return false;
+    <?php } ?>
  }
  // Call this to announce that the encounter has changed.  You must call this
  // if you change the session encounter, so that the navigation frame will
@@ -893,15 +893,15 @@ function isEncounterLocked( encounterId ) {
  }
 function removeOptionSelected(EncounterId)
 {//Removes an item from the Encounter drop down.
-	var elSel = top.window.parent.Title.document.getElementById('EncounterHistory');
-	var i;
-	for (i = elSel.length - 1; i>=2; i--) {
-	 EncounterHistoryValue=elSel.options[i].value;
-	 EncounterHistoryValueArray=EncounterHistoryValue.split('~');
-		if (EncounterHistoryValueArray[0]==EncounterId) {
-			elSel.remove(i);
-		}
-	}
+    var elSel = top.window.parent.Title.document.getElementById('EncounterHistory');
+    var i;
+    for (i = elSel.length - 1; i>=2; i--) {
+     EncounterHistoryValue=elSel.options[i].value;
+     EncounterHistoryValueArray=EncounterHistoryValue.split('~');
+        if (EncounterHistoryValueArray[0]==EncounterId) {
+            elSel.remove(i);
+        }
+    }
 }
 
  // You can call this to make sure the session pid is what we expect.
@@ -981,7 +981,7 @@ $(document).ready(function(){
     $("#navigation-slide > li  > a#admimg").prepend('<i class="fa fa-fw fa-cogs"></i>&nbsp;');
     $("#navigation-slide > li  > a#misimg").prepend('<i class="fa fa-fw fa-cog"></i>&nbsp;');
     $("#navigation-slide > li  > a#proimg").prepend('<i class="fa fa-fw fa-stethoscope"></i>&nbsp;');
-		$("#navigation-slide > li  > a#modimg").prepend('<i class="fa fa-fw fa-puzzle-piece"></i>&nbsp;');
+        $("#navigation-slide > li  > a#modimg").prepend('<i class="fa fa-fw fa-puzzle-piece"></i>&nbsp;');
     $("#navigation-slide > li").each(function(index) {
       if($(" > ul > li", this).size() == 0){
         $(" > a", this).addClass("collapsed");
@@ -1082,8 +1082,8 @@ $(document).ready(function(){
 //
 
 $lres = sqlStatement("SELECT * FROM list_options " .
-  "WHERE list_id = 'lbfnames' ORDER BY seq, title");
-if (!empty($lres)) {
+  "WHERE list_id = 'lbfnames' AND activity = 1 ORDER BY seq, title");
+if ($lres) {
   foreach ($lres as $lrow) {
     $option_id = $lrow['option_id']; // should start with LBF
     $title = $lrow['title'];
@@ -1096,10 +1096,10 @@ $reg = getRegistered();
 if (!empty($reg)) {
   foreach ($reg as $entry) {
     $option_id = $entry['directory'];
-	  $title = trim($entry['nickname']);
+      $title = trim($entry['nickname']);
     if ($option_id == 'fee_sheet' ) continue;
     if ($option_id == 'newpatient') continue;
-	  if (empty($title)) $title = $entry['name'];
+      if (empty($title)) $title = $entry['name'];
     genMiscLink('RBot','cod','2',xl_form_title($title),
       "patient_file/encounter/load_form.php?formname=" .
       urlencode($option_id));
@@ -1127,41 +1127,41 @@ if (!empty($reg)) {
       <?php genMiscLink('RBot','pay','1',xl('Payment'),'patient_file/front_payment.php'); ?>
       <?php genMiscLink('RBot','bil','1',xl('Checkout'),'patient_file/pos_checkout.php?framed=1'); ?>
       <?php if (! $GLOBALS['simplified_demographics']) genTreeLink('RTop','bil',xl('Billing')); ?>
-	  <?php genTreeLink('RTop','npa',xl('Batch Payments'),false,2);?>
-	  <?php genMiscLink('RTop','eob','0',xl('Posting'), 'billing/sl_eob_search.php'); ?>
+      <?php genTreeLink('RTop','npa',xl('Batch Payments'),false,2);?>
+      <?php genMiscLink('RTop','eob','0',xl('Posting'), 'billing/sl_eob_search.php'); ?>
       <?php if ($GLOBALS['enable_edihistory_in_left_menu'] && acl_check('acct', 'eob')) genTreeLink('RTop','edi',xl('EDI History'),false,2);?>
     </ul>
   </li>
   <?php } ?>
-	<?php  if (acl_check('menus', 'modle')) {?>
+    <?php  if (acl_check('menus', 'modle')) {?>
    <li><a class="collapsed" id="modimg" ><span><?php echo xlt('Modules') ?></span></a>
     <ul>
-	<?php genMiscLink('RTop','adm','0',xl('Manage Modules'),'modules/zend_modules/public/Installer'); ?>
-	 <?php //genTreeLink('RTop','ort',xl('Settings')); ?>
+    <?php genMiscLink('RTop','adm','0',xl('Manage Modules'),'modules/zend_modules/public/Installer'); ?>
+     <?php //genTreeLink('RTop','ort',xl('Settings')); ?>
 
-	<?php
-		$module_query = sqlStatement("select mod_directory,mod_name,mod_nick_name,mod_relative_link,type from modules where mod_active = 1 AND sql_run= 1 order by mod_ui_order asc");
-		if (sqlNumRows($module_query)) {
-		  while ($modulerow = sqlFetchArray($module_query)) {
-				$acl_section = strtolower($modulerow['mod_directory']);
-				$disallowed[$acl_section] = zh_acl_check($_SESSION['authUserID'],$acl_section) ?  "" : "1";
-				$modulePath = "";
-				$added 		= "";
-		  		if($modulerow['type'] == 0) {
-		  			$modulePath = $GLOBALS['customModDir'];
-		  			$added		= "";
-		  		}
-		  		else{
-					$added		= "index";
-		  			$modulePath = $GLOBALS['zendModDir'];
-		  		}
+    <?php
+        $module_query = sqlStatement("select mod_directory,mod_name,mod_nick_name,mod_relative_link,type from modules where mod_active = 1 AND sql_run= 1 order by mod_ui_order asc");
+        if ($module_query) {
+          foreach ($module_query as $modulerow) {
+                $acl_section = strtolower($modulerow['mod_directory']);
+                $disallowed[$acl_section] = zh_acl_check($_SESSION['authUserID'],$acl_section) ?  "" : "1";
+                $modulePath = "";
+                $added      = "";
+                if($modulerow['type'] == 0) {
+                    $modulePath = $GLOBALS['customModDir'];
+                    $added      = "";
+                }
+                else{
+                    $added      = "index";
+                    $modulePath = $GLOBALS['zendModDir'];
+                }
 
-		 		$relative_link ="modules/".$modulePath."/".$modulerow['mod_relative_link'].$added;
+                $relative_link ="modules/".$modulePath."/".$modulerow['mod_relative_link'].$added;
                                 $mod_nick_name = $modulerow['mod_nick_name'] ? $modulerow['mod_nick_name'] : $modulerow['mod_name'];
-			?>
-		      <?php genMiscLink2('RTop',$acl_section,'0',xlt($mod_nick_name),$relative_link);?>
-			  <?php }
-		} ?>
+            ?>
+              <?php genMiscLink2('RTop',$acl_section,'0',xlt($mod_nick_name),$relative_link);?>
+              <?php }
+        } ?>
     </ul>
   </li>
   <?php }?>
@@ -1215,8 +1215,8 @@ if (!empty($reg)) {
       <?php if (acl_check('admin', 'users'    )) genMiscLink('RTop','adm','0',xl('Users'),'usergroup/usergroup_admin.php'); ?>
       <?php if (acl_check('admin', 'practice' )) genTreeLink('RTop','adb',xl('Addr Book')); ?>
       <?php
-	  // Changed the target URL from practice settings -> Practice Settings - Pharmacy... Dec 09,09 .. Visolve ... This replaces empty frame with Pharmacy window
-	  if (acl_check('admin', 'practice' )) genMiscLink('RTop','adm','0',xl('Practice'),'../controller.php?practice_settings&pharmacy&action=list'); ?>
+      // Changed the target URL from practice settings -> Practice Settings - Pharmacy... Dec 09,09 .. Visolve ... This replaces empty frame with Pharmacy window
+      if (acl_check('admin', 'practice' )) genMiscLink('RTop','adm','0',xl('Practice'),'../controller.php?practice_settings&pharmacy&action=list'); ?>
       <?php if (acl_check('admin', 'superbill')) genTreeLink('RTop','sup',xl('Codes')); ?>
       <?php if (acl_check('admin', 'super'    )) genMiscLink('RTop','adm','0',xl('Layouts'),'super/edit_layout.php'); ?>
       <?php if (acl_check('admin', 'super'    )) genMiscLink('RTop','adm','0',xl('Lists'),'super/edit_list.php'); ?>
@@ -1246,7 +1246,7 @@ if (!empty($reg)) {
           <?php if (acl_check('admin', 'super'   )) genMiscLink('RTop','adm','0',xl('External Data Loads'),'../interface/code_systems/dataloads_ajax.php'); ?>
           <?php if (acl_check('admin', 'super'   )) genMiscLink('RTop','adm','0',xl('Merge Patients'),'patient_file/merge_patients.php'); ?>
           <?php if (acl_check('admin', 'super'   )) genMiscLink('RTop','adm','0',xl('Import Holidays'),'../interface/main/holidays/import_holidays.php'); ?>
-		  <?php if ($GLOBALS['enable_auditlog_encryption']) genMiscLink('RTop','rep','0',xl('Audit Log Tamper'),'reports/audit_log_tamper_report.php'); ?>
+          <?php if ($GLOBALS['enable_auditlog_encryption']) genMiscLink('RTop','rep','0',xl('Audit Log Tamper'),'reports/audit_log_tamper_report.php'); ?>
         </ul>
       </li>
     </ul>
@@ -1254,50 +1254,50 @@ if (!empty($reg)) {
   <?php } ?>
   <li><a class="collapsed" id="repimg" ><span><?php xl('Reports','e') ?></span></a>
     <ul>
-				<?php
-				$module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh LEFT OUTER JOIN modules_settings AS ms ON
+                <?php
+                $module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh LEFT OUTER JOIN modules_settings AS ms ON
                                     obj_name=enabled_hooks AND ms.mod_id=msh.mod_id LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id
                                     WHERE fld_type=3 AND mod_active=1 AND sql_run=1 AND attached_to='reports' ORDER BY mod_id");
-				if (sqlNumRows($module_query)) {
-					$jid = 0;
-					$modid = '';
-					while ($modulerow = sqlFetchArray($module_query)) {
-						$modulePath = "";
-						$added 		= "";
-							if($modulerow['type'] == 0) {
-								$modulePath = $GLOBALS['customModDir'];
-								$added		= "";
-							}
-							else{
-								$added		= "index";
-								$modulePath = $GLOBALS['zendModDir'];
-							}
+                if ($module_query) {
+                    $jid = 0;
+                    $modid = '';
+                    foreach ($module_query as $modulerow) {
+                        $modulePath = "";
+                        $added      = "";
+                            if($modulerow['type'] == 0) {
+                                $modulePath = $GLOBALS['customModDir'];
+                                $added      = "";
+                            }
+                            else{
+                                $added      = "index";
+                                $modulePath = $GLOBALS['zendModDir'];
+                            }
 
-						$relative_link ="modules/".$modulePath."/".$modulerow['mod_relative_link'].$modulerow['path'];
-						$mod_nick_name = $modulerow['menu_name'] ? $modulerow['menu_name'] : 'NoName';
+                        $relative_link ="modules/".$modulePath."/".$modulerow['mod_relative_link'].$modulerow['path'];
+                        $mod_nick_name = $modulerow['menu_name'] ? $modulerow['menu_name'] : 'NoName';
 
-						if($jid==0 || ($modid!=$modulerow['mod_id'])){
-							if($modid!='')
-							echo "</ul>";
-						?>
-						<li><a class="collapsed_lv2"><span><?php echo xlt($modulerow['mod_ui_name']); ?></span></a>
-							<ul>
-						<?php
-						}
-						$jid++;
-						$modid = $modulerow['mod_id'];
-						genMiscLink('RTop','adm','0',xlt($mod_nick_name),$relative_link);
-					}
+                        if($jid==0 || ($modid!=$modulerow['mod_id'])){
+                            if($modid!='')
+                            echo "</ul>";
+                        ?>
+                        <li><a class="collapsed_lv2"><span><?php echo xlt($modulerow['mod_ui_name']); ?></span></a>
+                            <ul>
+                        <?php
+                        }
+                        $jid++;
+                        $modid = $modulerow['mod_id'];
+                        genMiscLink('RTop','adm','0',xlt($mod_nick_name),$relative_link);
+                    }
         echo "</ul>";
       } ?>
       <li><a class="collapsed_lv2"><span><?php xl('Clients','e') ?></span></a>
         <ul>
-	  <?php genMiscLink('RTop','rep','0',xl('List'),'reports/patient_list.php'); ?>
+      <?php genMiscLink('RTop','rep','0',xl('List'),'reports/patient_list.php'); ?>
           <?php if (acl_check('patients', 'med') && !$GLOBALS['disable_prescriptions']) genMiscLink('RTop','rep','0',xl('Rx'),'reports/prescriptions_report.php'); ?>
-		  <?php if (acl_check('patients', 'med')) genMiscLink('RTop','rep','0',xl('Patient List Creation'),'reports/patient_list_creation.php'); ?>
+          <?php if (acl_check('patients', 'med')) genMiscLink('RTop','rep','0',xl('Patient List Creation'),'reports/patient_list_creation.php'); ?>
           <?php if (acl_check('patients', 'med')) genMiscLink('RTop','rep','0',xl('Clinical'),'reports/clinical_reports.php'); ?>
-	  <?php genMiscLink('RTop','rep','0',xl('Referrals'),'reports/referrals_report.php'); ?>
-	  <?php genMiscLink('RTop','rep','0',xl('Immunization Registry'),'reports/immunization_report.php'); ?>
+      <?php genMiscLink('RTop','rep','0',xl('Referrals'),'reports/referrals_report.php'); ?>
+      <?php genMiscLink('RTop','rep','0',xl('Immunization Registry'),'reports/immunization_report.php'); ?>
         </ul>
       </li>
       <li><a class="collapsed_lv2"><span><?php xl('Clinic','e') ?></span></a>
@@ -1320,8 +1320,8 @@ if (!empty($reg)) {
 <?php if (empty($GLOBALS['code_types']['IPPF'])) { ?>
           <?php genMiscLink('RTop','rep','0',xl('Superbill'),'reports/custom_report_range.php'); ?>
 <?php } ?>
-	  <?php  genMiscLink('RTop','rep','0',xl('Eligibility'),'reports/edi_270.php'); ?>
-	  <?php  genMiscLink('RTop','rep','0',xl('Eligibility Response'),'reports/edi_271.php'); ?>
+      <?php  genMiscLink('RTop','rep','0',xl('Eligibility'),'reports/edi_270.php'); ?>
+      <?php  genMiscLink('RTop','rep','0',xl('Eligibility Response'),'reports/edi_271.php'); ?>
 
 
           <?php if (!$GLOBALS['disable_chart_tracker']) genMiscLink('RTop','rep','0',xl('Chart Activity'),'reports/chart_location_activity.php'); ?>
@@ -1386,8 +1386,8 @@ if (!empty($reg)) {
           <?php genPopLink(xl('Referral'),'../patient_file/transaction/print_referral.php'); ?>
 <?php
   $lres = sqlStatement("SELECT * FROM list_options " .
-  "WHERE list_id = 'lbfnames' ORDER BY seq, title");
-  while ($lrow = sqlFetchArray($lres)) {
+  "WHERE list_id = 'lbfnames' AND activity = 1 ORDER BY seq, title");
+  foreach ($lres as $lrow) {
     $option_id = $lrow['option_id']; // should start with LBF
     $title = $lrow['title'];
     genPopLink($title, "../forms/LBF/printable.php?formname=$option_id");
@@ -1455,23 +1455,23 @@ syncRadios();
 
 function save_setting (cb_frames) {
     for (var i = 0, len = cb_frames.length; i < len; i++) {
-	    try {
-	        var fref = '<?php echo $uspfx ?>frame' + i + '_chk';
-	        var ureq = $.post( "<?php echo $GLOBALS['webroot'] ?>/library/ajax/user_settings.php",
+        try {
+            var fref = '<?php echo $uspfx ?>frame' + i + '_chk';
+            var ureq = $.post( "<?php echo $GLOBALS['webroot'] ?>/library/ajax/user_settings.php",
                     { lab: fref, val: cb_frames[i] })
-	        .done(function(data) {
-	            // alert( "Data Loaded: " + data );
-	        })
-	        .fail(function(xhr, textStatus, errorThrown) {
-	            alert("Error:"+xhr.responseText+"\n"+textStatus+"\n"+errorThrown);
-	        })
-	        .always(function() {
-	            // alert( "finished" );
-	        });
+            .done(function(data) {
+                // alert( "Data Loaded: " + data );
+            })
+            .fail(function(xhr, textStatus, errorThrown) {
+                alert("Error:"+xhr.responseText+"\n"+textStatus+"\n"+errorThrown);
+            })
+            .always(function() {
+                // alert( "finished" );
+            });
 
-	    } catch (err) {
-	        alert (err.message);
-	    }
+        } catch (err) {
+            alert (err.message);
+        }
     }
 }
 </script>

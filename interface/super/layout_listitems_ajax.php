@@ -37,7 +37,7 @@ $res = sqlStatement("SELECT option_id FROM list_options WHERE list_id = ? " .
 echo "var itemsel = document.forms[0]['$target'];\n";
 echo "var j = 0;\n";
 echo "itemsel.options[j++] = new Option('-- " . xls('Please Select') . " --','',false,false);\n";
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $tmp = addslashes($row['option_id']);
   $def = $row['option_id'] == $current ? 'true' : 'false';
   echo "itemsel.options[j++] = new Option('$tmp','$tmp',$def,$def);\n";

@@ -176,7 +176,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
     "po.date_ordered, po.procedure_order_id";
 
   $res = sqlStatement($query);
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     thisLineItem($row);
   }
 

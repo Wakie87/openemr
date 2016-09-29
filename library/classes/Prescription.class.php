@@ -86,7 +86,7 @@ require_once (dirname(__FILE__) . "/../formdata.inc.php");
 //   in the forms and output.
 function load_drug_attributes($id) {
     $res = sqlStatement("SELECT * FROM list_options WHERE list_id = '$id' ORDER BY seq");
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
 	if ($row['title'] == '') {
 	 $arr[$row['option_id']] = ' ';
 	}

@@ -103,7 +103,7 @@ function sellDrug($drug_id, $quantity, $fee, $patient_id=0, $encounter_id=0,
 
   // First pass.  Pick out lots to be used in filling this order, figure out
   // if there is enough quantity on hand and check for lots to be destroyed.
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     if ($row['warehouse_id'] != $default_warehouse) {
       // Warehouses with seq > 99 are not available.
       $seq = empty($row['seq']) ? 0 : $row['seq'] + 0;

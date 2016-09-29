@@ -143,7 +143,7 @@ class Claim {
       "b.encounter = '{$this->encounter_id}' AND b.pid = '{$this->pid}' AND " .
       "b.activity = '1' ORDER BY b.date, b.id";
     $res = sqlStatement($sql);
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       // Save all diagnosis codes.
       if ($row['ct_diag'] == '1') {
         $this->diags[$row['code']] = $row['code'];

@@ -1,5 +1,5 @@
 <?php
-// +-----------------------------------------------------------------------------+ 
+// +-----------------------------------------------------------------------------+
 // Copyright (C) 2010 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 //
 //
@@ -19,9 +19,9 @@
 // openemr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 // Author:   Eldho Chacko <eldho@zhservices.com>
-//           Paul Simon K <paul@zhservices.com> 
+//           Paul Simon K <paul@zhservices.com>
 //
 // +------------------------------------------------------------------------------+
 //===============================================================================
@@ -57,7 +57,7 @@ function AjaxDropDownCode()
 	$insurance_text_ajax=formData('insurance_text_ajax','',true);
 	$res = sqlStatement("SELECT insurance_companies.id,name,city,state,country FROM insurance_companies
 			left join addresses on insurance_companies.id=addresses.foreign_id  where name like '$insurance_text_ajax%' or  insurance_companies.id like '$insurance_text_ajax%' ORDER BY name");
-	while ($row = sqlFetchArray($res))
+	foreach ($res as $row)
 	 {
 		if($CountIndex%2==1)
 		 {
@@ -132,9 +132,9 @@ function AjaxDropDownCode()
 
 	  ";
 	$res = sqlStatement("SELECT pid as id,fname,lname,mname,DOB FROM patient_data
-			 where  fname like '$patient_code%' or lname like '$patient_code%' or mname like '$patient_code%' or 
+			 where  fname like '$patient_code%' or lname like '$patient_code%' or mname like '$patient_code%' or
 			 CONCAT(lname,' ',fname,' ',mname) like '$patient_code%' or pid like '$patient_code%' ORDER BY lname");
-	while ($row = sqlFetchArray($res))
+	foreach ($res as $row)
 	 {
 		if($CountIndex%2==1)
 		 {
@@ -190,7 +190,7 @@ function AjaxDropDownCode()
 	  ";
 	$res = sqlStatement("SELECT date,encounter FROM form_encounter
 			 where pid ='$patient_code' ORDER BY encounter");
-	while ($row = sqlFetchArray($res))
+	foreach ($res as $row)
 	 {
 		if($CountIndex%2==1)
 		 {

@@ -97,7 +97,7 @@ function doedclick_edit(ppid) {
 
 <?php
  $encount = 0;
- while ($row = sqlFetchArray($res)) {
+ foreach ($res as $row) {
   ++$encount;
   $bgclass = (($encount & 1) ? "evenrow" : "oddrow");
 

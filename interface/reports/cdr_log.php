@@ -187,7 +187,7 @@ require_once "$srcdir/clinical_rules.php";
  <?php
  $res = listingCDRReminderLog($_POST['form_begin_date'],$_POST['form_end_date']);
 
- while ($row = sqlFetchArray($res)) {
+ foreach ($res as $row) {
   //Create category title
   if ($row['category'] == 'clinical_reminder_widget') {
    $category_title = xl("Passive Alert");

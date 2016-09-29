@@ -42,13 +42,13 @@ function formSubmit ($tableName, $values, $id, $authorized = "0")
 			//code to auto add cpt code
 			if (!empty($value)) {
 				$code_array = explode(" ",$value,2);
-				
+
 				addBilling(date("Ymd"), 'CPT4', $code_array[0], $code_array[1], $_SESSION['pid'], $authorized, $_SESSION['authUserID']);
 			}
-					
+
 		}
 		//case where key looks like "[a-zA-Z]*diagnosis[0-9]" which is special, it is used to auto add ICD codes
-		
+
 		elseif (strpos($key,"diagnosis") == (strlen($key) -10) && !(strpos($key,"diagnosis")=== false )) {
 			//icd auto add ICD9-CM
 			if (!empty($value)) {
@@ -89,7 +89,7 @@ function formUpdate ($tableName, $values, $id, $authorized = "0")
                 }
 	$sql = substr($sql, 0, -1);
 	$sql .= " where id='".add_escape_custom($id)."'";
-	
+
 	return sqlInsert($sql);
 }
 
@@ -129,10 +129,7 @@ function formGetIds ($tableName, $cols = "*", $limit='all', $start=0, $activity 
         }
 
         $res = sqlStatement($sql);
-        
-        for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-                $all[$iter] = $row;
-        return $all;
+        return $res;
 }
 
 function formDisappear ($tableName, $id)

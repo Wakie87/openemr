@@ -1234,7 +1234,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
       $query .= " ORDER BY ds.pid, ds.encounter, ds.drug_id";
       $res = sqlStatement($query);
 
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         $desired = false;
         $prodcode = '';
         if ($row['cyp_factor'] > 0) {
@@ -1298,7 +1298,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
         "$datefld >= '$from_date' AND $datefld <= '$to_date' AND $exttest " .
         "ORDER BY t.pid, t.id";
       $res = sqlStatement($query);
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         process_referral($row);
       }
     }
@@ -1321,7 +1321,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
         "l.activity = 1 AND l.type = 'ippf_gcac' " .
         "ORDER BY l.pid, l.id";
       $res = sqlStatement($query);
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         process_issue($row);
       }
     }
@@ -1343,7 +1343,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
         "ds.sale_date >= '$from_date' AND ds.sale_date <= '$to_date' " .
         "ORDER BY ds.pid, ds.sale_id";
       $res = sqlStatement($query);
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         $key = "(Unspecified)";
         if (!empty($row['related_code'])) {
           $relcodes = explode(';', $row['related_code']);
@@ -1397,7 +1397,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
 
       $prev_encounter = 0;
 
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         if ($row['encounter'] != $prev_encounter) {
           $prev_encounter = $row['encounter'];
           process_visit($row);

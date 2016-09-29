@@ -27,7 +27,7 @@ $res = sqlStatement("SELECT * FROM procedure_type WHERE parent = '$id' " .
 $encount = 0;
 
 // Generate a table row for each immediate child.
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $chid = $row['procedure_type_id'] + 0;
 
   // Find out if this child has any children.

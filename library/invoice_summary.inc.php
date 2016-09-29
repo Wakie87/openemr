@@ -47,7 +47,7 @@ function ar_get_invoice_summary($patient_id, $encounter_id, $with_detail = false
     "pid = ? AND encounter = ? AND " .
     "activity = 1 AND fee != 0.00 ORDER BY id", array($patient_id,$encounter_id) );
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $amount = sprintf('%01.2f', $row['fee']);
 
       $code = $row['code'];
@@ -81,7 +81,7 @@ function ar_get_invoice_summary($patient_id, $encounter_id, $with_detail = false
     "s.pid = ? AND s.encounter = ? AND s.fee != 0 " .
     "ORDER BY s.sale_id";
   $res = sqlStatement($query, array($patient_id,$encounter_id) );
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $amount = sprintf('%01.2f', $row['fee']);
     $code = 'PROD:' . $row['drug_id'];
     $codes[$code]['chg'] += $amount;
@@ -107,7 +107,7 @@ function ar_get_invoice_summary($patient_id, $encounter_id, $with_detail = false
     "LEFT OUTER JOIN insurance_companies AS i ON i.id = s.payer_id " .
     "WHERE a.pid = ? AND a.encounter = ? " .
     "ORDER BY s.check_date, a.sequence_no", array($patient_id,$encounter_id) );
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $code = $row['code'];
     if (! $code) $code = "Unknown";
     if ($row['modifier']) $code .= ':' . $row['modifier'];

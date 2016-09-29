@@ -188,7 +188,7 @@ else {
   $search_term = $_REQUEST['search_term'];
   $res = main_code_set_search($form_code_type,$search_term);
   if ($form_code_type == 'PROD') { // Special case that displays search for products/drugs
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       $drug_id = $row['drug_id'];
       $selector = $row['selector'];
       $desc = $row['name'];
@@ -201,7 +201,7 @@ else {
     }
   }
   else {
-    while ($row = sqlFetchArray($res)) { // Display normal search
+    foreach ($res as $row) { // Display normal search
       $itercode = $row['code'];
       $itertext = trim($row['code_text']);
       if (!empty($target_element)) {

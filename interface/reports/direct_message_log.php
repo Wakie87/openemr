@@ -159,7 +159,7 @@ else
     array($logtop-99,$logtop));
 
  $logstart = 0;
- while ($row = sqlFetchArray($res)) {
+ foreach ($res as $row) {
    if (!$logstart) $logstart = $row['id'];
 ?>
  <tr>

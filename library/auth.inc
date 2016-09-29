@@ -207,9 +207,7 @@ function getUserList ($cols = '*', $limit = 'all', $start = '0')
         $rez = sqlStatement("select $cols from users where username != '' order by date DESC");
     else
         $rez = sqlStatement("select $cols from users where username != '' order by date DESC limit $limit, $start");
-    for ($iter = 0; $row = sqlFetchArray($rez); $iter++)
-        $tbl[$iter] = $row;
-    return $tbl;
+    return $rez;
 }
 
 function getProviderList ($cols = '*', $limit= 'all', $start = '0')
@@ -218,9 +216,7 @@ function getProviderList ($cols = '*', $limit= 'all', $start = '0')
         $rez = sqlStatement("select $cols from groups order by date DESC");
     else
         $rez = sqlStatement("select $cols from groups order by date DESC limit $limit, $start");
-    for ($iter = 0; $row = sqlFetchArray($rez); $iter++)
-        $tbl[$iter] = $row;
-    return $tbl;
+    return $rez;
 }
 
 function addGroup ($groupname)
@@ -256,7 +252,7 @@ function validateGroupStatus ($user_to_be_checked, $group_user) {
 
         $usertbcGroups = array();
 
-        while ($row = sqlFetchArray($result)) {
+        foreach ($result as $row) {
             $usertbcGroups[] = $row[0];
         }
 
@@ -266,7 +262,7 @@ function validateGroupStatus ($user_to_be_checked, $group_user) {
 
         $usergGroups = array();
 
-        while ($row = sqlFetchArray($result)) {
+        foreach ($result as $row) {
             $usergGroups[] = $row[0];
         }
         foreach ($usertbcGroups as $group) {

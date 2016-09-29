@@ -6,10 +6,10 @@
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-// 
+//
 // This file is used to add an item to the list_options table
 //
-// OUTPUT 
+// OUTPUT
 //   on error = NULL
 //   on succcess = JSON data, array of "value":"title" for new list of options
 */
@@ -71,10 +71,10 @@ echo '{ "error":"", "options": [';
 echo '{"id":"","title":"' . xl('Unassigned') . '"}';
 $comma = ",";
 $lres = sqlStatement("SELECT * FROM list_options WHERE list_id = '$list_id' ORDER BY seq");
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
     echo $comma;
     echo '{"id":"'.$lrow['option_id'].'",';
-    
+
     // translate title if translate-lists flag set and not english
     if ($GLOBALS['translate_lists'] && $_SESSION['language_choice'] > 1) {
      echo '"title":"' . xl($lrow['title']) .'"}';

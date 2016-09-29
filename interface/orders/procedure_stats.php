@@ -440,7 +440,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
 
     $res = sqlStatement($query, $sqlBindArray);
 
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       process_result_code($row);
     }
 

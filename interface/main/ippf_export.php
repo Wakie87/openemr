@@ -419,7 +419,7 @@ if (!empty($form_submit)) {
     "ORDER BY fe.pid";
   $res = sqlStatement($query);
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
 
     /*****************************************************************
     if ($row['facility_id'] != $last_facility) {

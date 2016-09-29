@@ -291,7 +291,7 @@ class InsuranceCompany extends ORDataObject{
 		$pharmacy_array = array();
 		$sql = "Select p.id, p.name, a.city, a.state from " . $this->_table ." as p INNER JOIN addresses as a on  p.id = a.foreign_id";
 		$res = sqlQ($sql);
-		while ($row = sqlFetchArray($res) ) {
+		foreach ($res as $row) {
 				$d_string = $row['city'];
 				if (!empty($row['city']) && $row['state']) {
 					$d_string .= ", ";

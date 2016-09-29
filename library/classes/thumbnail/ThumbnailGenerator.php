@@ -75,7 +75,7 @@ class ThumbnailGenerator{
         WHERE mimetype IN (" . implode(',', self::get_types_support()) . ") AND thumb_url IS NULL";
 
         $results = sqlStatement($sql);
-        while($row = sqlFetchArray($results)) {
+        foreach ($results as $row) {
 
             switch((int)$row['storagemethod']) {
                 //for hard disk store

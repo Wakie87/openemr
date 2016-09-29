@@ -127,7 +127,7 @@ if (empty($SBCODES)) {
     // Create entries based on the fee_sheet_options table.
     $res = sqlStatement("SELECT * FROM fee_sheet_options " .
             "ORDER BY fs_category, fs_option");
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
         $fs_category = $row['fs_category'];
         $fs_option = $row['fs_option'];
         $fs_codes = $row['fs_codes'];
@@ -146,7 +146,7 @@ if (empty($SBCODES)) {
         $res = sqlStatement("SELECT code_type, code, code_text FROM codes " .
                 "WHERE superbill = '" . $prow['option_id'] . "' AND active = 1 " .
                 "ORDER BY code_text");
-        while ($row = sqlFetchArray($res)) {
+        foreach ($res as $row) {
             $SBCODES[] = $row['code'] . '|' . $row['code_text'];
         }
     }

@@ -214,7 +214,7 @@ function amcTrackingRequest($amc_id,$start='',$end='',$provider_id='') {
         array_push($sqlBindArray,$end);
       }
       $rez = sqlStatement("SELECT `id`, `date` FROM `transactions` WHERE `title` = 'LBTref' AND `pid` = ? $where ORDER BY `date` DESC", $sqlBindArray);
-      while ($res = sqlFetchArray($rez)) {
+      foreach ($res as $row) {
         $amcCheck = amcCollect("send_sum_amc",$patient['pid'],"transactions",$res['id']);
         if (empty($amcCheck)) {
           // Records have not been sent, so send this back
@@ -235,7 +235,7 @@ function amcTrackingRequest($amc_id,$start='',$end='',$provider_id='') {
         array_push($sqlBindArray,$end);
       }
       $rez = sqlStatement("SELECT * FROM `amc_misc_data` WHERE `amc_id`='provide_rec_pat_amc' AND `pid`=? AND (`date_completed` IS NULL OR `date_completed`='') $where ORDER BY `date_created` DESC", $sqlBindArray);
-      while ($res = sqlFetchArray($rez)) {
+      foreach ($res as $row) {
         // Records have not been sent, so send this back
         array_push($tempResults, array("pid"=>$patient['pid'], "fname"=>$patient['fname'], "lname"=>$patient['lname'], "date"=>$res['date_created']));
       }
@@ -253,7 +253,7 @@ function amcTrackingRequest($amc_id,$start='',$end='',$provider_id='') {
         array_push($sqlBindArray,$end);
       }
       $rez = sqlStatement("SELECT `encounter`, `date` FROM `form_encounter` WHERE `pid`=? $where ORDER BY `date` DESC", $sqlBindArray);
-      while ($res = sqlFetchArray($rez)) {
+      foreach ($res as $row) {
         $amcCheck = amcCollect("provide_sum_pat_amc",$patient['pid'],"form_encounter",$res['encounter']);
         if (empty($amcCheck)) {
           // Records have not been given, so send this back

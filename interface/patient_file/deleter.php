@@ -221,14 +221,14 @@ function popup_close() {
    row_delete("insurance_data" , "pid = '" . add_escape_custom($patient) . "'");
 
    $res = sqlStatement("SELECT * FROM forms WHERE pid = ?", array($patient));
-   while ($row = sqlFetchArray($res)) {
+   foreach ($res as $row) {
     form_delete($row['formdir'], $row['form_id']);
    }
    row_delete("forms", "pid = '" . add_escape_custom($patient) . "'");
 
    // Delete all documents for the patient.
    $res = sqlStatement("SELECT id FROM documents WHERE foreign_id = ?", array($patient));
-   while ($row = sqlFetchArray($res)) {
+   foreach ($res as $row) {
     delete_document($row['id']);
    }
 
@@ -242,7 +242,7 @@ function popup_close() {
    row_delete("claims", "encounter_id = '" . add_escape_custom($encounterid) . "'");
    row_delete("issue_encounter", "encounter = '" . add_escape_custom($encounterid) . "'");
    $res = sqlStatement("SELECT * FROM forms WHERE encounter = ?", array($encounterid));
-   while ($row = sqlFetchArray($res)) {
+   foreach ($res as $row) {
     form_delete($row['formdir'], $row['form_id']);
    }
    row_delete("forms", "encounter = '" . add_escape_custom($encounterid) . "'");

@@ -190,7 +190,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
     "po.date_ordered, po.procedure_order_id";
 
   $res = sqlStatement($query);
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $patient_id = $row['patient_id'];
     $date_ordered = $row['date_ordered'];
 

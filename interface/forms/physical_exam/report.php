@@ -15,7 +15,7 @@ function physical_exam_report($pid, $encounter, $cols, $id) {
 
  $rows = array();
  $res = sqlStatement("SELECT * FROM form_physical_exam WHERE forms_id = '$id'");
- while ($row = sqlFetchArray($res)) {
+ foreach ($res as $row) {
   $rows[$row['line_id']] = $row;
  }
 

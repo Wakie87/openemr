@@ -188,7 +188,7 @@ if ($postid) {
   </tr>
 
 <?php
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     if ($row['closeness'] == 0) continue;
     if ($row['closeness'] >= 100) {
       ++$login_matches;

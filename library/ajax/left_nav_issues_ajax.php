@@ -19,7 +19,7 @@ $res = sqlStatement("SELECT * FROM lists WHERE " .
   "pid = ? AND type = ? AND activity = 1 AND enddate IS NULL " .
   "ORDER BY begdate DESC", array($pid, $type));
 
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   // Note the new sliding menu style requires exactly one <a> tag per list
   // item, so we use embedded <span> tags to serve as the links.
 ?>

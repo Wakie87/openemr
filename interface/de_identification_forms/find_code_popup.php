@@ -177,7 +177,7 @@ else {
       "ORDER BY d.name, dt.selector, dt.drug_id";
     $res = sqlStatement($query);
 	$row_count = 0;
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
 	$row_count = $row_count + 1;
       $drug_id = addslashes($row['drug_id']);
       $selector = addslashes($row['selector']);
@@ -211,7 +211,7 @@ else {
     // echo "\n<!-- $query -->\n"; // debugging
     $res = sqlStatement($query);
 	$row_count = 0;
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
 	  $row_count = $row_count + 1;
       $itercode = addslashes($row['code']);
       $itertext = addslashes(ucfirst(strtolower(trim($row['code_text']))));

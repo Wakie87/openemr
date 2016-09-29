@@ -59,7 +59,7 @@ class Provider extends ORDataObject{
         function utility_provider_array() {
                 $provider_array = array();
                 $res = sqlQ("Select id,fname,lname  from users where authorized = 1");
-                while ($row = sqlFetchArray($res) ) {
+                foreach ($res as $row) {
                                 $provider_array[$row['id']] = $row['fname'] . " " . $row['lname'];
                 }
                 return $provider_array;

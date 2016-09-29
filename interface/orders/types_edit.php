@@ -48,7 +48,7 @@ function cbvalue($cbname) {
 function recursiveDelete($typeid) {
   $res = sqlStatement("SELECT procedure_type_id FROM " .
     "procedure_type WHERE parent = '$typeid'");
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     recursiveDelete($row['procedure_type_id']);
   }
   sqlStatement("DELETE FROM procedure_type WHERE " .

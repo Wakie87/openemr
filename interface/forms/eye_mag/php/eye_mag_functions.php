@@ -4109,7 +4109,7 @@ function coding_carburetor($term,$field) {
     $code_type = "ICD10";  //only option is PROD (product or drug search) or NOT PROD...
     $search_term = $term." ".$field;
     $res = main_code_set_search($code_type,$search_term);
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
         $newdata =  array (
                         'code'  =>  $row['code'],
                         'code_text' => $row['code_text'],

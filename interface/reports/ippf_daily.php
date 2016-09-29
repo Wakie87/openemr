@@ -205,7 +205,7 @@ if ($_POST['form_submit']) {
   $last_encounter = '0';
   $method = '';
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     if ($row['code_type'] === 'MA') {
 
       // Logic for individual patients.

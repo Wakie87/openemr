@@ -37,7 +37,7 @@ class Holidays_Storage{
         $holidays= array();
         $sql = "SELECT * FROM " . escape_table_name(self::TABLE_NAME);
         $res=sqlStatement($sql);
-        while ($row = sqlFetchArray($res)) {
+        foreach ($res as $row) {
             $holidays[] = $row;
         }
         return $holidays;
@@ -53,7 +53,7 @@ class Holidays_Storage{
         $holidays= array();
         $sql = 'SELECT * FROM openemr_postcalendar_events WHERE (pc_catid = ? OR pc_catid = ?) AND pc_eventDate >= ? AND pc_eventDate <= ?';
         $res=sqlStatement($sql, array(self::CALENDAR_CATEGORY_HOLIDAY,self::CALENDAR_CATEGORY_CLOSED,$start_date,$end_date) );
-        while ($row = sqlFetchArray($res)) {
+        foreach ($res as $row) {
             $holidays[] = $row['pc_eventDate'];
         }
         return $holidays;

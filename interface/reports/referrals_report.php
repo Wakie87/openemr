@@ -223,7 +223,7 @@
     "ORDER BY ut.organization, d1.field_value, t.id";
   $res = sqlStatement($query, array($from_date, $to_date));
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     // If a facility is specified, ignore rows that do not match.
     if ($form_facility !== '') {
       if ($form_facility) {

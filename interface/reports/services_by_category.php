@@ -188,7 +188,7 @@ $res = sqlStatement("SELECT c.*, lo.title FROM codes AS c " .
 
 $last_category = '';
 $irow = 0;
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $category = $row['title'] ? $row['title'] : 'Uncategorized';
   $disp_category = '&nbsp';
   if ($category !== $last_category) {

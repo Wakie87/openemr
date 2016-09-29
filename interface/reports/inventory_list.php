@@ -168,7 +168,7 @@ table.mymaintable td, table.mymaintable th {
  <tbody>
 <?php 
 $encount = 0;
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $on_hand = 0 + $row['on_hand'];
   $drug_id = 0 + $row['drug_id'];
   $warnings = '';

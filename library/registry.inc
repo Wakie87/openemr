@@ -42,14 +42,7 @@ function getRegistered ( $state="1", $limit="unlimited", $offset="0")
 	if ($limit != "unlimited")
 		$sql .= " limit $limit, $offset";
 	$res = sqlStatement($sql);
-	if ($res)
-	foreach ($res as $row)
-	{
-		$all = $row;
-	}
-	else
-		return false;
-	return $all;
+	return $res;
 }
 
 function getRegistryEntry ( $id, $cols = "*" )

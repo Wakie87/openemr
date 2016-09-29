@@ -309,7 +309,7 @@ else if ($_POST['formaction'] == "deletegroup" && $layout_id) {
     $res = sqlStatement("SELECT field_id FROM layout_options WHERE " .
       "form_id = '" . $_POST['layout_id'] . "' ".
       "AND group_name = '" . $_POST['deletegroupname'] . "'");
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       addOrDeleteColumn($layout_id, $row['field_id'], FALSE);
     }
     // Delete an entire group from the form
@@ -390,7 +390,7 @@ function genFieldOptionList($current='') {
   if ($layout_id) {
     $query = "SELECT field_id FROM layout_options WHERE form_id = ? ORDER BY group_name, seq";
     $res = sqlStatement($query, array($layout_id));
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       $field_id = $row['field_id'];
       $option_list .= "<option value='" . attr($field_id) . "'";
       if ($field_id == $current) $option_list .= " selected";
@@ -1045,7 +1045,7 @@ foreach ($layouts as $key => $value) {
 <?php 
 $prevgroup = "!@#asdf1234"; // an unlikely group name
 $firstgroup = true; // flag indicates it's the first group to be displayed
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   if ($row['group_name'] != $prevgroup) {
     if ($firstgroup == false) { echo "</tbody></table></div>\n"; }
     echo "<div id='".$row['group_name']."' class='group'>";

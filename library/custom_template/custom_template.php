@@ -202,7 +202,7 @@ $(document).ready(function(){
                                     <li><a class="collapsed"><?php echo htmlspecialchars(xl($issTypeDesc[0]),ENT_QUOTES);?></a>
                                         <ul>
                                     		<?php
-	                                    		while ($row = sqlFetchArray($res)) {
+	                                    		foreach ($res as $row) {
 													listitemCode((strlen($row['title'])>20) ? (substr($row['title'], 0, 18).'..') : $row['title'], ($row['title'].$row['codes']));
 												}
 											?>

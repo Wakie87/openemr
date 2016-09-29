@@ -25,7 +25,7 @@ $email_sender=$_POST['email_sender'];
 $sent_by=$_SESSION["authId"];
 $msg_type=xl('Email from Batchcom');
 
-while ($row=sqlFetchArray($res)) {
+foreach ($res as $row) {
 
     // prepare text for ***NAME*** tag
     $pt_name=$row['title'].' '.$row['fname'].' '.$row['lname'];

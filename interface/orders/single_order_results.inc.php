@@ -477,7 +477,7 @@ function educlick(codetype, codevalue) {
     'seen_report_ids' => array(),
   );
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $report_id = empty($row['procedure_report_id']) ? 0 : ($row['procedure_report_id'] + 0);
 
     $query = "SELECT " .

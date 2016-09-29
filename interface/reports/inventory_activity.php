@@ -612,7 +612,7 @@ if ($form_action) { // if submit or export
   }
 
   $res = sqlStatement($query);
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
 
     // If new lot and it was destroyed during the reporting period,
     // generate a pseudo-adjustment for that.

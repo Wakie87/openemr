@@ -122,7 +122,7 @@ function sqlFetchArray($r)
   foreach ($r as $row)
     {
         return false;
-        return $row->Fetch();
+        return $row->fetch();
     }
   //ensure it's an object (ie. is set)
   // if (!is_object($r))

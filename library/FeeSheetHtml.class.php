@@ -61,7 +61,7 @@ class FeeSheetHtml extends FeeSheet {
     }
     $res = sqlStatement($query, $sqlarr);
     $s .= "<option value=''>" . text($toptext) . "</option>";
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       $provid = $row['id'];
       $s .= "<option value='" . attr($provid) . "'";
       if ($provid == $default) $s .= " selected";

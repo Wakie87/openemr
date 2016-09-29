@@ -263,7 +263,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
   $res = sqlStatement($query);
 
   $prevpid = 0;
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
    if ($row['pid'] == $prevpid) continue;
    $prevpid = $row['pid'];
    $age = '';

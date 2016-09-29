@@ -374,7 +374,7 @@ $res = sqlStatement($query);
 if ($res) {
   $lastdocname = "";
   $doc_encounters = 0;
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $patient_id = $row['pid'];
 
     $docname = '';

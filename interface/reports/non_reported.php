@@ -422,7 +422,7 @@ onsubmit='return top.restoreSession()'>
   $res = sqlStatement($query);
 
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
 ?>
  <tr>
   <td>

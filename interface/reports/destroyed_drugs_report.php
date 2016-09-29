@@ -145,7 +145,7 @@ $(document).ready(function() {
   $res = sqlStatement($query);
 
   $last_drug_id = 0;
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
    $drug_name       = $row['name'];
    $ndc_number      = $row['ndc_number'];
    if ($row['drug_id'] == $last_drug_id) {

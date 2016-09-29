@@ -1,30 +1,30 @@
 <?php
-/*	
-	batch CSV processor, included from batchcom 
+/*  
+    batch CSV processor, included from batchcom 
 */
 
 // create file header.
 // menu for fields could be added in the future
 
-while ($row=sqlFetchArray($res)) {
-	
-	if (!$flag_on) {
-		$flag_on=TRUE;
-		foreach ($row as $key => $value ){
-			$file.="$key,";
-		}
-		$file=substr($file,0,-1);
-		$file.="\n";
-		reset ($row);
-	}
+foreach ($res as $row) {
+    
+    if (!$flag_on) {
+        $flag_on=TRUE;
+        foreach ($row as $key => $value ){
+            $file.="$key,";
+        }
+        $file=substr($file,0,-1);
+        $file.="\n";
+        reset ($row);
+    }
 
-	foreach ($row as $key => $value) {
-		$line.="$value,";
-	}
-	$line=substr($line,0,-1);
-	$line.="\n";
-	$file.=$line;
-	$line='';
+    foreach ($row as $key => $value) {
+        $line.="$value,";
+    }
+    $line=substr($line,0,-1);
+    $line.="\n";
+    $file.=$line;
+    $line='';
 
 }
 

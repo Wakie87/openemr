@@ -118,7 +118,7 @@ if ($_POST['bn_save']) {
 $rows = array();
 if ($formid) {
  $res = sqlStatement("SELECT * FROM form_physical_exam WHERE forms_id = '$formid'");
- while ($row = sqlFetchArray($res)) {
+ foreach ($res as $row) {
   $rows[$row['line_id']] = $row;
  }
 }

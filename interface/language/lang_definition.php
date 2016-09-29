@@ -36,7 +36,7 @@
 	  }
           // collect the default selected language id, and then display list
           $tempLangID = isset($_POST['language_select']) ? $_POST['language_select'] : $mainLangID;
-          while ($row=SqlFetchArray($res)){
+          foreach ($res as $row){
 	    if ($tempLangID == $row['lang_id']) {
 	      echo "<option value='" . htmlspecialchars($row['lang_id'],ENT_QUOTES) . "' selected>" . htmlspecialchars($row['lang_description'],ENT_NOQUOTES) . "</option>";
 	    }
@@ -157,7 +157,7 @@ if ($_POST['edit']){
 	echo ('<table><FORM METHOD=POST ACTION="?m=definition" onsubmit="return top.restoreSession()">');
 	// only english definitions
 	if ($lang_id==1) {
-		while ($row=SqlFetchArray($res)){
+		foreach ($res as $row){
 		        $isShow = false; //flag if passes the definition filter
 		        $stringTemp = '<tr><td>'.htmlspecialchars($row['constant_name'],ENT_NOQUOTES).'</td>';
 			// if there is no definition
@@ -182,7 +182,7 @@ if ($_POST['edit']){
 		echo ('<INPUT TYPE="hidden" name="lang_id" value="'.htmlspecialchars($lang_id,ENT_QUOTES).'">');
 	// english plus the other
 	} else {
-		while ($row=SqlFetchArray($res)){
+		foreach ($res as $row){
       if (!empty($row['lang_id']) && $row['lang_id'] != '1') {
         // This should not happen, if it does that must mean that this
         // constant has more than one definition for the same language!

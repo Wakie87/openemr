@@ -70,7 +70,7 @@ $res = sqlStatement("SELECT " .
   "WHERE f.pid = '$pid' AND f.formdir = 'strength_conditioning' " .
   "ORDER BY fe.date DESC, f.encounter DESC");
 
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $raw_encounter_date = date("Y-m-d", strtotime($row['date']));
   $reason_string = $row['reason'];
   $auth_sensitivity = true;

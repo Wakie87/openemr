@@ -426,7 +426,7 @@ $extra_html = '';
 $lastrcn = '';
 $facilities = array();
 
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $order_type_id  = empty($row['order_type_id'      ]) ? 0 : ($row['order_type_id' ] + 0);
   $order_id       = empty($row['procedure_order_id' ]) ? 0 : ($row['procedure_order_id' ] + 0);
   $order_seq      = empty($row['procedure_order_seq']) ? 0 : ($row['procedure_order_seq'] + 0);
