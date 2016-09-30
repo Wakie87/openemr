@@ -51,7 +51,7 @@ if($GLOBALS['password_expiration_days'] != 0){
   $result = sqlStatement("select pwd_expiration_date from users where username = ?", array($q));
   $current_date = date('Y-m-d');
   $pwd_expires_date = $current_date;
-  if($row = sqlFetchArray($result)) {
+  if($row = $result) {
     $pwd_expires_date = $row['pwd_expiration_date'];
   }
 

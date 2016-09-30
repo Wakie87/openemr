@@ -56,10 +56,7 @@ sqlStatement("update transactions set authorized=1 where pid=?", array($_GET["pi
 //	transactions
 
 //fetch billing information:
-if ($res = sqlStatement("select *, concat(u.fname,' ', u.lname) as user from billing LEFT JOIN users as u on billing.user = u.id where billing.authorized=0 and groupname=?", array ($groupname) )) {
-for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-		$result[$iter] = $row;
-
+if ($result = sqlStatement("select *, concat(u.fname,' ', u.lname) as user from billing LEFT JOIN users as u on billing.user = u.id where billing.authorized=0 and groupname=?", array ($groupname) )) {
 if ($result) {
 foreach ($result as $iter) {
 
@@ -133,9 +130,9 @@ $authorize{$iter{"pid"}}{"forms"} .= "<span class=small>" .
 if ($authorize) {
 
 while(list($ppid,$patient) = each($authorize)){
-	
+
 	$name = getPatientData($ppid);
-	
+
 	echo "<tr><td valign=top><span class=bold>". htmlspecialchars($name{"fname"} . " " . $name{"lname"},ENT_NOQUOTES) .
              "</span><br><a class=link_submit href='authorizations_full.php?mode=authorize&pid=" .
              htmlspecialchars($ppid,ENT_QUOTES) . "' onclick='top.restoreSession()'>" . htmlspecialchars(xl('Authorize'),ENT_NOQUOTES) . "</a></td>\n";

@@ -1,6 +1,6 @@
 <?php
 /**
- * Display a message indicating that the user's password has/will expire. 
+ * Display a message indicating that the user's password has/will expire.
  *
  * Copyright 2010 ViCarePlus Team, Visolve <vicareplus_engg@visolve.com>
  *
@@ -30,7 +30,7 @@ require_once("$srcdir/translation.inc.php");
 $pwd_expires = "";
 $q = $_SESSION["authUserID"];
 $result = sqlStatement("select username, pwd_expiration_date from users where id = ?", array($q));
-if($row = sqlFetchArray($result)) {
+if($row = $result) {
   $pwd_expires = $row['pwd_expiration_date'];
   $username = $row['username'];
 }
@@ -84,7 +84,7 @@ else if ((strtotime($current_date) >= strtotime($pwd_alert)) && strtotime($pwd_a
     </td>
     <td>&nbsp;</td>
   </tr>
- 
+
   <tr>
     <td>&nbsp;</td>
     <td>&nbsp;</td>

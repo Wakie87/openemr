@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2010 OpenEMR Support LLC   
+// Copyright (C) 2010 OpenEMR Support LLC
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
@@ -17,10 +17,7 @@ function lab_results_messages($set_pid, $rid, $provider_id="") {
         $where = "AND id = '".$provider_id."'";
     }
     // Get all active users.
-    $rez = sqlStatement("select id, username from users where username != '' AND active = '1' $where");
-    for ($iter = 0; $row = sqlFetchArray($rez); $iter++) {
-        $result[$iter] = $row;
-    }
+    $result = sqlStatement("select id, username from users where username != '' AND active = '1' $where");
 
     if (!empty($result)) {
         foreach ($result as $user_detail) {

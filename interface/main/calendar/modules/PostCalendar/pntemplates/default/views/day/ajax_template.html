@@ -81,7 +81,7 @@ $timeslotHeightUnit="px";
  $DOWlist = array();
  $tmpDOW = pnModGetVar(__POSTCALENDAR__, 'pcFirstDayOfWeek');
  // bound check and auto-correction
- if ($tmpDOW <0 || $tmpDOW >6) { 
+ if ($tmpDOW <0 || $tmpDOW >6) {
     pnModSetVar(__POSTCALENDAR__, 'pcFirstDayOfWeek', '0');
     $tmpDOW = 0;
  }
@@ -273,7 +273,7 @@ while ($currdate <= $enddate) {
     $td .= "title=\"" . xl('Go to') . " ".date('M d, Y', $currdate)."\" ";
     $td .= "> ".date('d', $currdate)."</td>\n";
     echo $td;
-   
+
     // end of week row
     if (date('w', $currdate) == $DOWlist[6]) echo "</tr>\n";
 
@@ -411,7 +411,7 @@ foreach ($providers as $provider) {
     $calStartMin = ($tmpTime['hour'] * 60) + $tmpTime['minute'];
     $tmpTime = $times[count($times)-1];
     $calEndMin = ($tmpTime['hour'] * 60) + $tmpTime['minute'];
-        
+
     // having a 'title' for the TD makes the date appear by the mouse pointer
     // this is nice when all you see are times on the left side and no head
     // row with the dates or day-of-week (DOW)
@@ -442,7 +442,7 @@ foreach ($providers as $provider) {
             foreach ($events as $e1) {
                 // ignore IN event
                 if (($e1['catid'] == 2)) { continue; }
-				
+
 				// skip events without an ID (why they are in the loop, I have no idea)
                 if ($e1['eid'] == "") { continue; }
 
@@ -450,7 +450,7 @@ foreach ($providers as $provider) {
                 // $event['aid']!=0 :With the holidays we included clinic events, they have provider id =0
                 // we dont want to exclude those events from being displayed
                 if ($providerid != $e1['aid']  && $event['aid']!=0) { continue; }
-            
+
                 // specially handle all-day events
                 if ($e1['alldayevent'] == 1) {
                     $tmpTime = $times[0];
@@ -491,17 +491,17 @@ foreach ($providers as $provider) {
 				if (!isset($eventPositions[$eid]->width))
 				{
 					$eventPositions[$eid]->width = $width;
-				} else if ($eventPositions[$eid]->width > $width) 
+				} else if ($eventPositions[$eid]->width > $width)
 				{
 					$eventPositions[$eid]->width = $width;
 				}
-               
+
                 // set the left position if not already set or if the current left is
                 // greater than what was previously set
 				if (!isset($eventPositions[$eid]->leftpos))
 				{
 					$eventPositions[$eid]->leftpos = $leftpos;
-				} else if ($eventPositions[$eid]->leftpos < $leftpos) 
+				} else if ($eventPositions[$eid]->leftpos < $leftpos)
 				{
 					$eventPositions[$eid]->leftpos = $leftpos;
 				}
@@ -516,10 +516,10 @@ foreach ($providers as $provider) {
             // skip events for other providers
             // yeah, we've got that sort of overhead here... it ain't perfect
             if ($providerid != $event['aid'] && $event['aid']!=0) { continue; }
-            
+
             // skip events without an ID (why they are in the loop, I have no idea)
             if ($event['eid'] == "") { continue; }
-                
+
             // specially handle all-day events
             if ($event['alldayevent'] == 1) {
                 $tmpTime = $times[0];
@@ -568,7 +568,7 @@ foreach ($providers as $provider) {
                     $evtClass = "event_appointment";
                     break;
             }
-            
+
             // if this is an IN or OUT event then we have some extra special
             // processing to be done
             // the IN event creates a DIV until the OUT event
@@ -610,7 +610,7 @@ foreach ($providers as $provider) {
             // times the interval height
             $eStartPos = $eStartInterval * $timeslotHeightVal;
             $evtTop = $eStartPos.$timeslotHeightUnit;
-            
+
             // calculate the HEIGHT value for the event DIV
             // diff between end and start of event
             $eEndMin = $eStartMin + ($event['duration']/60);
@@ -661,7 +661,7 @@ foreach ($providers as $provider) {
             // the divTitle is what appears when the user hovers the mouse over the DIV
             $divTitle = htmlspecialchars($provider["fname"],ENT_QUOTES)." ".htmlspecialchars($provider["lname"],ENT_QUOTES);
             $result = sqlStatement("SELECT name,id,color FROM facility WHERE id=(SELECT pc_facility FROM openemr_postcalendar_events WHERE pc_eid=".$eventid.")");
-            $row = sqlFetchArray($result);
+            $row = $result;
             $color=$event["catcolor"];
             if($GLOBALS['event_color']==2)
             $color=$row['color'];
@@ -783,7 +783,7 @@ foreach ($providers as $provider) {
                echo $content;
                echo "</div>\n";
            }
-   
+
            // output the DIV and content
            // For "OUT" events, applying the background color in CSS.
           $background_string= ($event['catid'] == 3) ? "" : "; background-color:".$event["catcolor"];
@@ -831,7 +831,7 @@ foreach ($providers as $provider) {
   } // end EVENT loop
 
    echo "</div>";
-   
+
    } // end date
 
     echo "</td>\n";
@@ -871,8 +871,8 @@ echo "<P>";
         $(".event").mouseover(function() { $(this).toggleClass("event_highlight"); });
         $(".event").mouseout(function() { $(this).toggleClass("event_highlight"); });
         $(".tdMonthName-small").click(function() {
-            
-            dpCal=$("#datePicker>table"); 
+
+            dpCal=$("#datePicker>table");
             mp = $("#monthPicker"); mp.width(dpCal.width()); mp.toggle();});
     });
 
@@ -888,7 +888,7 @@ echo "<P>";
         return true;
     }
 
-    /* change the current date based upon what the user clicked in 
+    /* change the current date based upon what the user clicked in
      * the datepicker DIV
      */
     var ChangeDate = function(eObj) {

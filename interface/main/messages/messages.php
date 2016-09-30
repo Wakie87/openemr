@@ -8,15 +8,15 @@
  *
  * Copyright (c) 2010 OpenEMR Support LLC
  *
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
  * @package OpenEMR
@@ -24,7 +24,7 @@
  * @author Roberto Vasquez <robertogagliotta@gmail.com>
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Brady Miller <brady@sparmy.com>
- * @link http://www.open-emr.org 
+ * @link http://www.open-emr.org
  */
 
 //SANITIZE ALL ESCAPES
@@ -60,12 +60,12 @@ require_once("$srcdir/formatting.inc.php");
 <br /><br />
 <span class="title"><?php echo xlt('Reminders'); ?></span>
 
-<?php 
-        
+<?php
+
         // TajEmo Work by CB 2012/01/11 02:51:25 PM adding dated reminders
         // I am asuming that at this point security checks have been performed
         require_once '../dated_reminders/dated_reminders.php';
-        
+
 // Check to see if the user has Admin rights, and if so, allow access to See All.
 $showall = isset($_GET['show_all']) ? $_GET['show_all'] : "" ;
 if ($showall == "yes") {
@@ -296,7 +296,7 @@ if ($noteid) {
     echo " <tr>\n";
     echo "  <td class='text'><b>";
     echo xlt('Linked document') . ":</b>\n";
-    while ($gprow = sqlFetchArray($tmp)) {
+    foreach ($tmp as $gprow) {
       $d = new Document($gprow['id1']);
       echo "   <a href='";
       echo $GLOBALS['webroot'] . "/controller.php?document&retrieve";
@@ -317,7 +317,7 @@ if ($noteid) {
     echo " <tr>\n";
     echo "  <td class='text'><b>";
     echo xlt('Linked procedure order') . ":</b>\n";
-    while ($gprow = sqlFetchArray($tmp)) {
+    foreach ($tmp as $gprow) {
       echo "   <a href='";
       echo $GLOBALS['webroot'] . "/interface/orders/single_order_results.php?orderid=";
       echo $gprow['id1'];
@@ -427,7 +427,7 @@ $(document).ready(function(){
  function sel_patient() {
   dlgopen('../../main/calendar/find_patient_popup.php', '_blank', 500, 400);
  }
- 
+
   function addtolist(sel){
     var itemtext = document.getElementById('assigned_to_text');
     var item = document.getElementById('assigned_to');
@@ -443,7 +443,7 @@ $(document).ready(function(){
       }
     }
   }
- 
+
 </script><?php
 }
 else {
@@ -515,7 +515,7 @@ else {
         // Display the Messages table body.
         $count = 0;
         $result = getPnotesByUser($active,$show_all,$_SESSION['authUser'],false,$sortby,$sortorder,$begin,$listnumber);
-        while ($myrow = sqlFetchArray($result)) {
+        foreach ($result as $myrow) {
             $name = $myrow['user'];
             $name = $myrow['users_lname'];
             if ($myrow['users_fname']) {

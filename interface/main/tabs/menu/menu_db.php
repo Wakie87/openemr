@@ -35,7 +35,7 @@ function menu_entry_to_object($row)
 }
 function load_menu($menu_set)
 {
-    
+
     $menuTables=" SHOW TABLES LIKE ?";
     $res=sqlQuery($menuTables,array("menu_trees"));
     if($res===false)
@@ -45,11 +45,11 @@ function load_menu($menu_set)
 
     $menuQuery=" SELECT * FROM menu_trees, menu_entries WHERE menu_trees.entry_id=menu_entries.id AND menu_set=? ORDER BY parent, seq";
     $res=sqlStatement($menuQuery,array($menu_set));
-    
+
     $retval=array();
     $entries=array();
     $parent_not_found=array();
-    while($row=  sqlFetchArray($res))
+    foreach ($res as $row)
     {
         $entries[$row['entry_id']]=menu_entry_to_object($row);
         if(empty($row['parent']))
@@ -62,7 +62,7 @@ function load_menu($menu_set)
             {
                 $parent=$entries[$row['parent']];
                 array_push($parent->children,$entries[$row['entry_id']]);
-                
+
             }
             else
             {
@@ -81,7 +81,7 @@ function load_menu($menu_set)
             {
                 array_push($parent_not_found2,$row);
             }
-        
+
     }
     return json_decode(json_encode($retval));
 }

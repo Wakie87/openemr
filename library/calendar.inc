@@ -7,7 +7,7 @@ function getNextAppointment ($pid) {
 $query = "select * from calendar where pid=$pid and time>now() order by time limit 1";
 $rez = sqlStatement($query);
 echo "<!-- getNextAppointment $pid -$query- -->";
-    return sqlFetchArray($rez);
+    return $rez;
 }
 
 
@@ -15,8 +15,7 @@ echo "<!-- getNextAppointment $pid -$query- -->";
 function getCalendarDay($datetime,$owner,$groupname) {
     $query = "select * from calendar where time like '$datetime%' and owner like '$owner' and groupname like '$groupname' order by time";
     $rez = sqlStatement($query);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
+    $returnval = $rez;
 
 echo "<!-- getCalendarDay -$query- $datetime $owner $groupname -->";
     return $returnval;
@@ -25,8 +24,8 @@ echo "<!-- getCalendarDay -$query- $datetime $owner $groupname -->";
 //toggle the status of a noshow calendar entry
 function toggleNoShow( $cid) {
     $rez = sqlStatement("select noshow from calendar where id=$cid");
-    $row=sqlFetchArray($rez);
-    $oldnoshowval = $row{noshow};
+    $row = $rez;
+    $oldnoshowval = $row['noshow'];
     $newnoshowval = !($oldnoshowval);
     $query = "update calendar set noshow='$newnoshowval' where id=$cid";
     sqlStatement($query);
@@ -37,8 +36,7 @@ function toggleNoShow( $cid) {
 function getProviderUsernames() {
     $rez = sqlStatement("select distinct username, lname, fname from users " .
         "where authorized = 1 and username != ''");
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
+     $returnval=$rez;
 
     return $returnval;
 }
@@ -46,8 +44,7 @@ function getProviderUsernames() {
 
 function getIDfromUser($name) {
     $query = "select id from users where username=\"" . add_escape_custom($name) . "\" limit 1";
-    $rez = sqlStatement($query);
-    $row = sqlFetchArray($rez);
+    $row = sqlStatement($query);
     if (!is_numeric($row['id']))
         return -1;
     else
@@ -56,8 +53,7 @@ function getIDfromUser($name) {
 function getAuthorizedIDs() {
     $query = "select id, username from users where authorized=1 and username != ''";
     $rez = sqlStatement($query);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
+    $returnval=$rez;
     return $returnval;
 }
 
@@ -65,9 +61,7 @@ function getAuthorizedIDs() {
 function getUserInfo() {
     $rez = sqlStatement("select distinct id, username, lname, fname, authorized, " .
         "info, facility from users where username != ''");
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
-
+    $returnval=$rez;
     return $returnval;
 }
 function getUsername($uID) {
@@ -97,9 +91,8 @@ function getUserFacilities($uID) {
         ", array($uID) );
   }
   $returnVal = array();
-  while ($row = sqlFetchArray($rez))
-      $returnVal[] = $row;
-  return $returnVal;
+    $returnval=$rez;
+    return $returnval;
 }
 
 //retrieve the name based on the username
@@ -119,11 +112,8 @@ function getCalendarfromID ($calid) {
 //get calendar dates in a range of dates
 function getCalendarRanges ($fromdate, $todate, $username) {
     $rez = sqlStatement("select * from calendar where time>='$fromdate' and time<'$todate' and owner like '$username' order by time");
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
-
+    $returnval=$rez;
     return $returnval;
-
 }
 
 
@@ -131,9 +121,8 @@ function getCalendarRanges ($fromdate, $todate, $username) {
 function getCalendarbyTimeandRange ($time, $fromdate, $todate, $username) {
     $query = "select * from calendar where time like '% $time%' and time>='$fromdate' and time<'$todate' and owner like '$username' order by time";
     $rez = sqlStatement($query);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
-echo "<!-- getcalendarbytimeandrange -$query- -->";
+    $returnval=$rez;
+    echo "<!-- getcalendarbytimeandrange -$query- -->";
     return $returnval;
 
 }

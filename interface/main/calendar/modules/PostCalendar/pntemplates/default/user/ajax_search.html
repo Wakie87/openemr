@@ -40,10 +40,10 @@
 </select>
 [-/if-]
 <br>
-[-php-] xl('between','e'); [-/php-] 
+[-php-] xl('between','e'); [-/php-]
 <input type="text" name="start" id="start" value="[-$DATE_START-]" size="10"/>
 <img src='[-php-] echo $GLOBALS['webroot'] [-/php-]/interface/pic/show_calendar.gif' align='absbottom' width='24' height='22' id='img_from_date' border='0' alt='[?]' style='cursor:pointer' title='[-php-] xl('Click here to choose a date','e'); [-/php-]'>
-[-php-] xl('and','e'); [-/php-] 
+[-php-] xl('and','e'); [-/php-]
 <input type="text" name="end" id="end" value="[-$DATE_END-]" size="10"/>
 <img src='[-php-] echo $GLOBALS['webroot'] [-/php-]/interface/pic/show_calendar.gif' align='absbottom' width='24' height='22' id='img_to_date' border='0' alt='[?]' style='cursor:pointer' title='[-php-] xl('Click here to choose a date','e'); [-/php-]'>
 <br>
@@ -91,7 +91,7 @@ foreach ($this->get_template_vars('A_EVENTS') as $eDate => $date_events) {
         // pick up some demographic info about the provider
         $provquery = "SELECT * FROM users WHERE id='".$event['aid']."'";
         $res = sqlStatement($provquery);
-        $provinfo = sqlFetchArray($res);
+        $provinfo = $res;
 
         $eData = $event['eid']."~".$eventdate;
         $trTitle = xl('Click to edit this event');
@@ -109,7 +109,7 @@ foreach ($this->get_template_vars('A_EVENTS') as $eDate => $date_events) {
         $imgtitle .= $provinfo['phonew1']."\n".$provinfo['street']."\n".$provinfo['city']." ".$provinfo['state'];
         echo " <img class'provinfo' src='".$GLOBALS['webroot']."/images/info.png' title=\"".$imgtitle."\" />";
         echo "</td>";
-        
+
         // category
         echo "<td class='calsearch_category'>";
         echo $event['catname'];
@@ -187,7 +187,7 @@ function goPid(pid) {
     top.restoreSession();
     [-php-]
            echo "top.RTop.location = '../../patient_file/summary/demographics.php' " .
-           			 "+ '?set_pid=' + pid;\n";         	
+           			 "+ '?set_pid=' + pid;\n";
     [-/php-]
  }
 </script>
