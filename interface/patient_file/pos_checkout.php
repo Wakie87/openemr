@@ -368,7 +368,7 @@ function write_form_line($code_type, $code, $id, $date, $description,
 $taxes = array();
 $pres = sqlStatement("SELECT option_id, title, option_value " .
   "FROM list_options WHERE list_id = 'taxrate' ORDER BY seq");
-while ($prow = sqlFetchArray($pres)) {
+foreach ($pres as $prow) {
   $taxes[$prow['option_id']] = array($prow['title'], $prow['option_value'], 0);
 }
 
@@ -608,7 +608,7 @@ if (sqlNumRows($bres) == 0 && sqlNumRows($dres) == 0) {
 $arr_users = array();
 $ures = sqlStatement("SELECT id, username FROM users WHERE " .
   "( authorized = 1 OR info LIKE '%provider%' ) AND username != ''");
-while ($urow = sqlFetchArray($ures)) {
+foreach ($ures as $urow) {
   $arr_users[$urow['id']] = '1';
 }
 
@@ -752,7 +752,7 @@ $gcac_service_provided = false;
 // Process billing table items.
 // Items that are not allowed to have a fee are skipped.
 //
-while ($brow = sqlFetchArray($bres)) {
+foreach ($bres as $brow) {
   // Skip all but the most recent encounter.
   if ($inv_encounter && $brow['encounter'] != $inv_encounter) continue;
 

@@ -106,7 +106,7 @@
   "LEFT OUTER JOIN addresses AS a2 ON a2.foreign_id = c2.id " .
   "WHERE p.pid = '$pid' LIMIT 1";
 
- $row = sqlFetchArray(sqlStatement($query));
+ $row = sqlStatement($query)
 
  // Get primary care doc info.  If none was selected in the patient
  // demographics then pick the #1 doctor in the clinic.
@@ -117,7 +117,7 @@
  } else {
   $query .= " ORDER BY id LIMIT 1";
  }
- $prow = sqlFetchArray(sqlStatement($query));
+ $prow = sqlStatement($query)
 
  // Patient Section.
  //

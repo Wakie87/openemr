@@ -186,7 +186,7 @@ display_layout_rows(']]></xsl:text>
 <xsl:if test="$page='new' or $page='view'">
 <xsl:text disable-output-escaping="yes"><![CDATA[<!-- display the form's layouts based fields -->
 <?php
-while ($frow = sqlFetchArray($fres)) {
+foreach ($fres as $frow) {
   $this_group = $frow['group_name'];
   $titlecols  = $frow['titlecols'];
   $datacols   = $frow['datacols'];

@@ -64,7 +64,7 @@ class C_Prescription extends Controller {
 				"FROM drug_templates AS t, drugs AS d WHERE " .
 				"d.drug_id = t.drug_id ORDER BY t.selector");
 
-			while ($row = sqlFetchArray($res)) {
+			foreach ($res as $row) {
 				$tmp_output = $row['selector'];
 				if ($row['ndc_number']) {
 					$tmp_output .= ' [' . $row['ndc_number'] . ']';
@@ -230,7 +230,7 @@ class C_Prescription extends Controller {
       processAmcCall('e_prescribe_cont_subst_amc', true, 'remove', $this->prescriptions[0]->get_patient_id(), 'prescriptions', $this->prescriptions[0]->id);
     }
 
-// TajEmo Work by CB 2012/05/29 02:58:29 PM to stop from going to send screen. Improves Work Flow 
+// TajEmo Work by CB 2012/05/29 02:58:29 PM to stop from going to send screen. Improves Work Flow
 //     if ($this->prescriptions[0]->get_active() > 0) {
 //       return $this->send_action($this->prescriptions[0]->id);
 //     }
@@ -360,7 +360,7 @@ class C_Prescription extends Controller {
 	        echo ("</td>\n");
 	        echo ("<td>\n");
                 echo ('<b><span class="large">' .  $p->provider->get_name_display() . '</span></b>'. '<br>');
-                
+
                 if ($GLOBALS['rx_enable_DEA']) {
                     if ($GLOBALS['rx_show_DEA']) {
                         echo ('<span class="large"><b>' . xl('DEA') . ':</b>' . $p->provider->federal_drug_id . '</span><br>');

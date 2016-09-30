@@ -56,7 +56,7 @@ function genWarehouseList($tag_name, $currvalue, $title, $class='') {
     ++$count;
   }
 
-  while ($lrow = sqlFetchArray($lres)) {
+  foreach ($lres as $lrow) {
     $whid = $lrow['option_id'];
     if ($whid != $currvalue && !$allow_multiple && checkWarehouseUsed($whid)) continue;
 
@@ -460,7 +460,7 @@ $lres = sqlStatement("SELECT " .
   "WHERE di.drug_id = ? AND di.inventory_id != ? AND " .
   "di.on_hand > 0 AND di.destroy_date IS NULL " .
   "ORDER BY di.lot_number, lo.title, di.inventory_id", array ($drug_id,$lot_id));
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
   echo "<option value='" . attr($lrow['inventory_id']) . "'>";
   echo text($lrow['lot_number']);
   if (!empty($lrow['title'])) echo " / " . text($lrow['title']);

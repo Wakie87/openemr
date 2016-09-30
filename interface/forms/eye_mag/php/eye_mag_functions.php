@@ -3060,7 +3060,7 @@ function build_IMPPLAN_items($pid,$form_id) {
     $newdata = array();
     $fres = sqlStatement($query,array($form_id,$pid));
     $i=0; //there should only be one if all goes well...
-    while ($frow = sqlFetchArray($fres)) {
+    foreach ($fres as $frow) {
       $IMPPLAN_items[$i]['form_id'] = $frow['form_id'];
       $IMPPLAN_items[$i]['pid'] = $frow['pid'];
       $IMPPLAN_items[$i]['id'] = $frow['id'];
@@ -3560,7 +3560,7 @@ function menu_overhaul_left($pid,$encounter) {
                             echo "<select name='form_PCP' id='form_PCP' title='".xla('Primary Care Provider')."'>";
                             echo "<option value=''>" . xlt($empty_title) . "</option>";
                             $got_selected = false;
-                            while ($urow = sqlFetchArray($ures)) {
+                            foreach ($ures as $urow) {
                               $uname = text($urow['lname'] . ' ' . $urow['fname']);
                               $optionId = attr($urow['id']);
                               echo "<option value='$optionId'";
@@ -3592,7 +3592,7 @@ function menu_overhaul_left($pid,$encounter) {
                             echo "<select name='form_rDOC' id='form_rDOC' title='".xla('Every name in the address book appears here, not only physicians.')."'>";
                             echo "<option value=''>" . xlt($empty_title) . "</option>";
                             $got_selected = false;
-                            while ($urow = sqlFetchArray($ures)) {
+                            foreach ($ures as $urow) {
                               $uname = text($urow['lname'] . ' ' . $urow['fname']);
                               $optionId = attr($urow['id']);
                               echo "<option value='$optionId'";

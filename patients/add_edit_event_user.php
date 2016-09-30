@@ -189,7 +189,7 @@ if ( $eid ) {
     's:19:"event_repeat_on_day";s:1:"0";' .
     's:20:"event_repeat_on_freq";s:1:"1";}';
   }
-  
+
   //The modification of the start date for events that take place on one day of the week
   //for example monday, or thursday. We set the start date on the first day of the week
   //that the event is scheduled. For example if you set the event to repeat on each monday
@@ -700,7 +700,7 @@ td { font-size:0.8em; }
  if ($eid) {
   $thisduration = $row['pc_alldayevent'] ? 1440 : round($row['pc_duration'] / 60);
  }
- while ($crow = sqlFetchArray($cres)) {
+ foreach ($cres as $crow) {
   $duration = round($crow['pc_duration'] / 60);
   if ($crow['pc_end_all_day']) $duration = 1440;
   echo " durations[" . $crow['pc_catid'] . "] = $duration\n";
@@ -782,11 +782,11 @@ td { font-size:0.8em; }
  // Gray out certain fields according to selection of Category DDL
  function categoryChanged() {
     var value = '5';
-   
+
 	document.getElementById("form_patient").disabled=false;
 	//document.getElementById("form_apptstatus").disabled=false;
 	//document.getElementById("form_prefcat").disabled=false;
- 
+
  }
 
  // Do whatever is needed when a new event category is selected.
@@ -860,7 +860,7 @@ td { font-size:0.8em; }
     // Invoke the find-available popup.
     function find_available() {
         //top.restoreSession();
-        // (CHEMED) Conditional value selection, because there is no <select> element 
+        // (CHEMED) Conditional value selection, because there is no <select> element
         // when making an appointment for a specific provider
         var s = document.forms[0].form_provider;
         <?php if ($userid != 0) { ?>
@@ -870,10 +870,10 @@ td { font-size:0.8em; }
         <?php }?>
 //        var fd2=document.forms[0].form_date2.value;
 //        document.forms[0].form_date.value=fd2.substring(6)+'-'+fd2.substring(0,2)+'-'+fd2.substring(3,5);
-        
+
         var formDate = document.forms[0].form_date;
         window.open('find_appt_popup_user.php?bypatient&providerid=' + s +
-                '&catid=5' + 
+                '&catid=5' +
                 '&startdate=' + formDate.value, '_blank', 500, 400);
         //END (CHEMED) modifications
     }
@@ -885,7 +885,7 @@ td { font-size:0.8em; }
    alert('Please click on "Openings" to select a time.');
    return false;
   }
-  
+
 //  in lunch outofoffice reserved vacation
   f.form_category.value='12';
   if (f.form_patient.value=='Click to select' && (!(
@@ -894,7 +894,7 @@ td { font-size:0.8em; }
    alert('Please select a patient.');
    return false;
   } else if (f.form_category.value=='10') {
-	unsetpatient();	
+	unsetpatient();
   }
   var form_action = document.getElementById('form_action');
   form_action.value="save";
@@ -941,7 +941,7 @@ td { font-size:0.8em; }
   <td colspan='2' nowrap id='tdallday1'>
    <input type='text' size='10' name='form_date' readonly id='form_date' <?php echo $disabled ?>
     value='<?php if (isset($eid)) { echo $eid ? $row['pc_eventDate'] : $date; } ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' 
+    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
   </td>
  </tr>
 
@@ -984,14 +984,14 @@ td { font-size:0.8em; }
   <td nowrap id='tdallday4'><?php xl('duration','e'); ?>
   </td>
   <td nowrap id='tdallday5'>
-   <input type='text' size='4' name='form_duration' readonly value='<?php echo $thisduration ?>' title='<?php xl('Event duration in minutes','e'); ?>' /> 
+   <input type='text' size='4' name='form_duration' readonly value='<?php echo $thisduration ?>' title='<?php xl('Event duration in minutes','e'); ?>' />
     <?php xl('minutes','e'); ?>
-    
+
   </td>
  </tr>
 
     <tr>
-    	
+
     </tr>
 
 
@@ -1005,9 +1005,9 @@ td { font-size:0.8em; }
         // present a list of providers to choose from
         // default to the currently logged-in user
         echo "<select name='form_provider' onchange='change_provider();' style='width:100%' />";
-        while ($urow = sqlFetchArray($ures)) {
+        foreach ($ures as $urow) {
             echo "    <option value='" . $urow['id'] . "'";
-//            if ($urow['id'] == $_SESSION['authUserID']) echo " selected"; 
+//            if ($urow['id'] == $_SESSION['authUserID']) echo " selected";
             if (($urow['id'] == $_GET['userid'])||($urow['id']== $userid)) echo " selected";
             echo ">" . $urow['lname'];
             if ($urow['fname']) echo ", " . $urow['fname'];
@@ -1020,7 +1020,7 @@ td { font-size:0.8em; }
 ?>
   </td>
   <td nowrap style='font-size:8pt'>
-   
+
   </td>
   <td><input type='button' value='<?php xl('Openings','e');?>' onclick='find_available()' /></td>
   <td></td>

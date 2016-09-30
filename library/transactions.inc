@@ -5,7 +5,7 @@ function getTransById ($id, $cols = "*")
 {
   $row = sqlQuery("SELECT $cols FROM transactions WHERE id = ?", array($id));
   $fres = sqlStatement("SELECT field_id, field_value FROM lbt_data WHERE form_id = ?", array($id));
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $row[$frow['field_id']] = $frow['field_value'];
   }
   return $row;
@@ -18,7 +18,7 @@ function getTransByPid ($pid, $cols = "*")
   for ($iter = 0; $row = sqlFetchArray($res); $iter++) {
     $fres = sqlStatement("SELECT field_id, field_value FROM lbt_data WHERE form_id = ?",
       array($row['id']));
-    while ($frow = sqlFetchArray($fres)) {
+    foreach ($fres as $frow) {
       $row[$frow['field_id']] = $frow['field_value'];
     }
     $all[$iter] = $row;

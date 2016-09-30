@@ -166,7 +166,7 @@ if (!empty($row)) {
   echo "   <option value=''></option>";
   $ures = sqlStatement("SELECT id, fname, mname, lname FROM users " .
     "WHERE username != '' AND active = 1 ORDER BY lname, fname, mname");
-  while ($urow = sqlFetchArray($ures)) {
+  foreach ($ures as $urow) {
     echo "    <option value='" . attr($urow['id']) . "'";
     echo ">" . text($urow['lname']) . ', ' . text($urow['fname']) . ' ' . text($urow['mname']) .
       "</option>\n";

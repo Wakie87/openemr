@@ -310,7 +310,7 @@ class C_Document extends Controller {
 		$ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 			"pid = ? " . // AND enddate IS NULL " .
 			"ORDER BY type, begdate", array($patient_id) );
-		while ($irow = sqlFetchArray($ires)) {
+		foreach ($ires as $irow) {
 			$desc = $irow['type'];
 			if ($ISSUE_TYPES[$desc]) $desc = $ISSUE_TYPES[$desc][2];
 			$desc .= ": " . $irow['begdate'] . " " . htmlspecialchars(substr($irow['title'], 0, 40));
@@ -335,7 +335,7 @@ class C_Document extends Controller {
 		//Populate the dropdown with category list
 		$visit_category_list = "<option value='0'>-- " . xlt('Select One') . " --</option>";
 		$cres = sqlStatement("SELECT pc_catid, pc_catname FROM openemr_postcalendar_categories ORDER BY pc_catname");
-		while ($crow = sqlFetchArray($cres)) {
+		foreach ($cres as $crow) {
 			$catid = $crow['pc_catid'];
 			if ($catid < 9 && $catid != 5) continue; // Applying same logic as in new encounter page.
 			$visit_category_list .="<option value='".attr($catid)."'>" . text(xl_appt_category($crow['pc_catname'])) . "</option>\n";

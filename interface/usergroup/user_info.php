@@ -46,8 +46,7 @@ function update_password()
 
 $ip=$_SERVER['REMOTE_ADDR'];
 $res = sqlStatement("select fname,lname,username from users where id=?",array($_SESSION["authId"]));
-$row = sqlFetchArray($res);
-      $iter=$row;
+$row = $res;      $iter=$row;
 ?>
 <div id="display_msg">
 </div>

@@ -40,8 +40,7 @@ for($i=0;$i<$bg_count;$i++){
 if(($_GET['access_group'][$i] == "Emergency Login") && ($_GET['active'] == 'on') && ($_GET['pre_active'] == 0)){
   if(($_GET['get_admin_id'] == 1) && ($_GET['admin_id'] != "")){
 	$res = sqlStatement("select username from users where id= ? ", array($_GET["id"]));
-	$row = sqlFetchArray($res);
-	$uname=$row['username'];
+	$row = $res;	$uname=$row['username'];
 	$mail = new MyMailer();
         $mail->From = "admin@".$mail_id[1].".".$mail_id[2];
         $mail->FromName = "Administrator OpenEMR";

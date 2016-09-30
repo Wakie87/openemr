@@ -236,7 +236,7 @@ function isEncounterBilled($pid, $encounter) {
     "encounter = ?",
     array($pid, $encounter, $pid, $encounter));
 
-  while ($brow = sqlFetchArray($bres)) {
+  foreach ($bres as $brow) {
     if ($brow['billed'] == 0) {
       $billed = 0;
     }

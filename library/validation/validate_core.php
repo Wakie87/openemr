@@ -36,7 +36,7 @@ function collectValidationPageRules($title,$active=true){
     }
 
     $dataArray=array();
-    while($row = sqlFetchArray($sql) ) {
+    foreach ($sql as $row) {
         $formPageNameArray = explode('#', $row['option_id']);
         $dataArray[$formPageNameArray[1]]=array('page_name' => $formPageNameArray[0] ,'rules' => $row['notes']);
     }

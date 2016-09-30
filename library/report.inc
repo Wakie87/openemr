@@ -238,7 +238,7 @@ function lbt_report($id, $formname) {
   $fres = sqlStatement("SELECT * FROM layout_options " .
     "WHERE form_id = ? AND uor > 0 " .
     "ORDER BY group_name, seq", array($formname));
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $field_id  = $frow['field_id'];
     $currvalue = lbt_current_value($frow, $id);
     // For brevity, skip fields without a value.
@@ -254,7 +254,7 @@ function lbt_report($id, $formname) {
 //
 function printPatientTransactions($pid) {
 	$res = sqlStatement("SELECT * FROM transactions WHERE pid = ? ORDER BY date", array($pid));
-	while($row = sqlFetchArray($res)) {
+	foreach ($res as $row) {
     echo "<p><span class='bold'>" .
       text(oeFormatSDFT(strtotime($row['date']))) .
       " (" .

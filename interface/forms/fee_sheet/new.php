@@ -732,7 +732,7 @@ endFSCategory();
 // Create drop-lists based on categories defined within the codes.
 $pres = sqlStatement("SELECT option_id, title FROM list_options " .
   "WHERE list_id = 'superbill' ORDER BY seq");
-while ($prow = sqlFetchArray($pres)) {
+foreach ($pres as $prow) {
   global $code_types;
   ++$i;
   echo ($i <= 1) ? " <tr>\n" : "";

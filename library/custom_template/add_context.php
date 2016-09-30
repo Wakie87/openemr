@@ -171,7 +171,7 @@ elseif($_POST['action']=='update' && $_POST['item']!=''){
                         <?php
                         $res = sqlStatement("SELECT * FROM customlists WHERE cl_list_type=2 AND cl_deleted=0");
                         $i = 0;
-                        while($row = sqlFetchArray($res)){
+                        foreach ($res as $row){
                             $i++;
                             $class = ($class=='class1') ? 'class2' : 'class1';
                         ?>

@@ -923,7 +923,7 @@ td { font-size:0.8em; }
  if ($eid) {
   $thisduration = $row['pc_alldayevent'] ? 1440 : round($row['pc_duration'] / 60);
  }
- while ($crow = sqlFetchArray($cres)) {
+ foreach ($cres as $crow) {
   $duration = round($crow['pc_duration'] / 60);
   if ($crow['pc_end_all_day']) $duration = 1440;
 
@@ -1414,7 +1414,7 @@ if  ($GLOBALS['select_multi_providers']) {
     // build the selection tool
     echo "<select name='form_provider[]' style='width:100%' multiple='multiple' size='5' >";
 
-    while ($urow = sqlFetchArray($ures)) {
+    foreach ($ures as $urow) {
         echo "    <option value='" . attr($urow['id']) . "'";
 
         if ($userid) {
@@ -1461,7 +1461,7 @@ if  ($GLOBALS['select_multi_providers']) {
     }
 
     echo "<select name='form_provider' style='width:100%' />";
-    while ($urow = sqlFetchArray($ures)) {
+    foreach ($ures as $urow) {
         echo "    <option value='" . $urow['id'] . "'";
         if ($urow['id'] == $defaultProvider) echo " selected";
         echo ">" . $urow['lname'];
@@ -1484,7 +1484,7 @@ if  ($GLOBALS['select_multi_providers']) {
       if ($userid) $defaultProvider = $userid;
     }
     echo "<select name='form_provider' style='width:100%' />";
-    while ($urow = sqlFetchArray($ures)) {
+    foreach ($ures as $urow) {
       echo "    <option value='" . attr($urow['id']) . "'";
       if ($urow['id'] == $defaultProvider) echo " selected";
       echo ">" . text($urow['lname']);

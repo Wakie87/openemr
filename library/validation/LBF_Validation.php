@@ -42,7 +42,7 @@ class LBF_Validation{
         $constraints=array();
         $validation_arr=array();
         $required=array();
-        while ($frow = sqlFetchArray($fres)) {
+        foreach ($fres as $frow) {
             $id = 'form_'.$frow['field_id'];
             $validation_arr=array();
             $required=array();

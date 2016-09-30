@@ -141,7 +141,7 @@ if (empty($SBCODES)) {
     // Create entries based on categories defined within the codes.
     $pres = sqlStatement("SELECT option_id, title FROM list_options " .
             "WHERE list_id = 'superbill' ORDER BY seq");
-    while ($prow = sqlFetchArray($pres)) {
+    foreach ($pres as $prow) {
         $SBCODES[] = '*G|' . xl_list_label($prow['title']);
         $res = sqlStatement("SELECT code_type, code, code_text FROM codes " .
                 "WHERE superbill = '" . $prow['option_id'] . "' AND active = 1 " .

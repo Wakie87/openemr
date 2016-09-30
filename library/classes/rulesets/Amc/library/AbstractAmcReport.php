@@ -328,7 +328,7 @@ abstract class AbstractAmcReport implements RsReportIF
             if ('transitions-out' == $object_label) {
               $fres = sqlStatement("SELECT field_id, field_value FROM lbt_data WHERE form_id = ?",
                 array($row['id']));
-              while ($frow = sqlFetchArray($fres)) {
+              foreach ($fres as $frow) {
                 $row[$frow['field_id']] = $frow['field_value'];
               }
             }

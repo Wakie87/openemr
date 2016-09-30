@@ -38,8 +38,7 @@ if ($_POST['check'] || $_POST['synchronize']){
       // add the new language (first collect the language code)
       $sql = "SELECT lang_code FROM lang_custom WHERE constant_name='' AND lang_description=? ".$case_sensitive_collation." LIMIT 1";
       $res = SqlStatement($sql, array($var) );
-      $row = SqlFetchArray($res);
-      $sql="INSERT INTO lang_languages SET lang_code=?, lang_description=?";
+      $row = $res;      $sql="INSERT INTO lang_languages SET lang_code=?, lang_description=?";
       SqlStatement($sql, array($row['lang_code'], $var) );
       echo htmlspecialchars(xl('Synchronized new custom language:'),ENT_NOQUOTES)." ".htmlspecialchars($var,ENT_NOQUOTES)."<BR><BR>";
     }

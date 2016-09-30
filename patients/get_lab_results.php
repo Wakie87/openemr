@@ -28,7 +28,7 @@
     "pc.procedure_order_seq, pr.procedure_report_id";
 
   $where = "1 = 1";
-  	  	
+
   $res = sqlStatement("SELECT $selects " .
 	  "FROM procedure_order AS po $joins " .
 	  "WHERE po.patient_id = ? AND $where " .
@@ -52,7 +52,7 @@
   		<?php
   		$even=false;
 
-  		while ($row = sqlFetchArray($res)) {
+  		foreach ($res as $row) {
         $order_type_id  = empty($row['order_type_id'      ]) ? 0 : ($row['order_type_id' ] + 0);
         $report_id      = empty($row['procedure_report_id']) ? 0 : ($row['procedure_report_id'] + 0);
 

@@ -99,7 +99,7 @@ class FeeSheetHtml extends FeeSheet {
       $s .= "<option value=''>" . text($toptext) . "</option>";
       $lres = sqlStatement("SELECT * FROM list_options " .
         "WHERE list_id = 'warehouse' ORDER BY seq, title");
-      while ($lrow = sqlFetchArray($lres)) {
+      foreach ($lres as $lrow) {
         $s .= "<option value='" . attr($lrow['option_id']) . "'";
         if ($disabled) {
           if ($lrow['option_id'] == $default) $s .= " selected";
@@ -139,7 +139,7 @@ class FeeSheetHtml extends FeeSheet {
       "LEFT JOIN prices AS p ON p.pr_id = ? AND p.pr_selector = ? AND p.pr_level = lo.option_id " .
       "WHERE lo.list_id = 'pricelevel' ORDER BY lo.seq, lo.title",
       array($pr_id, $pr_selector));
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $price = empty($lrow['pr_price']) ? 0 : $lrow['pr_price'];
       $s .= "<option value='" . attr($lrow['option_id']) . "'";
       $s .= " id='prc_$price'";

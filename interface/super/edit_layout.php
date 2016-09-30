@@ -36,14 +36,14 @@ if ($GLOBALS['ippf_specific']) {
 // Include Layout Based Transaction Forms.
 $lres = sqlStatement("SELECT * FROM list_options " .
   "WHERE list_id = 'transactions' ORDER BY seq, title");
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
   $layouts[$lrow['option_id']] = xl_list_label($lrow['title']);
 }
 
 // Include Layout Based Encounter Forms.
 $lres = sqlStatement("SELECT * FROM list_options " .
   "WHERE list_id = 'lbfnames' ORDER BY seq, title");
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
   $layouts[$lrow['option_id']] = xl_list_label($lrow['title']);
 }
 
@@ -51,7 +51,7 @@ while ($lrow = sqlFetchArray($lres)) {
 $validations = array();
 $lres = sqlStatement("SELECT * FROM list_options " .
     "WHERE list_id = 'LBF_Validations' ORDER BY seq, title");
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
     $validations[$lrow['option_id']] = xl_list_label($lrow['title']);
 }
 // array of the data_types of the fields
@@ -538,7 +538,7 @@ function writeFieldLine($linedata) {
     
       echo "<select name='fld[$fld_line_no][contextName]' id='fld[$fld_line_no][contextName]' ".$disp.">";
         $res = sqlStatement("SELECT * FROM customlists WHERE cl_list_type=2 AND cl_deleted=0");
-        while($row = sqlFetchArray($res)){
+        foreach ($res as $row){
           $sel = '';
           if ($linedata['list_id'] == $row['cl_list_item_long'])
           $sel = 'selected';
@@ -1191,7 +1191,7 @@ foreach ($datatypes as $key=>$value) {
     <select name='gcontextName' id='gcontextName' style='display:none'>
         <?php
         $res = sqlStatement("SELECT * FROM customlists WHERE cl_list_type=2 AND cl_deleted=0");
-        while($row = sqlFetchArray($res)){
+        foreach ($res as $row){
           echo "<option value='".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."'>".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."</option>";
         }
         ?>
@@ -1274,7 +1274,7 @@ foreach ($datatypes as $key=>$value) {
        <select name='contextName' id='contextName' style='display:none'>
         <?php
         $res = sqlStatement("SELECT * FROM customlists WHERE cl_list_type=2 AND cl_deleted=0");
-        while($row = sqlFetchArray($res)){
+        foreach ($res as $row){
           echo "<option value='".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."'>".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."</option>";
         }
         ?>

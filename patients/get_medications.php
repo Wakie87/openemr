@@ -9,7 +9,7 @@
         require_once("verify_session.php");
 
 	$sql = "SELECT * FROM lists WHERE pid = ? AND type = 'medication' ORDER BY begdate";
-	
+
 	$res = sqlStatement($sql, array($pid) );
 
 	if(sqlNumRows($res)>0)
@@ -24,7 +24,7 @@
   			</tr>
   		<?php
   		$even=false;
-  		while ($row = sqlFetchArray($res)) {
+  		foreach ($res as $row) {
   			if ($even) {
   				$class="class1_even";
   				$even=false;

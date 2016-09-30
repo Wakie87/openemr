@@ -317,7 +317,7 @@ onsubmit='return top.restoreSession()'>
  $cres = sqlStatement($query1);
  echo "   <select multiple='multiple' size='3' name='form_code[]'>\n";
  //echo "    <option value=''>-- " . xl('All Codes') . " --\n";
- while ($crow = sqlFetchArray($cres)) {
+ foreach ($cres as $crow) {
   if (convert_type_id_to_key($crow['code_type']) == "ICD9") {
    // This report currently only works for ICD9 codes. Need to make this work for other
    // diagnosis code sets in the future.

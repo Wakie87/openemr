@@ -622,7 +622,7 @@ function test_rules_clinic($provider='',$type='',$dateTarget='',$mode='',$patien
     $query = "SELECT id, lname, fname, npi, federaltaxid FROM users WHERE authorized = 1 ORDER BY lname, fname";
     $ures = sqlStatementCdrEngine($query);
     // Second, run through each provider recursively
-    while ($urow = sqlFetchArray($ures)) {
+    foreach ($ures as $urow) {
       $newResults = test_rules_clinic($urow['id'],$type,$dateTarget,$mode,$patient_id,$plan,$organize_mode,$options,$pat_prov_rel,$start,$batchSize,$user);
       if (!empty($newResults)) {
         $provider_item['is_provider'] = TRUE;
@@ -652,7 +652,7 @@ function test_rules_clinic($provider='',$type='',$dateTarget='',$mode='',$patien
         $ures = sqlStatementCdrEngine($query);
         // Second, run through each provider recursively
         $provider_results = array();
-        while ($urow = sqlFetchArray($ures)) {
+        foreach ($ures as $urow) {
           $newResults = test_rules_clinic($urow['id'],$type,$dateTarget,$mode,$patient_id,$plan_item['id'],'default',$options,$pat_prov_rel,$start,$batchSize,$user);
           if (!empty($newResults)) {
             $provider_item['is_provider'] = TRUE;

@@ -137,7 +137,7 @@ $ignoreAuth = 1;
   $res = sqlStatement($query);
 //  print_r($res);
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
    $thistime = strtotime($row['pc_eventDate'] . " 00:00:00");
    if ($row['pc_recurrtype']) {
 
@@ -161,7 +161,7 @@ $ignoreAuth = 1;
 
     $endtime = strtotime($row['pc_endDate'] . " 00:00:00") + (24 * 60 * 60);
     if ($endtime > $slotetime) $endtime = $slotetime;
-    
+
     $repeatix = 0;
     while ($thistime < $endtime) {
 
@@ -291,11 +291,11 @@ form {
     font-weight: bold;
     padding: 3px;
 }
-#searchResultsHeader { 
+#searchResultsHeader {
     width: 100%;
     background-color: lightgrey;
 }
-#searchResultsHeader table { 
+#searchResultsHeader table {
     width: 96%;  /* not 100% because the 'searchResults' table has a scrollbar */
     border-collapse: collapse;
 }
@@ -304,7 +304,7 @@ form {
 }
 #searchResults {
     width: 100%;
-    height: 350px; 
+    height: 350px;
     overflow: auto;
 }
 
@@ -344,7 +344,7 @@ form {
 
    <input type='text' name='startdate' id='startdate' size='10' value='<?php echo $sdate ?>'
     title='yyyy-mm-dd starting date for search'/>
-    
+
    <img src='../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
     id='img_date' border='0' alt='[?]' style='cursor:pointer'
     title='<?php xl('Click here to choose a date','e'); ?>'>
@@ -369,7 +369,7 @@ form {
 </div>
 
 <div id="searchResults">
-<table> 
+<table>
 <?php
     $lastdate = "";
     $ampmFlag = "am"; // establish an AM-PM line break flag
@@ -397,7 +397,7 @@ form {
             echo "<div id='am'>AM ";
             $ampmFlag = "am";  // reset the AMPM flag
         }
-        
+
         $ampm = date('a', $utime);
         if ($ampmFlag != $ampm) { echo "</div><div id='pm'>PM "; }
         $ampmFlag = $ampm;

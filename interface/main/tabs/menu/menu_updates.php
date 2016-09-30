@@ -62,7 +62,7 @@ function update_visit_forms(&$menu_list)
 $lres = sqlStatement("SELECT * FROM list_options " .
   "WHERE list_id = 'lbfnames' ORDER BY seq, title");
 if (sqlNumRows($lres)) {
-  while ($lrow = sqlFetchArray($lres)) {
+  foreach ($lres as $lrow) {
     $option_id = $lrow['option_id']; // should start with LBF
     $title = $lrow['title'];
     $formURL=$baseURL . urlencode($option_id);

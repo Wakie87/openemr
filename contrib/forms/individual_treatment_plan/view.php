@@ -24,7 +24,7 @@ $obj = formFetch("form_individual_treatment_plan", $_GET["id"]);
 <?php /* From New */ ?>
 
 <?php $res = sqlStatement("SELECT fname,mname,lname,ss,street,city,state,postal_code,phone_home,DOB FROM patient_data WHERE pid = $pid");
-$result = SqlFetchArray($res); ?>
+$result = $res; ?>
 
 <b>Date of Referral:</b>&nbsp;<input type="text" name="date_of_referal" value="<?php echo stripslashes($obj{"date_of_referal"});?>"> 
 <img src="../../../images/space.gif" width="260" height="1">

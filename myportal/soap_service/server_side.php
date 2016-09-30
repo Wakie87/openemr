@@ -1299,8 +1299,7 @@ static  public function batch_despatch($var,$func,$data_credentials){
           $module_name = isset($parameter_array[1]) ? $parameter_array[1] : '';
 	  $sql = "SELECT mod_id FROM modules WHERE mod_name = ? AND mod_active = '1'";
 	  $res = sqlStatement($sql, array($module_name));
-	  $row = sqlFetchArray($res);
-	  return !empty($row);
+	  $row = $res;	  return !empty($row);
 	   
        }
        else{

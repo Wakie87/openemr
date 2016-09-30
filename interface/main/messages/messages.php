@@ -272,7 +272,7 @@ $ures = sqlStatement("SELECT username, fname, lname FROM users " .
  "WHERE username != '' AND active = 1 AND " .
  "( info IS NULL OR info NOT LIKE '%Inactive%' ) " .
  "ORDER BY lname, fname");
- while ($urow = sqlFetchArray($ures)) {
+ foreach ($ures as $urow) {
   echo "    <option value='" . htmlspecialchars( $urow['username'], ENT_QUOTES) . "'";
   echo ">" . htmlspecialchars( $urow['lname'], ENT_NOQUOTES);
   if ($urow['fname']) echo ", " . htmlspecialchars( $urow['fname'], ENT_NOQUOTES);

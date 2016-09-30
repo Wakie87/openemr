@@ -79,7 +79,7 @@ $content = $_REQUEST['content'];
                 <td>
                     <?php
                     $res = sqlStatement("SELECT * FROM list_options WHERE list_id='nation_notes_replace_buttons' ORDER BY seq");
-                    while($row = sqlFetchArray($res)){
+                    foreach ($res as $row){
                     ?>
                     <a href="#" onclick="replace_quest('<?php echo htmlspecialchars($row['option_id'],ENT_QUOTES);?>')" class="css_button"><span><?php echo htmlspecialchars($row['title'],ENT_QUOTES);?></span></a>
                     <?php

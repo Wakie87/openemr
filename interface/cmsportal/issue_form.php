@@ -244,7 +244,7 @@ $ires = sqlStatement("SELECT id, title, begdate " .
   "FROM lists WHERE pid = ? AND type = ? AND activity > 0 " .
   "AND enddate IS NULL ORDER BY enddate, title",
   array($ptid, $result['fields']['type']));
-while ($irow = sqlFetchArray($ires)) {
+foreach ($ires as $irow) {
   echo " <option value='" . attr($irow['id']) . "'";
   if ($irow['id'] == $issueid) echo " selected";
   echo ">" . text($irow['title']);

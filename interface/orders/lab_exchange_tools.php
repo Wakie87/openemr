@@ -193,7 +193,7 @@ function getLabFacility($facility)
                         "organization = '" . trim($facility->FacilityName) ."'";
 
     $res = sqlStatement($query);
-    $result = sqlFetchArray($res);
+    $result = $res;
 
     return isset($result['id']) ? $result['id'] : false;
 }

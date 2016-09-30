@@ -44,7 +44,7 @@ function getKittens($catid, $catstring, &$categories) {
   $cres = sqlStatement("SELECT id, name FROM categories " .
     "WHERE parent = $catid ORDER BY name");
   $childcount = 0;
-  while ($crow = sqlFetchArray($cres)) {
+  foreach ($cres as $crow) {
     ++$childcount;
     getKittens($crow['id'], ($catstring ? "$catstring / " : "") .
       ($catid ? $crow['name'] : ''), $categories);
@@ -629,7 +629,7 @@ foreach ($categories as $catkey => $catname) {
        <td>
         <select name='form_note_to' style='width:100%'>
 <?php
-while ($urow = sqlFetchArray($ures)) {
+foreach ($ures as $urow) {
   echo "         <option value='" . $urow['username'] . "'";
   echo ">" . $urow['lname'];
   if ($urow['fname']) echo ", " . $urow['fname'];

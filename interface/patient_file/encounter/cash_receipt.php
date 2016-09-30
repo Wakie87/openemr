@@ -212,7 +212,7 @@ $encounter . "' and pid='$pid'"))
     print "<font class=bold>".xl('Patient Immunization').":</font><br>";
     $sql = "select i1.immunization_id as immunization_id, if(i1.administered_date,concat(i1.administered_date,' - ') ,substring(i1.note,1,20) ) as immunization_data from immunizations i1 where i1.patient_id = $pid order by administered_date desc";
     $result = sqlStatement($sql);
-    while ($row=sqlFetchArray($result)) {
+    foreach ($result as $row) {
      echo "<span class=text> " . $row{'immunization_data'} .
 	  generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']) .
 	  "</span><br>\n";
@@ -377,13 +377,13 @@ if ($result = getBillingByEncounter($pid,$encounter,"*") ) {
 					$counter++;
 				}
 			}
-			
-		        	
+
+
 			$billing_html[$iter["code_type"]] .= "</span></td></tr>\n";
 		}
-			
+
 	}
-	
+
 $billing_html["CPT4"] .= "<tr><td>".xl('total')."</td><td></td><td></td><td>" . oeFormatMoney($total) . "</td></tr>\n";
 ?>
 <tr><td><?php xl('code type','e'); ?></td><td><?php xl('code','e'); ?></td><td><?php xl('description','e'); ?></td><td><?php xl('fee','e'); ?></td></tr>

@@ -113,8 +113,7 @@ if ($_POST['load']) {
         $sql .= "WHERE ld.def_id=? ";
         $sql .= "AND ll.lang_id = ld.lang_id AND lc.cons_id = ld.cons_id LIMIT 1";
         $res = SqlStatement($sql, array($key) );
-        $row = SqlFetchArray($res);
-	insert_language_log($row['lang_description'], $row['lang_code'], $row['constant_name'], $value);
+        $row = $res;	insert_language_log($row['lang_description'], $row['lang_code'], $row['constant_name'], $value);
 	  
 	$go = 'yes';
       }
@@ -147,8 +146,7 @@ if ($_POST['edit']){
 		$sql .= "OR ll.lang_id=? ";
 		$what = "SELECT * from lang_languages where lang_id=? LIMIT 1";
 		$res = SqlStatement($what, array($lang_id) );
-		$row = SqlFetchArray($res);
-		$lang_name = $row['lang_description'];
+		$row = $res;		$lang_name = $row['lang_description'];
 	}
 	$sql .= ") ORDER BY lc.constant_name ".$case_insensitive_collation;
 	$res = SqlStatement($sql,$bind_sql_array);

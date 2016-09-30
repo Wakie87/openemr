@@ -220,7 +220,7 @@ if ( $encounterLocked === false ) {
         $StringEcho= '<ul id="sddm">';
       }
       $StringEcho.= "<li class=\"encounter-form-category-li\"><a href='JavaScript:void(0);' onClick=\"mopen('lbf');\" >".xl('Layout Based') ."</a><div id='lbf' ><table border='0'  cellspacing='0' cellpadding='0'>";
-      while ($lrow = sqlFetchArray($lres)) {
+      foreach ($lres as $lrow) {
       $option_id = $lrow['option_id']; // should start with LBF
       $title = $lrow['title'];
       $StringEcho.= "<tr><td style='border-top: 1px solid #000000;padding:0px;'><a href='" . $rootdir .'/patient_file/encounter/load_form.php?formname='

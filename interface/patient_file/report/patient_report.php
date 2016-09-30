@@ -254,7 +254,7 @@ function show_date_fun(){
 $pres = sqlStatement("SELECT * FROM lists WHERE pid = $pid " .
                     "ORDER BY type, begdate");
 $lasttype = "";
-while ($prow = sqlFetchArray($pres)) {
+foreach ($pres as $prow) {
     if ($lasttype != $prow['type']) {
         $lasttype = $prow['type'];
 
@@ -425,7 +425,7 @@ $res = sqlStatement("SELECT po.procedure_order_id, po.date_ordered, fe.date " .
   "WHERE po.patient_id = ? " .
   "ORDER BY po.date_ordered DESC, po.procedure_order_id DESC",
   array($pid));
-while($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $poid = $row['procedure_order_id'];
   echo " <tr>\n";
   echo "  <td align='center' class='text'>" .

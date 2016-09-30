@@ -83,7 +83,7 @@ function getIssues($type) {
   $lres = sqlStatement("SELECT title, comments FROM lists WHERE " .
     "pid = ? AND type = ? AND enddate IS NULL " .
     "ORDER BY begdate", array($GLOBALS['pid'], $type));
-  while ($lrow = sqlFetchArray($lres)) {
+  foreach ($lres as $lrow) {
     if ($tmp) $tmp .= '; ';
     $tmp .= $lrow['title'];
     if ($lrow['comments']) $tmp .= ' (' . $lrow['comments'] . ')';

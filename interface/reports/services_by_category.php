@@ -172,7 +172,7 @@ table.mymaintable td, table.mymaintable th {
 <?php
 $pres = sqlStatement("SELECT title FROM list_options " .
 		     "WHERE list_id = 'pricelevel' ORDER BY seq");
-while ($prow = sqlFetchArray($pres)) {
+foreach ($pres as $prow) {
   // Added 5-09 by BM - Translate label if applicable
   echo "   <th class='bold' align='right' nowrap>" . xl_list_label($prow['title']) . "</th>\n";
 }
@@ -230,7 +230,7 @@ foreach ($res as $row) {
     "p.pr_id = '" . $row['id'] . "' AND p.pr_selector = '' " .
     "AND p.pr_level = lo.option_id " .
     "WHERE list_id = 'pricelevel' ORDER BY lo.seq");
-  while ($prow = sqlFetchArray($pres)) {
+  foreach ($pres as $prow) {
     echo "   <td class='text' align='right'>" . bucks($prow['pr_price']) . "</td>\n";
   }
   echo "  </tr>\n";

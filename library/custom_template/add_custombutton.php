@@ -103,7 +103,7 @@ if((isset($_POST['form_save']) && $_POST['form_save']=='Save') || (isset($_POST[
                            WHERE tu.tu_user_id=? AND cl.cl_list_type=6 AND cl.cl_deleted=0 ORDER BY cl.cl_order",array($_SESSION['authId']));
       $sl=1;
       $start = 1;
-      while($row = sqlFetchArray($res)){
+      foreach ($res as $row){
       if($sl==1){
       $start = $row['cl_list_slno'];
       }

@@ -162,7 +162,7 @@
   "LEFT OUTER JOIN addresses AS a3 ON a3.foreign_id = c3.id " .
   "WHERE p.pid = '$pid' LIMIT 1";
 
- $row = sqlFetchArray(sqlStatement($query));
+ $row = sqlStatement($query)
 
  $rowed = getEmployerData($pid);
 
@@ -221,7 +221,7 @@
  if ($row['providerID']) {
   $query = "select id, fname, mname, lname from users where authorized = 1";
   $query .= " AND id = " . $row['providerID'];
-  $prow = sqlFetchArray(sqlStatement($query));
+  $prow = sqlStatement($query)
   OpenTag("pcp");
   Add("id", $prow['id']);
   Add("lname", $prow['lname']);

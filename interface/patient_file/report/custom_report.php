@@ -132,7 +132,7 @@ function postToGet($arin) {
 
 <?php // do not show stuff from report.php in forms that is encaspulated
       // by div of navigateLink class. Specifically used for CAMOS, but
-      // can also be used by other forms that require output in the 
+      // can also be used by other forms that require output in the
       // encounter listings output, but not in the custom report. ?>
 <style>
   div.navigateLink {display:none;}
@@ -164,7 +164,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
 <?php  } ?>
 
 </head>
-<?php 
+<?php
 // remove blank header for printable version to conserve space
 // adjust this if you are printing to letterhead to appropriate height
 ($printable) ? ($style = ''):($style='padding-top:95px;');
@@ -309,7 +309,7 @@ foreach ($ar as $key => $val) {
     if (stristr($key,"include_")) {
 
         if ($val == "demographics") {
-            
+
             echo "<hr />";
             echo "<div class='text demographics' id='DEM'>\n";
             print "<h1>".xl('Patient Data').":</h1>";
@@ -427,7 +427,7 @@ foreach ($ar as $key => $val) {
                    " where i1.patient_id = '$pid' and i1.added_erroneously = 0 ".
                    " order by administered_date desc";
                 $result = sqlStatement($sql);
-                while ($row=sqlFetchArray($result)) {
+                foreach ($result as $row) {
                   // Figure out which name to use (ie. from cvx list or from the custom list)
                   if ($GLOBALS['use_custom_immun_list']) {
                      $vaccine_display = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
@@ -458,7 +458,7 @@ foreach ($ar as $key => $val) {
             $sql="SELECT concat( 'Messsage Type: ', batchcom.msg_type, ', Message Subject: ', batchcom.msg_subject, ', Sent on:', batchcom.msg_date_sent ) AS batchcom_data, batchcom.msg_text, concat( users.fname, users.lname ) AS user_name FROM `batchcom` JOIN `users` ON users.id = batchcom.sent_by WHERE batchcom.patient_id='$pid'";
             // echo $sql;
             $result = sqlStatement($sql);
-            while ($row=sqlFetchArray($result)) {
+            foreach ($result as $row) {
                 echo $row{'batchcom_data'}.", By: ".$row{'user_name'}."<br>Text:<br> ".$row{'msg_txt'}."<br>\n";
             }
             echo "</div>\n";
@@ -710,22 +710,22 @@ foreach ($ar as $key => $val) {
                     echo ' '. xl('Provider') . ': ' . text(getProviderName(getProviderIdOfEncounter($form_encounter)));
                 }
                 echo "<br>\n";
-   
+
                 // call the report function for the form
-                ?>                
+                ?>
                 <div name="search_div" id="search_div_<?php echo attr($form_id)?>_<?php echo attr($res[1])?>" class="report_search_div class_<?php echo attr($res[1]); ?>">
                 <?php
                 if (substr($res[1],0,3) == 'LBF')
                   call_user_func("lbf_report", $pid, $form_encounter, $N, $form_id, $res[1]);
                 else
                   call_user_func($res[1] . "_report", $pid, $form_encounter, $N, $form_id);
-                
+
                 $esign = $esignApi->createFormESign( $formId, $res[1], $form_encounter );
                 if ( $esign->isLogViewable("report") ) {
                     $esign->renderLog();
                 }
                 ?>
-                
+
                 </div>
                 <?php
 
@@ -747,7 +747,7 @@ foreach ($ar as $key => $val) {
                 }
 
                 print "</div>";
-            
+
             } // end auth-check for encounter forms
 
         } // end if('issue_')... else...

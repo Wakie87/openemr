@@ -238,7 +238,7 @@ $res = sqlStatement($query);
 				 echo "   <select name='form_provider'>\n";
 				 echo "    <option value=''>-- " . xlt('All') . " --\n";
 
-				 while ($urow = sqlFetchArray($ures)) {
+				 foreach ($ures as $urow) {
 				  $provid = $urow['id'];
 				  echo "    <option value='" . attr($provid) . "'";
 				  if ($provid == $_POST['form_provider']) echo " selected";

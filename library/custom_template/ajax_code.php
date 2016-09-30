@@ -171,7 +171,7 @@ if($Source!="add_template"){
                         WHERE cl_list_type=4 AND cl_list_id=? AND cl_deleted=0 AND tu.tu_user_id=? ORDER BY tu.tu_template_order",
                         array($templateid,$_SESSION['authId']));
     $i=0;
-    while($row = sqlFetchArray($res)){
+    foreach ($res as $row){
         $i++;
         echo "<li id='clorder_".htmlspecialchars($row['cl_list_slno'],ENT_QUOTES)."' style='cursor:pointer'><span>";
         if(acl_check('nationnotes', 'nn_configure')){

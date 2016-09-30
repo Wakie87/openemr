@@ -34,7 +34,7 @@ function getKittens($catid, $catstring, &$categories) {
   $cres = sqlStatement("SELECT id, name FROM categories " .
     "WHERE parent = ? ORDER BY name", array($catid));
   $childcount = 0;
-  while ($crow = sqlFetchArray($cres)) {
+  foreach ($cres as $crow) {
     ++$childcount;
     getKittens($crow['id'], ($catstring ? "$catstring / " : "") .
       ($catid ? $crow['name'] : ''), $categories);

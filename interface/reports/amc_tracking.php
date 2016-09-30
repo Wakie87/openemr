@@ -242,7 +242,7 @@ $provider  = trim($_POST['form_provider']);
 				 echo "   <select name='form_provider'>\n";
 				 echo "    <option value=''>-- " . htmlspecialchars( xl('All'), ENT_NOQUOTES) . " --\n";
 
-				 while ($urow = sqlFetchArray($ures)) {
+				 foreach ($ures as $urow) {
 				  $provid = $urow['id'];
 				  echo "    <option value='".htmlspecialchars( $provid, ENT_QUOTES)."'";
 				  if ($provid == $_POST['form_provider']) echo " selected";

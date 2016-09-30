@@ -67,7 +67,7 @@ function writeTemplateLine($selector, $dosage, $period, $quantity, $refills, $pr
   }
   $pres = sqlStatement("SELECT option_id FROM list_options " .
     "WHERE list_id = 'taxrate' ORDER BY seq");
-  while ($prow = sqlFetchArray($pres)) {
+  foreach ($pres as $prow) {
     echo "  <td class='tmplcell'>";
     echo "<input type='checkbox' name='form_tmpl[$tmpl_line_no][taxrate][" . attr($prow['option_id']) . "]' value='1'";
     if (strpos(":$taxrates", $prow['option_id']) !== false) echo " checked";
@@ -376,7 +376,7 @@ else {
     "pw.pw_warehouse = lo.option_id WHERE " .
     "lo.list_id = 'warehouse' ORDER BY lo.seq, lo.title",
     array($drug_id));
-  while ($pwrow = sqlFetchArray($pwres)) {
+  foreach ($pwres as $pwrow) {
     $pwarr[] = $pwrow;
     echo "     <td valign='top' nowrap>" .
       text($pwrow['title']) . "</td>\n";
@@ -494,7 +494,7 @@ else {
   $emptyPrices = array();
   $pres = sqlStatement("SELECT option_id, title FROM list_options " .
     "WHERE list_id = 'pricelevel' ORDER BY seq");
-  while ($prow = sqlFetchArray($pres)) {
+  foreach ($pres as $prow) {
     $emptyPrices[$prow['option_id']] = '';
     echo "     <td><b>" .
 	 generate_display_field(array('data_type'=>'1','list_id'=>'pricelevel'), $prow['option_id']) .
@@ -503,7 +503,7 @@ else {
   // Show a heading for each tax rate.
   $pres = sqlStatement("SELECT option_id, title FROM list_options " .
     "WHERE list_id = 'taxrate' ORDER BY seq");
-  while ($prow = sqlFetchArray($pres)) {
+  foreach ($pres as $prow) {
     echo "     <td><b>" .
 	 generate_display_field(array('data_type'=>'1','list_id'=>'taxrate'), $prow['option_id']) .
 	 "</b></td>\n";
@@ -524,7 +524,7 @@ else {
         "p.pr_level = lo.option_id " .
         "WHERE list_id = 'pricelevel' ORDER BY lo.seq",
         array($drug_id, $selector));
-      while ($prow = sqlFetchArray($pres)) {
+      foreach ($pres as $prow) {
         $prices[$prow['option_id']] = $prow['pr_price'];
       }
       writeTemplateLine($selector, $trow['dosage'], $trow['period'],
