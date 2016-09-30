@@ -42,7 +42,7 @@ $fake_register_globals=false;
  require_once("$srcdir/options.js.php");
  ////////////
  require_once(dirname(__FILE__)."/../../../library/appointments.inc.php");
- 
+
   if (isset($_GET['set_pid'])) {
   include_once("$srcdir/pid.inc");
   setpid($_GET['set_pid']);
@@ -95,7 +95,7 @@ function pic_array($pid,$picture_directory) {
                  "join categories on categories.id = categories_to_documents.category_id " .
                  "where categories.name like ? and documents.foreign_id = ?";
     if ($query = sqlStatement($sql_query, array($picture_directory,$pid))) {
-      while( $results = sqlFetchArray($query) ) {
+      foreach ($query as $results) {
             array_push($pics,$results['id']);
         }
       }
@@ -247,7 +247,7 @@ $(document).ready(function(){
 	if($GLOBALS['erx_enable']){
 		//$soap_status=sqlQuery("select soap_import_status from patient_data where pid=?",array($pid));
 		$soap_status=sqlStatement("select soap_import_status,pid from patient_data where pid=? and soap_import_status in ('1','3')",array($pid));
-		while($row_soapstatus=sqlFetchArray($soap_status)){
+		foreach($soap_status as $row_soapstatus){
 			//if($soap_status['soap_import_status']=='1' || $soap_status['soap_import_status']=='3'){ ?>
 			top.restoreSession();
 			$.ajax({
@@ -264,10 +264,10 @@ $(document).ready(function(){
 				},
 				error:function(){
 					alert('ajax error');
-				}	
+				}
 			});
 			<?php
-			//}	
+			//}
 			//elseif($soap_status['soap_import_status']=='3'){ ?>
 			top.restoreSession();
 			$.ajax({
@@ -284,7 +284,7 @@ $(document).ready(function(){
 				},
 				error:function(){
 					alert('ajax error');
-				}	
+				}
 			});
 			<?php
 			if($GLOBALS['erx_import_status_message']){ ?>
@@ -292,7 +292,7 @@ $(document).ready(function(){
 			  alert(msg_updation);
 			<?php
 			}
-			//} 
+			//}
 		}
 	}
 	?>
@@ -342,15 +342,15 @@ $(document).ready(function(){
 
     // Initialize track_anything
     $("#track_anything_ps_expand").load("track_anything_fragment.php");
-    
-    
+
+
     // Initialize labdata
     $("#labdata_ps_expand").load("labdata_fragment.php");
 <?php
   // Initialize for each applicable LBF form.
   $gfres = sqlStatement("SELECT option_id FROM list_options WHERE " .
     "list_id = 'lbfnames' AND option_value > 0 ORDER BY seq, title");
-  while($gfrow = sqlFetchArray($gfres)) {
+  foreach($gfres as $gfrow) {
 ?>
     $("#<?php echo $gfrow['option_id']; ?>_ps_expand").load("lbf_fragment.php?formname=<?php echo $gfrow['option_id']; ?>");
 <?php
@@ -378,7 +378,7 @@ $(document).ready(function(){
     'centerOnScroll' : false,
     'autoscale' : true
   });
-  
+
   $(".iframe1").fancybox( {
   'left':10,
 	'overlayOpacity' : 0.0,
@@ -429,7 +429,7 @@ function setMyPatient() {
   $result4 = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
     " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
   if(sqlNumRows($result4)>0) {
-    while($rowresult4 = sqlFetchArray($result4)) {
+    foreach($result4 as $rowresult4) {
 ?>
  EncounterIdArray[Count] = '<?php echo addslashes($rowresult4['encounter']); ?>';
  EncounterDateArray[Count] = '<?php echo addslashes(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date'])))); ?>';
@@ -494,8 +494,8 @@ if ($thisauth): ?>
         </td>
         <?php if (acl_check('admin', 'super') && $GLOBALS['allow_pat_delete']) : ?>
         <td style='padding-left:1em;' class="delete">
-            <a class='css_button iframe' 
-               href='../deleter.php?patient="<?php echo htmlspecialchars($pid,ENT_QUOTES);?>' 
+            <a class='css_button iframe'
+               href='../deleter.php?patient="<?php echo htmlspecialchars($pid,ENT_QUOTES);?>'
                onclick='top.restoreSession()'>
                 <span><?php echo htmlspecialchars(xl('Delete'),ENT_NOQUOTES);?></span>
             </a>
@@ -508,8 +508,8 @@ if ($thisauth): ?>
             </a>
         </td>
         <td style="padding-left:1em;">
-            <a class="css_button iframe1" 
-               href="../../soap_functions/soap_accountStatusDetails.php" 
+            <a class="css_button iframe1"
+               href="../../soap_functions/soap_accountStatusDetails.php"
                onclick="top.restoreSession()">
                 <span><?php echo htmlspecialchars(xl('NewCrop Account Status'),ENT_NOQUOTES);?></span>
             </a>
@@ -523,8 +523,8 @@ if ($thisauth): ?>
             if ($portalStatus['allow_patient_portal']=='YES'):
                 $portalLogin = sqlQuery("SELECT pid FROM `patient_access_onsite` WHERE `pid`=?", array($pid));?>
                 <td style='padding-left:1em;'>
-                    <a class='css_button iframe small_modal' 
-                       href='create_portallogin.php?portalsite=on&patient=<?php echo htmlspecialchars($pid,ENT_QUOTES);?>' 
+                    <a class='css_button iframe small_modal'
+                       href='create_portallogin.php?portalsite=on&patient=<?php echo htmlspecialchars($pid,ENT_QUOTES);?>'
                        onclick='top.restoreSession()'>
                         <?php $display = (empty($portalLogin)) ? xlt('Create Onsite Portal Credentials') : xlt('Reset Onsite Portal Credentials'); ?>
                         <span><?php echo $display; ?></span>
@@ -541,8 +541,8 @@ if ($thisauth): ?>
                 $portalLogin = sqlQuery("SELECT pid FROM `patient_access_offsite` WHERE `pid`=?", array($pid));
                 ?>
                 <td style='padding-left:1em;'>
-                    <a class='css_button iframe small_modal' 
-                       href='create_portallogin.php?portalsite=off&patient=<?php echo htmlspecialchars($pid,ENT_QUOTES);?>' 
+                    <a class='css_button iframe small_modal'
+                       href='create_portallogin.php?portalsite=off&patient=<?php echo htmlspecialchars($pid,ENT_QUOTES);?>'
                        onclick='top.restoreSession()'>
                         <span>
                             <?php $text = (empty($portalLogin)) ? xlt('Create Offsite Portal Credentials') : xlt('Reset Offsite Portal Credentials'); ?>
@@ -550,7 +550,7 @@ if ($thisauth): ?>
                         </span>
                     </a>
                 </td>
-            <?php 
+            <?php
             else:
                 $portalUserSetting = false;
             endif; // allow_patient_portal
@@ -623,13 +623,13 @@ if ($GLOBALS['patient_id_category_name']) {
 <?php
 	$module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh
 					LEFT OUTER JOIN modules_settings AS ms ON obj_name=enabled_hooks AND ms.mod_id=msh.mod_id
-					LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id 
+					LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id
 					WHERE fld_type=3 AND mod_active=1 AND sql_run=1 AND attached_to='demographics' ORDER BY mod_id");
 	$DivId = 'mod_installer';
 	if (sqlNumRows($module_query)) {
 		$jid 	= 0;
 		$modid 	= '';
-		while ($modulerow = sqlFetchArray($module_query)) {
+		foreach ($module_query as $modulerow) {
 			$DivId 		= 'mod_'.$modulerow['mod_id'];
 			$new_category 	= $modulerow['mod_ui_name'];
 			$modulePath 	= "";
@@ -650,7 +650,7 @@ if ($GLOBALS['patient_id_category_name']) {
 			|
 			<a href="<?php echo $relative_link; ?>" onclick='top.restoreSession()'>
 			<?php echo htmlspecialchars($nickname,ENT_NOQUOTES); ?></a>
-		<?php	
+		<?php
 		}
 	}
 	?>
@@ -779,7 +779,7 @@ foreach (array('primary','secondary','tertiary') as $instype) {
     "pid = ? AND type = ? " .
     "ORDER BY date DESC";
   $res = sqlStatement($query, array($pid, $instype) );
-  while( $row = sqlFetchArray($res) ) {
+  foreach($res as $row) {
     if ($row['provider'] ) $insurance_count++;
   }
 }
@@ -814,7 +814,7 @@ if ( $insurance_count > 0 ) {
 
 						$enddate = 'Present';
 
-						  while( $row = sqlFetchArray($res) ) {
+						  foreach($res as $row) {
 							if ($row['provider'] ) {
 
 								$ins_description  = ucfirst($instype);
@@ -847,7 +847,7 @@ if ( $insurance_count > 0 ) {
 						"pid = ? AND type = ? " .
 						"ORDER BY date DESC";
 						$res = sqlStatement($query, array($pid, $instype) );
-					  while( $row = sqlFetchArray($res) ) {
+					  foreach($res as $row) {
 						if ($row['provider'] ) {
 							?>
 								<div class="tab <?php echo $first ? 'current' : '' ?>">
@@ -884,11 +884,11 @@ if ( $insurance_count > 0 ) {
 								  }
 								  ?>
 								  <br>
-								  <?php echo htmlspecialchars(xl('Policy Number'),ENT_NOQUOTES); ?>: 
+								  <?php echo htmlspecialchars(xl('Policy Number'),ENT_NOQUOTES); ?>:
 								  <?php echo htmlspecialchars($row['policy_number'],ENT_NOQUOTES) ?><br>
-								  <?php echo htmlspecialchars(xl('Plan Name'),ENT_NOQUOTES); ?>: 
+								  <?php echo htmlspecialchars(xl('Plan Name'),ENT_NOQUOTES); ?>:
 								  <?php echo htmlspecialchars($row['plan_name'],ENT_NOQUOTES); ?><br>
-								  <?php echo htmlspecialchars(xl('Group Number'),ENT_NOQUOTES); ?>: 
+								  <?php echo htmlspecialchars(xl('Group Number'),ENT_NOQUOTES); ?>:
 								  <?php echo htmlspecialchars($row['group_number'],ENT_NOQUOTES); ?></span>
 								 </td>
 								 <td valign='top'>
@@ -900,11 +900,11 @@ if ( $insurance_count > 0 ) {
 								  }
 							?>
 								  <br>
-								  <?php echo htmlspecialchars(xl('S.S.'),ENT_NOQUOTES); ?>: 
+								  <?php echo htmlspecialchars(xl('S.S.'),ENT_NOQUOTES); ?>:
 								  <?php echo htmlspecialchars($row['subscriber_ss'],ENT_NOQUOTES); ?><br>
 								  <?php echo htmlspecialchars(xl('D.O.B.'),ENT_NOQUOTES); ?>:
 								  <?php if ($row['subscriber_DOB'] != "0000-00-00 00:00:00") echo htmlspecialchars($row['subscriber_DOB'],ENT_NOQUOTES); ?><br>
-								  <?php echo htmlspecialchars(xl('Phone'),ENT_NOQUOTES); ?>: 
+								  <?php echo htmlspecialchars(xl('Phone'),ENT_NOQUOTES); ?>:
 								  <?php echo htmlspecialchars($row['subscriber_phone'],ENT_NOQUOTES); ?>
 								  </span>
 								 </td>
@@ -1016,7 +1016,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
                         </td>
                 </tr>
                 <?php } //end if prw is activated  ?>
-              
+
        <tr>
        <td width='650px'>
 <?php
@@ -1038,7 +1038,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
                     <div style='margin-left:10px' class='text'><img src='../../pic/ajax-loader.gif'/></div><br/>
                 </div>
      </td>
-    </tr>		
+    </tr>
 <?php if ($GLOBALS['amendments']) { ?>
   <tr>
        <td width='650px'>
@@ -1061,8 +1061,8 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
     echo "  <td colspan='$numcols' class='text'>&nbsp;&nbsp;" . xlt('None') . "</td>\n";
     echo " </tr></table>\n";
   }
-  
-  while ($row=sqlFetchArray($result)){
+
+  foreach ($result as $row){
     echo "&nbsp;&nbsp;";
     echo "<a class= '" . $widgetButtonClass . "' href='" . $widgetButtonLink . "&id=" . attr($row['amendment_id']) . "' onclick='top.restoreSession()'>" . text($row['amendment_date']);
 	echo "&nbsp; " . text($row['amendment_desc']);
@@ -1071,7 +1071,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
   } ?>
   </td>
     </tr>
-<?php } ?>    		
+<?php } ?>
  <?php // labdata ?>
     <tr>
      <td width='650px'>
@@ -1148,7 +1148,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
   //
   $gfres = sqlStatement("SELECT option_id, title FROM list_options WHERE " .
     "list_id = 'lbfnames' AND option_value > 0 ORDER BY seq, title");
-  while($gfrow = sqlFetchArray($gfres)) {
+  foreach ($gfres as $gfrow) {
 ?>
     <tr>
      <td width='650px'>
@@ -1247,7 +1247,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
           $parentId = $myrow2['id'];
           $query = "SELECT id, name FROM categories WHERE parent=?";
           $resNew1 = sqlStatement($query, array($parentId) );
-          while ($myrows3 = sqlFetchArray($resNew1)) {
+          foreach ($resNew1 as $myrows3) {
               $categoryId = $myrows3['id'];
               $nameDoc = $myrows3['name'];
               $query = "SELECT documents.date, documents.id " .
@@ -1259,7 +1259,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
                    "ORDER BY documents.date DESC";
               $resNew2 = sqlStatement($query, array($categoryId, $pid) );
               $limitCounter = 0; // limit to one entry per category
-              while (($myrows4 = sqlFetchArray($resNew2)) && ($limitCounter == 0)) {
+              while (($myrows4 = $resNew2) && ($limitCounter == 0)) {
                   $dateTimeDoc = $myrows4['date'];
               // remove time from datetime stamp
               $tempParse = explode(" ",$dateTimeDoc);
@@ -1536,7 +1536,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 	   {
 	   $showpast = $GLOBALS['num_past_appointments_to_show'];
 	   }
-	   
+
 	if (isset($pid) && !$GLOBALS['disable_calendar'] && $showpast > 0) {
 	 $query = "SELECT e.pc_eid, e.pc_aid, e.pc_title, e.pc_eventDate, " .
 	  "e.pc_startTime, e.pc_hometext, u.fname, u.lname, u.mname, " .
@@ -1547,7 +1547,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 	  "u.id = e.pc_aid AND e.pc_catid = c.pc_catid " .
 	  "ORDER BY e.pc_eventDate $direction , e.pc_startTime DESC " .
       "LIMIT " . $showpast;
-	
+
      $pres = sqlStatement($query, array($pid) );
 
 	// appointments expand collapse widget
@@ -1562,7 +1562,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
         $fixedWidth = false;
         expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel , $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass, $widgetAuth, $fixedWidth);
         $count = 0;
-        while($row = sqlFetchArray($pres)) {
+        foreach($pres as $row) {
             $count++;
             $dayname = date("l", strtotime($row['pc_eventDate']));
             $dispampm = "am";
@@ -1588,7 +1588,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
         echo "</div>";
         }
     }
-// END of past appointments            
+// END of past appointments
 
 			?>
 		</div>
@@ -1599,7 +1599,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
         </div>
     </td>
     </tr>
-    
+
            <?php // TRACK ANYTHING -----
 
 		// Determine if track_anything form is in use for this site.

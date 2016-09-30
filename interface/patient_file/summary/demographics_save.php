@@ -30,7 +30,7 @@ $newdata['patient_data']['id'] = $_POST['db_id'];
 $fres = sqlStatement("SELECT * FROM layout_options " .
   "WHERE form_id = 'DEM' AND uor > 0 AND field_id != '' " .
   "ORDER BY group_name, seq");
-while ($frow = sqlFetchArray($fres)) {
+foreach ($fres as $row) {
   $data_type = $frow['data_type'];
   $field_id  = $frow['field_id'];
   // $value  = '';

@@ -70,7 +70,7 @@ class Provider extends ORDataObject{
                 $sql = "SELECT id FROM "  . $this->_table . " where authorized = 1 " . $sort;
                 $results = sqlQ($sql);
 
-                while($row = sqlFetchArray($results) ) {
+                foreach ($results as $row) {
                                 $psa[] = new Provider($row['id']);
                 }
 

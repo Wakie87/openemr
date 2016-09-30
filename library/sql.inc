@@ -95,7 +95,7 @@ function sqlStatementNoLog($statement, $params = null)
 * @param  array   $params      binded variables array (optional)
 * @return recordset/resource
 */
-function sqlStatementCdrEngine($statement, $params )
+function sqlStatementCdrEngine($statement, $params = null)
 {
   if ($GLOBALS['audit_events_cdr']) {
     return sqlStatement($statement,$params);
@@ -343,7 +343,7 @@ function sqlListFields($table) {
 */
 function sqlNumRows($r)
 {
-  return DB::rowCount($r);
+  return count($r);
 }
 
 /**

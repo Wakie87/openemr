@@ -145,7 +145,7 @@ function auto_populate_employer_address<?php echo $i ?>(){
   f.i<?php echo $i?>subscriber_DOB.value=f.form_DOB.value;
   if(typeof f.form_ss!="undefined")
     {
-        f.i<?php echo $i?>subscriber_ss.value=f.form_ss.value;  
+        f.i<?php echo $i?>subscriber_ss.value=f.form_ss.value;
     }
   f.form_i<?php echo $i?>subscriber_sex.value = f.form_sex.value;
   f.i<?php echo $i?>subscriber_employer.value=f.form_em_name.value;
@@ -253,7 +253,7 @@ function validate(f) {
 	alert(msg);
  }
 
- //Misc  Deceased Date Validation for Future Date 
+ //Misc  Deceased Date Validation for Future Date
 var dateVal = document.getElementById("form_deceased_date").value;
 var currentDate;
 var d = new Date();
@@ -265,9 +265,9 @@ if (day.length < 2) day = '0' + day;
 currentDate = year+'-'+month+'-'+day;
 if(dateVal > currentDate)
 {
-	alert ('<?php echo xls("Deceased Date should not be greater than Today"); ?>'); 
+	alert ('<?php echo xls("Deceased Date should not be greater than Today"); ?>');
 	return false;
-} 
+}
 
 //Patient Data validations
  <?php if($GLOBALS['erx_enable']){ ?>
@@ -298,7 +298,7 @@ if(dateVal > currentDate)
  }
  <?php } ?>
  //return false;
- 
+
 // Some insurance validation.
  for (var i = 1; i <= 3; ++i) {
   subprov = 'i' + i + 'provider';
@@ -315,7 +315,7 @@ if(dateVal > currentDate)
   if(typeof f.form_ss!="undefined")
       {
         samess = f[subpfx + 'ss'].value == f.form_ss.value;
-        ss_valid=ss_regexp.test(f[subpfx + 'ss'].value) && ss_regexp.test(f.form_ss.value);  
+        ss_valid=ss_regexp.test(f[subpfx + 'ss'].value) && ss_regexp.test(f.form_ss.value);
       }
   if (subrelat.options[subrelat.selectedIndex].value == "self") {
    if (!samename) {
@@ -820,7 +820,7 @@ $form_id="DEM";
 				"WHERE form_id = 'DEM' AND uor > 0 AND field_id != '' AND " .
 				"edit_options LIKE '%D%' " .
 				"ORDER BY group_name, seq");
-			while ($mfrow = sqlFetchArray($mfres)) {
+			foreach($mfres as $mfrow) {
 				$field_id  = $mfrow['field_id'];
 				if (strpos($field_id, 'em_') === 0) continue;
 				if (!empty($mflist)) $mflist .= ",";

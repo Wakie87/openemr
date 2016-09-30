@@ -59,10 +59,7 @@ function getEventByDate($date, $user="", $cols="DISTINCT date, event, user, grou
     if ($user) $sql .= " AND user LIKE '$user'";
     $sql .= " ORDER BY date DESC LIMIT 5000";
     $res = sqlStatement($sql);
-    for($iter=0; $row=sqlFetchArray($res); $iter++) {
-        $all[$iter] = $row;
-    }
-    return $all;
+    return $res;
 }
 
 /******************
@@ -130,10 +127,7 @@ function getEvents($params)
     $sql .= " LIMIT 5000";
     }
     $res = sqlStatement($sql);
-    for($iter=0; $row=sqlFetchArray($res); $iter++) {
-        $all[$iter] = $row;
-    }
-    return $all;
+    return $res;
 }
 
 /* Given an SQL insert/update that was just performeds:
@@ -735,7 +729,7 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
 
     $event = $event . "-" . $querytype;
 
-    $adodb = $GLOBALS['adodb']['db'];
+    $adodb = DB::instance();
 
     // ViSolve : Don't log sequences - to avoid the affect due to GenID calls
     if (strpos($comments, "sequences") !== FALSE) return;
@@ -792,7 +786,7 @@ function auditSQLAuditTamper($enable)
 	$event = "security-administration" . "-" . "insert";
 
 
-    $adodb = $GLOBALS['adodb']['db'];
+    $adodb = DB::instance();
 
 	if ($enable == "1")
 	{
@@ -829,7 +823,7 @@ function auditSQLAuditTamper($enable)
  */
 function recordDisclosure($dates,$event,$pid,$recipient,$description,$user)
 {
-        $adodb = $GLOBALS['adodb']['db'];
+        $adodb = DB::instance();
         $crt_user= $_SERVER['SSL_CLIENT_S_DN_CN'];
         $groupname=$_SESSION['authProvider'];
         $success=1;
@@ -849,7 +843,7 @@ function recordDisclosure($dates,$event,$pid,$recipient,$description,$user)
  */
 function updateRecordedDisclosure($dates,$event,$recipient,$description,$disclosure_id)
 {
-         $adodb = $GLOBALS['adodb']['db'];
+         $adodb = DB::instance();
          $sql="update extended_log set
                 event=" . $adodb->quote($event) . ",
                 date=" .  $adodb->quote($dates) . ",
@@ -912,7 +906,7 @@ function aes256Decrypt($sValue){
 function logCommentEncryptData($log_id){
 	$encryptRow = array();
 	$logRes = sqlStatement("SELECT * FROM log_comment_encrypt WHERE log_id=?", array($log_id));
-	while($logRow = sqlFetchArray($logRes)){
+	while($logRow = $logRes){
 		$encryptRow['encrypt'] = $logRow['encrypt'];
 		$encryptRow['checksum'] = $logRow['checksum'];
 	}

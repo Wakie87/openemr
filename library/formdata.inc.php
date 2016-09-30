@@ -85,7 +85,7 @@ function escape_sql_column_name($s,$tables,$long=FALSE) {
       if (empty($tables)) {
             $res = sqlStatementNoLog("SHOW TABLES");
             $tables = array();
-            while ($row=sqlFetchArray($res)) {
+            foreach ($res as $row) {
                 $keys_return = array_keys($row);
                 $tables[]=$row[$keys_return[0]];
             }
@@ -101,7 +101,7 @@ function escape_sql_column_name($s,$tables,$long=FALSE) {
       $columns_options = array();
       foreach ($tables_escaped as $table_escaped) {
             $res = sqlStatementNoLog("SHOW COLUMNS FROM ".$table_escaped);
-            while ($row=sqlFetchArray($res)) {
+            foreach ($res as $row) {
                   if ($long) {
                         $columns_options[]=$table_escaped.".".$row['Field'];
                   }
@@ -138,7 +138,7 @@ function escape_sql_column_name($s,$tables,$long=FALSE) {
 function escape_table_name($s) {
       $res = sqlStatementNoLog("SHOW TABLES");
       $tables_array = array();
-      while ($row=sqlFetchArray($res)) {
+      foreach ($res as $row) {
             $keys_return = array_keys($row);
             $tables_array[]=$row[$keys_return[0]];
       }

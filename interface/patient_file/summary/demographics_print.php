@@ -125,7 +125,7 @@ $last_group = '';
 $cell_count = 0;
 $item_count = 0;
 
-while ($frow = sqlFetchArray($fres)) {
+foreach ($fres as $row) {
   $this_group = $frow['group_name'];
   $titlecols  = $frow['titlecols'];
   $datacols   = $frow['datacols'];

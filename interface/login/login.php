@@ -216,6 +216,9 @@ if (count($result3) != 1) { ?>
 <tr><td colspan='2' class='text' style='color:red'>
 <?php
 $ip=$_SERVER['REMOTE_ADDR'];
+echo '<pre>';
+var_export($result);
+echo '</pre>';
 ?>
 </div>
 </td></tr>

@@ -52,7 +52,7 @@ function eventTypeChange(eventname)
           }
          else {
             document.theform.type_event.disabled = false;
-         }              
+         }
 }
 
 // VicarePlus :: This invokes the find-patient popup.
@@ -72,7 +72,7 @@ function eventTypeChange(eventname)
 <body class="body_top">
 <font class="title"><?php  xl('Logs Viewer','e'); ?></font>
 <br>
-<?php 
+<?php
 $err_message=0;
 if ($_GET["start_date"])
 $start_date = formData('start_date','G');
@@ -101,10 +101,7 @@ $form_user = formData('form_user','R');
 $form_pid = formData('form_pid','R');
 if ($form_patient == '' ) $form_pid = '';
 
-$res = sqlStatement("select distinct LEFT(date,10) as date from log order by date desc limit 30");
-for($iter=0;$row=sqlFetchArray($res);$iter++) {
-  $ret[$iter] = $row;
-}
+$row = sqlStatement("select distinct LEFT(date,10) as date from log order by date desc limit 30");
 
 // Get the users list.
 $sqlQuery = "SELECT username, fname, lname FROM users " .
@@ -156,7 +153,7 @@ $sortby = formData('sortby','G') ;
 <?php
 echo "<select name='form_user'>\n";
 echo " <option value=''>" . xl('All') . "</option>\n";
-while ($urow = sqlFetchArray($ures)) {
+foreach ($ures as $urow) {
   if (!trim($urow['username'])) continue;
   echo " <option value='" . $urow['username'] . "'";
   if ($urow['username'] == $form_user) echo " selected";
@@ -172,10 +169,10 @@ echo "</select>\n";
 <span class='text'><?php  xl('Name of Events','e'); ?>: </span>
 </td>
 <td>
-<?php 
+<?php
 $res = sqlStatement("select distinct event from log order by event ASC");
 $ename_list=array(); $j=0;
-while ($erow = sqlFetchArray($res)) {
+foreach ($res as $erow) {
 	 if (!trim($erow['event'])) continue;
 	 $data = explode('-', $erow['event']);
 	 $data_c = count($data);
@@ -189,7 +186,7 @@ while ($erow = sqlFetchArray($res)) {
 }
 $res1 = sqlStatement("select distinct event from  extended_log order by event ASC");
 // $j=0; // This can't be right!  -- Rod 2013-08-23
-while ($row = sqlFetchArray($res1)) {
+foreach ($res1 as $row) {
          if (!trim($row['event'])) continue;
          $new_event = explode('-', $row['event']);
          $no = count($new_event);
@@ -220,7 +217,7 @@ echo "</select>\n";
 <td>
 &nbsp;&nbsp;<span class='text'><?php  xl('Type of Events','e'); ?>: </span>
 </td><td>
-<?php 
+<?php
 $event_types=array("select", "update", "insert", "delete", "replace");
 $lcount=count($event_types);
 if($eventname=="disclosure"){
@@ -288,7 +285,7 @@ if($eventname != "" && $type_event != "")
 {
 	$getevent=$eventname."-".$type_event;
 }
-      
+
 	if(($eventname == "") && ($type_event != ""))
     {	$tevent=$type_event;
     }
@@ -298,7 +295,7 @@ if($eventname != "" && $type_event != "")
  	{$gev = "";}
  else
     {$gev = $getevent;}
-    
+
 if ($ret = getEvents(array('sdate' => $get_sdate,'edate' => $get_edate, 'user' => $form_user, 'patient' => $form_pid, 'sortby' => $_GET['sortby'], 'levent' =>$gev, 'tevent' =>$tevent))) {
 
 
@@ -306,21 +303,21 @@ if ($ret = getEvents(array('sdate' => $get_sdate,'edate' => $get_edate, 'user' =
     //translate comments
     $patterns = array ('/^success/','/^failure/','/ encounter/');
 	$replace = array ( xl('success'), xl('failure'), xl('encounter','',' '));
-	
+
 	$log_id = $iter['id'];
 	$commentEncrStatus = "No";
 	$logEncryptData = logCommentEncryptData($log_id);
 	if(count($logEncryptData) > 0){
 		$commentEncrStatus = $logEncryptData['encrypt'];
 	}
-	
+
 	//July 1, 2014: Ensoftek: Decrypt comment data if encrypted
 	if($commentEncrStatus == "Yes"){
 		$trans_comments = preg_replace($patterns, $replace, aes256Decrypt($iter["comments"]));
 	}else{
 		$trans_comments = preg_replace($patterns, $replace, $iter["comments"]);
 	}
-	
+
 ?>
  <TR class="oneresult">
   <TD class="text"><?php echo oeFormatShortDate(substr($iter["date"], 0, 10)) . substr($iter["date"], 10) ?></TD>
