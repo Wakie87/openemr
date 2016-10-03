@@ -418,7 +418,7 @@ if ($res) {
       // Figure product sales into billing status.
       $sres = sqlStatement("SELECT billed FROM drug_sales " .
         "WHERE pid = '{$row['pid']}' AND encounter = '{$row['encounter']}'");
-      while ($srow = sqlFetchArray($sres)) {
+      foreach ($sres as $srow) {
         if ($srow['billed']) ++$billed_count; else ++$unbilled_count;
       }
 

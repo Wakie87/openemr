@@ -299,7 +299,7 @@ $sres = sqlStatement("SELECT DISTINCT specialty FROM users " .
   "WHERE active = 1 AND ( info IS NULL OR info NOT LIKE '%Inactive%' ) " .
   "ORDER BY specialty");
 $optspec = "<option value='All'>" . xl('All') . "</option>\n";
-while ($srow = sqlFetchArray($sres)) {
+foreach ($sres as $srow) {
   $optspec .= " <option value='" . $srow['specialty'] . "'>" .
     $srow['specialty'] . "</option>\n";
 }

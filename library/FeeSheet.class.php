@@ -524,7 +524,7 @@ class FeeSheet {
       "ds.pid = ? AND ds.encounter = ?  AND di.inventory_id = ds.inventory_id " .
       "ORDER BY ds.sale_id";
     $sres = sqlStatement($query, array($this->pid, $this->encounter));
-    while ($srow = sqlFetchArray($sres)) {
+    foreach ($sres as $srow) {
       $this->addProductLineItem(array(
         'drug_id'      => $srow['drug_id'],
         'selector'     => $srow['selector'],

@@ -259,7 +259,7 @@ if ($isBP) {
 
 // Prepare and insert data
 $data = array();
-while ($row = sqlFetchArray($values)) {
+foreach ($values as $row) {
   if ($row["$name"]) {
     $x=$row['unix_date'];
     if ($multiplier) {
@@ -281,7 +281,7 @@ $s->set_values( $data );
 if ($isBP) {
   //set up the other blood pressure line
   $data = array();
-  while ($row = sqlFetchArray($values_alt)) {
+  foreach ($values_alt as $row) {
     if ($row["$name_alt"]) {
       $x=$row['unix_date'];
     if ($multiplier) {
@@ -372,7 +372,7 @@ else {
 }
 $chart->set_x_axis( $x );
 $chart->add_y_axis( $y );
-    
+
 //error_log("Chart: ".$chart->toPrettyString(),0);
 
 echo $chart->toPrettyString();

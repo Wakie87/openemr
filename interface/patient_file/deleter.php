@@ -50,7 +50,7 @@ require_once dirname(__FILE__) . '/../../library/classes/CouchDB.class.php';
  function row_delete($table, $where) {
   $tres = sqlStatement("SELECT * FROM $table WHERE $where");
   $count = 0;
-  while ($trow = sqlFetchArray($tres)) {
+  foreach ($tres as $trow) {
    $logstring = "";
    foreach ($trow as $key => $value) {
     if (! $value || $value == '0000-00-00 00:00:00') continue;
@@ -123,7 +123,7 @@ function form_delete($formdir, $formid) {
   else if ($formdir == 'procedure_order') {
     $tres = sqlStatement("SELECT procedure_report_id FROM procedure_report " .
       "WHERE procedure_order_id = ?", array($formid));
-    while ($trow = sqlFetchArray($tres)) {
+    foreach ($tres as $trow) {
       $reportid = 0 + $trow['procedure_report_id'];
       row_delete("procedure_result", "procedure_report_id = '" . add_escape_custom($reportid) . "'");
     }

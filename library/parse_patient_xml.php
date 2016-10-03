@@ -102,7 +102,7 @@ function insert_patient($audit_master_id){
         $resfield = sqlStatement("SELECT * FROM audit_details WHERE audit_master_id=? AND table_name=? AND entry_identification=?",array($audit_master_id,$row['table_name'],$row['entry_identification']));
         $table = $row['table_name'];
         $newdata = array();
-        while($rowfield = sqlFetchArray($resfield)){
+        foreach ($resfield as $rowfield){
             if($table == 'patient_data'){
                 if($rowfield['field_name'] == 'DOB'){
                     $newdata['patient_data'][$rowfield['field_name']] = substr($rowfield['field_value'],0,10);
@@ -211,14 +211,14 @@ function createAuditArray($am_id,$table_name){
             array_unshift($arr,$tables[$i]);
         }
         $table_qry = substr($table_qry,0,-1);
-        $query = sqlStatement("SELECT * FROM audit_master am LEFT JOIN audit_details ad ON ad.audit_master_id = am.id AND ad.table_name IN ($table_qry) 
+        $query = sqlStatement("SELECT * FROM audit_master am LEFT JOIN audit_details ad ON ad.audit_master_id = am.id AND ad.table_name IN ($table_qry)
         WHERE am.id = ? AND am.type = 11 AND am.approval_status = 1 ORDER BY ad.entry_identification,ad.field_name",$arr);
     }else{
-        $query = sqlStatement("SELECT * FROM audit_master am LEFT JOIN audit_details ad ON ad.audit_master_id = am.id AND ad.table_name = ? 
+        $query = sqlStatement("SELECT * FROM audit_master am LEFT JOIN audit_details ad ON ad.audit_master_id = am.id AND ad.table_name = ?
             WHERE am.id = ? AND am.type = 11 AND am.approval_status = 1 ORDER BY ad.entry_identification,ad.field_name",array($table_name,$am_id));
     }
     $result = array();
-    while($res = sqlFetchArray($query)){
+    foreach ($query as $res){
         $result[$table_name][$res['entry_identification']][$res['field_name']] = $res['field_value'];
     }
     return $result;

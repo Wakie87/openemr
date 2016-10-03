@@ -15,13 +15,13 @@ function getTransByPid ($pid, $cols = "*")
 {
   $res = sqlStatement("select $cols from transactions where pid = ? " .
     "order by date DESC", array($pid) );
-  for ($iter = 0; $row = sqlFetchArray($res); $iter++) {
+  foreach ($res as $row) {
     $fres = sqlStatement("SELECT field_id, field_value FROM lbt_data WHERE form_id = ?",
       array($row['id']));
     foreach ($fres as $frow) {
       $row[$frow['field_id']] = $frow['field_value'];
     }
-    $all[$iter] = $row;
+    $all = $row;
   }
   return $all;
 }

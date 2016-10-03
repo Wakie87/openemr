@@ -40,8 +40,8 @@ $patientDetails = getPatientData($pid,"fname,lname");
 $patientName = $patientDetails['lname'] . ", " . $patientDetails['fname'];
 
 function printAmendment($amendmentID,$lastAmendment) {
-	$query = "SELECT lo.title AS 'amendmentFrom', lo1.title AS 'amendmentStatus',a.* FROM amendments a 
-		LEFT JOIN list_options lo ON a.amendment_by = lo.option_id AND lo.list_id='amendment_from' 
+	$query = "SELECT lo.title AS 'amendmentFrom', lo1.title AS 'amendmentStatus',a.* FROM amendments a
+		LEFT JOIN list_options lo ON a.amendment_by = lo.option_id AND lo.list_id='amendment_from'
 		LEFT JOIN list_options lo1 ON a.amendment_status = lo1.option_id AND lo1.list_id = 'amendment_status'
 		WHERE a.amendment_id = ?";
 	$resultSet = sqlQuery($query,array($amendmentID));
@@ -67,7 +67,7 @@ function printAmendment($amendmentID,$lastAmendment) {
 	echo "</tr>";
 
 	echo "</table>";
-	
+
 	echo "<hr>";
 	echo "<span class='bold'>" . xlt("History") . "</span><br>";
 	$pageBreak = ( $lastAmendment ) ? "" : "page-break-after:always";
@@ -77,10 +77,10 @@ function printAmendment($amendmentID,$lastAmendment) {
 	echo "<th align=left style='width:20%'>" . xlt("By") . "</th>";
 	echo "<th align=left >" . xlt("Comments") . "</th>";
 	echo "</tr>";
-	
+
 	$query = "SELECT u.fname,u.lname,ah.* FROM amendments_history ah INNER JOIN users u ON ah.created_by = u.id WHERE ah.amendment_id = ?";
 	$resultSet = sqlStatement($query,array($amendmentID));
-	while( $row = sqlFetchArray($resultSet)) {
+	foreach ($resultSet as $row) {
 		echo "<tr class=text>";
 		$created_date = date('Y-m-d', strtotime($row['created_time']));
 		echo "<td>" . oeFormatShortDate($created_date) . "</td>";
@@ -122,7 +122,7 @@ function printAmendment($amendmentID,$lastAmendment) {
 <script language='JavaScript'>
 	opener.top.printLogPrint(window);
 </script>
-	
+
 </body>
 
 </html>

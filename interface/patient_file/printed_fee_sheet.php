@@ -159,7 +159,7 @@ if (empty($SBCODES)) {
                 "FROM drug_templates AS dt, drugs AS d WHERE " .
                 "d.drug_id = dt.drug_id AND d.active = 1 " .
                 "ORDER BY d.name, dt.selector, dt.drug_id");
-        while ($trow = sqlFetchArray($tres)) {
+        foreach ($tres as $trow) {
             $tmp = $trow['selector'];
             if ($trow['name'] !== $trow['selector'])
                 $tmp .= ' ' . $trow['name'];

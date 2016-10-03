@@ -21,13 +21,13 @@
 include_once(dirname(__file__)."/../../globals.php");
 
 function newpatient_report( $pid, $encounter, $cols, $id) {
-	$res = sqlStatement("select * from form_encounter where pid=? and id=?", array($pid,$id) );
-	print "<table><tr><td>\n";
-	while($result = sqlFetchArray($res)) {
-		print "<span class=bold>" . xlt('Facility') . ": </span><span class=text>" . text($result{"facility"}) . "</span><br>\n";
-		print "<span class=bold>" . xlt('Reason') . ": </span><span class=text>" . nl2br(text($result{"reason"})) . "</span><br>\n";
-	}
-	print "</td></tr></table>\n";
+    $res = sqlStatement("select * from form_encounter where pid=? and id=?", array($pid,$id) );
+    print "<table><tr><td>\n";
+    foreach ($res as $result) {
+        print "<span class=bold>" . xlt('Facility') . ": </span><span class=text>" . text($result{"facility"}) . "</span><br>\n";
+        print "<span class=bold>" . xlt('Reason') . ": </span><span class=text>" . nl2br(text($result{"reason"})) . "</span><br>\n";
+    }
+    print "</td></tr></table>\n";
 }
 
 ?>

@@ -1,5 +1,5 @@
 	<?php
-// +-----------------------------------------------------------------------------+ 
+// +-----------------------------------------------------------------------------+
 // Copyright (C) 2010 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 //
 //
@@ -19,9 +19,9 @@
 // openemr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 // Author:   Eldho Chacko <eldho@zhservices.com>
-//           Paul Simon K <paul@zhservices.com> 
+//           Paul Simon K <paul@zhservices.com>
 //
 // +------------------------------------------------------------------------------+
 
@@ -65,7 +65,7 @@ function calendar_arrived($form_pid) {
 	 }
 	else//repeating appointment set
 	 {
-		while($row_event=sqlFetchArray($result_event))
+		foreach ($result_event as $row_event)
 		 {
 			$pc_eid = $row_event['pc_eid'];
 			$pc_eventDate = $row_event['pc_eventDate'];
@@ -224,7 +224,7 @@ function todaysEncounter($patient_id, $reason='') {
 function update_event($eid)
  {
 	$origEventRes = sqlStatement("SELECT * FROM openemr_postcalendar_events WHERE pc_eid = ?",array($eid));
-	$origEvent=sqlFetchArray($origEventRes);
+	$origEvent=$origEventRes;
 	$oldRecurrspec = unserialize($origEvent['pc_recurrspec']);
 	$duration=$origEvent['pc_duration'];
 	$starttime=$origEvent['pc_startTime'];
@@ -278,7 +278,7 @@ function update_event($eid)
 function check_event_exist($eid)
  {
 	$origEventRes = sqlStatement("SELECT * FROM openemr_postcalendar_events WHERE pc_eid = ?",array($eid));
-	$origEvent=sqlFetchArray($origEventRes);
+	$origEvent=$origEventRes;
 	$pc_catid=$origEvent['pc_catid'];
 	$pc_aid=$origEvent['pc_aid'];
 	$pc_pid=$origEvent['pc_pid'];
@@ -293,7 +293,7 @@ function check_event_exist($eid)
 		array($eid,$pc_catid,$pc_aid,$pc_pid,$pc_eventDate,$pc_startTime,$pc_endTime,$pc_facility,$pc_billing_location));
 	if(sqlNumRows($origEvent)>0)
 	 {
-	  $origEventRow=sqlFetchArray($origEvent);
+	  $origEventRow=$origEvent;
 	  return $origEventRow['pc_eid'];
 	 }
 	else

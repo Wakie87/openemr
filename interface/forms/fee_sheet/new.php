@@ -767,7 +767,7 @@ if ($GLOBALS['sell_non_drug_products']) {
     "FROM drug_templates AS dt, drugs AS d WHERE " .
     "d.drug_id = dt.drug_id AND d.active = 1 AND d.consumable = 0 " .
     "ORDER BY d.name, dt.selector, dt.drug_id");
-  while ($trow = sqlFetchArray($tres)) {
+  foreach ($tres as $trow) {
     echo "    <option value='PROD|" . attr($trow['drug_id']) . '|' . attr($trow['selector']) . "'>";
     echo text($trow['name']);
     if ($trow['name'] !== $trow['selector']) echo ' / ' . text($trow['selector']);
@@ -1026,7 +1026,7 @@ $query = "SELECT ds.*, di.warehouse_id FROM drug_sales AS ds, drug_inventory AS 
   "ORDER BY sale_id";
 $sres = sqlStatement($query, array($fs->pid, $fs->encounter) );
 // $prod_lino = 0;
-while ($srow = sqlFetchArray($sres)) {
+foreach ($sres as $srow) {
   // ++$prod_lino;
   $prod_lino = count($fs->productitems);
   $pline = $_POST['prod']["$prod_lino"];

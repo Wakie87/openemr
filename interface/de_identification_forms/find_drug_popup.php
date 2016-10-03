@@ -156,7 +156,7 @@ function check_search_str()
       "WHERE (drug_id LIKE '%$search_term%' OR " .
       "name LIKE '%$search_term%') ";
 	$res = sqlStatement($query);
-	if ($row = sqlFetchArray($res))
+	if ($row = $res)
 	{
 	 $no_of_items = addslashes($row['count']);
 	 if($no_of_items < 1)

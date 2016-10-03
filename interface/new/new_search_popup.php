@@ -215,7 +215,7 @@ $tres = sqlStatement("SELECT field_id, title FROM layout_options " .
   "field_id NOT LIKE '_name' " .
   "ORDER BY group_name, seq, title LIMIT 9");
 
-while ($trow = sqlFetchArray($tres)) {
+foreach ($tres as $trow) {
   $extracols[$trow['field_id']] = $trow['title'];
   echo "<th class='srMisc'>" . htmlspecialchars( xl_layout_label($trow['title']), ENT_NOQUOTES) . "</th>\n";
 }

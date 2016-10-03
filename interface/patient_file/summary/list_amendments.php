@@ -53,9 +53,9 @@ include_once("$srcdir/options.inc.php");
 }
 tr.selected {
   background-color: white;
-}	
+}
 </style>
-		
+
 <!-- pop up calendar -->
 <style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
@@ -67,17 +67,17 @@ tr.selected {
 		$("#list_amendments input:checkbox:checked").each(function() {
 				amendments += $(this).val() + ",";
 		});
-		
+
 		if ( amendments == '' ) {
 			alert("<?php echo xls('Select amendments to print'); ?>");
 			return;
 		}
-		
+
 		// Call the function to print
 		var url = "print_amendments.php?ids=" + amendments;
 		window.open(url);
 	}
-	
+
 	function checkUncheck(option) {
 		$("input[name='check_list[]']").each( function () {
 			var optionFlag = ( option ) ? true : false;
@@ -92,7 +92,7 @@ tr.selected {
 <form action="list_amendments.php" name="list_amendments" id="list_amendments" method="post" onsubmit='return top.restoreSession()'>
 
 <span class="title"><?php echo xlt('List'); ?></span>&nbsp;
-<?php 
+<?php
 	$query = "SELECT * FROM amendments WHERE pid = ? ORDER BY amendment_date DESC";
 	$resultSet = sqlStatement($query,array($pid));
 	if ( sqlNumRows($resultSet)) { ?>
@@ -116,8 +116,8 @@ tr.selected {
 			<th style="width:25%" align="left"><?php echo  xlt('Requested By'); ?></th>
 			<th style="width:15%" align="left"><?php echo  xlt('Request Status'); ?></th>
 		</tr>
-	
-		<?php while($row = sqlFetchArray($resultSet)) {
+
+		<?php foreach ($resultSet as $row) {
 			$amendmentLink = "<a href=add_edit_amendments.php?id=" . attr($row['amendment_id']) . ">" . oeFormatShortDate($row['amendment_date']) . "</a>";
 		?>
 			<tr class="amendmentrow" id="<?php echo attr($row['amendment_id']); ?>">

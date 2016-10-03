@@ -79,7 +79,7 @@ $REPEAT_ON_DAY = array(
 
 function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param = null, $tracker_board = false, $nextX = 0, $bind_param = null, $query_param = null )
 {
-	
+
   $sqlBindArray = array();
 
   if($query_param) {
@@ -109,7 +109,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
     }
 
     if ( $where_param ) $where .= $where_param;
-	
+
     $order_by = "e.pc_eventDate, e.pc_startTime";
     if ( $orderby_param ) {
        $order_by = $orderby_param;
@@ -164,7 +164,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
   $resNotNull = (isset($res) && $res != null);
   }
 
-  while ($event = sqlFetchArray($res)) {
+  foreach ($res as $event) {
     ///////
     if($nextX) $stopDate = $event['pc_endDate'];
     else $stopDate = ($event['pc_endDate'] <= $to_date) ? $event['pc_endDate'] : $to_date;
@@ -219,7 +219,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
               }
               //////
             }
-            
+
             $occurance =& __increment($nd,$nm,$ny,$rfreq,$rtype);
             list($ny,$nm,$nd) = explode('-',$occurance);
 
@@ -253,7 +253,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
         }
 
         while($occuranceYm <= $stopDateYm) {
- 
+
           // (YYYY-mm)-dd
           $dnum = $rnum;
           do {
@@ -261,7 +261,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
           } while($occurance === -1);
 
           if($occurance >= $from_date && $occurance <= $stopDate) {
-        
+
             $excluded = false;
             if (isset($exdate)) {
                 foreach (explode(",", $exdate) as $exception) {
@@ -298,7 +298,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
         break;
 
 
-	    
+
     }
 
   }
@@ -514,7 +514,7 @@ function compareBasic( $e1, $e2 )
 	} else if ( $e1 > $e2 ) {
 		return 1;
 	}
-	
+
 	return 0;
 }
 
@@ -634,10 +634,8 @@ WHERE `pc_pid` = ?  AND `pc_recurrtype` > 0;";
 	$sqlBindArray = array();
 	array_push($sqlBindArray, $pid);
 	$res = sqlStatement($query, $sqlBindArray);
-	$row = 0;
-	while($res_arr[$row] = sqlFetchArray($res)) {
-		$res_arr[$row]['pc_recurrspec'] = interpretRecurrence($res_arr[$row]['pc_recurrspec'], $res_arr[$row]['pc_recurrtype']);
-		$row++;
+	foreach($res as $res_arr) {
+		$res_arr['pc_recurrspec'] = interpretRecurrence($res_arr['pc_recurrspec'], $res_arr['pc_recurrtype']);
 	}
 	return $res_arr;
 }

@@ -290,7 +290,7 @@ if( !(empty($_POST['start']) || empty($_POST['end']))) {
         $res_query.=     " order by date DESC" ;
 		$res =sqlStatement($res_query,$sqlBindArray);
 	
-    while($result = sqlFetchArray($res)) {
+    foreach ($res as $result) {
         if ($result{"form_name"} == "New Patient Encounter") {
             $newpatient[] = $result{"form_id"}.":".$result{"encounter"};
 			$pids[] = $result{"pid"};

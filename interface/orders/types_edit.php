@@ -253,7 +253,7 @@ echo generate_select_list('form_procedure_type', 'proc_type', $row['procedure_ty
  <?php
   $ppres = sqlStatement("SELECT ppid, name FROM procedure_providers " .
     "ORDER BY name, ppid");
-  while ($pprow = sqlFetchArray($ppres)) {
+  foreach ($ppres as $pprow) {
     echo "<option value='" . attr($pprow['ppid']) . "'";
     if ($pprow['ppid'] == $row['lab_id']) echo " selected";
     echo ">" . text($pprow['name']) . "</option>";

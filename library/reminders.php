@@ -6,7 +6,7 @@
  * session variables, because the session_write_close() function
  * is typically called before utilizing these functions.
  *
- * Functions for collection/displaying/sending patient reminders. This is 
+ * Functions for collection/displaying/sending patient reminders. This is
  * part of the CDR engine, which can be found at library/clinical_rules.php.
  *
  * Copyright (C) 2010-2012 Brady Miller <brady@sparmy.com>
@@ -219,8 +219,8 @@ function update_reminders($dateTarget='', $patient_id='', $start=NULL, $batchSiz
     // as described above, need to pass in each patient_id
     // Collect all patient ids
     $patientData = buildPatientArray('','','',$start,$batchSize);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++) {
-      $patientData[$iter]=$row;
+    foreach ($rez as $row) {
+      $patientData=$rez;
     }
     $first_flag = TRUE;
     foreach ($patientData as $patient) {
@@ -447,7 +447,7 @@ function fetch_reminders($patient_id='',$type='',$due_status='',$select='*') {
     $where = "`pid` IN (?) AND ";
     array_push($arraySqlBind,$patient_id);
   }
-    
+
   if (!empty($due_status)) {
     $where .= "`due_status`=? AND ";
     array_push($arraySqlBind,$due_status);
@@ -465,12 +465,7 @@ function fetch_reminders($patient_id='',$type='',$due_status='',$select='*') {
   $sql = "SELECT " . $select . " FROM `patient_reminders` WHERE " .
     $where . " ORDER BY " . $order;
   $rez = sqlStatementCdrEngine($sql, $arraySqlBind);
-
-  $returnval=array();
-  for($iter=0; $row=sqlFetchArray($rez); $iter++)
-    $returnval[$iter]=$row;
-
-  return $returnval;
+  return $rez;
 }
 
 ?>

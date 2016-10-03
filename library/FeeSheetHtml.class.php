@@ -1,7 +1,7 @@
 <?php
 /**
  * library/FeeSheetHtml.class.php
- * 
+ *
  * Class for HTML-specific implementations of the Fee Sheet.
  *
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with this program. If not, see 
+ * along with this program. If not, see
  * http://www.gnu.org/licenses/licenses.html#GPL .
  *
  * @package OpenEMR
@@ -195,7 +195,7 @@ class FeeSheetHtml extends FeeSheet {
     $pricelevel = $this->getPriceLevel();
     $plres = sqlStatement("SELECT option_id, title FROM list_options " .
       "WHERE list_id = 'pricelevel' ORDER BY seq");
-    while ($plrow = sqlFetchArray($plres)) {
+    foreach ($plres as $plrow) {
       $key = $plrow['option_id'];
       $val = $plrow['title'];
       $s .= "<option value='" . attr($key) . "'";

@@ -301,7 +301,7 @@ function create_and_download_certificates()
     /* Create the client certificate for the 'admin' user */
     $serial = 0;
     $res = sqlStatement("select id from users where username='admin'");
-    if ($row = sqlFetchArray($res)) {
+    if ($row = $res) {
         $serial = $row['id'];
     }
 

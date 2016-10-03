@@ -15,14 +15,8 @@ function getBillingByPid ($pid, $cols = "*")
 
 function getBillingByEncounter ($pid,$encounter, $cols = "code_type, code, code_text")
 {
-    $res = sqlStatement("select $cols from billing where encounter = ? and pid=? and activity=1 order by code_type, date ASC", array($encounter,$pid) );
+    return sqlStatement("select $cols from billing where encounter = ? and pid=? and activity=1 order by code_type, date ASC", array($encounter,$pid) );
 
-    $all=array();
-    for($iter=0; $row=sqlFetchArray($res); $iter++)
-    {
-        $all[$iter] = $row;
-    }
-    return $all;
 }
 
 function addBilling($encounter_id, $code_type, $code, $code_text, $pid,
@@ -54,7 +48,7 @@ function clearBilling($id)
 }
 
 // This function supports the Billing page (billing_process.php),
-// and initiation of secondary processing (sl_eob.inc.php). 
+// and initiation of secondary processing (sl_eob.inc.php).
 // It is called in the following situations:
 //
 // * billing_process.php sets bill_time, bill_process, payer and target on
@@ -265,7 +259,7 @@ function getPatientCopay($patient_id, $encounter) {
           "pid = ? and encounter = ? and payer_type=0 and account_code='PCP'",
           array($patient_id,$encounter));
          //new fees screen copay gives account_code='PCP'
-        $rowMoneyGot = sqlFetchArray($resMoneyGot);
+        $rowMoneyGot = $resMoneyGot;
         $Copay=$rowMoneyGot['PatientPay'];
         return $Copay*-1;
 }

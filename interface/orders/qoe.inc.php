@@ -50,7 +50,7 @@ function generate_qoe_html($ptid=0, $orderid=0, $dbseq=0, $formseq=0) {
     "WHERE t.procedure_type_id = ? " .
     "ORDER BY q.seq, q.question_text", array($ptid));
 
-  while ($qrow = sqlFetchArray($qres)) {
+  foreach ($qres as $qrow) {
     $options = trim($qrow['options']);
     $qfieldid = $prefix . attr(trim($qrow['question_code']));
     $fldtype = $qrow['fldtype'];

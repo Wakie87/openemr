@@ -1,5 +1,5 @@
 <?php
-// +-----------------------------------------------------------------------------+ 
+// +-----------------------------------------------------------------------------+
 // Copyright (C) 2010 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 //
 //
@@ -19,9 +19,9 @@
 // openemr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 // Author:   Eldho Chacko <eldho@zhservices.com>
-//           Paul Simon K <paul@zhservices.com> 
+//           Paul Simon K <paul@zhservices.com>
 //
 // +------------------------------------------------------------------------------+
 //===============================================================================
@@ -77,19 +77,20 @@ function generate_list_payment_category($tag_name, $list_id, $currvalue, $title,
 if($payment_id>0)
  {
     $rs= sqlStatement("select pay_total,global_amount from ar_session where session_id='$payment_id'");
-    $row=sqlFetchArray($rs);
+    $row=$rs;
     $pay_total=$row['pay_total'];
     $global_amount=$row['global_amount'];
     $rs= sqlStatement("select sum(pay_amount) sum_pay_amount from ar_activity where session_id='$payment_id'");
-    $row=sqlFetchArray($rs);
+    $row=$rs;
     $pay_amount=$row['sum_pay_amount'];
     $UndistributedAmount=$pay_total-$pay_amount-$global_amount;
-    
+
     $res = sqlStatement("SELECT check_date ,reference ,insurance_companies.name,
     payer_id,pay_total,payment_type,post_to_date,patient_id ,
     adjustment_code,description,deposit_date,payment_method
      FROM ar_session left join insurance_companies on ar_session.payer_id=insurance_companies.id    where ar_session.session_id ='$payment_id'");
-    $row = $res;    $InsuranceCompanyName=$row['name'];
+    $row = $res;
+    $InsuranceCompanyName=$row['name'];
     $InsuranceCompanyId=$row['payer_id'];
     $PatientId=$row['patient_id'];
     $CheckNumber=$row['reference'];
@@ -200,7 +201,7 @@ if(($screen=='new_payment' && $payment_id*1==0) || ($screen=='edit_payment' && $
         <td></td>
         <td align="left" class="text"><?php echo htmlspecialchars( xl('Payment Method'), ENT_QUOTES).':' ?></td>
         <td align="left">
-            <?php   
+            <?php
                 if($PaymentMethod=='' && $screen=='edit_payment')
                     $blankValue=' ';
                 else

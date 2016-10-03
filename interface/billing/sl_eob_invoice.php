@@ -56,7 +56,7 @@
   function row_delete($table, $where) {
     $tres = sqlStatement("SELECT * FROM $table WHERE $where");
     $count = 0;
-    while ($trow = sqlFetchArray($tres)) {
+    foreach ($tres as $trow) {
       $logstring = "";
       foreach ($trow as $key => $value) {
         if (! $value || $value == '0000-00-00 00:00:00') continue;
@@ -669,7 +669,7 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
 echo "    <option value=''></option>\n";
 $ores = sqlStatement("SELECT option_id, title, is_default FROM list_options " .
   "WHERE list_id = 'adjreason'  ORDER BY seq, title");
-while ($orow = sqlFetchArray($ores)) {
+foreach ($ores as $orow) {
   echo "    <option value='" . htmlspecialchars($orow['option_id'], ENT_QUOTES) . "'";
   if ($orow['is_default']) echo " selected";
   echo ">" . htmlspecialchars($orow['title']) . "</option>\n";

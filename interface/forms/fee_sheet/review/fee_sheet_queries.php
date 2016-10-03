@@ -244,7 +244,7 @@ function issue_diagnoses($pid,$encounter)
           " ( ( l.enddate IS NULL) OR (l.enddate IS NOT NULL AND l.enddate>=NOW()) ) ".
           " ORDER BY ie.encounter DESC,l.id";
     $results=sqlStatement($sql,$parameters);
-    while( $res=sqlFetchArray($results))
+    foreach ($results as $res)
     {
         $title=$res['title'];
         $db_id=$res['id'];
@@ -285,7 +285,7 @@ function common_diagnoses($limit=10)
          " FROM billing WHERE code_type in (".diag_code_types('keylist',true).")" .  // include all code types
          " GROUP BY code_type,code,code_text ORDER BY num desc LIMIT ?";
     $results=sqlStatement($sql,$parameters);
-    while($res=sqlFetchArray($results))
+    foreach ($results as $res)
     {
         $title=$res['code_text'];
         $code=$res['code'];
@@ -313,7 +313,7 @@ function fee_sheet_items($pid,$encounter, &$diagnoses,&$procedures)
           ." WHERE encounter=? AND billing.activity>0 AND ct.ct_key=billing.code_type "
           ." ORDER BY id";
     $results=sqlStatement($sql,$param);
-    while($res=sqlFetchArray($results))
+    foreach ($results as $res)
     {
         $code=$res['code'];
         $code_type=$res['code_type'];
@@ -352,7 +352,7 @@ function select_encounters($pid,$encounter)
          " WHERE pid=? and encounter!=? " .
          " ORDER BY date DESC";
     $results=sqlStatement($sql,$parameters);
-    while($res=sqlFetchArray($results))
+    foreach ($results as $res)
     {
         $retval[]=new encounter_info($res['encounter'],$res['date']);
     }

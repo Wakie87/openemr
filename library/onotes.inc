@@ -49,12 +49,9 @@ function getOnoteByDate ($date, $activity = "1", $cols = "*", $limit="all", $off
 
 		$sql .= "order by date DESC LIMIT ".escape_limit($offset).",".escape_limit($limit);
 	}
-	
-	$res = sqlStatement($sql,$sqlBindArray);
 
-	for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-		$all[$iter] = $row;
-	return $all;
+	$res = sqlStatement($sql,$sqlBindArray);
+	return $res;
 }
 
 function addOnote($body, $activity = "1")

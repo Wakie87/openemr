@@ -173,7 +173,7 @@ foreach ($ISSUE_TYPES as $focustype => $focustitles) {
   }
 
   // display issues
-  while ($row = sqlFetchArray($pres)) {
+  foreach ($pres as $row) {
 
     $rowid = $row['id'];
 
@@ -266,7 +266,7 @@ $(document).ready(function(){
     $(".noneCheck").click(function() {
       top.restoreSession();
       $.post( "../../../library/ajax/lists_touch.php", { type: this.name, patient_id: <?php echo htmlspecialchars($pid,ENT_QUOTES); ?> });
-      $(this).hide(); 
+      $(this).hide();
     });
 });
 

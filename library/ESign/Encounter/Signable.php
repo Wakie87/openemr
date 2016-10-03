@@ -4,7 +4,7 @@ namespace ESign;
 
 /**
  * Implementation of the SignableIF interface for the Encounter
- * module. 
+ * module.
  *
  * Copyright (C) 2013 OEMR 501c3 www.oemr.org
  *
@@ -33,19 +33,19 @@ require_once $GLOBALS['srcdir'].'/formdata.inc.php';
 class Encounter_Signable extends DbRow_Signable implements SignableIF
 {
     private $_encounterId = null;
-    
+
     public function __construct( $encounterId )
     {
         $this->_encounterId = $encounterId;
         parent::__construct( $encounterId, 'form_encounter' );
     }
-    
+
     /**
-     * Implementatinon of getData() for encounters. 
-     * 
+     * Implementatinon of getData() for encounters.
+     *
      * We get all forms under the encounter, and then get all the data
      * from the individual form tables.
-     * 
+     *
      * @see \ESign\SignableIF::getData()
      */
     public function getData()
@@ -54,21 +54,21 @@ class Encounter_Signable extends DbRow_Signable implements SignableIF
         $encStatement .= "WHERE F.encounter = ? ";
         $data = array();
         $res = sqlStatement( $encStatement, array( $this->_encounterId ) );
-        while ( $encRow = sqlFetchArray( $res ) ) {
+        foreach ($res as $encRow) {
             $formFactory = new Form_Factory( $encRow['id'], $encRow['formdir'], $this->_encounterId );
             $signable = $formFactory->createSignable();
             $data[]= $signable->getData();
         }
         return $data;
     }
-    
+
     public function isLocked()
     {
         $locked = false;
         if ( $GLOBALS['lock_esign_all'] ) {
             $locked = parent::isLocked();
         }
-        
+
         return $locked;
     }
 }

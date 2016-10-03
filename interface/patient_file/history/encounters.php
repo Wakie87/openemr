@@ -83,41 +83,41 @@ if (isset($_GET['billing']))
 
 //Get Document List by Encounter ID
 function getDocListByEncID($encounter,$raw_encounter_date,$pid){
-	global $ISSUE_TYPES, $auth_med;
+    global $ISSUE_TYPES, $auth_med;
 
-	$documents = getDocumentsByEncounter($pid,$encounter);
-	if ( count($documents) > 0 ) {
-		foreach ( $documents as $documentrow) {
-			if ($auth_med) {
-				$irow = sqlQuery("SELECT type, title, begdate FROM lists WHERE id = ? LIMIT 1", array($documentrow['list_id']) );
-				if ($irow) {
-				  $tcode = $irow['type'];
-				  if ($ISSUE_TYPES[$tcode])
-					  $tcode = $ISSUE_TYPES[$tcode][2];
-				  echo text("$tcode: " . $irow['title']);
-				}
-			}
-			else {
-				echo "(" . xlt('No access') . ")";
-			}
+    $documents = getDocumentsByEncounter($pid,$encounter);
+    if ( count($documents) > 0 ) {
+        foreach ( $documents as $documentrow) {
+            if ($auth_med) {
+                $irow = sqlQuery("SELECT type, title, begdate FROM lists WHERE id = ? LIMIT 1", array($documentrow['list_id']) );
+                if ($irow) {
+                  $tcode = $irow['type'];
+                  if ($ISSUE_TYPES[$tcode])
+                      $tcode = $ISSUE_TYPES[$tcode][2];
+                  echo text("$tcode: " . $irow['title']);
+                }
+            }
+            else {
+                echo "(" . xlt('No access') . ")";
+            }
 
-			// Get the notes for this document and display as title for the link.					
-			$queryString = "SELECT date,note FROM notes WHERE foreign_id = ? ORDER BY date";
-			$noteResultSet = sqlStatement($queryString,array($documentrow['id']));
-			$note = '';
-			while ( $row = sqlFetchArray($noteResultSet)) {
-				$note .= oeFormatShortDate(date('Y-m-d', strtotime($row['date']))) . " : " . attr($row['note']) . "\n";
-			}
-			$docTitle = ( $note ) ? $note : xla("View document");
+            // Get the notes for this document and display as title for the link.
+            $queryString = "SELECT date,note FROM notes WHERE foreign_id = ? ORDER BY date";
+            $noteResultSet = sqlStatement($queryString,array($documentrow['id']));
+            $note = '';
+            foreach ($noteResultSet as $row) {
+                $note .= oeFormatShortDate(date('Y-m-d', strtotime($row['date']))) . " : " . attr($row['note']) . "\n";
+            }
+            $docTitle = ( $note ) ? $note : xla("View document");
 
-			$docHref = $GLOBALS['webroot']."/controller.php?document&view&patient_id=".attr($pid)."&doc_id=".attr($documentrow['id']);
-			echo "<div class='text docrow' id='" . attr($documentrow['id'])."' title='". $docTitle . "'>\n";
-			echo "<a href='$docHref' onclick='top.restoreSession()' >". xlt('Document') . ": " . text(basename($documentrow['url'])) . ' (' . text(xl_document_category($documentrow['name'])) . ')' . "</a>";
-			echo "</div>";
-		}
-	}
+            $docHref = $GLOBALS['webroot']."/controller.php?document&view&patient_id=".attr($pid)."&doc_id=".attr($documentrow['id']);
+            echo "<div class='text docrow' id='" . attr($documentrow['id'])."' title='". $docTitle . "'>\n";
+            echo "<a href='$docHref' onclick='top.restoreSession()' >". xlt('Document') . ": " . text(basename($documentrow['url'])) . ' (' . text(xl_document_category($documentrow['name'])) . ')' . "</a>";
+            echo "</div>";
+        }
+    }
 }
- 
+
 // This is called to generate a line of output for a patient document.
 //
 function showDocument(&$drow) {
@@ -320,7 +320,7 @@ $getStringForPage="&pagesize=".attr($pagesize)."&pagestart=".attr($pagestart);
             echo $pagesizes[$idx];
         }
         echo "</OPTION>";
-        
+
     }
 ?>
     </select>
@@ -373,7 +373,7 @@ if (!$billing_view) {
   }
   $query .= "ORDER BY d.docdate DESC, d.id DESC";
   $dres = sqlStatement($query, $queryarr);
-  $drow = sqlFetchArray($dres);
+  $drow = $dres;
 }
 
 // $count = 0;
@@ -398,7 +398,7 @@ $countQuery = "SELECT COUNT(*) as c " . $from;
 
 
 $countRes = sqlStatement($countQuery,$sqlBindArray);
-$count = sqlFetchArray($countRes);
+$count = $countRes;
 $numRes = $count['c'];
 
 
@@ -428,7 +428,7 @@ if(($pagesize>0) && ($pagestart+$pagesize <= $numRes))
 $res4 = sqlStatement($query, $sqlBindArray);
 
 
-while ($result4 = sqlFetchArray($res4)) {
+foreach ($res4 as $result4) {
 
         // $href = "javascript:window.toencounter(" . $result4['encounter'] . ")";
         $reason_string = "";
@@ -454,7 +454,7 @@ while ($result4 = sqlFetchArray($res4)) {
         // This generates document lines as appropriate for the date order.
         while ($drow && $raw_encounter_date && $drow['docdate'] > $raw_encounter_date) {
             showDocument($drow);
-            $drow = sqlFetchArray($dres);
+            $drow = $dres;
         }
 
         // Fetch all forms for this encounter, if the user is authorized to see
@@ -504,8 +504,8 @@ while ($result4 = sqlFetchArray($res4)) {
                                     "issue_encounter.encounter = ? AND " .
                                     "lists.id = issue_encounter.list_id " .
                                     "ORDER BY lists.type, lists.begdate", array($pid,$result4['encounter']) );
-                for ($i = 0; $irow = sqlFetchArray($ires); ++$i) {
-                    if ($i > 0) echo "<br>";
+                foreach ($ires as $irow) {
+                    if ($irow > 0) echo "<br>";
                     $tcode = $irow['type'];
                     if ($ISSUE_TYPES[$tcode]) $tcode = $ISSUE_TYPES[$tcode][2];
                         echo htmlspecialchars( "$tcode: " . $irow['title'], ENT_NOQUOTES);
@@ -519,10 +519,10 @@ while ($result4 = sqlFetchArray($res4)) {
 
             // show encounter reason/title
             echo "<td>".$reason_string;
-			
-			//Display the documents tagged to this encounter
-			getDocListByEncID($result4['encounter'],$raw_encounter_date,$pid);
-			
+
+            //Display the documents tagged to this encounter
+            getDocListByEncID($result4['encounter'],$raw_encounter_date,$pid);
+
             echo "<div style='padding-left:10px;'>";
 
             // Now show a line for each encounter form, if the user is authorized to
@@ -530,10 +530,10 @@ while ($result4 = sqlFetchArray($res4)) {
 
             foreach ($encarr as $enc) {
                 if ($enc['formdir'] == 'newpatient') continue;
-            
+
                 // skip forms whose 'deleted' flag is set to 1 --JRM--
                 if ($enc['deleted'] == 1) continue;
-    
+
                 // Skip forms that we are not authorized to see. --JRM--
                 // pardon the wonky logic
                 $formdir = $enc['formdir'];
@@ -611,7 +611,7 @@ while ($result4 = sqlFetchArray($res4)) {
                         if ($arid) $arinvoice = ar_get_invoice_summary($pid, $result4['encounter'], true);
                     if ($arid) {
                         $arlinkbeg = "<a href='../../billing/sl_eob_invoice.php?id=" .
-			            htmlspecialchars( $arid, ENT_QUOTES)."'" .
+                        htmlspecialchars( $arid, ENT_QUOTES)."'" .
                                     " target='_blank' class='text' style='color:#00cc00'>";
                         $arlinkend = "</a>";
                     }
@@ -624,7 +624,7 @@ while ($result4 = sqlFetchArray($res4)) {
                   "WHERE s.pid = ? AND s.encounter = ? " .
                   "ORDER BY s.sale_id";
                 $sres = sqlStatement($query, array($pid,$result4['encounter']) );
-                while ($srow = sqlFetchArray($sres)) {
+                foreach ($sres as $srow) {
                   $subresult2[] = array('code_type' => 'PROD',
                     'code' => 'PROD:' . $srow['drug_id'], 'modifier' => '',
                     'code_text' => $srow['name'], 'fee' => $srow['fee']);
@@ -737,7 +737,7 @@ while ($result4 = sqlFetchArray($res4)) {
             else {
                 $insured = " (".htmlspecialchars( xl("No access"), ENT_NOQUOTES).")";
             }
-      
+
             echo "<td>".$insured."</td>\n";
         }
 
@@ -749,7 +749,7 @@ while ($result4 = sqlFetchArray($res4)) {
 // Dump remaining document lines if count not exceeded.
 while ($drow /* && $count <= $N */) {
     showDocument($drow);
-    $drow = sqlFetchArray($dres);
+    $drow = $dres;
 }
 ?>
 
@@ -769,11 +769,11 @@ while ($drow /* && $count <= $N */) {
 $(document).ready(function(){
     $(".encrow").mouseover(function() { $(this).toggleClass("highlight"); });
     $(".encrow").mouseout(function() { $(this).toggleClass("highlight"); });
-    $(".encrow").click(function() { toencounter(this.id); }); 
-    
+    $(".encrow").click(function() { toencounter(this.id); });
+
     $(".docrow").mouseover(function() { $(this).toggleClass("highlight"); });
     $(".docrow").mouseout(function() { $(this).toggleClass("highlight"); });
-    $(".docrow").click(function() { todocument(this.id); }); 
+    $(".docrow").click(function() { todocument(this.id); });
 
     $(".billing_note_text").mouseover(function() { $(this).toggleClass("billing_note_text_highlight"); });
     $(".billing_note_text").mouseout(function() { $(this).toggleClass("billing_note_text_highlight"); });

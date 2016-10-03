@@ -103,7 +103,7 @@ elseif ($_POST['hidden_mode'] == 'delete') {
     if ($_POST['hidden_selection'] == 'change_category') {
       $to_delete_id = $_POST['hidden_category'];
       $statement1 = sqlStatement("select id from ".mitigateSqlTableUpperCase("form_CAMOS_subcategory")." where category_id = ?", array($to_delete_id));
-      while ($result1 = sqlFetchArray($statement1)) {
+      foreach ($statement1 as $result1) {
         $query = "DELETE FROM ".mitigateSqlTableUpperCase("form_CAMOS_item")." WHERE subcategory_id = ?";
         sqlInsert($query, array($result1['id']));
       }
@@ -164,7 +164,7 @@ elseif ($_POST['hidden_mode'] == 'delete') {
     else {
       $query = "SELECT count(id) FROM ".escape_table_name($to_delete_from_subtable)." WHERE ".$tablename."_id like ?";
       $statement = sqlStatement($query, array($to_delete_id));
-      if ($result = sqlFetchArray($statement)) {
+      if ($result = $statement) {
         if ($result['count(id)'] == 0) {
           $query = "DELETE FROM ".escape_table_name($to_delete_from_table)." WHERE id like ?";
           sqlInsert($query, array($to_delete_id));
@@ -210,7 +210,7 @@ elseif ($_POST['hidden_mode'] == 'alter') {
 
     $query = "SELECT category, subcategory, item FROM ".mitigateSqlTableUpperCase("form_CAMOS")." WHERE id = $maxid";
     $statement = sqlStatement($query);
-    if ($result = sqlFetchArray($statement)) {
+    if ($result = $statement) {
       $preselect_category = $result['category'];
       $preselect_subcategory = $result['subcategory'];
       $preselect_item = $result['item'];
@@ -406,12 +406,12 @@ if (!$out_of_encounter) { //do not do stuff that is encounter specific if not in
   $query = "SELECT code_text, code FROM billing WHERE encounter=".$_SESSION['encounter'].
     " AND pid=".$_SESSION['pid']." AND code_type like 'ICD9' AND activity=1";
   $statement = sqlStatement($query);
-  if ($result = sqlFetchArray($statement)) {
+  if ($result = $statement) {
     $icd9_flag = true;
     echo "icd9_list = \"\\n\\n\\\n";
     echo $result['code']." ".$result['code_text']."\\n\\\n";
   }
-  while ($result = sqlFetchArray($statement)) {
+  foreach ($statement as $result) {
     echo $result['code']." ".$result['code_text']."\\n\\\n";
   }
   if ($icd9_flag) {echo "\";\n";}
@@ -420,21 +420,21 @@ if (!$out_of_encounter) { //do not do stuff that is encounter specific if not in
 $query = "SELECT id, category FROM ".mitigateSqlTableUpperCase("form_CAMOS_category")." ORDER BY category";
 $statement = sqlStatement($query);
 $i = 0;
-while ($result = sqlFetchArray($statement)) {
+foreach ($statement as $result) {
   echo "array1[".$i."] = new Array(\"".fixquotes($result['category'])."\",\"".$result['id']."\", new Array());\n";
   $i++;
 }
 $i=0;
 $query = "SELECT id, subcategory, category_id FROM ".mitigateSqlTableUpperCase("form_CAMOS_subcategory")." ORDER BY subcategory";
 $statement = sqlStatement($query);
-while ($result = sqlFetchArray($statement)) {
+foreach ($statement as $result) {
   echo "array2[".$i."] = new Array(\"".fixquotes($result['subcategory'])."\", \"".$result['category_id']."\", \"".$result['id']."\", new Array());\n";
   $i++;
 }
 $i=0;
 $query = "SELECT id, item, content, subcategory_id FROM ".mitigateSqlTableUpperCase("form_CAMOS_item")." ORDER BY item";
 $statement = sqlStatement($query);
-while ($result = sqlFetchArray($statement)) {
+foreach ($statement as $result) {
   echo "array3[".$i."] = new Array(\"".fixquotes($result['item'])."\", \"".fixquotes(str_replace($quote_search_content,$quote_replace_content,strip_tags($result['content'],"<b>,<i>")))."\", \"".$result['subcategory_id'].
     "\",\"".$result['id']."\");\n";
   $i++;
@@ -526,19 +526,19 @@ if (1) { //we are hiding the clone buttons and still need 'search others' so thi
 		if (preg_match('/^(export)(.*)/',$clone_search,$matches)) {
 			$query1 = "select id, category from ".mitigateSqlTableUpperCase("form_CAMOS_category");
 			$statement1 = sqlStatement($query1);
-		        while ($result1 = sqlFetchArray($statement1)) {
+		        foreach ($statement1 as $result1) {
 				$tmp = $result1['category'];
 				$tmp = "/*import::category::$tmp*/"."\n";
 				$clone_data_array[$tmp] = $tmp;
 				$query2 = "select id,subcategory from ".mitigateSqlTableUpperCase("form_CAMOS_subcategory")." where category_id= ?";
 				$statement2 = sqlStatement($query2, $result1['id']);
-				while ($result2 = sqlFetchArray($statement2)) {
+				foreach ($statement2 as $result2) {
 					$tmp = $result2['subcategory'];
 					$tmp = "/*import::subcategory::$tmp*/"."\n";
 					$clone_data_array[$tmp] = $tmp;
 					$query3 = "select item, content from ".mitigateSqlTableUpperCase("form_CAMOS_item")." where subcategory_id=".$result2['id'];
 					$statement3 = sqlStatement($query3);
-					while ($result3 = sqlFetchArray($statement3)) {
+					foreach ($statement3 as $result3) {
 						$tmp = $result3['item'];
 						$tmp = "/*import::item::$tmp*/"."\n";
 						$clone_data_array[$tmp] = $tmp;
@@ -558,7 +558,7 @@ if (1) { //we are hiding the clone buttons and still need 'search others' so thi
 			$search_term = preg_replace('/\s+/','%',$line);
 			$query = "select code, code_type,code_text,modifier,units,fee from $table where code_text like ? limit $limit";
 			$statement = sqlStatement($query, array($search_term));
-		        while ($result = sqlFetchArray($statement)) {
+		        foreach ($statement as $result) {
 				$code_type = $result['code_type'];
 				if ($code_type == 1) {$code_type = 'CPT4';}
 				if ($code_type == 2) {$code_type = 'ICD9';}
@@ -593,7 +593,7 @@ if (1) { //we are hiding the clone buttons and still need 'search others' so thi
 				  " content like '%$clone_search%'".$pid_clause." order by id desc limit $limit";
 		      }
 		      $statement = sqlStatement($query);
-		      while ($result = sqlFetchArray($statement)) {
+		      foreach ($statement as $result) {
 		        $tmp = '/*camos::'.$result['category'].'::'.$result['subcategory'].
 		          '::'.$result['item'].'::'.$result['content'].'*/';
 		        if ($name_data_flag === true) {
@@ -630,7 +630,7 @@ if (1) { //we are hiding the clone buttons and still need 'search others' so thi
           $_SESSION['pid']." order by ".mitigateSqlTableUpperCase("form_CAMOS").".id";
       }
       $statement = sqlStatement($query);
-      while ($result = sqlFetchArray($statement)) {
+      foreach ($statement as $result) {
         if (preg_match('/^[\s\r\n]*$/',$result['content']) == 0) {
           if ($_POST['hidden_mode'] == 'clone last visit') {
             $clone_category = $result['category'];
@@ -656,7 +656,7 @@ if (1) { //we are hiding the clone buttons and still need 'search others' so thi
       if ($_POST['hidden_mode'] == 'clone last visit') {
         $query = "SELECT t1.* FROM form_vitals as t1 join forms as t2 on (t1.id = t2.form_id) WHERE t2.encounter = '$last_encounter_id' and t1.pid=".$_SESSION['pid']." and t2.form_name like 'Vitals'";
         $statement = sqlStatement($query);
-        if ($result = sqlFetchArray($statement)) {
+        if ($result = $statement) {
 		$weight = $result['weight'];
 		$height = $result['height'];
 		$bps = $result['bps'];
@@ -670,7 +670,7 @@ if (1) { //we are hiding the clone buttons and still need 'search others' so thi
 	}
         $query = "SELECT code_type, code, code_text, modifier, units, fee, justify FROM billing WHERE encounter = '$last_encounter_id' and pid=".$_SESSION['pid']." and activity=1 order by id";
         $statement = sqlStatement($query);
-        while ($result = sqlFetchArray($statement)) {
+        foreach ($statement as $result) {
           $clone_code_type = $result['code_type'];
           $clone_code = $result['code'];
           $clone_code_text = $result['code_text'];
@@ -1280,7 +1280,7 @@ function searchName($string) { //match one or more names and return clause for q
   if ($name2 != '') {$name1 = "%".$name2."%";}
   $query = sqlStatement("select pid from patient_data where fname like '$name1' or fname like '$name2' or " .
     "lname like '$name1' or lname like '$name2' limit $limit");
-  while ($results = sqlFetchArray($query)) {
+  foreach ($query as $results) {
     array_push($data,$results['pid']);
   }
   if (count($data) > 0) {

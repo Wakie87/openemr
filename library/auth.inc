@@ -183,7 +183,7 @@ function authLoginScreen($timed_out = false)
 function authCheckExpired($user)
 {
   $result = sqlStatement("select pwd_expiration_date from users where username = ?",array($user));
-  if($row = sqlFetchArray($result))
+  if($row =$result)
   {
     $pwd_expires = $row['pwd_expiration_date'];
   }
@@ -283,7 +283,7 @@ function validateGroupStatus ($user_to_be_checked, $group_user) {
 function UpdatePasswordHistory($userid,$pwd)
 {
     $result = sqlStatement("select password, pwd_history1, pwd_history2 from users where id = ?",array($userid));
-    if ($row = sqlFetchArray($result)) {
+    if ($row =$result) {
         $previous_pwd1=$row['password'];
         $previous_pwd2=$row['pwd_history1'];
         $previous_pwd3=$row['pwd_history2'];

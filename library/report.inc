@@ -113,7 +113,7 @@ function getPatientReport($pid)
 {
 	$sql = "select * from patient_data where pid='$pid' order by date ASC";
 	$res = sqlStatement("$sql");
-	while($list = sqlFetchArray($res))
+	foreach ($res as $list)
 	{
 		while(list($key, $value) = each($list))
 		{
@@ -132,7 +132,7 @@ function getHistoryReport($pid)
 {
         $sql = "select * from history_data where pid='$pid' order by date ASC";
         $res = sqlStatement("$sql");
-        while($list = sqlFetchArray($res))
+        foreach ($res as $list)
         {
                 while(list($key, $value) = each($list))
                 {
@@ -150,7 +150,7 @@ function getInsuranceReport($pid, $type = "primary")
 {
         $sql = "select * from insurance_data where pid='$pid' and type='$type' order by date ASC";
         $res = sqlStatement("$sql");
-        while($list = sqlFetchArray($res))
+        foreach ($res as $list)
         {
                 while(list($key, $value) = each($list))
                 {
@@ -168,7 +168,7 @@ function getEmployerReport($pid)
 {
         $sql = "select * from employer_data where pid='$pid' order by date ASC";
         $res = sqlStatement("$sql");
-        while($list = sqlFetchArray($res))
+        foreach ($res as $list)
         {
                 while(list($key, $value) = each($list))
                 {
@@ -186,7 +186,7 @@ function getListsReport($pid)
 {
         $sql = "select * from lists where id='$id' order by date ASC";
         $res = sqlStatement("$sql");
-        while($list = sqlFetchArray($res))
+        foreach ($res as $list)
         {
                 while(list($key, $value) = each($list))
                 {
@@ -202,7 +202,7 @@ function getListsReport($pid)
 
 function printListData($pid, $list_type, $list_activity = "%") {
 	$res = sqlStatement("select * from lists where pid='$pid' and type='$list_type' and activity like '$list_activity' order by date");
-	while($result = sqlFetchArray($res)) {
+	foreach ($res as $result) {
 		print "<span class=bold>" . $result{"title"} . ":</span><span class=text> " . $result{"comments"} . "</span><br>\n";
 	}
 }
@@ -210,7 +210,7 @@ function printListData($pid, $list_type, $list_activity = "%") {
 function printPatientNotes($pid) {
   // exclude ALL deleted notes
   $res = sqlStatement("select * from pnotes where pid = '$pid' and deleted != 1 and activity = 1 order by date");
-  while($result = sqlFetchArray($res)) {
+  foreach ($res as $result) {
     print "<span class=bold>" . oeFormatSDFT(strtotime($result{"date"})) .
       ":</span><span class=text> " .
       stripslashes(oeFormatPatientNote($result['body'])) . "</span><br>\n";
@@ -267,7 +267,7 @@ function printPatientTransactions($pid) {
 
 function printPatientBilling($pid) {
   $res = sqlStatement("select * from billing where pid='$pid' order by date");
-  while($result = sqlFetchArray($res)) {
+  foreach ($res as $result) {
     echo "<span class=bold>" . oeFormatSDFT(strtotime($result{"date"})) . " : </span>";
     echo "<span class=text>(".$result{"code_type"}.") ";
     echo $result['code_type'] == 'COPAY' ? oeFormatMoney($result['code']) : $result['code'];
@@ -301,7 +301,7 @@ function getPatientBillingEncounter($pid, $encounter) {
   /******************************************************************/
 	$res = sqlStatement($sql);
 	$billings = array();
-	while($result = sqlFetchArray($res)) {
+	foreach ($res as $result) {
 		$billings[] = $result;
 	}
 	return $billings;
@@ -310,12 +310,12 @@ function getPatientBillingEncounter($pid, $encounter) {
 function printPatientForms($pid, $cols) {
     //this function takes a $pid
     $inclookupres = sqlStatement("select distinct formdir from forms where pid='$pid' AND deleted=0");
-    while($result = sqlFetchArray($inclookupres)) {
+    foreach ($inclookupres as $result) {
         include_once("{$GLOBALS['incdir']}/forms/" . $result{"formdir"} . "/report.php");
     }
-	
+
     $res = sqlStatement("select * from forms where pid='$pid' AND deleted=0 order by date");
-    while($result = sqlFetchArray($res)) {
+    foreach ($res as $result) {
         if ($result{"form_name"} == "New Patient Encounter") {
             echo "<div class='text encounter'>\n";
             echo "<h1>" . $result["form_name"] . "</h1>";
@@ -350,7 +350,7 @@ function printPatientForms($pid, $cols) {
                   "ct.ct_diag = 0 " .
                   "ORDER BY b.date",
                   array($pid, $result['encounter']));
-                while ($brow=sqlFetchArray($bres)) {
+                foreach ($bres as $brow) {
                     echo "<span class='bold'>&nbsp;".xl('Procedure').": </span><span class='text'>" .
                         $brow['code'] . " " . $brow['code_text'] . "</span><br>\n";
                 }
@@ -369,8 +369,8 @@ function getRecHistoryData ($pid) {
 	//$return{"lname"}[0..n]{"date"}
 	//$return{"lname"}[0..n]{"value"}
 	$res = sqlStatement("select * from history_data where pid=? order by date", array($pid) );
-	
-	while($result = sqlFetchArray($res)) {
+
+	foreach ($res as $result) {
 		foreach ($result as $key => $val) {
 			if ($key == "pid" || $key == "date" || $key == "id") {
 				next;
@@ -393,8 +393,8 @@ function getRecEmployerData ($pid) {
 	//$return{"lname"}[0..n]{"date"}
 	//$return{"lname"}[0..n]{"value"}
 	$res = sqlStatement("select * from employer_data where pid=? order by date", array($pid) );
-	
-	while($result = sqlFetchArray($res)) {
+
+	foreach ($res as $result) {
 		foreach ($result as $key => $val) {
 			if ($key == "pid" || $key == "date" || $key == "id") {
 				next;
@@ -417,8 +417,8 @@ function getRecPatientData ($pid) {
 	//$return{"lname"}[0..n]{"date"}
 	//$return{"lname"}[0..n]{"value"}
 	$res = sqlStatement("select * from patient_data where pid=? order by date", array($pid) );
-	
-	while($result = sqlFetchArray($res)) {
+
+	foreach ($res as $result) {
 		foreach ($result as $key => $val) {
 			if ($key == "pid" || $key == "date" || $key == "id") {
 				next;
@@ -441,8 +441,8 @@ function getRecInsuranceData ($pid, $ins_type) {
 	//$return{"lname"}[0..n]{"date"}
 	//$return{"lname"}[0..n]{"value"}
 	$res = sqlStatement("select *, ic.name as provider_name from insurance_data left join insurance_companies as ic on ic.id = provider where pid=? and type=? order by date", array($pid,$ins_type) );
-	
-	while($result = sqlFetchArray($res)) {
+
+	foreach ($res as $result) {
 		foreach ($result as $key => $val) {
 			if ($key == "pid" || $key == "date" || $key == "id") {
 				next;

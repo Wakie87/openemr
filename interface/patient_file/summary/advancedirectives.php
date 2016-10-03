@@ -79,7 +79,7 @@ if ($myrow2) {
         $parentId = $myrow2['id'];
         $query = "SELECT id, name FROM categories WHERE parent='$parentId'";
         $resNew1 = sqlStatement($query);
-        while ($myrows3 = sqlFetchArray($resNew1)) {
+        foreach ($resNew1 as $myrows3) {
             $categoryId = $myrows3['id'];
             $nameDoc = $myrows3['name'];
             $query = "SELECT documents.date, documents.id " .
@@ -91,7 +91,7 @@ if ($myrow2) {
                      "ORDER BY documents.date DESC";
             $resNew2 = sqlStatement($query);
 	    $counterFlag = false; //flag used to check for empty categories
-            while ($myrows4 = sqlFetchArray($resNew2)) {
+            foreach ($resNew2 as $myrows4) {
                 $dateTimeDoc = $myrows4['date'];
                 $idDoc = $myrows4['id'];
                 echo "<br>";

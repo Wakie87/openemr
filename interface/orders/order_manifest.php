@@ -256,7 +256,7 @@ function generate_order_summary($orderid) {
       array($lab_id, $procedure_code, $orderid, $order_seq));
 
     $notes='';
-    while ($qrow = sqlFetchArray($qres)) {
+    foreach ($qres as $qrow) {
       // Formatting of these answer values may be lab-specific and we'll figure
       // out how to deal with that as more labs are supported.
       $answer = trim($qrow['answer']);

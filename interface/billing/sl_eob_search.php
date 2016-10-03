@@ -99,15 +99,15 @@ function upload_file_to_client_pdf($file_to_send) {
 	    $pdf->ezSetY($pdf->ez['pageHeight'] - $pdf->ez['topMargin']);
 		str_replace("\014", "", $OneLine);
 	  }
-	
+
 	if(stristr($OneLine, 'REMIT TO') == true || stristr($OneLine, 'Visit Date') == true || stristr($OneLine, 'Future Appointments') == true || stristr($OneLine, 'Current') == true)//lines are made bold when 'REMIT TO' or 'Visit Date' is there.
 	 $pdf->ezText('<b>'.$OneLine.'</b>', 12, array('justification' => 'left', 'leading' => 6));
 	else
 	 $pdf->ezText($OneLine, 12, array('justification' => 'left', 'leading' => 6));
-	 
+
 	$countline++;
    }
-	
+
 	$fh = @fopen($STMT_TEMP_FILE_PDF, 'w');//stored to a pdf file
     if ($fh) {
       fwrite($fh, $pdf->ezOutput());
@@ -195,7 +195,7 @@ $today = date("Y-m-d");
 		$stmt['bill_level'] = $row['last_level_billed'];
 		$stmt['level_closed'] = $row['last_level_closed'];
         $stmt['patient'] = $row['fname'] . ' ' . $row['lname'];
-		#If you use the field in demographics layout called 
+		#If you use the field in demographics layout called
 		#guardiansname this will allow you to send statements to the parent
 		#of a child or a guardian etc
         if(strlen($row['guardiansname']) == 0) {
@@ -599,7 +599,7 @@ if ($_POST['form_search'] || $_POST['form_print']) {
 <?php
   $orow = -1;
 
-    while ($row = sqlFetchArray($t_res)) {
+    foreach ($t_res as $row) {
       $balance = sprintf("%.2f", $row['charges'] + $row['copays'] - $row['payments'] - $row['adjustments']);
 
       if ($_POST['form_category'] != 'All' && $eracount == 0 && $balance == 0) continue;

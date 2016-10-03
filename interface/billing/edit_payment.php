@@ -1101,7 +1101,7 @@ return false;
 						<?php
 
 
-							 }//while ($RowSearch = sqlFetchArray($ResultSearch))
+							 }//foreach ($ResultSearch as $RowSearch)
 						?>
 						<?php
 						 }//if(sqlNumRows($ResultSearch)>0)
@@ -1129,7 +1129,7 @@ return false;
 
 						echo '<br/>';
 
-				}//if($RowSearchSub = sqlFetchArray($ResultSearchSub))
+				}//if($RowSearchSub = $ResultSearchSub)
 				?>		    </td>
 		  </tr>
 		  <tr>

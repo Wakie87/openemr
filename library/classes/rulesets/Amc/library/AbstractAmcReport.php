@@ -63,11 +63,11 @@ abstract class AbstractAmcReport implements RsReportIF
         $this->_endMeasurement = $dateTarget['dateTarget'];
         $this->_manualLabNumber = $options['labs_manual'];
     }
-    
+
     public abstract function createNumerator();
     public abstract function createDenominator();
     public abstract function getObjectToCount();
-        
+
     public function getResults() {
         return $this->_resultsArray;
     }
@@ -78,7 +78,7 @@ abstract class AbstractAmcReport implements RsReportIF
         // If itemization is turned on, then iterate the rule id iterator
         //
         // Note that when AMC rules suports different patient populations and
-        // numerator caclulation, then it will need to change placement of 
+        // numerator caclulation, then it will need to change placement of
         // this and mimick the CQM rules mechanism
         if ($GLOBALS['report_itemizing_temp_flag_and_id']) {
             $GLOBALS['report_itemized_test_id_iterator']++;
@@ -88,7 +88,7 @@ abstract class AbstractAmcReport implements RsReportIF
         if ( !$numerator instanceof AmcFilterIF ) {
             throw new Exception( "Numerator must be an instance of AmcFilterIF" );
         }
-        
+
         $denominator = $this->createDenominator();
         if ( !$denominator instanceof AmcFilterIF ) {
             throw new Exception( "Denominator must be an instance of AmcFilterIF" );
@@ -102,7 +102,7 @@ abstract class AbstractAmcReport implements RsReportIF
         if (empty($object_to_count)) {
             $object_to_count="patients";
         }
-        
+
         $numeratorObjects = 0;
         $denominatorObjects = 0;
         foreach ( $this->_amcPopulation as $patient )
@@ -194,7 +194,7 @@ abstract class AbstractAmcReport implements RsReportIF
         if ($object_to_count == "labs") {
           $denominatorObjects = $denominatorObjects + $this->_manualLabNumber;
         }
-        
+
         $percentage = calculate_percentage( $denominatorObjects, 0, $numeratorObjects );
         $result = new AmcResult( $this->_rowRule, $totalPatients, $denominatorObjects, 0, $numeratorObjects, $percentage );
         $this->_resultsArray[]= $result;
@@ -277,8 +277,8 @@ abstract class AbstractAmcReport implements RsReportIF
                 		"AND (pr.date_ordered BETWEEN ? AND ?)";
                 array_push($sqlBindArray, $patient->id, $begin, $end);
                	break;
-			
-			
+
+
 			case "lab_radiology":
 				$sql = "SELECT pr.* FROM procedure_order pr ".
 					  "INNER JOIN procedure_order_code prc ON pr.procedure_order_id = prc.procedure_order_id ".
@@ -289,7 +289,7 @@ abstract class AbstractAmcReport implements RsReportIF
 					  "AND (pr.date_ordered BETWEEN ? AND ?)";
 				array_push($sqlBindArray, $patient->id, $begin, $end);
                 break;
-			
+
 			case "cpoe_lab_orders":
 				$sql = "SELECT pr.* FROM procedure_order pr ".
 					  "INNER JOIN procedure_order_code prc ON pr.procedure_order_id = prc.procedure_order_id ".
@@ -300,7 +300,7 @@ abstract class AbstractAmcReport implements RsReportIF
 					  "AND (pr.date_ordered BETWEEN ? AND ?)";
 				array_push($sqlBindArray, $patient->id, $begin, $end);
                 break;
-			
+
 			case "med_orders":
                         // Still TODO
                         // AMC MU2 TODO :
@@ -312,7 +312,7 @@ abstract class AbstractAmcReport implements RsReportIF
                        "AND `date_added` BETWEEN ? AND ? ";
                 array_push($sqlBindArray, $patient->id, $begin, $end);
                 break;
-				
+
 			case "lab_orders":
                $sql = "SELECT prc.* FROM procedure_order pr ".
 					  "INNER JOIN procedure_order_code prc ON pr.procedure_order_id = prc.procedure_order_id ".
@@ -324,7 +324,7 @@ abstract class AbstractAmcReport implements RsReportIF
         }
 
         $rez = sqlStatement($sql, $sqlBindArray);
-        for($iter=0; $row=sqlFetchArray($rez); $iter++) {
+        foreach ($rez as $row) {
             if ('transitions-out' == $object_label) {
               $fres = sqlStatement("SELECT field_id, field_value FROM lbt_data WHERE form_id = ?",
                 array($row['id']));
@@ -332,7 +332,7 @@ abstract class AbstractAmcReport implements RsReportIF
                 $row[$frow['field_id']] = $frow['field_value'];
               }
             }
-            $results[$iter]=$row;
+            $results=$row;
         }
 
         return $results;

@@ -1,5 +1,5 @@
 <?php
-// +-----------------------------------------------------------------------------+ 
+// +-----------------------------------------------------------------------------+
 // Copyright (C) 2010 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 //
 //
@@ -19,9 +19,9 @@
 // openemr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 // Author:   Eldho Chacko <eldho@zhservices.com>
-//           Paul Simon K <paul@zhservices.com> 
+//           Paul Simon K <paul@zhservices.com>
 //
 // +------------------------------------------------------------------------------+
 //===============================================================================
@@ -51,7 +51,7 @@ if (isset($_POST["mode"]))
     $ResultSearch = sqlStatement("SELECT distinct encounter,pid from ar_activity where  session_id ='$DeletePaymentId'");
     if(sqlNumRows($ResultSearch)>0)
      {
-      while ($RowSearch = sqlFetchArray($ResultSearch))
+      foreach ($ResultSearch as $RowSearch)
        {
         $Encounter=$RowSearch['encounter'];
         $PId=$RowSearch['pid'];
@@ -83,7 +83,7 @@ if (isset($_POST["mode"]))
     $PaymentDate=trim(formData('payment_date' ));
     $QueryString.="Select * from  ar_session where  ";
     $And='';
-    
+
     if($PaymentDate=='date_val')
      {
       $PaymentDateString=' check_date ';
@@ -96,7 +96,7 @@ if (isset($_POST["mode"]))
      {
       $PaymentDateString=' deposit_date ';
      }
-    
+
     if($FromDate!='')
      {
          $QueryString.=" $And $PaymentDateString >='".DateToYYYYMMDD($FromDate)."'";
@@ -173,13 +173,13 @@ if (isset($_POST["mode"]))
                 where ar_session.session_id=ar_activity.session_id group by ar_activity.session_id,ar_session.session_id
                 having pay_total-global_amount-sum_pay_amount=0 or pay_total=0";
             $rs= sqlStatement("$QsString");
-            while($rowrs=sqlFetchArray($rs))
+            foreach ($rs as $rowr)
              {
               $StringSessionId.=$rowrs['session_id'].',';
              }
             $QsString="select ar_session.session_id from ar_session where  pay_total=0";
             $rs= sqlStatement("$QsString");
-            while($rowrs=sqlFetchArray($rs))
+            foreach ($rs as $rowrs)
              {
               $StringSessionId.=$rowrs['session_id'].',';
              }
@@ -240,7 +240,7 @@ $DateFormat=DateFormatRead();
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <script type="text/javascript" src="../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 
-<script type='text/javascript'>  
+<script type='text/javascript'>
 //For different browsers there was disparity in width.So this code is used to adjust the width.
 if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
  var ieversion=new Number(RegExp.$1) // capture x.x portion and store as a number
@@ -450,7 +450,7 @@ document.onclick=HideTheAjaxDivs;
                         Calendar.setup({inputField:"ToDate", ifFormat:"<?php echo $DateFormat; ?>", button:"img_ToDate"});
                        </script></td>
                   </tr>
-                </table>       
+                </table>
         </td>
         <td class="text"></td>
         <td align="left" class="text"><?php echo htmlspecialchars( xl('Payment Method'), ENT_QUOTES).':' ?></td>
@@ -482,7 +482,7 @@ document.onclick=HideTheAjaxDivs;
               <tr>
                 <td width="280">
                 <input type="hidden" id="hidden_ajax_close_value" value="<?php echo htmlspecialchars($div_after_save);?>" /><input name='type_code'  id='type_code' class="text "
-                style=" width:280px;"   onKeyDown="PreventIt(event)" value="<?php echo htmlspecialchars($div_after_save);?>"  autocomplete="off"   /><br> 
+                style=" width:280px;"   onKeyDown="PreventIt(event)" value="<?php echo htmlspecialchars($div_after_save);?>"  autocomplete="off"   /><br>
                 <!--onKeyUp="ajaxFunction(event,'non','search_payments.php');"-->
                     <div id='ajax_div_insurance_section'>
                     <div id='ajax_div_insurance_error'>                 </div>
@@ -537,7 +537,7 @@ document.onclick=HideTheAjaxDivs;
                               </tr>
                               <?php
                                 $CountIndex=0;
-                                while ($RowSearch = sqlFetchArray($ResultSearch))
+                                foreach ($ResultSearch as $RowSearch)
                                  {
                                      $Payer='';
                                      if($RowSearch['payer_id']*1 > 0)
@@ -598,7 +598,7 @@ document.onclick=HideTheAjaxDivs;
                                  {
                                         $PaymentType='';
                                  }
-                                
+
                                 generate_print_field($frow, $PaymentType);
                   ?></a></td>
                                 <td class="<?php echo $StringClass; ?>" ><a href="edit_payment.php?payment_id=<?php echo htmlspecialchars($RowSearch['session_id']); ?>"  class='iframe medium_modal'  ><?php echo  $Payer=='' ? '&nbsp;' : htmlspecialchars($Payer) ;?></a></td>
@@ -609,13 +609,13 @@ document.onclick=HideTheAjaxDivs;
                                 generate_print_field($frow, $RowSearch['payment_method']);
                   ?></a></td>
                                 <td align="left" class="<?php echo $StringClass; ?> " ><a href="edit_payment.php?payment_id=<?php echo htmlspecialchars($RowSearch['session_id']); ?>"  class='iframe medium_modal' ><?php echo $RowSearch['reference']=='' ? '&nbsp;' : htmlspecialchars($RowSearch['reference']); ?></a></td>
-                                <td align="left" class="<?php echo $StringClass; ?> " ><a href="edit_payment.php?payment_id=<?php echo htmlspecialchars($RowSearch['session_id']); ?>"  class='iframe medium_modal' ><?php 
+                                <td align="left" class="<?php echo $StringClass; ?> " ><a href="edit_payment.php?payment_id=<?php echo htmlspecialchars($RowSearch['session_id']); ?>"  class='iframe medium_modal' ><?php
                                 $rs= sqlStatement("select pay_total,global_amount from ar_session where session_id='".$RowSearch['session_id']."'");
-                                $row=sqlFetchArray($rs);
+                                $row=$rs;
                                 $pay_total=$row['pay_total'];
                                 $global_amount=$row['global_amount'];
                                 $rs= sqlStatement("select sum(pay_amount) sum_pay_amount from ar_activity where session_id='".$RowSearch['session_id']."'");
-                                $row=sqlFetchArray($rs);
+                                $row=$rs;
                                 $pay_amount=$row['sum_pay_amount'];
                                 $UndistributedAmount=$pay_total-$pay_amount-$global_amount;
                                 echo $UndistributedAmount*1==0 ? htmlspecialchars( xl('Fully Paid'), ENT_QUOTES) : htmlspecialchars( xl('Unapplied'), ENT_QUOTES); ?></a></td>
@@ -623,7 +623,7 @@ document.onclick=HideTheAjaxDivs;
                                 <td align="right" class="<?php echo $StringClass; ?> right" ><a href="edit_payment.php?payment_id=<?php echo htmlspecialchars($RowSearch['session_id']); ?>"  class='iframe medium_modal' ><?php echo htmlspecialchars(number_format($UndistributedAmount,2)); ?></a></td>
                               </tr>
                                 <?php
-                                 }//while ($RowSearch = sqlFetchArray($ResultSearch))
+                                 }
                             }//if(sqlNumRows($ResultSearch)>0)
                            else
                             {

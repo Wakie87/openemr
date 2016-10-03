@@ -1070,7 +1070,7 @@ function make_insurance()
 
   $dres = sqlStatement($query,array($pid,$pid));
   //
-  while ($drow = sqlFetchArray($dres)) {
+  foreach ($dres as $drow) {
     $key = 0 - $drow['encounter'];
     if (empty($encs[$key])) {
       $encs[$key] = array(

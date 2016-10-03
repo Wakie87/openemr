@@ -1,5 +1,5 @@
 <?php
-// +-----------------------------------------------------------------------------+ 
+// +-----------------------------------------------------------------------------+
 // Copyright (C) 2011 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 //
 //
@@ -19,7 +19,7 @@
 // openemr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 // Author:   Eldho Chacko <eldho@zhservices.com>
 //           Jacob T Paul <jacob@zhservices.com>
 //
@@ -36,21 +36,21 @@ $fake_register_globals=false;
 include_once('../../interface/globals.php');
 $sql="select distinct tu_user_id from template_users";
 $rs=SqlStatement($sql);
-while($row=SqlFetchArray($rs))
+foreach ($rs as $row)
 {
 $sql="select * from template_users join customlists on cl_list_slno=tu_template_id where
  cl_deleted=0 and tu_user_id=?";
 $rs2=SqlStatement($sql,array($row['tu_user_id']));
-while($row2=SqlFetchArray($rs2))
+foreach ($rs2 as $row2)
 {
 $sql="select cl_list_slno from customlists where cl_deleted=0 and cl_list_id=?";
 $rs3=SqlStatement($sql,array($row2['cl_list_slno']));
-while($row3=SqlFetchArray($rs3))
+foreach ($rs3 as $row3)
 {
 SqlStatement("insert into template_users (tu_template_id,tu_user_id) values(?,?)",array($row3['cl_list_slno'],$row['tu_user_id']));
 }
 }
- 
+
 }
 
 ?>

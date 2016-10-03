@@ -92,7 +92,7 @@ if (isset($_GET["mode"]) && $_GET["mode"] == "authorize" && $imauthorized) {
 <span class='title'>
 <a href='authorizations_full.php' onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('Authorizations'),ENT_NOQUOTES); ?> <span class='more'><?php echo htmlspecialchars($tmore,ENT_NOQUOTES); ?></span></a>
-<?php 
+<?php
 	}
 ?>
 </span>
@@ -112,8 +112,7 @@ if ($res = sqlStatement("select *, concat(u.fname,' ', u.lname) as user " .
   "billing.authorized = 0 and billing.activity = 1 and " .
   "groupname = ?", array($groupname) ))
 {
-  for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-    $result1[$iter] = $row;
+  $result1 = $res;
   if ($result1) {
     foreach ($result1 as $iter) {
       $authorize{$iter{"pid"}}{"billing"} .= "<span class=text>" .
@@ -127,8 +126,7 @@ if ($res = sqlStatement("select *, concat(u.fname,' ', u.lname) as user " .
 if ($res = sqlStatement("select * from transactions where " .
   "authorized = 0 and groupname = ?", array($groupname) ))
 {
-  for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-    $result2[$iter] = $row;
+    $result2 = $res;
   if ($result2) {
     foreach ($result2 as $iter) {
       $authorize{$iter{"pid"}}{"transaction"} .= "<span class=text>" .
@@ -143,8 +141,7 @@ if (empty($GLOBALS['ignore_pnotes_authorization'])) {
   if ($res = sqlStatement("select * from pnotes where authorized = 0 and " .
     "groupname = ?", array($groupname) ))
   {
-    for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-      $result3[$iter] = $row;
+      $result3 = $res;
     if ($result3) {
       foreach ($result3 as $iter) {
         $authorize{$iter{"pid"}}{"pnotes"} .= "<span class=text>" .
@@ -159,8 +156,7 @@ if (empty($GLOBALS['ignore_pnotes_authorization'])) {
 if ($res = sqlStatement("select * from forms where authorized = 0 and " .
   "groupname = ?", array($groupname) ))
 {
-  for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-    $result4[$iter] = $row;
+    $result4 = $res;
   if ($result4) {
     foreach ($result4 as $iter) {
       $authorize{$iter{"pid"}}{"forms"} .= "<span class=text>" .
@@ -206,19 +202,10 @@ if ($authorize) {
       "&pid=" . htmlspecialchars($ppid,ENT_QUOTES) . "' onclick='top.restoreSession()'>" .
       htmlspecialchars(xl('Authorize'),ENT_NOQUOTES) . "</a></td>\n";
 
-    /****
-    //Michael A Rowley MD 20041012.
-    // added below 4 lines to add provider to authorizations for ez reference.
-    $providerID = sqlFetchArray(sqlStatement(
-      "select providerID from patient_data where pid=?", array($ppid) ));
-    $userID=$providerID{"providerID"};
-    $providerName = sqlFetchArray(sqlStatement(
-      "select lname from users where id=?", array($userID) ));
-    ****/
     // Don't use sqlQuery because there might be no match.
-    $providerName = sqlFetchArray(sqlStatement(
-      "select lname from users where id = ?", array($name['providerID']) ));
-      
+    $providerName = sqlStatement(
+      "select lname from users where id = ?", array($name['providerID']));
+
     echo "<td valign=top><span class=bold>".htmlspecialchars(xl('Provider'),ENT_NOQUOTES).":</span><span class=text><br>" .
       htmlspecialchars($providerName{"lname"},ENT_NOQUOTES) . "</td>\n";
     echo "<td valign=top><span class=bold>".htmlspecialchars(xl('Billing'),ENT_NOQUOTES).":</span><span class=text><br>" .
@@ -250,7 +237,7 @@ if ($authorize) {
 var origRows = null;
 $(document).ready(function(){
     $("#findpatients").click(function() { RestoreFrame(this); document.location.href='../calendar/find_patient.php?no_nav=1&mode=reset'; return true; });
-    
+
     $(".noterow").mouseover(function() { $(this).toggleClass("highlight"); });
     $(".noterow").mouseout(function() { $(this).toggleClass("highlight"); });
     $(".noterow").click(function() { EditNote(this); });

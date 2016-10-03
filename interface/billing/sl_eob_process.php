@@ -29,7 +29,7 @@ require_once("$srcdir/billing.inc");
     $last_invnumber = '';
     $last_code = '';
     $invoice_total = 0.00;
-    $InsertionId;//last inserted ID of 
+    $InsertionId;//last inserted ID of
 
 ///////////////////////// Assorted Functions /////////////////////////
 
@@ -100,11 +100,11 @@ require_once("$srcdir/billing.inc");
     // This is called back by parse_era() once per claim.
     //
     function era_callback_check(&$out)
-    
+
     {
-    global $InsertionId;//last inserted ID of 
+    global $InsertionId;//last inserted ID of
         global $StringToEcho,$debug;
-        
+
         if($_GET['original']=='original')
         {
         $StringToEcho="<br/><br/><br/><br/><br/><br/>";
@@ -151,8 +151,8 @@ require_once("$srcdir/billing.inc");
         $post_to_date=$_REQUEST['post_to_date']!=''?$_REQUEST['post_to_date']:date('Y-m-d');
         $deposit_date=$_REQUEST['deposit_date']!=''?$_REQUEST['deposit_date']:date('Y-m-d');
         $InsertionId[$out['check_number'.$check_count]]=arPostSession($_REQUEST['InsId'],$out['check_number'.$check_count],$out['check_date'.$check_count],$out['check_amount'.$check_count],$post_to_date,$deposit_date,$debug);
-        
-        
+
+
         }
         }
         }
@@ -162,7 +162,7 @@ require_once("$srcdir/billing.inc");
         global $invoice_total, $last_code, $paydate;
          global $InsertionId;//last inserted ID of
 
-        
+
         // Some heading information.
         $chk_123=$out['check_number'];
         $chk_123=str_replace(' ','_',$chk_123);
@@ -457,7 +457,7 @@ require_once("$srcdir/billing.inc");
             // Check for secondary insurance.
             if ($primary && arGetPayerID($pid, $service_date, 2)) {
               arSetupSecondary($pid, $encounter, $debug,$out['crossover']);
-              
+
               if($out['crossover']<>1)
               {
                 writeMessageLine($bgcolor, 'infdetail',
@@ -520,7 +520,7 @@ require_once("$srcdir/billing.inc");
     {
     ?>
         <table border='0' cellpadding='2' cellspacing='0' width='100%'>
-        
+
          <tr bgcolor="#cccccc">
           <td class="dehead">
            <?php echo htmlspecialchars( xl('Patient'), ENT_QUOTES) ?>
@@ -544,10 +544,10 @@ require_once("$srcdir/billing.inc");
            <?php echo htmlspecialchars( xl('Balance'), ENT_QUOTES) ?>&nbsp;
           </td>
          </tr>
-        
+
         <?php
         global $InsertionId;
-        
+
           $eraname=$_REQUEST['eraname'];
           $alertmsg = parse_era_for_check($GLOBALS['OE_SITE_DIR'] . "/era/$eraname.edi");
           $alertmsg = parse_era($GLOBALS['OE_SITE_DIR'] . "/era/$eraname.edi", 'era_callback');
@@ -558,12 +558,12 @@ require_once("$srcdir/billing.inc");
               foreach($InsertionId as $key => $value)
                 {
                     $rs= sqlQ("select pay_total from ar_session where session_id='$value'");
-                    $row=sqlFetchArray($rs);
+                    $row=$rs;
                     $pay_total=$row['pay_total'];
                     $rs= sqlQ("select sum(pay_amount) sum_pay_amount from ar_activity where session_id='$value'");
-                    $row=sqlFetchArray($rs);
+                    $row=$rs;
                     $pay_amount=$row['sum_pay_amount'];
-                    
+
                     if(($pay_total-$pay_amount)<>0)
                     {
                     $StringIssue.=$key.' ';
@@ -574,7 +574,7 @@ require_once("$srcdir/billing.inc");
                 echo "<script>alert('$StringIssue')</script>";
          }
 
-         
+
         ?>
         </table>
 <?php

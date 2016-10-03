@@ -1,26 +1,26 @@
 <?php
-/** 
-* library/daysheet.inc.php Functions used in the end of day report. 
-* 
+/**
+* library/daysheet.inc.php Functions used in the end of day report.
+*
 * Functions for Generating an End of Day report
-* 
-* 
-* Copyright (C) 2014-2015 Terry Hill <terry@lillysystems.com> 
-* 
-* LICENSE: This program is free software; you can redistribute it and/or 
-* modify it under the terms of the GNU General Public License 
-* as published by the Free Software Foundation; either version 3 
-* of the License, or (at your option) any later version. 
-* This program is distributed in the hope that it will be useful, 
-* but WITHOUT ANY WARRANTY; without even the implied warranty of 
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-* GNU General Public License for more details. 
-* You should have received a copy of the GNU General Public License 
-* along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
-* 
-* @package OpenEMR 
+*
+*
+* Copyright (C) 2014-2015 Terry Hill <terry@lillysystems.com>
+*
+* LICENSE: This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 3
+* of the License, or (at your option) any later version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+*
+* @package OpenEMR
 * @author Terry Hill <terry@lillysystems.com>
-* @link http://www.open-emr.org 
+* @link http://www.open-emr.org
 */
 
 /**
@@ -162,7 +162,7 @@ function array_natsort($aryData, $strIndex, $strSortBy, $strSortType=false) {
 				if (substr($criteria_value,1,14) === 'claims.process') {
 				  $query_part_day1 .=  ' AND ' . '(dtime'. substr($query_part,25,58) ;
 				}
-				
+
                }
               }
          }
@@ -191,9 +191,9 @@ function array_natsort($aryData, $strIndex, $strSortBy, $strSortType=false) {
 
         $res = sqlStatement($sql,array($code_type));
         $all = False;
-        for($iter=0; $row=sqlFetchArray($res); $iter++)
+        foreach ($res as $row)
         {
-            $all[$iter] = $row;
+            $all = $row;
         }
 
 		$query = sqlStatement("SELECT ar_activity.pid as pid, 'Patient Payment' AS code_type, ar_activity.pay_amount AS pat_code, date(ar_activity.post_time) AS date,".
@@ -202,10 +202,10 @@ function array_natsort($aryData, $strIndex, $strSortBy, $strSortType=false) {
             "ar_activity.adj_amount AS pat_adjust_dollar, providerid as 'provider_id' ".
             "FROM ar_activity LEFT OUTER JOIN patient_data ON patient_data.pid = ar_activity.pid " .
 			"where 1=1 $query_part_day AND payer_type=0 ORDER BY fulname ASC, date ASC, pid");
-           
-			for($iter; $row=sqlFetchArray($query); $iter++)
+
+			foreach ($query as $row)
         {
-            $all[$iter] = $row;
+            $all = $row;
         }
 
 		$query = sqlStatement("SELECT ar_activity.pid as pid, 'Insurance Payment' AS code_type, ar_activity.pay_amount AS ins_code, date(ar_activity.post_time) AS date,".
@@ -215,11 +215,11 @@ function array_natsort($aryData, $strIndex, $strSortBy, $strSortType=false) {
             "FROM ar_activity LEFT OUTER JOIN patient_data ON patient_data.pid = ar_activity.pid " .
 			"where 1=1 $query_part_day AND payer_type!=0 ORDER BY  fulname ASC, date ASC, pid");
 
-        for($iter; $row=sqlFetchArray($query); $iter++)
+        foreach ($query as $row)
         {
-            $all[$iter] = $row;
+            $all = $row;
         }
-		
+
         return $all;
     }
 

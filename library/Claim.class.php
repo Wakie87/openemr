@@ -17,20 +17,20 @@ function x12clean($str) {
 }
 
 // Make sure dates have no formatting and zero filled becomes blank
-// Handles date time stamp formats as well 
+// Handles date time stamp formats as well
 //
 function cleanDate($date_field)
   {
       $cleandate = str_replace('-', '', substr($date_field, 0, 10));
-      
+
       if(substr_count($cleandate,'0')==8)
       {
           $cleandate='';
       }
-      
+
       return ($cleandate);
   }
-  
+
 class Claim {
 
   var $pid;               // patient id
@@ -69,7 +69,7 @@ class Claim {
       "ORDER BY type ASC, date DESC";
     $dres = sqlStatement($query);
     $prevtype = '';
-    while ($drow = sqlFetchArray($dres)) {
+    foreach ($dres as $drow) {
       if (strcmp($prevtype, $drow['type']) == 0) continue;
       $prevtype = $drow['type'];
       // Very important to look at entries with a missing provider because
@@ -174,16 +174,16 @@ class Claim {
 
       $this->procs[] = $row;
     }
-    
+
     $resMoneyGot = sqlStatement("SELECT pay_amount as PatientPay,session_id as id,".
       "date(post_time) as date FROM ar_activity where pid ='{$this->pid}' and encounter ='{$this->encounter_id}' ".
       "and payer_type=0 and account_code='PCP'");
       //new fees screen copay gives account_code='PCP'
-    while($rowMoneyGot = sqlFetchArray($resMoneyGot)){
+    foreach ($resMoneyGot as $rowMoneyGot){
       $PatientPay=$rowMoneyGot['PatientPay']*-1;
       $this->copay -= $PatientPay;
     }
-    
+
     $sql = "SELECT * FROM x12_partners WHERE " .
       "id = '" . $this->procs[0]['x12_partner_id'] . "'";
     $this->x12_partner = sqlQuery($sql);
@@ -290,7 +290,7 @@ class Claim {
       $coinsurance = 0;
       $inslabel = ($this->payerSequence($ins) == 'S') ? 'Ins2' : 'Ins1';
       $insnumber = substr($inslabel, 3);
-	  
+
       // Compute this procedure's patient responsibility amount as of this
       // prior payer, which is the original charge minus all insurance
       // payments and "hard" adjustments up to this payer.
@@ -308,7 +308,7 @@ class Claim {
             if ($value['plv'] > 0 && $value['plv'] <= $insnumber)
               $ptresp += $value['chg']; // adjustments are negative charges
           }
-          
+
           $msp = isset( $value['msp'] ) ? $value['msp'] : null; // record the reason for adjustment
         }
       if ($ptresp < 0) $ptresp = 0; // we may be insane but try to hide it
@@ -546,14 +546,14 @@ class Claim {
   function x12gsisa02() {
     return $this->x12_partner['x12_isa02'];
   }
-  
+
    function x12gsisa03() {
     return $this->x12_partner['x12_isa03'];
   }
    function x12gsisa04() {
     return $this->x12_partner['x12_isa04'];
   }
-      
+
 /////////
   function x12gsisa07() {
     return $this->x12_partner['x12_isa07'];
@@ -608,7 +608,7 @@ class Claim {
   function billingFacilityNPI() {
     return x12clean(trim($this->billing_facility['facility_npi']));
   }
-  
+
   function federalIdType() {
 	if ($this->billing_facility['tax_id_type'])
 	{
@@ -995,7 +995,7 @@ class Claim {
   function onsetDate() {
     return cleanDate($this->encounter['onset_date']);
   }
-  
+
   function onsetDateValid()
   {
       return $this->onsetDate()!=='';
@@ -1083,14 +1083,14 @@ class Claim {
       return empty($this->billing_options['box_14_date_qual']) ? '431' :
               $this->billing_options['box_14_date_qual'];
   }
-  
+
   function box15qualifier()
   {
       // If no box qualifier specified use "454" indicating Initial Treatment
       return empty($this->billing_options['box_15_date_qual']) ? '454' :
               $this->billing_options['box_15_date_qual'];
   }
-  // Returns an array of unique diagnoses.  Periods are stripped by default  
+  // Returns an array of unique diagnoses.  Periods are stripped by default
   // Option to keep periods is to support HCFA 1500 02/12 version
   function diagArray($strip_periods=true) {
     $da = array();
@@ -1099,26 +1099,26 @@ class Claim {
       foreach ($atmp as $tmp) {
         if (!empty($tmp)) {
           $code_data = explode('|',$tmp);
-          
+
           // If there was a | in the code data, the the first part of the array is the type, and the second is the identifier
           if (!empty($code_data[1])) {
-            
+
             // This is the simplest way to determine if the claim is using ICD9 or ICD10 codes
             // a mix of code types is generally not allowed as there is only one specifier for all diagnoses on HCFA-1500 form
             // and there would be ambiguity with E and V codes
             $this->diagtype=$code_data[0];
-            
-            //code is in the second part of the $code_data array. 
+
+            //code is in the second part of the $code_data array.
             if($strip_periods==true)
                 {
                     $diag = str_replace('.', '', $code_data[1]);
-                    
+
                 }
                 else
                 {
                     $diag=$code_data[1];
                 }
-            
+
           }
           else {
             //No prepended code type label
@@ -1209,7 +1209,7 @@ class Claim {
       $this->provider : $this->procs[$prockey]['provider'];
     return x12clean(trim($tmp['npi']));
   }
-  
+
   function NPIValid($npi)
   {
       // A NPI MUST be a 10 digit number
@@ -1217,7 +1217,7 @@ class Claim {
       if(strlen($npi)!=10) return false;
       if(!preg_match("/[0-9]*/",$npi)) return false;
       return true;
-      
+
   }
   function providerNPIValid($prockey=-1)
   {

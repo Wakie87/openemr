@@ -49,7 +49,7 @@ function lookup_openemr_patient($wp_login) {
   $ptres = sqlStatement("SELECT pid FROM patient_data WHERE cmsportal_login = ?", array($wp_login));
   if (sqlNumRows($ptres) < 1) die(xlt('There is no patient with portal login') . " '$wp_login'");
   if (sqlNumRows($ptres) > 1) die(xlt('There are multiple patients with portal login') . " '$wp_login'");
-  $ptrow = sqlFetchArray($ptres);
+  $ptrow = $ptres;
   return $ptrow['pid'];
 }
 

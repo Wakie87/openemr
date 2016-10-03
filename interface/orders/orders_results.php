@@ -477,7 +477,7 @@ foreach ($res as $row) {
     "ORDER BY seq, name, procedure_type_id, result_code";
 
   $rres = sqlStatement($query);
-  while ($rrow = sqlFetchArray($rres)) {
+  foreach ($rres as $rrow) {
     $restyp_code      = empty($rrow['procedure_code'  ]) ? '' : $rrow['procedure_code'];
     $restyp_type      = empty($rrow['procedure_type'  ]) ? '' : $rrow['procedure_type'];
     $restyp_name      = empty($rrow['name'            ]) ? '' : $rrow['name'];

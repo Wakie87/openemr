@@ -937,7 +937,7 @@ function row_delete($table, $where) {
     $query = "SELECT * FROM $table WHERE $where";
     $tres = sqlStatement($query);
     $count = 0;
-    while ($trow = sqlFetchArray($tres)) {
+    foreach ($tres as $trow) {
      $logstring = "";
      foreach ($trow as $key => $value) {
       if (! $value || $value == '0000-00-00 00:00:00') continue;

@@ -835,7 +835,7 @@ function process_visit($row) {
     // We think this case goes away, but not sure yet.
     /*****************************************************************
     $dres = LBFgcac_query($row['pid'], $row['encounter'], 'contrameth');
-    while ($drow = sqlFetchArray($dres)) {
+    foreach ($dres as $drow) {
       $a = explode('|', $drow['field_value']);
       foreach ($a as $methid) {
         if (empty($methid)) continue;
@@ -855,7 +855,7 @@ function process_visit($row) {
   //
   else if ($form_by === '11') {
     $dres = LBFgcac_query($row['pid'], $row['encounter'], 'complications');
-    while ($drow = sqlFetchArray($dres)) {
+    foreach ($dres as $drow) {
       $a = explode('|', $drow['field_value']);
       foreach ($a as $complid) {
         if (empty($complid)) continue;

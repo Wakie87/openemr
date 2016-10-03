@@ -40,7 +40,7 @@ $sigline['signed'] =
   . "<img src='./sig.jpg'>"
   . "</div>\n";
 $query = sqlStatement("select fname,lname,street,city,state,postal_code,phone_home,DATE_FORMAT(DOB,'%m/%d/%y') as DOB from patient_data where pid =" . $_SESSION['pid']);
-if ($result = sqlFetchArray($query)) {
+if ($result = $query) {
   $patient_name = $result['fname'] . ' ' . $result['lname'];
   $patient_address = $result['street'];
   $patient_city = $result['city'];
@@ -67,7 +67,7 @@ if ($_POST['update']) { // OPTION update practice inf
 }
 //get user information
 $query = sqlStatement("select * from users where id =" . $_SESSION['authUserID']);
-if ($result = sqlFetchArray($query)) {
+if ($result = $query) {
   $physician_name = $result['fname'] . ' ' . $result['lname'] . ', ' . $result['title'];
   $practice_fname = $result['fname'];
   $practice_lname = $result['lname'];
@@ -86,7 +86,7 @@ if ($_POST['print_pdf'] || $_POST['print_html']) {
     if (substr($key,0,3) == 'ch_') {
       $query = sqlStatement("select content from ".mitigateSqlTableUpperCase("form_CAMOS")." where id =" .
         substr($key,3));
-      if ($result = sqlFetchArray($query)) {
+      if ($result = $query) {
 
   	if ($_POST['print_html']) { //do this change to formatting only for html output
         	$content = preg_replace('|\n|','<br/>', text($result['content']));

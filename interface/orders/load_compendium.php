@@ -111,7 +111,7 @@ if ($form_step == 0) {
   echo "  <td><select name='group'>";
   $gres = sqlStatement("SELECT procedure_type_id, name FROM procedure_type " .
     "WHERE procedure_type = 'grp' ORDER BY name, procedure_type_id");
-  while ($grow = sqlFetchArray($gres)) {
+  foreach ($gres as $grow) {
     echo "<option value='" . attr($grow['procedure_type_id']) . "'>" .
       text($grow['name']) . "</option>";
   }

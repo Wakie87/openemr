@@ -19,7 +19,7 @@
  * @package OpenEMR
  * @author Joe Slam <joe@produnis.de>
  * @link http://www.open-emr.org
- * 
+ *
  */
 
 //SANITIZE ALL ESCAPES
@@ -49,15 +49,15 @@ if ( !$result ) //If there are no disclosures recorded
 { ?>
   <span class='text'> <?php echo htmlspecialchars(xl("No tracks have been documented."),ENT_NOQUOTES);
 ?>
-  </span> 
-<?php 
+  </span>
+<?php
 } else {  // We have some tracks here...
 	echo "<span class='text'>";
 	echo xlt('Available Tracks') . ":";
 	echo $result;
 	echo "<ul>";
 	$result=sqlStatement($spell, array($pid, 'track_anything') );
-	while($myrow = sqlFetchArray($result)){
+	foreach ($result as $myrow){
 		$formname = $myrow['form_name'];
 		$thedate = $myrow['maxdate'];
 		$formid = $myrow['form_id'];

@@ -134,7 +134,7 @@ function ActiveIssueCodeRecycleFn($thispid2, $ISSUE_TYPES2) {
     $modeIssueTypes[$idx2] = $issueTypeX;
     $issueTypeIdx2[$issueTypeX] = $idx2;
     ++$idx2;
-  
+
   }
 
   $pe2 = array($thispid2);
@@ -145,7 +145,7 @@ function ActiveIssueCodeRecycleFn($thispid2, $ISSUE_TYPES2) {
 
   $issueCodes2 = sqlStatement("SELECT diagnosis FROM lists WHERE pid = ? AND enddate is NULL AND type IN ($qs2)", $sqlParameters2);
 
-  while ($issueCodesRow2 = sqlFetchArray($issueCodes2)) {
+  foreach ($issueCodes2 as $issueCodesRow2) {
 
     if ($issueCodesRow2['diagnosis'] != "") {
 
@@ -181,7 +181,7 @@ function ActiveIssueCodeRecycleFn($thispid2, $ISSUE_TYPES2) {
       list($codeTyX,) = explode(":", $listCode2);
 
       if (in_array($codeTyX, $allowCodes2)) {
-            
+
         array_push($memberCodes[$akey1], $listCode2);
 
       }
@@ -201,7 +201,7 @@ function ActiveIssueCodeRecycleFn($thispid2, $ISSUE_TYPES2) {
   foreach ($displayCodeSets as $akey => $displayCodeSet) {
 
     echo "listBoxOptionSets[" . attr($akey) . "] = new Array();\n";
-  
+
     if ($displayCodeSet) {
 
       foreach ($displayCodeSet as $dispCode2) {
@@ -210,9 +210,9 @@ function ActiveIssueCodeRecycleFn($thispid2, $ISSUE_TYPES2) {
         echo "listBoxOptionSets[" . attr($akey) . "][listBoxOptionSets[" . attr($akey) . "].length] = new Option('" . attr($dispCode2) . " (" . attr(trim($codeDesc2)) . ") ' ,'" . attr($dispCode2) . "' , false, false);\n";
 
       }
-    
+
     }
- 
+
   }
 
   // map issues to a set of display options
@@ -419,7 +419,7 @@ div.section {
   echo " aitypes[$i] = " . attr($value[3]) . ";\n";
   echo " aopts[$i] = new Array();\n";
   $qry = sqlStatement("SELECT * FROM list_options WHERE list_id = ?",array($key."_issue_list"));
-  while($res = sqlFetchArray($qry)){
+  foreach ($qry as $res){
     echo " aopts[$i][aopts[$i].length] = new Option('".attr(xl_list_label(trim($res['title'])))."', '".attr(trim($res['option_id']))."', false, false);\n";
     if ($res['codes']) {
       echo " aopts[$i][aopts[$i].length-1].setAttribute('data-code','".attr(trim($res['codes']))."');\n";
@@ -428,7 +428,7 @@ div.section {
   ++$i;
  }
 
-///////////     
+///////////
 ActiveIssueCodeRecycleFn($thispid, $ISSUE_TYPES);
 ///////////
 ?>
@@ -729,7 +729,7 @@ function divclick(cb, divid) {
    <td>
    <input type='hidden'  name='form_return' id='form_return' />
    <input type='hidden'  name='row_reinjury_id' id='row_reinjury_id' />
-  <img  
+  <img
     id='img_return'/>
   </td>
  </tr>
@@ -768,7 +768,7 @@ function divclick(cb, divid) {
     <td><?php
         $severity=$irow['severity_al'];
         generate_form_field(array('data_type'=>1,'field_id'=>'severity_id','list_id'=>'severity_ccda','empty_title'=>'SKIP'), $severity);
-      ?>  
+      ?>
     </td>
   </tr>
   <tr id='row_reaction'>

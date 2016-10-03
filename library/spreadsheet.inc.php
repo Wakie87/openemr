@@ -560,7 +560,7 @@ $num_virtual_cols = $num_used_cols ? $num_used_cols + 5 : 10;
    <select name='form_template' onchange='newTemplate(this)'<?php if ($formid) echo ' disabled'; ?>>
     <option value='0'>-- Select --</option>
 <?php
- while ($trow = sqlFetchArray($tres)) {
+ foreach ($tres as $trow) {
   echo "    <option value='" . $trow['id'] . "'";
   if ($tempid && $tempid == $trow['id'] ||
       $formid && $template_name == $trow['value'])
@@ -589,7 +589,7 @@ $num_virtual_cols = $num_used_cols ? $num_used_cols + 5 : 10;
 
 <table border='1' cellpadding='2' cellspacing='0' class='sstable'>
 <?php
-if ($dres) $drow = sqlFetchArray($dres);
+if ($dres) $drow = $dres;
 $typeprompts = array('unused','static','checkbox','text');
 
 for ($i = 0; $i < $num_virtual_rows; ++$i) {
@@ -601,9 +601,9 @@ for ($i = 0; $i < $num_virtual_rows; ++$i) {
     $cellvalue = '';
     if ($dres) {
       while ($drow && $drow['rownbr'] < $i)
-        $drow = sqlFetchArray($dres);
+        $drow = $dres;
       while ($drow && $drow['rownbr'] == $i && $drow['colnbr'] < $j)
-        $drow = sqlFetchArray($dres);
+        $drow = $dres;
       if ($drow && $drow['rownbr'] == $i && $drow['colnbr'] == $j) {
         $celltype = $drow['datatype'];
         $cellvalue = real2form($drow['value']);

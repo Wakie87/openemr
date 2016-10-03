@@ -114,7 +114,7 @@ function loadPayerInfo($pid, $date='') {
     "pid = ? AND date <= ? ORDER BY type ASC, date DESC",
     array($pid, $date));
   $prevtype = ''; // type is primary, secondary or tertiary
-  while ($drow = sqlFetchArray($dres)) {
+  foreach ($dres as $drow) {
     if (strcmp($prevtype, $drow['type']) == 0) continue;
     $prevtype = $drow['type'];
     // Very important to check for a missing provider because
@@ -314,7 +314,7 @@ function gen_hl7_order($orderid, &$out) {
     $d0;
 
   $setid = 0;
-  while ($pcrow = sqlFetchArray($pcres)) {
+  foreach ($pcres as $pcrow) {
     // Observation Request.
     $out .= "OBR" .
       $d1 . ++$setid .                              // Set ID
@@ -368,7 +368,7 @@ function gen_hl7_order($orderid, &$out) {
       "ORDER BY q.seq, a.answer_seq",
       array($porow['ppid'], $pcrow['procedure_code'], $orderid, $pcrow['procedure_order_seq']));
     $setid2 = 0;
-    while ($qrow = sqlFetchArray($qres)) {
+    foreach ($qres as $qrow) {
       // Formatting of these answer values may be lab-specific and we'll figure
       // out how to deal with that as more labs are supported.
       $answer = trim($qrow['answer']);

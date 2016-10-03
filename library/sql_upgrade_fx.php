@@ -17,7 +17,7 @@
 * GNU General Public License for more details.
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://opensource.org/licenses/gpl-license.php>.
-* 
+*
 * @package   OpenEMR
 * @author    Rod Roark <rod@sunsetsystems.com>
 * @author    Brady Miller <brady@sparmy.com>
@@ -260,19 +260,19 @@ function CreateImmunizationManufacturerList() {
 
 /**
  * Request to information_schema
- * 
+ *
  * @param array $arg possible arguments: engine, table_name
  * @return SQLStatement
  */
 function getTablesList( $arg = array() ) {
     $binds = array();
     $sql = 'SELECT table_name FROM information_schema.tables WHERE table_schema=database() AND table_type="BASE TABLE"';
-    
+
     if( !empty($arg['engine'])) {
         $binds[] = $arg['engine'];
         $sql .= ' AND engine=?';
     }
-    
+
     if( !empty($arg['table_name'])) {
         $binds[] = $arg['table_name'];
         $sql .= ' AND table_name=?';
@@ -288,7 +288,7 @@ function getTablesList( $arg = array() ) {
 
 
 /**
- * Convert table engine. 
+ * Convert table engine.
  * @param string $table
  * @param string $engine
  * ADODB will fail if there was an error during conversion
@@ -350,10 +350,10 @@ function MigrateTableEngine( $table, $engine ) {
 * #IfRow2D
 *   arguments: table_name colname value colname2 value2
 *   behavior:  If the table table_name does have a row where colname = value AND colname2 = value2, the block will be executed.
-*   
+*
 * #IfRow3D
 *   arguments: table_name colname value colname2 value2 colname3 value3
-*   behavior:  If the table table_name does have a row where colname = value AND colname2 = value2 AND colname3 = value3, the block will be executed.   
+*   behavior:  If the table table_name does have a row where colname = value AND colname2 = value2 AND colname3 = value3, the block will be executed.
 *
 * #IfIndex
 *   desc:      This function is most often used for dropping of indexes/keys.
@@ -370,14 +370,14 @@ function MigrateTableEngine( $table, $engine ) {
 *
 * #IfNotListOccupation
 * Custom function for creating Occupation List
-* 
+*
 * #IfNotListReaction
 * Custom function for creating Reaction List
 *
 * #IfTextNullFixNeeded
 *   desc: convert all text fields without default null to have default null.
 *   arguments: none
-* 
+*
 * #IfTableEngine
 *   desc:      Execute SQL if the table has been created with given engine specified.
 *   arguments: table_name engine
@@ -387,7 +387,7 @@ function MigrateTableEngine( $table, $engine ) {
 *   desc: find all MyISAM tables and convert them to InnoDB.
 *   arguments: none
 *   behavior: can take a long time.
-* 
+*
 * #EndIf
 *   all blocks are terminated with a #EndIf statement.
 *
@@ -606,17 +606,17 @@ function upgradeFromSqlFile($filename) {
     // convert all *text types to use default null setting
     else if (preg_match('/^#IfTextNullFixNeeded/', $line)) {
       $items_to_convert = sqlStatement(
-        "SELECT col.`table_name`, col.`column_name`, col.`data_type`, col.`column_comment` 
-          FROM `information_schema`.`columns` col INNER JOIN `information_schema`.`tables` tab 
+        "SELECT col.`table_name`, col.`column_name`, col.`data_type`, col.`column_comment`
+          FROM `information_schema`.`columns` col INNER JOIN `information_schema`.`tables` tab
           ON tab.TABLE_CATALOG=col.TABLE_CATALOG AND tab.table_schema=col.table_schema AND tab.table_name=col.table_name
-          WHERE col.`data_type` IN ('tinytext', 'text', 'mediumtext', 'longtext') 
+          WHERE col.`data_type` IN ('tinytext', 'text', 'mediumtext', 'longtext')
           AND col.is_nullable='NO' AND col.table_schema=database() AND tab.table_type='BASE TABLE'");
       if(sqlNumRows($items_to_convert) == 0) {
         $skipping = true;
       } else {
         $skipping = false;
         echo '<font color="black">Starting conversion of *TEXT types to use default NULL.</font><br />',"\n";
-        while($item = sqlFetchArray($items_to_convert)) {
+        foreach ($items_to_convert as $item) {
           if (!empty($item['column_comment'])) {
             $res = sqlStatement("ALTER TABLE `" . add_escape_custom($item['table_name']) . "` MODIFY `" . add_escape_custom($item['column_name']) . "` " . add_escape_custom($item['data_type'])  . " COMMENT '" . add_escape_custom($item['column_comment']) . "'");
           }

@@ -496,7 +496,7 @@ function educlick(codetype, codevalue) {
         // First pass creates a $rrowsets[$key] for each unique result code in *this* report, with
         // the value being an array of the corresponding result rows. This caters to multiple
         // occurrences of the same result code in the same report.
-        while ($rrow = sqlFetchArray($rres)) {
+        foreach ($rres as $rrow) {
           $result_code = empty($rrow['result_code']) ? '' : $rrow['result_code'];
           $key = sprintf('%05d/', $row['procedure_order_seq']) . $result_code;
           if (!isset($rrowsets[$key])) $rrowsets[$key] = array();
@@ -527,7 +527,7 @@ function educlick(codetype, codevalue) {
     else {
       // We are showing all results for all reports.
       if (sqlNumRows($rres)) {
-        while ($rrow = sqlFetchArray($rres)) {
+        foreach ($rres as $rrow) {
           generate_result_row($ctx, $row, $rrow, false);
         }
       }

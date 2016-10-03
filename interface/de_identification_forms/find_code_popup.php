@@ -191,7 +191,7 @@ else {
       "WHERE (code_text LIKE '%$search_term%' OR " .
       "code LIKE '%$search_term%') " ;
 	$res = sqlStatement($query);
-	if ($row = sqlFetchArray($res))
+	if ($row = $res)
 	{
 	 $no_of_items = addslashes($row['count']);
 	 if($no_of_items < 1)

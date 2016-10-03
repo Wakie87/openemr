@@ -20,7 +20,7 @@ function newEvent($event, $user, $groupname, $success, $comments="", $patient_id
         $sqlMenuItems = "SELECT * FROM patient_portal_menu";
 
         $resMenuItems = sqlStatement($sqlMenuItems);
-        for($iter=0; $rowMenuItem=sqlFetchArray($resMenuItems); $iter++) {
+        foreach($resMenuItems as $rowMenuItem) {
             $menuItems[$rowMenuItem['patient_portal_menu_id']] = $rowMenuItem['menu_name'];
         }
 

@@ -37,7 +37,7 @@ require_once("forms_review_header.php");
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/ESign/js/jquery.esign.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/ESign/css/esign.css" />
 
-<?php 
+<?php
 $esignApi = new Api();
 ?>
 
@@ -75,29 +75,29 @@ if (!empty($_GET['attachid'])) {
 $.noConflict();
 jQuery(document).ready( function($) {
 	var formConfig = <?php echo $esignApi->formConfigToJson(); ?>;
-    $(".esign-button-form").esign( 
+    $(".esign-button-form").esign(
     	formConfig,
-        { 	    
+        {
             afterFormSuccess : function( response ) {
                 if ( response.locked ) {
                 	var editButtonId = "form-edit-button-"+response.formDir+"-"+response.formId;
                     $("#"+editButtonId).replaceWith( response.editButtonHtml );
                 }
-                
+
                 var logId = "esign-signature-log-"+response.formDir+"-"+response.formId;
                 $.post( formConfig.logViewAction, response, function( html ) {
-                    $("#"+logId).replaceWith( html );  
+                    $("#"+logId).replaceWith( html );
                 });
             }
 		}
     );
 
     var encounterConfig = <?php echo $esignApi->encounterConfigToJson(); ?>;
-    $(".esign-button-encounter").esign( 
+    $(".esign-button-encounter").esign(
     	encounterConfig,
-        { 	    
+        {
             afterFormSuccess : function( response ) {
-                // If the response indicates a locked encounter, replace all 
+                // If the response indicates a locked encounter, replace all
                 // form edit buttons with a "disabled" button, and "disable" left
                 // nav visit form links
                 if ( response.locked ) {
@@ -108,7 +108,7 @@ jQuery(document).ready( function($) {
                     // Disable the new-form capabilities in top nav of the encounter
                 	$(".encounter-form-category-li").remove();
                 }
-                
+
                 var logId = "esign-signature-log-encounter-"+response.encounterId;
                 $.post( encounterConfig.logViewAction, response, function( html ) {
                     $("#"+logId).replaceWith( html );
@@ -241,7 +241,7 @@ jQuery(document).ready( function($) {
       array($pid));
     echo "  // Ask about attaching orphaned orders to this encounter.\n";
     echo "  var attachid = '';\n";
-    while ($arow = sqlFetchArray($ares)) {
+    foreach ($ares as $arow) {
       $orderid   = $arow['procedure_order_id'];
       $orderdate = $arow['date_ordered'];
       echo "  if (confirm('" . xls('There is a lab order') . " $orderid " .
@@ -286,7 +286,7 @@ function expandcollapse(atr){
 			var mydivid="divid_"+i;var myspanid="spanid_"+i;
 				var ele = document.getElementById(mydivid);	var text = document.getElementById(myspanid);
 				if (typeof(ele) != 'undefined' && ele != null)
-					ele.style.display = "none";	
+					ele.style.display = "none";
 				if (typeof(text) != 'undefined' && text != null)
 					text.innerHTML = "<?php xl('Expand','e'); ?>";
 		}
@@ -322,15 +322,15 @@ function divtoggle(spanid, divid) {
         float:left;
         margin-left:6px;
     }
-    
+
     .encounter-summary-container {
-        float:left; 
+        float:left;
         width:100%;
     }
-    
+
     .encounter-summary-column {
-        width: 33.3%; 
-        float:left; 
+        width: 33.3%;
+        float:left;
         display:inline;
         margin-top:10px;
     }
@@ -376,7 +376,7 @@ if (is_numeric($pid)) {
 ?>
 </div>
 <div style='margin-top:8px;'>
-<?php 
+<?php
 // ESign for entire encounter
 $esign = $esignApi->createEncounterESign( $encounter );
 if ( $esign->isButtonViewable() ) {
@@ -508,7 +508,7 @@ if ( $esign->isButtonViewable() ) {
 </div>
 
 <!-- Get the documents tagged to this encounter and display the links and notes as the tooltip -->
-<?php 
+<?php
 	$docs_list = getDocumentsByEncounter($pid,$_SESSION['encounter']);
 	if(count($docs_list) > 0 ) {
 ?>
@@ -580,7 +580,7 @@ if ( $esign->isButtonViewable() ) {
         echo "<td style='border-bottom:1px solid'>";
         // a link to edit the form
         echo "<div class='form_header_controls'>";
-        
+
         // If the form is locked, it is no longer editable
         if ( $esign->isLocked() ) {
             echo "<a href=# class='css_button_small form-edit-button-locked' id='form-edit-button-".attr($formdir)."-".attr($iter['id'])."'><span>".xlt('Locked')."</span></a>";
@@ -592,7 +592,7 @@ if ( $esign->isButtonViewable() ) {
                     "' onclick='top.restoreSession()'>";
             echo "<span>" . xlt('Edit') . "</span></a>";
         }
-        
+
         if ( $esign->isButtonViewable() ) {
             echo $esign->buttonHtml();
         }
@@ -640,7 +640,7 @@ if ( $esign->isButtonViewable() ) {
           include_once($GLOBALS['incdir'] . "/forms/$formdir/report.php");
           call_user_func($formdir . "_report", $pid, $encounter, 2, $iter['form_id']);
         }
-        
+
         if ( $esign->isLogViewable() ) {
             $esign->renderLog();
         }

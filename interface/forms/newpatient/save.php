@@ -152,7 +152,7 @@ $result4 = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_catego
 	Count=0;
 	 <?php
 			   if(sqlNumRows($result4)>0)
-				while($rowresult4 = sqlFetchArray($result4))
+				foreach ($result4 as $rowresult4)
 				 {
 	?>
 					EncounterIdArray[Count]='<?php echo attr($rowresult4['encounter']); ?>';

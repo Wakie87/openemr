@@ -112,7 +112,7 @@ $res=sqlStatement("SELECT * FROM customlists as cl left outer join users as u on
             </tr>
     <?php
     $i=0;
-    while($row=sqlFetchArray($res)){
+    foreach ($res as $row){
         $context=sqlQuery("SELECT * FROM customlists WHERE cl_list_slno=?",array($row['cl_list_id']));
         $i++;
         $class = ($class=='reportTableOddRow') ? 'reportTableEvenRow' : 'reportTableOddRow';

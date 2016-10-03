@@ -513,7 +513,7 @@ else {
 <?php
   $blank_lines = $GLOBALS['sell_non_drug_products'] == 2 ? 1 : 3;
   if ($tres) {
-    while ($trow = sqlFetchArray($tres)) {
+    foreach ($tres as $trow) {
       $blank_lines = $GLOBALS['sell_non_drug_products'] == 2 ? 0 : 1;
       $selector = $trow['selector'];
       // Get array of prices.

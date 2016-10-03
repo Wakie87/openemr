@@ -43,8 +43,7 @@ function getDisclosureByDate($pid,$limit)
 
 	$r1=sqlStatement($discQry, array($pid) );
 	$result2 = array();
-	for ($iter = 0;$frow = sqlFetchArray($r1);$iter++)
-		$result2[$iter] = $frow;
+	$result2 = $r1;
 	return $result2;
 }
 ?>
@@ -71,7 +70,7 @@ if ($result != null){
 		$app_event=$iter{"event"};
 		$event=explode("-",$app_event);
 		$description=nl2br(text($iter{"description"}));//for line breaks.
-		//listing the disclosures 
+		//listing the disclosures
 		echo "<tr style='border-bottom:1px dashed' class='text'>";
 			echo "<td valign='top' class='text'>";
 			if($event[1]=='healthcareoperations'){ echo "<b>";echo xlt('health care operations');echo "</b>"; } else echo "<b>".text($event[1])."</b>";
@@ -93,13 +92,13 @@ if ( $has_disclosure == 0 ) //If there are no disclosures recorded
 	<span class='text'> <?php echo htmlspecialchars(xl("There are no disclosures recorded for this patient."),ENT_NOQUOTES);
 	echo " "; echo htmlspecialchars(xl("To record disclosures, please click"),ENT_NOQUOTES); echo " ";echo "<a href='disclosure_full.php'>"; echo htmlspecialchars(xl("here"),ENT_NOQUOTES);echo "</a>.";
 ?>
-	</span> 
-<?php 
+	</span>
+<?php
 } else
 {
-?> 
+?>
 	<br />
-	<span class='text'> <?php 
+	<span class='text'> <?php
 	echo htmlspecialchars(xl('Displaying the following number of most recent disclosures:'),ENT_NOQUOTES);?><b><?php echo " ".htmlspecialchars($N,ENT_NOQUOTES);?></b><br>
 	<a href='disclosure_full.php'><?php echo htmlspecialchars(xl('Click here to view them all.'),ENT_NOQUOTES);?></a>
 	</span><?php
