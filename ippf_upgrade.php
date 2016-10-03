@@ -132,7 +132,7 @@ if (!empty($_POST['form_submit'])) {
       "ORDER BY encounter");
 
     if (sqlNumRows($ieres)) {
-      while ($ierow = sqlFetchArray($ieres)) {
+      foreach ($ieres as $ierow) {
         do_visit_form($irow, $ierow['encounter'], $first);
         $first = false;
       }

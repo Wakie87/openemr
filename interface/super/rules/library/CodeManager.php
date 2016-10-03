@@ -39,7 +39,7 @@ class CodeManager {
 
         $codes = array();
 
-        for($iter=0; $row=sqlFetchArray($stmt); $iter++) {
+        foreach ($stmt as $row) {
             $code = new Code();
             $code->code = $row['code'];
             $code->text = $row['code_text'];
@@ -59,7 +59,7 @@ class CodeManager {
         if (!$row) {
             return null;
         }
-        
+
         $code = new Code();
         $code->code = $row['code'];
         $code->text = $row['code_text'];

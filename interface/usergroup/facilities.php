@@ -123,11 +123,8 @@ $(document).ready(function(){
     </tr>
      <?php
         $fres = 0;
-        $fres = sqlStatement("select * from facility order by name");
-        if ($fres) {
-          $result2 = array();
-          for ($iter3 = 0;$frow = sqlFetchArray($fres);$iter3++)
-            $result2[$iter3] = $frow;
+        $result2 = sqlStatement("select * from facility order by name");
+        if ($result2) {
           foreach($result2 as $iter3) {
 			$varstreet="";//these are assigned conditionally below,blank assignment is done so that old values doesn't get propagated to next level.
 			$varcity="";

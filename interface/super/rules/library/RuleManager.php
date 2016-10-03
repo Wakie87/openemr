@@ -42,7 +42,7 @@ class RuleManager {
     const SQL_RULE_FILTER_BY_GUID =
     "SELECT * FROM rule_filter
      WHERE PASSWORD(CONCAT( id, include_flag, required_flag, method, method_detail, value )) = ?";
-    
+
     const SQL_RULE_TARGET_BY_GUID =
     "SELECT * FROM rule_target
      WHERE PASSWORD(CONCAT( id, group_id, include_flag, required_flag, method, value, rule_target.interval )) = ?";
@@ -70,15 +70,15 @@ class RuleManager {
             cqm_flag = ?,
             amc_flag = ?,
             patient_reminder_flag = ?,
-			developer = ?, 
-			funding_source = ?, 
+			developer = ?,
+			funding_source = ?,
 			release_version = ?,
                         web_reference = ?
       WHERE id = ? AND pid = 0";
 
     const SQL_UPDATE_TITLE =
     "UPDATE list_options
-        SET title = ?       
+        SET title = ?
       WHERE list_id = 'clinical_rules' AND option_id = ?";
 
     const SQL_REMOVE_INTERVALS =
@@ -195,34 +195,34 @@ class RuleManager {
             }
         }
     }
-    
+
     private function fillRuleTargetActionGroups( $rule ) {
         $stmt = sqlStatement( self::SQL_RULE_TARGET, array( $rule->id ) );
         $criterion = $this->gatherCriteria($rule, $stmt, $this->targetCriteriaFactory);
-                
+
         $ruleTargetGroups = $this->fetchRuleTargetCriteria( $rule );
         $ruleActionGroups = $this->fetchRuleActions( $rule );
         $groups = array();
         $groupCount = max( end(array_keys($ruleTargetGroups)), end(array_keys($ruleActionGroups)) );
         for ( $groupId = 0; $groupId <= $groupCount; $groupId++ ) {
-            
+
             $group = new RuleTargetActionGroup( $groupId );
             $addGroup = false;
             if ( isset( $ruleTargetGroups[$groupId] ) ) {
                 $group->setRuleTargets( $ruleTargetGroups[$groupId] );
                 $addGroup = true;
             }
-            
+
             if ( isset( $ruleActionGroups[$groupId] ) ) {
                 $group->setRuleActions( $ruleActionGroups[$groupId] );
                 $addGroup = true;
             }
-            
+
             if ( $addGroup == true ) {
                 $groups[$groupId]= $group;
             }
         }
-        
+
         $rule->setGroups( $groups );
     }
 
@@ -245,14 +245,14 @@ class RuleManager {
         ksort($ruleTargetGroups);
         return $ruleTargetGroups;
     }
-    
+
 	/**
      * @param Rule $rule
      */
     private function fetchRuleActions( $rule ) {
         $stmt = sqlStatement( self::SQL_RULE_ACTIONS, array( $rule->id ) );
         $ruleActionGroups = array();
-        for ( $iter=0; $row=sqlFetchArray($stmt); $iter++ ) {
+        foreach ($stmt as $row) {
             $action = new RuleAction();
             $action->category = $row['category'];
             $action->item = $row['item'];
@@ -283,7 +283,7 @@ class RuleManager {
 
         return null;
     }
-    
+
 	/**
      * @param string $guid
      * @return array of RuleTargetActionGroup
@@ -346,7 +346,7 @@ class RuleManager {
      */
     private function gatherCriteria( $rule, $stmt, $factory ) {
         $criterion = array();
-        for($iter=0; $row=sqlFetchArray($stmt); $iter++) {
+        foreach ($stmt as $row) {
             $guid = $row['guid'];
             $method = $row['method'];
             $methodDetail = $row['method_detail'];
@@ -384,7 +384,7 @@ class RuleManager {
         $stmt = sqlStatement( self::SQL_RULE_REMINDER_INTERVAL, array( $rule->id ) );
         $reminderInterval = new ReminderIntervals();
 
-        for($iter=0; $row=sqlFetchArray($stmt); $iter++) {
+        foreach ($stmt as $row) {
             $amount = $row['value'];
             $unit = TimeUnit::from($row['method_detail']);
             $methodParts = explode( '_', $row['method'] );
@@ -567,7 +567,7 @@ class RuleManager {
                     $group_id = $result['group_id'] ? $result['group_id'] + 1 : 1;
                 }
             }
-            
+
             sqlStatement( self::SQL_INSERT_TARGET, array(
                 $rule->id,
                 $dbView->inclusion ? 1 : 0,

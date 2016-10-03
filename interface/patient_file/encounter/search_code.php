@@ -70,11 +70,9 @@ if (isset($_POST["mode"]) && $_POST["mode"] == "search" && $_POST["text"] != "")
     " LIMIT " . ($M + 1).
     "";
 
-	if ($res = sqlStatement($sql) ) {
-		for($iter=0; $row=sqlFetchArray($res); $iter++)
-		{
-			$result[$iter] = $row;
-		}
+	if ($result = sqlStatement($sql) ) {
+		$result = $row;
+
         echo "<div id='resultsummary' style='background-color:lightgreen;'>";
         if (count($result) > $M) {
             echo "Showing the first ".$M." results";
@@ -99,7 +97,7 @@ if ($result) {
             echo "</td><td valign='top'>\n";
             $count = 0;
         }
-   
+
         echo "<div class='oneresult' style='padding: 3px 0px 3px 0px;'>";
         echo "<a target='".xl('Diagnosis')."' href='diagnosis.php?mode=add" .
             "&type="     . urlencode($code_type) .
@@ -114,10 +112,10 @@ if ($result) {
             "</b>" . " " . strtolower($iter{"code_text"}));
         echo "</a><br>\n";
         echo "</div>";
-    
+
         $count++;
         $total++;
-        
+
         if ($total == $M) {
             echo "</span><span class=alert>".xl('Some codes were not displayed.')."</span>\n";
             break;
@@ -153,7 +151,7 @@ $(document).ready(function(){
 
 // show the 'searching...' status and submit the form
 var SubmitForm = function(eObj) {
-    $("#submitbtn").attr("disabled", "true"); 
+    $("#submitbtn").attr("disabled", "true");
     $("#submitbtn").css("disabled", "true");
     $("#searchspinner").css("visibility", "visible");
     return top.restoreSession();

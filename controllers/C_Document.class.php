@@ -29,19 +29,19 @@ class C_Document extends Controller {
 		$this->template_mod = $template_mod;
 		$this->assign("FORM_ACTION", $GLOBALS['webroot']."/controller.php?" . $_SERVER['QUERY_STRING']);
 		$this->assign("CURRENT_ACTION", $GLOBALS['webroot']."/controller.php?" . "document&");
-		
+
 		//get global config options for this namespace
 		$this->_config = $GLOBALS['oer_config']['documents'];
 
 		$this->_args = array("patient_id" => $_GET['patient_id']);
-		
+
 		$this->assign("STYLE", $GLOBALS['style']);
 		$t = new CategoryTree(1);
 		//print_r($t->tree);
 		$this->tree = $t;
 		$this->Document = new Document();
 	}
-	
+
 	function upload_action($patient_id,$category_id) {
 		$category_name = $this->tree->get_node_name($category_id);
 		$this->assign("category_id", $category_id);
@@ -75,7 +75,7 @@ class C_Document extends Controller {
 		$this->assign("activity", $activity);
 		return $this->list_action($patient_id);
 	}
-	
+
 	//Upload multiple files on single click
     function upload_action_process() {
 
@@ -193,13 +193,13 @@ class C_Document extends Controller {
         $_POST['process'] = "";
         //return $this->fetch($GLOBALS['template_dir'] . "documents/" . $this->template_mod . "_upload.html");
     }
-	
+
 	function note_action_process($patient_id) {
 		// this function is a dual function that will set up a note associated with a document or send a document via email.
 
 		if ($_POST['process'] != "true")
 			return;
-			
+
 		$n = new Note();
                 $n->set_owner($_SESSION['authUserID']);
 		parent::populate_object($n);
@@ -268,7 +268,7 @@ class C_Document extends Controller {
 	function default_action() {
 		return $this->list_action();
 	}
-	
+
 	function view_action($patient_id="",$doc_id) {
 		// Added by Rod to support document delete:
 		global $gacl_object, $phpgacl_location;
@@ -279,9 +279,9 @@ class C_Document extends Controller {
 
 		$d = new Document($doc_id);
 		$n = new Note();
-		
+
 		$notes = $n->notes_factory($doc_id);
-		
+
 		$this->assign("file", $d);
 		$this->assign("web_path", $this->_link("retrieve") . "document_id=" . $d->get_id() . "&");
 		$this->assign("NOTE_ACTION",$this->_link("note"));
@@ -296,7 +296,7 @@ class C_Document extends Controller {
 		}
 		$this->assign("delete_string", $delete_string);
 		$this->assign("REFRESH_ACTION",$this->_link("list"));
-		
+
 		$this->assign("VALIDATE_ACTION",$this->_link("validate") .
 			"document_id=" . $d->get_id() . "&process=true");
 
@@ -318,7 +318,7 @@ class C_Document extends Controller {
 			$issues_options .= "<option value='" . $irow['id'] . "'$sel>$desc</option>";
 		}
 		$this->assign("ISSUES_LIST", $issues_options);
-		
+
 		// For tagging to encounter
 		// Populate the dropdown with patient's encounter list
 		$this->assign("TAG_ACTION",$this->_link("tag") . "document_id=" . $d->get_id() . "&process=true");
@@ -326,12 +326,12 @@ class C_Document extends Controller {
 		$result_docs = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe " .
 			"LEFT JOIN openemr_postcalendar_categories ON fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? ORDER BY fe.date desc",array($patient_id));
 		if ( sqlNumRows($result_docs) > 0)
-		while($row_result_docs = sqlFetchArray($result_docs)) {
+		foreach ($result_docs as $row_result_docs) {
 		 	$sel_enc = ($row_result_docs['encounter'] == $d->get_encounter_id()) ? ' selected' : '';
 			$encOptions .= "<option value='" . attr($row_result_docs['encounter']) . "' $sel_enc>". oeFormatShortDate(date('Y-m-d', strtotime($row_result_docs['date']))) . "-" . text($row_result_docs['pc_catname'])."</option>";
 		}
 		$this->assign("ENC_LIST", $encOptions);
-		
+
 		//Populate the dropdown with category list
 		$visit_category_list = "<option value='0'>-- " . xlt('Select One') . " --</option>";
 		$cres = sqlStatement("SELECT pc_catid, pc_catname FROM openemr_postcalendar_categories ORDER BY pc_catname");
@@ -341,16 +341,16 @@ class C_Document extends Controller {
 			$visit_category_list .="<option value='".attr($catid)."'>" . text(xl_appt_category($crow['pc_catname'])) . "</option>\n";
 		}
 		$this->assign("VISIT_CATEGORY_LIST", $visit_category_list);
-		 
+
 		$this->assign("notes",$notes);
-		
+
 		$this->assign("IMG_PROCEDURE_TAG_ACTION",$this->_link("image_procedure") . "document_id=" . $d->get_id());
 	        // Populate the dropdown with image procedure order list
 		$imgOptions = "<option value='0'>-- " . xlt('Select Image Procedure') . " --</option>";
 		$imgOrders  = sqlStatement("select procedure_name,po.procedure_order_id,procedure_code from procedure_order po inner join procedure_order_code poc on poc.procedure_order_id = po.procedure_order_id where po.patient_id = ?  and poc.procedure_order_title = 'imaging'",array($patient_id));
 		$mapping    = $this->get_mapped_procedure($d->get_id());
 		if(sqlNumRows($imgOrders) > 0){
-			 while($row = sqlFetchArray($imgOrders)) {
+			 foreach ($imgOrders as $row) {
 			 	$sel_proc = '';
 			 	if((isset($mapping['procedure_code']) && $mapping['procedure_code'] == $row['procedure_code']) && (isset($mapping['procedure_code']) && $mapping['procedure_order_id'] == $row['procedure_order_id']))
 					$sel_proc = 'selected';
@@ -363,22 +363,22 @@ class C_Document extends Controller {
 		$this->assign('clear_procedure_tag',$this->_link('clear_procedure_tag')."document_id=" . $d->get_id());
 
 		$this->_last_node = null;
-		
+
 		$menu  = new HTML_TreeMenu();
-		
+
 		//pass an empty array because we don't want the documents for each category showing up in this list box
  		$rnode = $this->_array_recurse($this->tree->tree,array());
 		$menu->addItem($rnode);
 		$treeMenu_listbox  = new HTML_TreeMenu_Listbox($menu, array("promoText" => xl('Move Document to Category:')));
-		
+
 		$this->assign("tree_html_listbox",$treeMenu_listbox->toHTML());
-		
+
 		$activity = $this->fetch($GLOBALS['template_dir'] . "documents/" . $this->template_mod . "_view.html");
 		$this->assign("activity", $activity);
-		
+
 		return $this->list_action($patient_id);
 	}
-	
+
 	function encrypt( $plaintext, $key, $cypher = 'tripledes', $mode = 'cfb' )
     {
         $td = mcrypt_module_open( $cypher, '', $mode, '');
@@ -403,7 +403,7 @@ class C_Document extends Controller {
         }
         return $plaintext;
     }
-	
+
 	/**
 	 * Retrieve file from hard disk / CouchDB.
 	 * In case that file isn't download this function will return thumbnail image (if exist).
@@ -419,7 +419,7 @@ class C_Document extends Controller {
 		    $passphrase ) {
 		    $doEncryption = true;
 		}
-		
+
 	        //controller function ruins booleans, so need to manually re-convert to booleans
 		if ($as_file == "true") {
 		        $as_file=true;
@@ -453,7 +453,7 @@ class C_Document extends Controller {
 		$storagemethod = $d->get_storagemethod();
 		$couch_docid = $d->get_couch_docid();
 		$couch_revid = $d->get_couch_revid();
-		
+
 		if($couch_docid && $couch_revid && $original_file){
 			$couch = new CouchDB();
 			$data = array($GLOBALS['couchdb_dbase'],$couch_docid);
@@ -511,7 +511,7 @@ class C_Document extends Controller {
 			fclose($f);
 			if($content!='')
 			unlink($tmpcouchpath);
-			exit;//exits only if file download from CouchDB is successfull. 
+			exit;//exits only if file download from CouchDB is successfull.
 		}
 
 		//Take thumbnail file when is not null and file is presented online
@@ -521,7 +521,7 @@ class C_Document extends Controller {
 
 		//strip url of protocol handler
 		$url = preg_replace("|^(.*)://|","",$url);
-		
+
 		//change full path to current webroot.  this is for documents that may have
 		//been moved from a different filesystem and the full path in the database
 		//is not current.  this is also for documents that may of been moved to
@@ -542,20 +542,20 @@ class C_Document extends Controller {
     if($couch_docid && $couch_revid){
 	//for couchDB no URL is available in the table, hence using the foreign_id which is patientID
 	$temp_url = $GLOBALS['OE_SITE_DIR'] . '/documents/temp/' . $d->get_foreign_id() . '_' . $from_filename;
-	
+
 	}
 	else{
 	$temp_url = $GLOBALS['OE_SITE_DIR'] . '/documents/' . $from_pathname . '/' . $from_filename;
 	}
-	
+
 		if (file_exists($temp_url)) {
 			$url = $temp_url;
 		}
-		 
-		 
+
+
 		if (!file_exists($url)) {
 			echo xl('The requested document is not present at the expected location on the filesystem or there are not sufficient permissions to access it.','','',' ') . $url;
-		
+
 		}
 		else {
 		        if ($original_file) {
@@ -624,11 +624,11 @@ class C_Document extends Controller {
 			}
 		}
 	}
-	
+
 	function queue_action($patient_id="") {
 		$messages = $this->_tpl_vars['messages'];
 		$queue_files = array();
-		
+
 		//see if the repository exists and it is a directory else error
 		if (file_exists($this->_config['repository']) && is_dir($this->_config['repository'])) {
 			$dir = opendir($this->_config['repository']);
@@ -646,7 +646,7 @@ class C_Document extends Controller {
 					$file_info['patient_id'] = $patient_match[1];
 					$file_info['document_id'] = $d->get_id();
 					$file_info['web_path'] = $this->_link("retrieve",true) . "document_id=" . $d->get_id() . "&";
-					
+
 					//merge the tmp array into the larger array
 					$queue_files[] = $file_info;
 				}
@@ -656,69 +656,69 @@ class C_Document extends Controller {
 		else {
 			$messages .= "The repository directory does not exist, it is not a directory or there are not sufficient permissions to access it. '" . $this->config['repository'] . "'\n";
 		}
-		
-		
+
+
 		$this->assign("queue_files",$queue_files);
 		$this->_last_node = null;
-		
+
 		$menu  = new HTML_TreeMenu();
-		
+
 		//pass an empty array because we don't want the documents for each category showing up in this list box
  		$rnode = $this->_array_recurse($this->tree->tree,array());
 		$menu->addItem($rnode);
 		$treeMenu_listbox  = new HTML_TreeMenu_Listbox($menu, array());
-		
+
 		$this->assign("tree_html_listbox",$treeMenu_listbox->toHTML());
-		
+
 		$this->assign("messages",nl2br($messages));
 		return $this->fetch($GLOBALS['template_dir'] . "documents/" . $this->template_mod . "_queue.html");
 	}
-	
+
 	function queue_action_process() {
 		if ($_POST['process'] != "true")
 			return;
-		
+
 		$messages = $this->_tpl_vars['messages'];
-		
+
 		//build a category tree so we can have a list of category ids that are valid
 		$ct = new CategoryTree(1);
 		$categories = $ct->_id_name;
-		
+
 		//see if there were and posted files and assign them
 		$files = null;
 		is_array($_POST['files']) ? $files = $_POST['files']: $files = array();
-		
+
 		//loop through posted files
 		foreach($files as $doc_id=> $file) {
 			//only operate on files checked as active
 			if (!$file['active']) continue;
-			
-			//run basic validation checks 
+
+			//run basic validation checks
 			if (!is_numeric($file['patient_id']) || !is_numeric($file['category_id']) || !is_numeric($doc_id)) {
 				$messages .= "Error processing file '" . $file['name'] ."' the patient id must be a number and the category must exist.\n";
 				continue;
 			}
-			
+
 			//validate that the pod exists
 			$d = new Document($doc_id);
 			$sql = "SELECT pid from patient_data where pubpid = '" . $file['patient_id'] . "'";
 			$result = $d->_db->Execute($sql);
-			
+
 			if (!$result || $result->EOF) {
 				//patient id does not exist
 				$messages .= "Error processing file '" . $file['name'] ." the specified patient id '" . $file['patient_id'] . "' could not be found.\n";
 				continue;
 			}
-			
+
 			//validate that the category id exists
 			if (!isset($categories[$file['category_id']])) {
 				$messages .= "Error processing file '" . $file['name'] . " the specified category with id '" . $file['category_id'] . "' could not be found.\n";
 				continue;
 			}
-			
+
 			//now do the work of moving the file
 			$new_path = $this->_config['repository'] . $file['patient_id'] ."/";
-			
+
 			//see if the patient dir exists in the repository and create if not
 			if (!file_exists($new_path)) {
 		  		if (!mkdir($new_path,0700)) {
@@ -726,26 +726,26 @@ class C_Document extends Controller {
 		  			continue;
 		  		}
 		  	}
-		  	
+
 		  	//fname is the name of the file after it is moved
 		  	$fname = $file['name'];
-		  	
+
 		  	//see if patient autonumbering is used in this filename, if so strip out the autonumber part
 		  	preg_match("/^([0-9]+)_/",basename($fname),$patient_match);
 		  	if ($patient_match[1] == $file['patient_id']) {
 		  		$fname = preg_replace("/^([0-9]+)_/","",$fname);
 		  	}
-		  	
+
 		  	//filenames should not have funny chars
 		  	$fname = preg_replace("/[^a-zA-Z0-9_.]/","_",$fname);
-		  	
+
 		  	//see if there is an existing file with the same name and rename as necessary
 		  	if (file_exists($new_path.$file['name'])) {
 		  		$messages .= "File with same name already exists at location: " . $new_path . "\n";
 		  		$fname = basename($this->_rename_file($new_path.$file['name']));
 		  		$messages .= "Current file name was changed to " . $fname ."\n";
 		  	}
-		  	
+
 		  	//now move the file
 		  	if (rename($this->_config['repository'].$file['name'],$new_path.$fname)) {
 		  		$messages .= "File " . $fname . " moved to patient id '" . $file['patient_id'] ."' and category '" . $categories[$file['category_id']]['name'] . "' successfully.\n";
@@ -754,7 +754,7 @@ class C_Document extends Controller {
 		  		$d->set_mimetype($mimetype);
 		  		$d->persist();
 		  		$d->populate();
-		  		
+
 		  		if (is_numeric($d->get_id()) && is_numeric($file['category_id'])) {
 		  		  $sql = "REPLACE INTO categories_to_documents set category_id = '" . $file['category_id'] . "', document_id = '" . $d->get_id() . "'";
 		  		  $d->_db->Execute($sql);
@@ -767,14 +767,14 @@ class C_Document extends Controller {
 			$this->assign("messages",$messages);
 			$_POST['process'] = "";
 	}
-	
+
 	function move_action_process($patient_id="",$document_id) {
 		if ($_POST['process'] != "true")
 			return;
-		
+
 		$new_category_id = $_POST['new_category_id'];
 		$new_patient_id = $_POST['new_patient_id'];
-		
+
 		//move to new category
 		if (is_numeric($new_category_id) && is_numeric($document_id)) {
 			$sql = "UPDATE categories_to_documents set category_id = '" . $new_category_id . "' where document_id = '" . $document_id ."'";
@@ -782,14 +782,14 @@ class C_Document extends Controller {
 			//echo $sql;
 			$this->tree->_db->Execute($sql);
 		}
-		
+
 		//move to new patient
 		if (is_numeric($new_patient_id) && is_numeric($document_id)) {
 			$d = new Document($document_id);
 			// $sql = "SELECT pid from patient_data where pubpid = '" . $new_patient_id . "'";
 			$sql = "SELECT pid from patient_data where pid = '" . $new_patient_id . "'";
 			$result = $d->_db->Execute($sql);
-			
+
 			if (!$result || $result->EOF) {
 				//patient id does not exist
 				$messages .= xl('Document could not be moved to patient id','','',' \'') . $new_patient_id  . xl('because that id does not exist.','','\' ') . "\n";
@@ -799,11 +799,11 @@ class C_Document extends Controller {
 
 				$this->_state = false;
 				if(!$couchsavefailed){
-				
+
 				$messages .= xl('Document moved to patient id','','',' \'') . $new_patient_id  . xl('successfully.','','\' ') . "\n";
 				}
 				else{
-				
+
 				$messages .= xl('Document moved to patient id','','',' \'') . $new_patient_id  . xl('Failed.','','\' ') . "\n";
 				}
 				$this->assign("messages",$messages);
@@ -822,7 +822,7 @@ class C_Document extends Controller {
 		  		$fname = basename($this->_rename_file($new_path.$d->get_url_file()));
 		  		$messages .= "Current file name was changed to " . $fname ."\n";
 		  	}
-		  	 
+
 		  	//now move the file
 		  	if (rename($d->get_url_filepath(),$new_path.$fname)) {
 		  		$d->url = "file://" .$new_path.$fname;
@@ -830,11 +830,11 @@ class C_Document extends Controller {
 				$d->persist();
 		  		$d->persist();
 		  		$d->populate();
-		  		
+
 		  		$sql = "DELETE FROM categories_to_documents where document_id =" . $d->_db->qstr($document_id);
 				$d->_db->Execute($sql);
 				$messages .= "Document returned to queue successfully.\n";
-				
+
 		  	}
 		  	else {
 		  		$messages .= "The file could not be succesfully stored, this error is usually related to permissions problems on the storage system.\n";
@@ -844,12 +844,12 @@ class C_Document extends Controller {
 			$this->assign("messages",$messages);
 			return $this->list_action($patient_id);
 		}
-		
+
 		$this->_state = false;
 		$this->assign("messages",$messages);
 		return $this->view_action($patient_id,$document_id);
 	}
-	
+
 	function validate_action_process($patient_id="", $document_id) {
 
                 $d = new Document($document_id);
@@ -925,7 +925,7 @@ class C_Document extends Controller {
 	// Added by Rod for metadata update.
 	//
 	function update_action_process($patient_id="", $document_id) {
-		
+
 		if ($_POST['process'] != "true") {
 			die("process is '" . $_POST['process'] . "', expected 'true'");
 			return;
@@ -960,7 +960,7 @@ class C_Document extends Controller {
      		  		$messages .= xl('The file could not be succesfully renamed, this error is usually related to permissions problems on the storage system.')."<br>";
      		  	}
 		    }
-		 
+
 			if (preg_match('/^\d\d\d\d-\d+-\d+$/', $docdate)) {
 				$docdate = "'$docdate'";
 			} else {
@@ -976,7 +976,7 @@ class C_Document extends Controller {
 					"list_id = '$issue_id' " .
 					"WHERE id = '$document_id'";
 			$this->tree->_db->Execute($sql);
-			
+
 			}
 			else{
 			$sql = "UPDATE documents SET docdate = $docdate, " .
@@ -1002,9 +1002,9 @@ class C_Document extends Controller {
 		$menu->addItem($rnode);
 		$treeMenu = new HTML_TreeMenu_DHTML($menu, array('images' => 'images', 'defaultClass' => 'treeMenuDefault'));
 		$treeMenu_listbox  = new HTML_TreeMenu_Listbox($menu, array('linkTarget' => '_self'));
-		
+
 		$this->assign("tree_html",$treeMenu->toHTML());
-		
+
 		return $this->fetch($GLOBALS['template_dir'] . "documents/" . $this->template_mod . "_list.html");
 	}
 
@@ -1073,7 +1073,7 @@ class C_Document extends Controller {
  			    $this->_last_node = &$node->addItem(new HTML_TreeNode(array("id" => $id, 'text' => $this->tree->get_node_name($id), 'link' => $this->_link("upload") . "parent_id=" . $id . "&", 'icon' => $icon, 'expandedIcon' => $expandedIcon)));
  			    $current_node = &$this->_last_node;
 			  }
- 			  
+
  			  $this->_array_recurse($ar,$categories);
  			}
  			else {
@@ -1088,7 +1088,7 @@ class C_Document extends Controller {
  					if ($id !== 0 && is_object($node)) {
  					  //echo "n:" . $this->tree->get_node_name($id) . "<br>";
  				  	  $current_node = &$node->addItem(new HTML_TreeNode(array("id" => $id, 'text' => $this->tree->get_node_name($id), 'link' => $this->_link("upload") . "parent_id=" . $id . "&", 'icon' => $icon, 'expandedIcon' => $expandedIcon)));
- 				  	  
+
  					}
  				}
  			}
@@ -1128,7 +1128,7 @@ class C_Document extends Controller {
 		}
 		return $node;
 	}
-	
+
 	//function for logging  the errors in writing file to CouchDB/Hard Disk
 	function document_upload_download_log($patientid,$content){
 		$log_path = $GLOBALS['OE_SITE_DIR']."/documents/couchdb/";
@@ -1139,13 +1139,13 @@ class C_Document extends Controller {
 		fwrite($LOG,$content);
 		fclose($LOG);
 	}
-	
+
 	function document_send($email,$body,$attfile,$pname) {
 		if (empty($email)) {
 			$this->assign("process_result","Email could not be sent, the address supplied: '$email' was empty or invalid.");
 			return;
 		}
-		 
+
 		  $desc = "Please check the attached patient document.\n Content:".attr($body);
 		  $mail = new MyMailer();
 		  $from_name = $GLOBALS["practice_return_email_path"];
@@ -1166,7 +1166,7 @@ class C_Document extends Controller {
 			$retstatus =  "email_fail";
 		  }
 	}
-	
+
 //place to hold optional code
 //$first_node = array_keys($t->tree);
 		//$first_node = $first_node[0];
@@ -1180,7 +1180,7 @@ function tag_action_process($patient_id="", $document_id) {
 		die("process is '" . text($_POST['process']) . "', expected 'true'");
 		return;
 	}
-	
+
 	// Create Encounter and Tag it.
 	$event_date = date('Y-m-d H:i:s');
 	$encounter_id = $_POST['encounter_id'];
@@ -1194,11 +1194,11 @@ function tag_action_process($patient_id="", $document_id) {
 		if (!is_numeric($encounter_id)) {
 			$encounter_id = 0;
 		}
-		
+
 		$encounter_check = ( $encounter_check == 'on') ? 1 : 0;
 		if ($encounter_check) {
 			$provider_id = $_SESSION['authUserID'] ;
-			
+
 			// Get the logged in user's facility
 			$facilityRow = sqlQuery("SELECT username, facility, facility_id FROM users WHERE id = ?", array("$provider_id"));
 			$username = $facilityRow['username'];
@@ -1207,14 +1207,14 @@ function tag_action_process($patient_id="", $document_id) {
 			// Get the primary Business Entity facility to set as billing facility, if null take user's facility as billing facility
 			$billingFacility = sqlQuery("SELECT id FROM facility WHERE primary_business_entity = 1");
 			$billingFacilityID = ( $billingFacility['id'] ) ? $billingFacility['id'] : $facility_id;
-			
+
 			$conn = $GLOBALS['adodb']['db'];
 			$encounter = $conn->GenID("sequences");
 			$query = "INSERT INTO form_encounter SET
 						date = ?,
 						reason = ?,
 						facility = ?,
-						sensitivity = 'normal', 
+						sensitivity = 'normal',
 						pc_catid = ?,
 						facility_id = ?,
 						billing_facility = ?,
@@ -1225,7 +1225,7 @@ function tag_action_process($patient_id="", $document_id) {
 			$formID = sqlInsert($query,$bindArray);
 			addForm($encounter, "New Patient Encounter",$formID,"newpatient", $patient_id, "1", date("Y-m-d H:i:s"), $username );
 			$d->set_encounter_id($encounter);
-			
+
 		} else {
 			$d->set_encounter_id($encounter_id);
 		}
@@ -1237,7 +1237,7 @@ function tag_action_process($patient_id="", $document_id) {
 
 	$this->_state = false;
 	$this->assign("messages", $messages);
-	
+
 	return $this->view_action($patient_id, $document_id);
 }
 
@@ -1245,9 +1245,9 @@ function image_procedure_action($patient_id="",$document_id){
 
 	$img_procedure_id = $_POST['image_procedure_id'];
 	$proc_code = $_POST['procedure_code'];
-	
+
 	if(is_numeric($document_id)){
-				
+
 		$img_order  = sqlQuery("select * from procedure_order_code where procedure_order_id = ? and procedure_code = ? ",array($img_procedure_id,$proc_code));
 		$img_report = sqlQuery("select * from procedure_report where procedure_order_id = ? and procedure_order_seq = ? ",array($img_procedure_id,$img_order['procedure_order_seq']));
 		$img_report_id = !empty($img_report['procedure_report_id']) ? $img_report['procedure_report_id'] : 0;
@@ -1255,7 +1255,7 @@ function image_procedure_action($patient_id="",$document_id){
 			$report_date = date('Y-m-d H:i:s');
 			$img_report_id = sqlInsert("INSERT INTO procedure_report(procedure_order_id,procedure_order_seq,date_collected,date_report,report_status) values(?,?,?,?,'final')",array($img_procedure_id,$img_order['procedure_order_seq'],$img_order['date_collected'],$report_date));
 		}
-		
+
 		$img_result = sqlQuery("select * from procedure_result where procedure_report_id = ? and document_id = ?",array($img_report_id,$document_id));
 		if(empty($img_result)){
 			sqlInsert("INSERT INTO procedure_result(procedure_report_id,date,document_id,result_status) values(?,?,?,'final')",array($img_report_id,date('Y-m-d H:i:s'),$document_id));
@@ -1275,9 +1275,9 @@ function get_mapped_procedure($document_id){
 	$map = array();
 	if(is_numeric($document_id)){
 		$map = sqlQuery("select poc.procedure_order_id,poc.procedure_code from procedure_result pres
-						   inner join procedure_report pr on pr.procedure_report_id = pres.procedure_report_id 
-						   inner join procedure_order_code poc on (poc.procedure_order_id = pr.procedure_order_id and poc.procedure_order_seq = pr.procedure_order_seq) 
-						   inner join procedure_order po on po.procedure_order_id = poc.procedure_order_id 
+						   inner join procedure_report pr on pr.procedure_report_id = pres.procedure_report_id
+						   inner join procedure_order_code poc on (poc.procedure_order_id = pr.procedure_order_id and poc.procedure_order_seq = pr.procedure_order_seq)
+						   inner join procedure_order po on po.procedure_order_id = poc.procedure_order_id
 						   where pres.document_id = ?",array($document_id));
 	}
 	return $map;

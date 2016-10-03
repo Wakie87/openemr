@@ -316,7 +316,7 @@ if ( $eid ) {
 
         // obtain current list of providers regarding the multiple key
         $up = sqlStatement("SELECT pc_aid FROM openemr_postcalendar_events WHERE pc_multiple={$row['pc_multiple']}");
-        while ($current = sqlFetchArray($up)) {
+        foreach ($up as $current) {
             $providers_current[] = $current['pc_aid'];
         }
 
@@ -443,7 +443,7 @@ if (is_array($_POST['form_provider'])) {
 
     // obtain the next available unique key to group multiple providers around some event
     $q = sqlStatement ("SELECT MAX(pc_multiple) as max FROM openemr_postcalendar_events");
-    $max = sqlFetchArray($q);
+    $max = $q;
     $new_multiple_value = $max['max'] + 1;
 
     foreach ($_POST['form_provider'] as $provider) {
@@ -649,7 +649,7 @@ sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
  //(CHEMED)
  //Set default facility for a new event based on the given 'userid'
  if ($userid) {
-     $pref_facility = sqlFetchArray(sqlStatement("SELECT facility_id, facility FROM users WHERE id = $userid"));
+     $pref_facility = sqlStatement("SELECT facility_id, facility FROM users WHERE id = $userid");
      $e2f = $pref_facility['facility_id'];
      $e2f_name = $pref_facility['facility'];
  }

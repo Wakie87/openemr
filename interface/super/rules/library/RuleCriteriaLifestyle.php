@@ -47,7 +47,7 @@ class RuleCriteriaLifestyle extends RuleCriteria {
 
         $options = array();
 
-        for( $iter=0; $row=sqlFetchArray($stmt); $iter++ ) {
+        foreach ($stmt as $row) {
             $id = $row['field_id'];
             $label = xl_layout_label( $row['title'] );
             $option = array( "id"=>$id, "label"=>$label );
@@ -68,7 +68,7 @@ class RuleCriteriaLifestyle extends RuleCriteria {
 
      function updateFromRequest() {
         parent::updateFromRequest();
-        
+
         $lifestyle = _post("fld_lifestyle");
         $value = _post("fld_value");
         $matchType = _post("fld_value_type");

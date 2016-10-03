@@ -59,7 +59,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
       if (isset($_POST["username"])) {
         // $tqvar = addslashes(trim($_POST["username"]));
         $tqvar = trim(formData('username','P'));
-        $user_data = sqlFetchArray(sqlStatement("select * from users where id= ? ", array($_POST["id"])));
+        $user_data = sqlStatement("select * from users where id= ? ", array($_POST["id"]));
         sqlStatement("update users set username='$tqvar' where id= ? ", array($_POST["id"]));
         sqlStatement("update groups set user='$tqvar' where user= ?", array($user_data["username"]));
         //echo "query was: " ."update groups set user='$tqvar' where user='". $user_data["username"]  ."'" ;
@@ -165,11 +165,11 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
       $tqvar  = $_POST["authorized"] ? 1 : 0;
       $actvar = $_POST["active"]     ? 1 : 0;
       $calvar = $_POST["calendar"]   ? 1 : 0;
-  
+
       sqlStatement("UPDATE users SET authorized = $tqvar, active = $actvar, " .
         "calendar = $calvar, see_auth = ? WHERE " .
         "id = ? ", array($_POST['see_auth'], $_POST["id"]));
-      //Display message when Emergency Login user was activated 
+      //Display message when Emergency Login user was activated
       $bg_count=count($_POST['access_group']);
       for($i=0;$i<$bg_count;$i++){
         if(($_POST['access_group'][$i] == "Emergency Login") && ($_POST['pre_active'] == 0) && ($actvar == 1)){
@@ -194,10 +194,10 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
 		$physician_type = formData('physician_type');
 		sqlStatement("update users set physician_type = '$physician_type' where id = ? ", array($_POST["id"]));
 	  }
-	  
+
       if (isset($phpgacl_location) && acl_check('admin', 'acl')) {
         // Set the access control group of user
-        $user_data = sqlFetchArray(sqlStatement("select username from users where id= ?", array($_POST["id"])));
+        $user_data = sqlStatement("select username from users where id= ?", array($_POST["id"]));
         set_user_aro($_POST['access_group'], $user_data["username"],
           formData('fname','P'), formData('mname','P'), formData('lname','P'));
       }
@@ -230,7 +230,7 @@ if (isset($_POST["mode"])) {
     $exp_days = $GLOBALS['password_expiration_days'];
     $exp_date = date('Y-m-d', strtotime("+$exp_days days"));
     }
-    
+
     $insertUserSQL=
             "insert into users set " .
             "username = '"         . trim(formData('rumple'       )) .
@@ -257,7 +257,7 @@ if (isset($_POST["mode"])) {
             "', calendar = '"      . $calvar                         .
             "', pwd_expiration_date = '" . trim("$exp_date") .
             "'";
-    
+
     $clearAdminPass=$_POST['adminPass'];
     $clearUserPass=$_POST['stiltskin'];
     $password_err_msg="";
@@ -281,7 +281,7 @@ if (isset($_POST["mode"])) {
       }
     }
 
-        
+
 
     } else {
       $alertmsg .= xl('User','','',' ') . trim(formData('rumple')) . xl('already exists.','',' ');
@@ -296,9 +296,7 @@ if (isset($_POST["mode"])) {
       }
   }
   else if ($_POST["mode"] == "new_group") {
-    $res = sqlStatement("select distinct name, user from groups");
-    for ($iter = 0; $row = sqlFetchArray($res); $iter++)
-      $result[$iter] = $row;
+    $result = sqlStatement("select distinct name, user from groups");
     $doit = 1;
     foreach ($result as $iter) {
       if ($doit == 1 && $iter{"name"} == trim(formData('groupname')) && $iter{"user"} == trim(formData('rumple')))
@@ -315,31 +313,8 @@ if (isset($_POST["mode"])) {
 }
 
 if (isset($_GET["mode"])) {
-
-  /*******************************************************************
-  // This is the code to delete a user.  Note that the link which invokes
-  // this is commented out.  Somebody must have figured it was too dangerous.
-  //
-  if ($_GET["mode"] == "delete") {
-    $res = sqlStatement("select distinct username, id from users where id = '" .
-      $_GET["id"] . "'");
-    for ($iter = 0; $row = sqlFetchArray($res); $iter++)
-      $result[$iter] = $row;
-
-    // TBD: Before deleting the user, we should check all tables that
-    // reference users to make sure this user is not referenced!
-
-    foreach($result as $iter) {
-      sqlStatement("delete from groups where user = '" . $iter{"username"} . "'");
-    }
-    sqlStatement("delete from users where id = '" . $_GET["id"] . "'");
-  }
-  *******************************************************************/
-
   if ($_GET["mode"] == "delete_group") {
-    $res = sqlStatement("select distinct user from groups where id = ?", array($_GET["id"]));
-    for ($iter = 0; $row = sqlFetchArray($res); $iter++)
-      $result[$iter] = $row;
+    $result = sqlStatement("select distinct user from groups where id = ?", array($_GET["id"]));
     foreach($result as $iter)
       $un = $iter{"user"};
     $res = sqlStatement("select name, user from groups where user = '$un' " .
@@ -347,7 +322,7 @@ if (isset($_GET["mode"])) {
 
     // Remove the user only if they are also in some other group.  I.e. every
     // user must be a member of at least one group.
-    if (sqlFetchArray($res) != FALSE) {
+    if ($res != FALSE) {
       sqlStatement("delete from groups where id = ?", array($_GET["id"]));
     } else {
       $alertmsg .= "You must add this user to some other group before " .
@@ -387,7 +362,7 @@ $(document).ready(function(){
 		'frameHeight' : 450,
 		'frameWidth' : 660
 	});
-	
+
 	$(function(){
 		// add drag and drop functionality to fancybox
 		$("#fancy_outer").easydrag();
@@ -448,9 +423,7 @@ if ($show_message == 1){
 $query = "SELECT * FROM users WHERE username != '' ";
 if (!$form_inactive) $query .= "AND active = '1' ";
 $query .= "ORDER BY username";
-$res = sqlStatement($query);
-for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-  $result4[$iter] = $row;
+$result4 = sqlStatement($query);
 foreach ($result4 as $iter) {
   if ($iter{"authorized"}) {
     $iter{"authorized"} = xl('yes');
@@ -471,10 +444,7 @@ foreach ($result4 as $iter) {
 	</tbody></table>
 <?php
 if (empty($GLOBALS['disable_non_default_groups'])) {
-  $res = sqlStatement("select * from groups order by name");
-  for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-    $result5[$iter] = $row;
-
+  $result5 = sqlStatement("select * from groups order by name");
   foreach ($result5 as $iter) {
     $grouplist{$iter{"name"}} .= $iter{"user"} .
       "(<a class='link_submit' href='usergroup_admin.php?mode=delete_group&id=" .

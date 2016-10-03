@@ -22,7 +22,7 @@
 
  // Collect user id if editing entry
  $userid = $_REQUEST['userid'];
- 
+
  // Collect type if creating a new entry
  $type = $_REQUEST['type'];
 
@@ -67,7 +67,7 @@ td { font-size:10pt; }
   // 3 = Company Centric
   $sql = sqlStatement("SELECT option_id, option_value FROM list_options WHERE " .
    "list_id = 'abook_type'");
-  while ($row_query = sqlFetchArray($sql)) {
+  foreach ($sql as $row_query) {
    echo "type_options_js"."['" . attr($row_query['option_id']) . "']=" . attr($row_query['option_value']) . ";\n";
   }
  ?>

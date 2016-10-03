@@ -56,7 +56,7 @@ function mopen(id)
 {
 	// cancel close timer
 	//mcancelclosetime();
-	
+
 	flag=10;
 
 	// close old layer
@@ -142,9 +142,7 @@ function myGetRegistered($state="1", $limit="unlimited", $offset="0") {
   if ($limit != "unlimited") $sql .= " limit $limit, $offset";
   $res = sqlStatement($sql);
   if ($res) {
-    for($iter=0; $row=sqlFetchArray($res); $iter++) {
-      $all[$iter] = $row;
-    }
+      $all = $res;
   }
   else {
     return false;
@@ -168,7 +166,7 @@ isset($GLOBALS['encounter']) &&
       $encounterLocked = true;
   }
 }
-  
+
 if (!empty($reg)) {
   $StringEcho= '<ul id="sddm">';
   if(isset($hide)){
@@ -232,13 +230,13 @@ if ( $encounterLocked === false ) {
 <!-- DISPLAYING HOOKS STARTS HERE -->
 <?php
 	$module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh LEFT OUTER JOIN modules_settings AS ms ON
-                                    obj_name=enabled_hooks AND ms.mod_id=msh.mod_id LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id 
+                                    obj_name=enabled_hooks AND ms.mod_id=msh.mod_id LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id
                                     WHERE fld_type=3 AND mod_active=1 AND sql_run=1 AND attached_to='encounter' ORDER BY mod_id");
   $DivId = 'mod_installer';
   if (sqlNumRows($module_query)) {
     $jid = 0;
     $modid = '';
-    while ($modulerow = sqlFetchArray($module_query)) {
+    foreach ($module_query as $modulerow) {
       $DivId = 'mod_'.$modulerow['mod_id'];
       $new_category = $modulerow['mod_ui_name'];
       $modulePath = "";

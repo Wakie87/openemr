@@ -22,10 +22,10 @@
 
 
 	$result = getMedicationData();
-	$value = sqlFetchArray($result);
+	$value = $result;
 
 do {
-	
+
 	$e_Medication = $ccr->createElement('Medication');
 	$e_Medications->appendChild($e_Medication);
 
@@ -34,9 +34,9 @@ do {
 
 	$e_DateTime = $ccr->createElement('DateTime');
 	$e_Medication->appendChild($e_DateTime);
-	
+
 	$date = date_create($value['date_added']);
-	
+
 	$e_ExactDateTime = $ccr->createElement('ExactDateTime', $date->format('Y-m-d\TH:i:s\Z'));
 	$e_DateTime->appendChild($e_ExactDateTime);
 
@@ -68,7 +68,7 @@ do {
 
 	$e_Value = $ccr->createElement('Value',$value['rxnorm_drugcode']);
 	$e_Code->appendChild($e_Value);
-  
+
 	$e_Value = $ccr->createElement('CodingSystem', 'RxNorm');
 	$e_Code->appendChild($e_Value);
 
@@ -83,7 +83,7 @@ do {
 
 	$e_Unit = $ccr->createElement('Unit', $value['title']);
 	$e_Units->appendChild($e_Unit);
-  
+
 	$e_Form = $ccr->createElement('Form');
 	$e_Product->appendChild($e_Form);
 
@@ -119,13 +119,13 @@ do {
 
 	$e_Text = $ccr->createElement('Text', 'Tablet');
 	$e_Route->appendChild($e_Text);
-	
+
 	$e_Site = $ccr->createElement('Site');
 	$e_Direction->appendChild($e_Site);
 
 	$e_Text = $ccr->createElement('Text', 'Oral');
 	$e_Site->appendChild($e_Text);
-	
+
 	$e_PatientInstructions = $ccr->createElement('PatientInstructions');
 	$e_Medication->appendChild($e_PatientInstructions);
 
@@ -144,6 +144,6 @@ do {
 	$e_Number = $ccr->createElement('Number', $value['refills']);
 	$e_Refill->appendChild($e_Number);
 
-} while ($value = sqlFetchArray($result));
+} while ($value = $result);
 
 ?>

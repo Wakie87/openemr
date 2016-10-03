@@ -32,7 +32,7 @@ require_once(dirname(__FILE__) . "/../library/direct_message_check.inc");
 /*
  * Connect to a phiMail Direct Messaging server and transmit
  * a CCD document to the specified recipient. If the message is accepted by the
- * server, the script will return "SUCCESS", otherwise it will return an error msg. 
+ * server, the script will return "SUCCESS", otherwise it will return an error msg.
  * @param DOMDocument ccd the xml data to transmit, a CCDA document is assumed
  * @param string recipient the Direct Address of the recipient
  * @param string requested_by user | patient
@@ -69,7 +69,7 @@ function transmitCCD($ccd,$recipient,$requested_by,$xml_type="CCD") {
 
    $ret = phimail_write_expect_OK($fp,"TO $recipient\n");
    if($ret!==TRUE) return( xl("Delivery is not allowed to the specified Direct Address.") );
-   
+
    $ret=fgets($fp,1024); //ignore extra server data
 
    if($requested_by=="patient")
@@ -109,7 +109,7 @@ function transmitCCD($ccd,$recipient,$requested_by,$xml_type="CCD") {
 	$reqBy="portal-user";
 	$sql = "SELECT id FROM users WHERE username='portal-user'";
 	if (($r = sqlStatementNoLog($sql)) === FALSE ||
-	    ($u = sqlFetchArray($r)) === FALSE) {
+	    ($u = $r) === FALSE) {
 	    $reqID = 1; //default if we don't have a service user
 	} else {
 	    $reqID = $u['id'];
@@ -129,7 +129,7 @@ function transmitCCD($ccd,$recipient,$requested_by,$xml_type="CCD") {
    /**
     * If we get here, the message was successfully sent and the return
     * value $ret is of the form "QUEUED recipient message-id" which
-    * is suitable for logging. 
+    * is suitable for logging.
     */
    $msg_id=explode(" ",trim($ret),4);
    if($msg_id[0]!="QUEUED" || !isset($msg_id[2])) { //unexpected response

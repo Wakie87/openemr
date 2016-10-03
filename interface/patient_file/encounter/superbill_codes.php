@@ -69,7 +69,7 @@ foreach ($code_types as $key => $value) {
 }
 echo " </tr>\n";
 
-for ($iter = 0; $row = sqlFetchArray($res); $iter++){
+foreach ($res as $row){
 	foreach ($code_types as $key => $value) {
 		if ($value['id'] == $row['code_type']) {
 			$codes[$key][] = $row;

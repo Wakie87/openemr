@@ -115,26 +115,26 @@ function create_statement($stmt) {
     " left join users u on f.id=u.facility_id " .
     " left join  billing b on b.provider_id=u.id and b.pid = '".$stmt['pid']."' " .
     " where  service_location=1");
-  $row = sqlFetchArray($atres);
- 
+  $row = $atres;
+
  // Facility (service location)
 
  $clinic_name = "{$row['name']}";
  $clinic_addr = "{$row['street']}";
  $clinic_csz = "{$row['city']}, {$row['state']}, {$row['postal_code']}";
- 
- 
+
+
  // Billing location
  $remit_name = $clinic_name;
  $remit_addr = $clinic_addr;
  $remit_csz = $clinic_csz;
- 
+
  // Contacts
   $atres = sqlStatement("select f.attn,f.phone from facility f " .
     " left join users u on f.id=u.facility_id " .
     " left join  billing b on b.provider_id=u.id and b.pid = '".$stmt['pid']."'  " .
     " where billing_location=1");
-  $row = sqlFetchArray($atres);
+  $row = $atres;
  $billing_contact = "{$row['attn']}";
  $billing_phone = "{$row['phone']}";
 
@@ -142,7 +142,7 @@ function create_statement($stmt) {
 
  // insurance has paid something
  // $stmt['age'] how old is the invoice
- // $stmt['dun_count'] number of statements run 
+ // $stmt['dun_count'] number of statements run
  // $stmt['level_closed'] <= 3 insurance 4 = patient
 
 if ($GLOBALS['use_dunning_message']) {
@@ -220,7 +220,7 @@ $out .= sprintf("_______________________ %s _______________________\n",$label_pg
 $out .= "\n";
 $out .= sprintf("%-11s %-46s %s\n",$label_visit,$label_desc,$label_amt);
 $out .= "\n";
- 
+
  // This must be set to the number of lines generated above.
  //
  $count = 23;
@@ -239,13 +239,13 @@ $out .= "\n";
  foreach ($stmt['lines'] as $line) {
  if ($GLOBALS['use_custom_statement']) {
    $description = substr($line['desc'],0,30);
-   
+
 	}
 else {
      $description = $line['desc'];
-	 
+
 	  }
-  
+
   $tmp = substr($description, 0, 14);
   if ($tmp == 'Procedure 9920' || $tmp == 'Procedure 9921')
    $description = xl('Office Visit');
@@ -283,7 +283,7 @@ else {
    } else {
     $amount = sprintf("%.2f", $ddata['chg']);
     $desc = $description;
- 
+
    }
 
    $out .= sprintf("%-10s  %-45s%8s\n", oeFormatShortDate($dos), $desc, $amount);
@@ -314,7 +314,7 @@ else {
  $label_prompt = xl('We appreciate prompt payment of balances due');
  $label_dept = xl('Billing Department');
  $label_appointments = xl('Future Appointments').':';
- 
+
  // This is the bottom portion of the page.
  $out .= "\n";
  if(strlen($stmt['bill_note']) !=0 && $GLOBALS['statement_bill_note_print']) {

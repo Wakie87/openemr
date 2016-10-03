@@ -38,7 +38,7 @@ class RuleCriteriaDatabaseCustom extends RuleCriteria {
             $requirements .= $this->decodeComparator($this->valueComparator) . " " . $this->value;
             $requirements .= " | ";
         }
-        
+
         $requirements .= xl( "Frequency" ) . ": ";
         $requirements .= $this->decodeComparator($this->frequencyComparator) . " " . $this->frequency;
 
@@ -56,14 +56,14 @@ class RuleCriteriaDatabaseCustom extends RuleCriteria {
     function getTableNameOptions() {
         $options = array();
         $stmts = sqlStatement( "SHOW TABLES" );
-        for($iter=0; $row=sqlFetchArray($stmts); $iter++) {
+        foreach ($stmt as $row) {
             foreach( $row as $key=>$value) {
                 array_push( $options, array( "id" => out( $value ), "label" => out( xl ( $value ) ) ) );
             }
         }
         return $options;
     }
-    
+
     function getDbView() {
         $dbView = parent::getDbView();
 
@@ -87,6 +87,6 @@ class RuleCriteriaDatabaseCustom extends RuleCriteria {
         $this->frequency = _post("fld_frequency");
         $this->frequencyComparator = _post("fld_frequency_comparator");
     }
-   
+
 }
 ?>

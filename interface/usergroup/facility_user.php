@@ -82,7 +82,7 @@ $(document).ready(function(){
 
     // fancy box
     enable_modals();
-    
+
     // special size for
     $(".iframe_small").fancybox( {
         'overlayOpacity' : 0.0,
@@ -90,7 +90,7 @@ $(document).ready(function(){
         'frameHeight' : 300,
         'frameWidth' : 500
     });
-    
+
     $(function(){
         // add drag and drop functionality to fancybox
         $("#fancy_outer").easydrag();
@@ -109,8 +109,8 @@ $u_res = sqlStatement("select * from `users` WHERE `username` != '' AND `active`
 // Collect all facilities and store them in an array
 $f_res = sqlStatement("select * from `facility` order by `name`");
 $f_arr = array();
-for($i=0; $row=sqlFetchArray($f_res); $i++) {
-  $f_arr[$i]=$row;
+foreach ($f_res as $row) {
+  $f_arr=$row;
 }
 
 // Collect layout information and store them in an array
@@ -118,8 +118,8 @@ $l_res = sqlStatement("SELECT * FROM layout_options " .
                       "WHERE form_id = 'FACUSR' AND uor > 0 AND field_id != '' " .
                       "ORDER BY group_name, seq");
 $l_arr = array();
-for($i=0; $row=sqlFetchArray($l_res); $i++) {
-  $l_arr[$i]=$row;
+foreach ($l_res as $row) {
+  $l_arr=$row;
 }
 
 ?>
@@ -134,7 +134,7 @@ for($i=0; $row=sqlFetchArray($l_res); $i++) {
      </tr>
     </table>
     </div>
-    
+
     <div style="width:400px;">
         <div>
 
@@ -150,7 +150,7 @@ for($i=0; $row=sqlFetchArray($l_res); $i++) {
                                         ?>
                 </tr>
                     <?php
-                    while ($user = sqlFetchArray($u_res)) {
+                    foreach ($u_res as $user) {
                         foreach ($f_arr as $facility) {
                     ?>
                 <tr height="20"  class="text" style="border-bottom: 1px dashed;">
@@ -163,7 +163,7 @@ for($i=0; $row=sqlFetchArray($l_res); $i++) {
                                                             "WHERE `uid` = ? AND `facility_id` = ? AND `field_id` = ?", array($user['id'],$facility['id'],$layout_entry['field_id']) );
                                      echo "<td><span class='text'>" . generate_display_field($layout_entry,$entry_data['field_value']) . "&nbsp;</td>";
                                    }
-                                   ?>  
+                                   ?>
                 </tr>
                 <?php
                 }}

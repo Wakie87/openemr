@@ -60,7 +60,7 @@ function GetAllUnapplied($pat='',$from_dt='',$to_dt='') {
       "AND ar_session.patient_id=?";
   $result = sqlStatement($sql, array($from_dt, $to_dt, $pat));
   $iter = 0;
-  while($row = sqlFetchArray($result)) {
+  foreach ($result as $row) {
     $all[$iter] = $row;
     $iter++;
   }
@@ -107,7 +107,7 @@ function GetAllCredits($enc = '', $pat='') {
     "ORDER BY sequence_no";
     $result = sqlStatement($sql, array($enc, $pat));
     $iter = 0;
-    while($row = sqlFetchArray($result)) {
+    foreach ($result as $row) {
       $all[$iter] = $row;
       $iter++;
     }

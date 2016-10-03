@@ -1,4 +1,4 @@
-<?php 
+<?php
 ////////////////////////////////////////////////////////////////////
 // CRON FUNCTIONS - to use with cron_sms and cron_email backend
 // scripts to notify events
@@ -15,16 +15,16 @@ global $EMAIL_NOTIFICATION_HOUR;
 ////////////////////////////////////////////////////////////////////
 // Function:    cron_SendMail
 // Purpose: send mail
-// Input:   to, subject, email body and from 
+// Input:   to, subject, email body and from
 // Output:  status - if sent or not
 ////////////////////////////////////////////////////////////////////
 function cron_SendMail( $to, $subject, $vBody, $from )
 {
-    // check if smtp globals set 
+    // check if smtp globals set
     if( $GLOBALS['smtp_host_name'] == '' )
     {
         // larry :: debug
-        //echo "\nDEBUG :: use mail method\n";  
+        //echo "\nDEBUG :: use mail method\n";
 
         // larry :: add cc/bcc - bot used ?
         $cc = "";
@@ -35,8 +35,8 @@ function cron_SendMail( $to, $subject, $vBody, $from )
         if( strlen( $format )==0 )  $format="text/html";
         $headers  = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: ". $format ."; charset=iso-8859-1\r\n";
-        
-        // additional headers 
+
+        // additional headers
         $headers .= "From: $from\r\n";
         if( strlen($cc)>5 ) $headers .= "Cc: $cc\r\n";
         if( strlen($bcc)>5 ) $headers .= "Bcc: $bcc\r\n";
@@ -46,7 +46,7 @@ function cron_SendMail( $to, $subject, $vBody, $from )
         $cnt .= "\nTo : ".$to;
         $cnt .= "\nSubject : ".$subject;
         $cnt .= "\nBody : \n".$vBody."\n";
-        
+
         if(1)
         {
             //WriteLog($cnt);
@@ -59,24 +59,24 @@ function cron_SendMail( $to, $subject, $vBody, $from )
     } else
     {
         // larry :: debug
-        //echo "\nDEBUG :: use smtp method\n";  
+        //echo "\nDEBUG :: use smtp method\n";
 
         if( !class_exists( "smtp_class" ) )
         {
             include("../../library/classes/smtp/smtp.php");
             include("../../library/classes/smtp/sasl.php");
         }
-        
+
         $strFrom = $from;
         $sender_line=__LINE__;
         $strTo = $to;
         $recipient_line=__LINE__;
         if( strlen( $strFrom ) == 0 ) return( false );
         if( strlen( $strTo ) == 0 ) return( false );
-        
-        //if( !$smtp ) 
+
+        //if( !$smtp )
         $smtp=new smtp_class;
-        
+
         $smtp->host_name = $GLOBALS['smtp_host_name'];
         $smtp->host_port = $GLOBALS['smtp_host_port'];
         $smtp->ssl = $GLOBALS['smtp_use_ssl'];
@@ -84,21 +84,21 @@ function cron_SendMail( $to, $subject, $vBody, $from )
         $smtp->direct_delivery = 0;
         $smtp->timeout = 10;
         $smtp->data_timeout = 0;
-        
+
         $smtp->debug = 1;
         $smtp->html_debug = 0;
         $smtp->pop3_auth_host = "";
-        
+
         $smtp->user = $GLOBALS['smtp_auth_user'];
         $smtp->password = $GLOBALS['smtp_auth_pass'];
-        
+
         $smtp->realm = "";
         // Workstation name for NTLM authentication
         $smtp->workstation = "";
         // Specify a SASL authentication method like LOGIN, PLAIN, CRAM-MD5, NTLM, etc..
-        // Leave it empty to make the class negotiate if necessary 
+        // Leave it empty to make the class negotiate if necessary
         $smtp->authentication_mechanism = "";
-        
+
         // If you need to use the direct delivery mode and this is running under
         // Windows or any other platform
         if($smtp->direct_delivery)
@@ -109,7 +109,7 @@ function cron_SendMail( $to, $subject, $vBody, $from )
                 include("getmxrr.php");
             }
         }
-        
+
         if( $smtp->SendMessage(
             $strFrom,
             array( $strTo ),
@@ -128,10 +128,10 @@ function cron_SendMail( $to, $subject, $vBody, $from )
              echo "Cound not send the message to $to.\nError: ".$smtp->error."\n";
              $mstatus = false;
         }
-        
+
         unset( $smtp );
     }
-    
+
     return $mstatus;
 }
 
@@ -142,7 +142,7 @@ function cron_SendMail( $to, $subject, $vBody, $from )
 function WriteLog( $data )
 {
     global $log_folder_path;
-    
+
     $filename = $log_folder_path . "/cronlog_".date("Ymd").".html";
     //echo $filename;exit;
     if (!$fp = fopen($filename, 'a'))
@@ -150,20 +150,20 @@ function WriteLog( $data )
             print "Cannot open file ($filename)";
             exit;
     }
-    
+
     $sdata = "\n====================================================================\n";
-    
+
     if (!fwrite($fp, $sdata.$data.$sdata))
     {
         print "Cannot write to file ($filename)";
         exit;
     }
-    
+
     fclose($fp);
 }
 
 ////////////////////////////////////////////////////////////////////
-// define my_print_r - used for debuging - if not defined 
+// define my_print_r - used for debuging - if not defined
 ////////////////////////////////////////////////////////////////////
 if( !function_exists( 'my_print_r' ) )
 {
@@ -210,13 +210,13 @@ function cron_updateentry($type,$pid,$pc_eid)
 
     //$query="update openemr_postcalendar_events set $set ";
     $query = "update openemr_postcalendar_events set ";
-    
+
     // larry :: and here again same story - this time for sms pc_sendalertsms - no such field in the table
     if($type=='SMS')
         $query.=" pc_sendalertsms='YES' ";
     else
         $query.=" pc_sendalertemail='YES' ";
-        
+
     $query .=" where pc_pid='$pid' and pc_eid='$pc_eid' ";
     //echo "<br>".$query;
     $db_sql = (sqlStatement($query));
@@ -232,7 +232,7 @@ function cron_getAlertpatientData( $type )
     global $SMS_NOTIFICATION_HOUR,$EMAIL_NOTIFICATION_HOUR;
     // larry :: end commment
 
-    
+
     //$ssql .= " and ((ope.pc_eventDate='$check_date') OR ('$check_date' BETWEEN ope.pc_eventDate AND ope.pc_endDate)) ";
     if($type=='SMS')
     {
@@ -243,13 +243,13 @@ function cron_getAlertpatientData( $type )
         $check_date = date("Y-m-d", mktime(date("h")+$SMS_NOTIFICATION_HOUR, 0, 0, date("m"), date("d"), date("Y")));
     }else
     {
-        // larry :: remove ope.pc_sendalertemail='No' - nothing like it in the calendar 
+        // larry :: remove ope.pc_sendalertemail='No' - nothing like it in the calendar
         $ssql = " and pd.hipaa_allowemail='YES' and pd.email<>''  and ope.pc_sendalertemail='NO' ";
         //$ssql = " and pd.hipaa_allowemail='YES' and pd.email<>'' ";
 
         $check_date = date("Y-m-d", mktime(date("h")+$EMAIL_NOTIFICATION_HOUR, 0, 0, date("m"), date("d"), date("Y")));
     }
-    
+
     $patient_field = "pd.pid,pd.title,pd.fname,pd.lname,pd.mname,pd.phone_cell,pd.email,pd.hipaa_allowsms,pd.hipaa_allowemail,";
     $ssql .= " and (ope.pc_eventDate='$check_date')";
     // larry :: add condition if remnder was already sent
@@ -258,19 +258,19 @@ function cron_getAlertpatientData( $type )
     $query = "select $patient_field pd.pid,ope.pc_eid,ope.pc_pid,ope.pc_title,
             ope.pc_hometext,ope.pc_eventDate,ope.pc_endDate,
             ope.pc_duration,ope.pc_alldayevent,ope.pc_startTime,ope.pc_endTime
-        from 
-            openemr_postcalendar_events as ope ,patient_data as pd 
-        where 
-            ope.pc_pid=pd.pid $ssql 
-        order by 
+        from
+            openemr_postcalendar_events as ope ,patient_data as pd
+        where
+            ope.pc_pid=pd.pid $ssql
+        order by
             ope.pc_eventDate,ope.pc_endDate,pd.pid";
-            
+
     //echo "<br>".$query;
 
     $db_patient = (sqlStatement($query));
     $patient_array = array();
     $cnt=0;
-    while ($prow = sqlFetchArray($db_patient))
+    foreach ($db_patient as $prow)
     {
         $patient_array[$cnt] = $prow;
         $cnt++;
@@ -285,7 +285,7 @@ function cron_getAlertpatientData( $type )
 function cron_getNotificationData($type)
 {
     // larry :: pre populate array fields
-    //$db_email_msg['notification_id'] = '';    
+    //$db_email_msg['notification_id'] = '';
     //$db_email_msg['sms_gateway_type'] = '';
 
     $query = "select * from automatic_notification where type='$type' ";
@@ -347,7 +347,7 @@ function cron_setmessage($prow,$db_email_msg)
 function cron_GetNotificationSettings( )
 {
     $strQuery = "select * from notification_settings where type='SMS/Email Settings'";
-    $vectNotificationSettings = sqlFetchArray( sqlStatement( $strQuery ) );
+    $vectNotificationSettings = sqlStatement( $strQuery );
 
     return( $vectNotificationSettings );
 }

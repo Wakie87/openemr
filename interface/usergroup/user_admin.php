@@ -18,7 +18,7 @@ if ($_GET["mode"] == "update") {
   if ($_GET["username"]) {
     // $tqvar = addslashes(trim($_GET["username"]));
     $tqvar = trim(formData('username','G'));
-    $user_data = sqlFetchArray(sqlStatement("select * from users where id={$_GET["id"]}"));
+    $user_data = sqlStatement("select * from users where id={$_GET["id"]}");
     sqlStatement("update users set username='$tqvar' where id={$_GET["id"]}");
     sqlStatement("update groups set user='$tqvar' where user='". $user_data["username"]  ."'");
     //echo "query was: " ."update groups set user='$tqvar' where user='". $user_data["username"]  ."'" ;
@@ -123,7 +123,7 @@ if ($_GET["mode"] == "update") {
 
   if (isset($phpgacl_location) && acl_check('admin', 'acl')) {
     // Set the access control group of user
-    $user_data = sqlFetchArray(sqlStatement("select username from users where id={$_GET["id"]}"));
+    $user_data = sqlStatement("select username from users where id={$_GET["id"]}");
     set_user_aro($_GET['access_group'], $user_data["username"],
       formData('fname','G'), formData('mname','G'), formData('lname','G'));
   }
@@ -142,9 +142,7 @@ parent.$.fn.fancybox.close();
 	';
 }
 
-$res = sqlStatement("select * from users where id=?",array($_GET["id"]));
-for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-                $result[$iter] = $row;
+$result = sqlStatement("select * from users where id=?",array($_GET["id"]));
 $iter = $result[0];
 
 ///
@@ -280,7 +278,7 @@ function submitform() {
 	<?php } ?>
 	if(flag == 0){
                     document.forms[0].submit();
-                    parent.$.fn.fancybox.close(); 
+                    parent.$.fn.fancybox.close();
 	}
 }
 //Getting the list of selected item in ACL
@@ -329,8 +327,8 @@ function authorized_clicked() {
 <input type=hidden name="get_admin_id" value="<?php echo $GLOBALS['Emergency_Login_email']; ?>" >
 <input type=hidden name="admin_id" value="<?php echo $GLOBALS['Emergency_Login_email_id']; ?>" >
 <input type=hidden name="check_acl" value="">
-<?php 
-//Calculating the grace time 
+<?php
+//Calculating the grace time
 $current_date = date("Y-m-d");
 $password_exp=$iter["pwd_expiration_date"];
 if($password_exp != "0000-00-00")
@@ -393,9 +391,7 @@ $bg_count=count($acl_name);
 <?php
 $fres = sqlStatement("select * from facility where service_location != 0 order by name");
 if ($fres) {
-for ($iter2 = 0; $frow = sqlFetchArray($fres); $iter2++)
-                $result[$iter2] = $frow;
-foreach($result as $iter2) {
+foreach($fres as $iter2) {
 ?>
   <option value="<?php echo $iter2['id']; ?>" <?php if ($iter['facility_id'] == $iter2['id']) echo "selected"; ?>><?php echo htmlspecialchars($iter2['name']); ?></option>
 <?php
@@ -418,12 +414,11 @@ foreach($result as $iter2) {
     $ufid[] = $uf['id'];
   $fres = sqlStatement("select * from facility where service_location != 0 order by name");
   if ($fres) {
-    while($frow = sqlFetchArray($fres)):
+    foreach ($fres as $frow)
 ?>
    <option <?php echo in_array($frow['id'], $ufid) || $frow['id'] == $iter['facility_id'] ? "selected" : null ?>
       value="<?php echo $frow['id'] ?>"><?php echo htmlspecialchars($frow['name']) ?></option>
 <?php
-  endwhile;
 }
 ?>
   </select>

@@ -55,7 +55,7 @@ function trimAll(sString)
 		sString = sString.substring(0,sString.length-1);
 	}
 	return sString;
-} 
+}
 
 function submitform() {
 
@@ -176,10 +176,7 @@ function authorized_clicked() {
 <td>
 <select name=groupname<?php if ($GLOBALS['disable_non_default_groups']) echo " style='display:none'"; ?>>
 <?php
-$res = sqlStatement("select distinct name from groups");
-$result2 = array();
-for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-  $result2[$iter] = $row;
+$result2 = sqlStatement("select distinct name from groups");
 foreach ($result2 as $iter) {
   print "<option value='".$iter{"name"}."'>" . $iter{"name"} . "</option>\n";
 }
@@ -199,10 +196,8 @@ foreach ($result2 as $iter) {
 <td><span class="text"><?php xl('Last Name','e'); ?>: </span></td><td><input type=entry name='lname' id='lname' style="width:120px;"><span class="mandatory">&nbsp;*</span></td>
 <td><span class="text"><?php xl('Default Facility','e'); ?>: </span></td><td><select style="width:120px;" name=facility_id>
 <?php
-$fres = sqlStatement("select * from facility where service_location != 0 order by name");
-if ($fres) {
-  for ($iter = 0;$frow = sqlFetchArray($fres);$iter++)
-    $result[$iter] = $frow;
+$result = sqlStatement("select * from facility where service_location != 0 order by name");
+if ($result) {
   foreach($result as $iter) {
 ?>
 <option value="<?php echo $iter{'id'};?>"><?php echo $iter{'name'};?></option>
@@ -263,7 +258,7 @@ if ($fres) {
 <td><input type="text" name="state_license_number" style="width:120px;"></td>
 <td class='text'><?php xl('NewCrop eRX Role','e'); ?>:</td>
 <td>
-  <?php echo generate_select_list("erxrole", "newcrop_erx_role", '','','--Select Role--','','','',array('style'=>'width:120px')); ?>  
+  <?php echo generate_select_list("erxrole", "newcrop_erx_role", '','','--Select Role--','','','',array('style'=>'width:120px')); ?>
 </td>
 </tr>
 
@@ -340,9 +335,7 @@ echo generate_select_list('irnpool', 'irnpool', '',
 <span class="text"><?php xl('Initial User','e'); ?>: </span>
 <select name=rumple>
 <?php
-$res = sqlStatement("select distinct username from users where username != ''");
-for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-  $result[$iter] = $row;
+$result = sqlStatement("select distinct username from users where username != ''");
 foreach ($result as $iter) {
   print "<option value='".$iter{"username"}."'>" . $iter{"username"} . "</option>\n";
 }
@@ -368,9 +361,7 @@ foreach ($result as $iter) {
 : </span>
 <select name=rumple>
 <?php
-$res = sqlStatement("select distinct username from users where username != ''");
-for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-  $result3[$iter] = $row;
+$result3 = sqlStatement("select distinct username from users where username != ''");
 foreach ($result3 as $iter) {
   print "<option value='".$iter{"username"}."'>" . $iter{"username"} . "</option>\n";
 }
@@ -380,10 +371,7 @@ foreach ($result3 as $iter) {
 <span class="text"><?php xl('Groupname','e'); ?>: </span>
 <select name=groupname>
 <?php
-$res = sqlStatement("select distinct name from groups");
-$result2 = array();
-for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-  $result2[$iter] = $row;
+$result2 = sqlStatement("select distinct name from groups");
 foreach ($result2 as $iter) {
   print "<option value='".$iter{"name"}."'>" . $iter{"name"} . "</option>\n";
 }
@@ -399,10 +387,7 @@ foreach ($result2 as $iter) {
 
 <?php
 if (empty($GLOBALS['disable_non_default_groups'])) {
-  $res = sqlStatement("select * from groups order by name");
-  for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-    $result5[$iter] = $row;
-
+  $result5 = sqlStatement("select * from groups order by name");
   foreach ($result5 as $iter) {
     $grouplist{$iter{"name"}} .= $iter{"user"} .
       "(<a class='link_submit' href='usergroup_admin.php?mode=delete_group&id=" .

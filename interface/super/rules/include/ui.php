@@ -14,7 +14,7 @@
     	if ( $result != '') {
     		return $result;
     	}
-    	            
+
         // if not found, default to the passed-in value
         return $value;
     }
@@ -25,7 +25,7 @@
             "SELECT title from layout_options WHERE form_id = ? and field_id = ?", array($form_id, $value)
         );
         if (sqlNumRows($sql) > 0) {
-            $result = sqlFetchArray( $sql );
+            foreach ($sql as $result) {
             return xl( $result['title'] );
         }
 
@@ -39,7 +39,7 @@
         $sql = sqlStatement(
             "SELECT option_id, title from list_options WHERE list_id = ?", array($list_id)
         );
-        for($iter=0; $row=sqlFetchArray( $sql ); $iter++) {
+        foreach ($sql as $row) {
             $options[] = new Option(
                     out( $row['option_id'] ),            // id
                     out( xl_list_label($row['title']) )  // label
@@ -55,5 +55,5 @@
         }
         return $optionsArray;
     }
-    
+
 ?>
