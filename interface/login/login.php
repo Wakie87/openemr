@@ -55,7 +55,7 @@ function imsubmitted() {
  olddate.setFullYear(olddate.getFullYear() - 1);
  document.cookie = '<?php echo session_name() . '=' . session_id() ?>; path=/; expires=' + olddate.toGMTString();
 <?php } ?>
-    return false; //Currently the submit action is handled by the encrypt_form(). 
+    return false; //Currently the submit action is handled by the encrypt_form().
 }
 </script>
 
@@ -72,20 +72,16 @@ function imsubmitted() {
 
 <?php
 // collect groups
-$res = sqlStatement("select distinct name from groups");
-for ($iter = 0;$row = sqlFetchArray($res);$iter++)
-	$result[$iter] = $row;
+$result = sqlStatement("select distinct name from groups");
 if (count($result) == 1) {
-	$resvalue = $result[0]{"name"};
+	$resvalue = $result[0]["name"];
 	echo "<input type='hidden' name='authProvider' value='" . attr($resvalue) . "' />\n";
 }
 // collect default language id
-$res2 = sqlStatement("select * from lang_languages where lang_description = ?",array($GLOBALS['language_default']));
-for ($iter = 0;$row = sqlFetchArray($res2);$iter++)
-          $result2[$iter] = $row;
+$result2 = sqlStatement("select * from lang_languages where lang_description = ?",array($GLOBALS['language_default']));
 if (count($result2) == 1) {
-          $defaultLangID = $result2[0]{"lang_id"};
-          $defaultLangName = $result2[0]{"lang_description"};
+          $defaultLangID = $result2[0]["lang_id"];
+          $defaultLangName = $result2[0]["lang_description"];
 }
 else {
           //default to english if any problems
@@ -96,13 +92,13 @@ else {
 $_SESSION['language_choice'] = $defaultLangID;
 // collect languages if showing language menu
 if ($GLOBALS['language_menu_login']) {
-    
+
         // sorting order of language titles depends on language translation options.
         $mainLangID = empty($_SESSION['language_choice']) ? '1' : $_SESSION['language_choice'];
         if ($mainLangID == '1' && !empty($GLOBALS['skip_english_translation']))
         {
           $sql = "SELECT *,lang_description as trans_lang_description FROM lang_languages ORDER BY lang_description, lang_id";
-	  $res3=SqlStatement($sql);
+	  $result3=SqlStatement($sql);
         }
         else {
           // Use and sort by the translated language name.
@@ -114,11 +110,8 @@ if ($GLOBALS['language_menu_login']) {
             "LEFT JOIN lang_definitions AS ld ON ld.cons_id = lc.cons_id AND " .
             "ld.lang_id = ? " .
             "ORDER BY IF(LENGTH(ld.definition),ld.definition,ll.lang_description), ll.lang_id";
-          $res3=SqlStatement($sql, array($mainLangID));
+          $result3=SqlStatement($sql, array($mainLangID));
 	}
-    
-        for ($iter = 0;$row = sqlFetchArray($res3);$iter++)
-               $result3[$iter] = $row;
         if (count($result3) == 1) {
 	       //default to english if only return one language
                echo "<input type='hidden' name='languageChoice' value='1' />\n";
@@ -146,8 +139,8 @@ else {
 <?php } ?>
 </div>
 
-<?php if ($GLOBALS['extra_logo_login']) { ?>  
-        <div class="logo-left"><?php echo $logocode;?></div> 
+<?php if ($GLOBALS['extra_logo_login']) { ?>
+        <div class="logo-left"><?php echo $logocode;?></div>
 <?php } ?>
 
 <div class="table-right" <?php if ($GLOBALS['extra_logo_login']) echo "style='padding: 20px 20px;'"; //make room for the extra logo ?> >
@@ -201,11 +194,11 @@ if (count($result3) != 1) { ?>
         echo "<option selected='selected' value='" . attr($defaultLangID) . "'>" . xlt('Default') . " - " . xlt($defaultLangName) . "</option>\n";
         foreach ($result3 as $iter) {
 	        if ($GLOBALS['language_menu_showall']) {
-                    if ( !$GLOBALS['allow_debug_language'] && $iter[lang_description] == 'dummy') continue; // skip the dummy language
+                    if ( !$GLOBALS['allow_debug_language'] && $iter['lang_description'] == 'dummy') continue; // skip the dummy language
                     echo "<option value='".attr($iter['lang_id'])."'>".text($iter['trans_lang_description'])."</option>\n";
 		}
 	        else {
-		    if (in_array($iter[lang_description], $GLOBALS['language_menu_show'])) {
+		    if (in_array($iter['lang_description'], $GLOBALS['language_menu_show'])) {
                         if ( !$GLOBALS['allow_debug_language'] && $iter['lang_description'] == 'dummy') continue; // skip the dummy language
 		        echo "<option value='".attr($iter['lang_id'])."'>" . text($iter['trans_lang_description']) . "</option>\n";
 		    }

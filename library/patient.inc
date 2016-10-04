@@ -66,11 +66,11 @@ function getLanguages() {
 }
 
 function getInsuranceProvider($ins_id) {
-    
+
     $sql = "select name from insurance_companies where id=?";
     $row = sqlQuery($sql,array($ins_id));
     return $row['name'];
-    
+
 }
 
 function getInsuranceProviders() {
@@ -126,13 +126,13 @@ function getInsuranceProvidersExtra() {
         break;
         case $GLOBALS['insurance_information'] = '1':
             $returnval[$row['id']] = $row['name'] . " (" . $row['line1'] . ")";
-        break; 
+        break;
         case $GLOBALS['insurance_information'] = '2':
-           $returnval[$row['id']] = $row['name'] . " (" . $row['line1'] . "," . $row['zip'] . ")";	
+           $returnval[$row['id']] = $row['name'] . " (" . $row['line1'] . "," . $row['zip'] . ")";
         break;
         case $GLOBALS['insurance_information'] = '3':
            $returnval[$row['id']] = $row['name'] . " (" . $row['line1'] . "," . $row['state'] . ")";
-        break; 
+        break;
         case $GLOBALS['insurance_information'] = '4':
 	       $returnval[$row['id']] = $row['name'] . " (" . $row['line1'] . "," . $row['state'] .
            "," . $row['zip'] . ")";
@@ -141,7 +141,7 @@ function getInsuranceProvidersExtra() {
             preg_match("/\d+/", $row['line1'], $matches);
             $returnval[$row['id']] = $row['name'] . " (" . $row['zip'] .
               "," . $matches[0] . ")";
-        break; 
+        break;
         }
     }
 
@@ -171,7 +171,7 @@ function getFacility($facid=0) {
 
   //create a sql binding array
   $sqlBindArray = array();
-  
+
   if ($facid > 0) {
     $query = "SELECT * FROM facility WHERE id = ?";
     array_push($sqlBindArray,$facid);
@@ -282,9 +282,9 @@ function getProviderInfo($providerID = "%", $providers_only = true, $facility = 
     $param2 = "";
     if ($facility) {
       if ($GLOBALS['restrict_user_facility']) {
-        $param2 = " AND (facility_id = $facility 
+        $param2 = " AND (facility_id = $facility
           OR  $facility IN
-	        (select facility_id 
+	        (select facility_id
 	        from users_facility
 	        where tablename = 'users'
 	        and table_id = id)
@@ -302,11 +302,10 @@ function getProviderInfo($providerID = "%", $providers_only = true, $facility = 
         $command = "like";
     }
     $query = "select distinct id, username, lname, fname, authorized, info, facility " .
-        "from users where username != '' and active = 1 and id $command '" .
-        add_escape_custom($providerID) . "' " . $param1 . $param2;
+        "from users where username != '' and active = 1 and id $command ?" . $param1 . $param2;
     // sort by last name -- JRM June 2008
     $query .= " ORDER BY lname, fname ";
-    $rez = sqlStatement($query);
+    $rez = sqlStatement($query, array($providerID));
     for($iter=0; $row=sqlFetchArray($rez); $iter++)
         $returnval[$iter]=$row;
 
@@ -386,7 +385,7 @@ function getHistoryData($pid, $given = "*", $dateStart='',$dateEnd='')
     else {
         $res = sqlQuery("select $given from history_data where pid=? order by date DESC limit 0,1", array($pid) );
     }
-    
+
     if($given == 'tobacco'){
     	$res = sqlQuery("select $given from history_data where pid = ? and tobacco is not null and date >= ? and date <= ? order by date DESC limit 0,1", array($pid,$dateStart,$dateEnd));
     }
@@ -454,13 +453,13 @@ function _set_patient_inc_count($limit, $count, $where, $whereBindArray=array())
 function getPatientLnames($term = "%", $given = "pid, id, lname, fname, mname, providerID, DATE_FORMAT(DOB,'%m/%d/%Y') as DOB_TS", $orderby = "lname ASC, fname ASC", $limit="all", $start="0")
 {
     $names = getPatientNameSplit($term);
-    
+
     foreach ($names as $key => $val) {
       if (!empty($val)) {
         if ((strlen($val) > 1) && ($names[$key][0] != strtoupper($names[$key][0]))) {
-            $names[$key] = '%' . $val . '%';            
-        } else { 
-            $names[$key] = $val . '%';            
+            $names[$key] = '%' . $val . '%';
+        } else {
+            $names[$key] = $val . '%';
         }
       }
     }
@@ -476,14 +475,14 @@ function getPatientLnames($term = "%", $given = "pid, id, lname, fname, mname, p
     //    error_log("last name search term :".$names['last']);
     //}
     // Debugging section above
- 
+
     $sqlBindArray = array();
     if(array_key_exists('last',$names) && $names['last'] == '') {
         // Do not search last name
         $where = "fname LIKE ? ";
         array_push($sqlBindArray, $names['first']);
-        if ($names['middle'] != '') {        
-            $where .= "AND mname LIKE ? ";  
+        if ($names['middle'] != '') {
+            $where .= "AND mname LIKE ? ";
             array_push($sqlBindArray, $names['middle']);
         }
     } elseif(array_key_exists('first',$names) && $names['first'] == '') {
@@ -492,11 +491,11 @@ function getPatientLnames($term = "%", $given = "pid, id, lname, fname, mname, p
         array_push($sqlBindArray, $names['last']);
     } elseif($names['first'] == '' && $names['last'] != '') {
         // Search both first name and last name with same term
-        $names['first'] = $names['last']; 
+        $names['first'] = $names['last'];
         $where = "lname LIKE ? OR fname LIKE ? ";
         array_push($sqlBindArray, $names['last'], $names['first']);
-    } elseif ($names['middle'] != '') {        
-        $where = "lname LIKE ? AND fname LIKE ? AND mname LIKE ? ";  
+    } elseif ($names['middle'] != '') {
+        $where = "lname LIKE ? AND fname LIKE ? AND mname LIKE ? ";
         array_push($sqlBindArray, $names['last'], $names['first'], $names['middle']);
     } else {
         $where = "lname LIKE ? AND fname LIKE ? ";
@@ -525,8 +524,8 @@ function getPatientLnames($term = "%", $given = "pid, id, lname, fname, mname, p
     return $returnval;
 }
 /**
- * Accept a string used by a search function expected to find a patient name, 
- * then split up the string if a comma or space exists. Return an array having 
+ * Accept a string used by a search function expected to find a patient name,
+ * then split up the string if a comma or space exists. Return an array having
  * from 1 to 3 elements, named first, middle, and last.
  * See above getPatientLnames() function for details on how the splitting occurs.
  * @param string $term
@@ -535,7 +534,7 @@ function getPatientLnames($term = "%", $given = "pid, id, lname, fname, mname, p
 function getPatientNameSplit($term) {
     $term = trim($term);
     if (strpos($term, ',') !== false) {
-        $names = explode(',', $term);        
+        $names = explode(',', $term);
         $n['last'] = $names[0];
         if (strpos(trim($names[1]), ' ') !== false) {
             list($n['first'], $n['middle']) = explode(' ', trim($names[1]));
@@ -551,7 +550,7 @@ function getPatientNameSplit($term) {
             $n['middle'] = $names[1];
             $n['last'] = $names[2];
         } else {
-            // This will handle first and last name or first followed by 
+            // This will handle first and last name or first followed by
             // multiple names only using just the last of the names in the list.
             $n['first'] = $names[0];
             $n['last'] = end($names);
@@ -911,7 +910,7 @@ function newPatientData(    $db_id="",
         date=NOW()");
 
     $id = sqlInsert($query);
- 
+
     if ( !$db_id ) {
       // find the last inserted id for new patient case
       $db_id = getSqlLastID();
@@ -1269,7 +1268,7 @@ function updateHistoryData($pid,$new)
         return sqlInsert($sql, $arraySqlBind );
 }
 
-// Returns Age 
+// Returns Age
 //   in months if < 2 years old
 //   in years  if > 2 years old
 // given YYYYMMDD from MySQL DATE_FORMAT(DOB,'%Y%m%d')
@@ -1279,7 +1278,7 @@ function getPatientAge($dobYMD, $nowYMD=null)
     // strip any dashes from the DOB
     $dobYMD = preg_replace("/-/", "", $dobYMD);
     $dobDay = substr($dobYMD,6,2); $dobMonth = substr($dobYMD,4,2); $dobYear = substr($dobYMD,0,4);
-    
+
     // set the 'now' date values
     if ($nowYMD == null) {
         $nowDay = date("d");
@@ -1299,8 +1298,8 @@ function getPatientAge($dobYMD, $nowYMD=null)
     $ageInMonths = (($nowYear * 12) + $nowMonth) - (($dobYear*12) + $dobMonth);
 
     // We want the age in FULL months, so if the current date is less than the numerical day of birth, subtract a month
-    if($dayDiff<0) { $ageInMonths-=1; } 
-    
+    if($dayDiff<0) { $ageInMonths-=1; }
+
     if ( $ageInMonths > 24 ) {
         $age = $yearDiff;
         if (($monthDiff == 0) && ($dayDiff < 0)) { $age -= 1; }
@@ -1314,7 +1313,7 @@ function getPatientAge($dobYMD, $nowYMD=null)
 }
 
 /**
- * Wrapper to make sure the clinical rules dates formats corresponds to the 
+ * Wrapper to make sure the clinical rules dates formats corresponds to the
  * format expected by getPatientAgeYMD
  *
  * @param  string  $dob     date of birth
@@ -1335,7 +1334,7 @@ function parseAgeInfo($dob,$target)
 }
 
 /**
- * 
+ *
  * @param type $dob
  * @param type $date
  * @return array containing
@@ -1344,7 +1343,7 @@ function parseAgeInfo($dob,$target)
  *      ageinYMD - formatted string #y #m #d
  */
 function getPatientAgeYMD($dob, $date=null) {
-	
+
     if ($date == null) {
         $daynow = date("d");
         $monthnow = date("m");
@@ -1368,11 +1367,11 @@ function getPatientAgeYMD($dob, $date=null) {
     //to compensate for 30, 31, 28, 29 days/month
     $mo=$monthnow; //to avoid confusion with later calculation
 
-    if ($mo==05 or $mo==07 or $mo==10 or $mo==12) {  //determined by monthnow-1 
-        $nd=30; //nd = number of days in a month, if monthnow is 5, 7, 9, 12 then 
+    if ($mo==05 or $mo==07 or $mo==10 or $mo==12) {  //determined by monthnow-1
+        $nd=30; //nd = number of days in a month, if monthnow is 5, 7, 9, 12 then
     }  // look at April, June, September, November for calculation.  These months only have 30 days.
     elseif ($mo==03) { // for march, look to the month of February for calculation, check for leap year
-        $check_leap_Y=$yearnow/4; // To check if this is a leap year. 
+        $check_leap_Y=$yearnow/4; // To check if this is a leap year.
         if (is_int($check_leap_Y)) {$nd=29;} //If it true then this is the leap year
         else {$nd=28;} //otherwise, it is not a leap year.
     }
@@ -1401,9 +1400,9 @@ function getPatientAgeYMD($dob, $date=null) {
         else {
             $months_since_birthday=$monthnow - $dobmonth;
             $days_since_dobday=$daynow - $dobday;
-        }	
+        }
     }
-    
+
     $day_as_month_decimal = $days_since_dobday / 30;
     $months_since_birthday_float = $months_since_birthday + $day_as_month_decimal;
     $month_as_year_decimal = $months_since_birthday_float / 12;
@@ -1429,7 +1428,7 @@ function getPatientAgeInDays($dobYMD, $nowYMD=null) {
     // strip any dashes from the DOB
     $dobYMD = preg_replace("/-/", "", $dobYMD);
     $dobDay = substr($dobYMD,6,2); $dobMonth = substr($dobYMD,4,2); $dobYear = substr($dobYMD,0,4);
-    
+
     // set the 'now' date values
     if ($nowYMD == null) {
         $nowDay = date("d");
@@ -1452,7 +1451,7 @@ function getPatientAgeInDays($dobYMD, $nowYMD=null) {
 }
 /**
  * Returns a string to be used to display a patient's age
- * 
+ *
  * @param type $dobYMD
  * @param type $asOfYMD
  * @return string suitable for displaying patient's age based on preferences
@@ -1461,21 +1460,21 @@ function getPatientAgeDisplay($dobYMD, $asOfYMD=null)
 {
     if($GLOBALS['age_display_format']=='1')
     {
-        $ageYMD=getPatientAgeYMD($dobYMD,$asOfYMD);    
+        $ageYMD=getPatientAgeYMD($dobYMD,$asOfYMD);
         if(isset($GLOBALS['age_display_limit']) && $ageYMD['age']<=$GLOBALS['age_display_limit'])
         {
             return $ageYMD['ageinYMD'];
         }
         else
         {
-            return getPatientAge($dobYMD, $asOfYMD);                    
+            return getPatientAge($dobYMD, $asOfYMD);
         }
     }
     else
     {
         return getPatientAge($dobYMD, $asOfYMD);
     }
-    
+
 }
 function dateToDB ($date)
 {
@@ -1487,9 +1486,9 @@ function dateToDB ($date)
 // ----------------------------------------------------------------------------
 /**
  * DROPDOWN FOR COUNTRIES
- * 
+ *
  * build a dropdown with all countries from geo_country_reference
- * 
+ *
  * @param int $selected - id for selected record
  * @param string $name - the name/id for select form
  * @return void - just echo the html encoded string
@@ -1511,12 +1510,12 @@ function dropdown_countries($selected = 0, $name = 'country_code') {
 // ----------------------------------------------------------------------------
 /**
  * DROPDOWN FOR YES/NO
- * 
+ *
  * build a dropdown with two options (yes - 1, no - 0)
- * 
+ *
  * @param int $selected - id for selected record
  * @param string $name - the name/id for select form
- * @return void - just echo the html encoded string 
+ * @return void - just echo the html encoded string
  */
 function dropdown_yesno($selected = 0, $name = 'yesno') {
     $string = "<select name='$name' id='$name'>";
@@ -1535,9 +1534,9 @@ function dropdown_yesno($selected = 0, $name = 'yesno') {
 // ----------------------------------------------------------------------------
 /**
  * DROPDOWN FOR MALE/FEMALE options
- * 
+ *
  * build a dropdown with three options (unselected/male/female)
- * 
+ *
  * @param int $selected - id for selected record
  * @param string $name - the name/id for select form
  * @return void - just echo the html encoded string
@@ -1560,9 +1559,9 @@ function dropdown_sex($selected = 0, $name = 'sex') {
 // ----------------------------------------------------------------------------
 /**
  * DROPDOWN FOR MARITAL STATUS
- * 
+ *
  * build a dropdown with marital status
- * 
+ *
  * @param int $selected - id for selected record
  * @param string $name - the name/id for select form
  * @return void - just echo the html encoded string
@@ -1585,9 +1584,9 @@ function dropdown_marital($selected = 0, $name = 'status') {
 // ----------------------------------------------------------------------------
 /**
  * DROPDOWN FOR PROVIDERS
- * 
+ *
  * build a dropdown with all providers
- * 
+ *
  * @param int $selected - id for selected record
  * @param string $name - the name/id for select form
  * @return void - just echo the html encoded string
@@ -1610,9 +1609,9 @@ function dropdown_providers($selected = 0, $name = 'status') {
 // ----------------------------------------------------------------------------
 /**
  * DROPDOWN FOR INSURANCE COMPANIES
- * 
+ *
  * build a dropdown with all insurers
- * 
+ *
  * @param int $selected - id for selected record
  * @param string $name - the name/id for select form
  * @return void - just echo the html encoded string
@@ -1636,9 +1635,9 @@ function dropdown_insurance($selected = 0, $name = 'iprovider') {
 // ----------------------------------------------------------------------------
 /**
  * COUNTRY CODE
- * 
+ *
  * return the name or the country code, function of arguments
- * 
+ *
  * @param int $country_code
  * @param string $country_name
  * @return string | int - name or code

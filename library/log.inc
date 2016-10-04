@@ -4,7 +4,7 @@ require_once(dirname(__FILE__). "/sql.inc");
 require_once(dirname(__FILE__). "/formdata.inc.php");
 
 function newEvent($event, $user, $groupname, $success, $comments="", $patient_id=null, $log_from = 'open-emr', $menu_item = 'dashboard', $ccda_doc_id = 0) {
-    $adodb = $GLOBALS['adodb']['db'];
+    $adodb = DB::instance();
     $crt_user=isset($_SERVER['SSL_CLIENT_S_DN_CN']) ?  $_SERVER['SSL_CLIENT_S_DN_CN'] : null;
 
     // deal with comments encryption, if turned on
@@ -31,20 +31,20 @@ function newEvent($event, $user, $groupname, $success, $comments="", $patient_id
     } else {
     /* More details added to the log */
     $sql = "insert into log ( date, event, user, groupname, success, comments, crt_user, patient_id) " .
-            "values ( NOW(), " . $adodb->qstr($event) . "," . $adodb->qstr($user) .
-            "," . $adodb->qstr($groupname) . "," . $adodb->qstr($success) . "," .
-            $adodb->qstr($comments) ."," .
-            $adodb->qstr($crt_user) ."," . $adodb->qstr($patient_id). ")";
+            "values ( NOW(), " . $adodb->quote($event) . "," . $adodb->quote($user) .
+            "," . $adodb->quote($groupname) . "," . $adodb->quote($success) . "," .
+            $adodb->quote($comments) ."," .
+            $adodb->quote($crt_user) ."," . $adodb->quote($patient_id). ")";
 
     $ret = sqlInsertClean_audit($sql);
     }
 
     // Send item to log_comment_encrypt for comment encyption tracking
-    $last_log_id = $GLOBALS['adodb']['db']->Insert_ID();
+    $last_log_id = DB::lastInsertId();
     $encryptLogQry = "INSERT INTO log_comment_encrypt (log_id, encrypt, checksum) ".
                      " VALUES ( ".
-                     $adodb->qstr($last_log_id) . "," .
-                     $adodb->qstr($encrypt_comment) . "," .
+                     $adodb->quote($last_log_id) . "," .
+                     $adodb->quote($encrypt_comment) . "," .
                      "'')";
     sqlInsertClean_audit($encryptLogQry);
 
@@ -751,15 +751,15 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
     $SSL_CLIENT_S_DN_CN=isset($_SERVER['SSL_CLIENT_S_DN_CN']) ? $_SERVER['SSL_CLIENT_S_DN_CN'] : '';
     $sql = "insert into log (date, event, user, groupname, comments, patient_id, success, checksum,crt_user) " .
          "values ( ".
-		 $adodb->qstr($current_datetime). ", ".
-         $adodb->qstr($event) . ", " .
-         $adodb->qstr($user) . "," .
-         $adodb->qstr($group) . "," .
-         $adodb->qstr($comments) . "," .
-         $adodb->qstr($pid) . "," .
-         $adodb->qstr($success) . "," .
-         $adodb->qstr($checksum) . "," .
-         $adodb->qstr($SSL_CLIENT_S_DN_CN) .")";
+		 $adodb->quote($current_datetime). ", ".
+         $adodb->quote($event) . ", " .
+         $adodb->quote($user) . "," .
+         $adodb->quote($group) . "," .
+         $adodb->quote($comments) . "," .
+         $adodb->quote($pid) . "," .
+         $adodb->quote($success) . "," .
+         $adodb->quote($checksum) . "," .
+         $adodb->quote($SSL_CLIENT_S_DN_CN) .")";
 	sqlInsertClean_audit($sql);
 
 	$last_log_id = $GLOBALS['adodb']['db']->Insert_ID();
@@ -771,9 +771,9 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
 	}
 	$encryptLogQry = "INSERT INTO log_comment_encrypt (log_id, encrypt, checksum) ".
 					 " VALUES ( ".
-					  $adodb->qstr($last_log_id) . "," .
-					  $adodb->qstr($encrypt_comment) . "," .
-					  $adodb->qstr($checksumGenerate) .")";
+					  $adodb->quote($last_log_id) . "," .
+					  $adodb->quote($encrypt_comment) . "," .
+					  $adodb->quote($checksumGenerate) .")";
 	sqlInsertClean_audit($encryptLogQry);
 
     send_atna_audit_msg($user, $group, $event, $pid, $success, $comments);
@@ -806,14 +806,14 @@ function auditSQLAuditTamper($enable)
     $SSL_CLIENT_S_DN_CN=isset($_SERVER['SSL_CLIENT_S_DN_CN']) ? $_SERVER['SSL_CLIENT_S_DN_CN'] : '';
     $sql = "insert into log (date, event, user, groupname, comments, patient_id, success, checksum,crt_user) " .
          "values ( NOW(), " .
-         $adodb->qstr($event) . ", " .
-         $adodb->qstr($user) . "," .
-         $adodb->qstr($group) . "," .
-         $adodb->qstr($comments) . "," .
-         $adodb->qstr($pid) . "," .
-         $adodb->qstr($success) . "," .
-         $adodb->qstr($checksum) . "," .
-         $adodb->qstr($SSL_CLIENT_S_DN_CN) .")";
+         $adodb->quote($event) . ", " .
+         $adodb->quote($user) . "," .
+         $adodb->quote($group) . "," .
+         $adodb->quote($comments) . "," .
+         $adodb->quote($pid) . "," .
+         $adodb->quote($success) . "," .
+         $adodb->quote($checksum) . "," .
+         $adodb->quote($SSL_CLIENT_S_DN_CN) .")";
 
     sqlInsertClean_audit($sql);
     send_atna_audit_msg($user, $group, $event, $pid, $success, $comments);
@@ -834,10 +834,10 @@ function recordDisclosure($dates,$event,$pid,$recipient,$description,$user)
         $groupname=$_SESSION['authProvider'];
         $success=1;
         $sql = "insert into extended_log ( date, event, user, recipient, patient_id, description) " .
-            "values (" . $adodb->qstr($dates) . "," . $adodb->qstr($event) . "," . $adodb->qstr($user) .
-            "," . $adodb->qstr($recipient) . ",".
-            $adodb->qstr($pid) ."," .
-            $adodb->qstr($description) .")";
+            "values (" . $adodb->quote($dates) . "," . $adodb->quote($event) . "," . $adodb->quote($user) .
+            "," . $adodb->quote($recipient) . ",".
+            $adodb->quote($pid) ."," .
+            $adodb->quote($description) .")";
         $ret = sqlInsertClean_audit($sql);
 }
 /**
@@ -851,11 +851,11 @@ function updateRecordedDisclosure($dates,$event,$recipient,$description,$disclos
 {
          $adodb = $GLOBALS['adodb']['db'];
          $sql="update extended_log set
-                event=" . $adodb->qstr($event) . ",
-                date=" .  $adodb->qstr($dates) . ",
-                recipient=" . $adodb->qstr($recipient) . ",
-                description=" . $adodb->qstr($description) . "
-                where id=" . $adodb->qstr($disclosure_id) . "";
+                event=" . $adodb->quote($event) . ",
+                date=" .  $adodb->quote($dates) . ",
+                recipient=" . $adodb->quote($recipient) . ",
+                description=" . $adodb->quote($description) . "
+                where id=" . $adodb->quote($disclosure_id) . "";
           $ret = sqlInsertClean_audit($sql);
 }
 /**
