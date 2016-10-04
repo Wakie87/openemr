@@ -68,7 +68,7 @@ function goRepeaterServices(){
 }
 
 function isEncounterLocked( encounterId ) {
-    <?php if ( $esignApi->lockEncounters() ) { ?>
+    <?php if ($esignApi->lockEncounters()) { ?>
 	// If encounter locking is enabled, make a syncronous call (async=false) to check the
 	// DB to see if the encounter is locked.
 	// Call restore session, just in case
@@ -104,7 +104,7 @@ var webroot_url="<?php echo $web_root; ?>";
 
 <script type="text/javascript">
 // Create translations to be used in the menuActionClick() function in below js/tabs_view_model.js script
-var xl_strings_tabs_view_model = <?php echo json_encode( array(
+var xl_strings_tabs_view_model = <?php echo json_encode(array(
     'encounter_locked' => xla('This encounter is locked. No new forms can be added.'),
     'must_select_patient'  => xla('You must first select or add a patient.'),
     'must_select_encounter'    => xla('You must first select or create an encounter.')

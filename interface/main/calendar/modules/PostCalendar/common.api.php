@@ -591,7 +591,7 @@ function postcalendar_userapi_submitEvent($args)
     //    determine if the event is to be published immediately or not
     //also whether is a special system only event i.e. _EVENT_TEMPORARY
     if (empty($event_status)) {
-        if( (bool) _SETTING_DIRECT_SUBMIT || (bool) PC_ACCESS_ADMIN || ($event_sharing != SHARING_GLOBAL) ) {
+        if((bool) _SETTING_DIRECT_SUBMIT || (bool) PC_ACCESS_ADMIN || ($event_sharing != SHARING_GLOBAL)) {
             $event_status = _EVENT_APPROVED;
         } else {
             $event_status = _EVENT_QUEUED;
@@ -781,7 +781,7 @@ function pc_notify($eid,$is_update)
     mail(_SETTING_NOTIFY_EMAIL,$subject,$message,
           "From: " . _SETTING_NOTIFY_EMAIL . "\r\n"
           ."X-Mailer: PHP/" . phpversion() . "\r\n"
-          ."X-Mailer: PostCalendar/$modversion" );
+          ."X-Mailer: PostCalendar/$modversion");
 
     return true;
 }
@@ -850,7 +850,7 @@ function findFirstInDay($day,$date) {
                     //event ends before intime or starts after outtime we don't care move on;
                     continue;
                 }
-                elseif ($eend < $i ) {
+                elseif ($eend < $i) {
                     //event ended before time currently being evaluated, we don't care move on;
                     continue;
                 }
@@ -1154,7 +1154,7 @@ function postcalendar_userapi_buildSubmitForm($args,$admin=false)
         $TimedDurationMinutes[$i] = array('value'=>$i,
                                           'selected'=>($event_dur_minutes==$i ? 'selected':''),
                                           'name'=>sprintf('%02d',$i));
-         if( $TimedDurationMinutes[$i]['selected'] == 'selected' )
+         if($TimedDurationMinutes[$i]['selected'] == 'selected')
              $found_time = true;
     }
 

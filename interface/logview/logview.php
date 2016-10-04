@@ -99,7 +99,7 @@ if ($start_date && $end_date)
 <?php
 $form_user = formData('form_user','R');
 $form_pid = formData('form_pid','R');
-if ($form_patient == '' ) $form_pid = '';
+if ($form_patient == '') $form_pid = '';
 
 $res = sqlStatement("select distinct LEFT(date,10) as date from log order by date desc limit 30");
 for($iter=0;$row=sqlFetchArray($res);$iter++) {

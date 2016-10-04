@@ -2129,13 +2129,13 @@ class EncounterccdadispatchTable extends AbstractTableGateway
     {
 	$encrypted  = sha1($code_text);
 	$code 	    = '';
-	for($i = 0; $i <= strlen($encrypted); ){
+	for($i = 0; $i <= strlen($encrypted);){
 	    $code  .= $encrypted[$i];
 	    $i 	    = $i+2;
 	}
 	$encrypted  = $code;
 	$code 	    = '';
-	for($i = 0; $i <= strlen($encrypted); ){
+	for($i = 0; $i <= strlen($encrypted);){
 	    $code  .= $encrypted[$i];
 	    $i 	    = $i+2;
 	}

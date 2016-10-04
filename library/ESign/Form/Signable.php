@@ -35,30 +35,30 @@ class Form_Signable extends DbRow_Signable implements SignableIF
     protected $_formId = null;
     protected $_formDir = null;
     
-    public function __construct( $formId, $formDir, $encounterId )
+    public function __construct($formId, $formDir, $encounterId)
     {
         $this->_formId = $formId;
         $this->_formDir = $formDir;
         $this->_encounterId = $encounterId;
-        parent::__construct( $formId, 'forms' );
+        parent::__construct($formId, 'forms');
     }
     
     protected function getLastLockHash()
     {
         $hash = null;
-        if ( $this->isLocked() ) {
+        if ($this->isLocked()) {
             // Check to see if there was an explicit lock hash
             $hash = parent::getLastLockHash();
             
             // If there was no explicit lock hash, then we must have been locked because
             // our encounter was locked, so get our last hash
-            if ( $hash === null ) {
+            if ($hash === null) {
                 $statement = "SELECT E.tid, E.table, E.hash FROM esign_signatures E ";
                 $statement .= "WHERE E.tid = ? AND E.table = ? ";
                 $statement .= "ORDER BY E.datetime DESC LIMIT 1";
-                $row = sqlQuery( $statement, array( $this->_tableId, $this->_tableName ) );
+                $row = sqlQuery($statement, array( $this->_tableId, $this->_tableName ));
                 $hash = null;
-                if ( $row && isset($row['hash']) ) {
+                if ($row && isset($row['hash'])) {
                     $hash = $row['hash'];
                 }
             }
@@ -79,17 +79,17 @@ class Form_Signable extends DbRow_Signable implements SignableIF
     {
         // Initialize to false and check individual form
         $locked = false;
-        if ( $GLOBALS['lock_esign_individual'] ) {
+        if ($GLOBALS['lock_esign_individual']) {
             $locked = parent::isLocked();
         }
         
         // Check the "parent" encounter if signing is allowed at encounter level
-        if ( !$locked && $GLOBALS['lock_esign_all'] ) {
+        if (!$locked && $GLOBALS['lock_esign_all']) {
             $statement = "SELECT E.is_lock FROM esign_signatures E ";
             $statement .= "WHERE E.tid = ? AND E.table = ? AND E.is_lock = ? ";
             $statement .= "ORDER BY E.datetime DESC LIMIT 1";
-            $row = sqlQuery( $statement, array( $this->_encounterId, 'form_encounter', SignatureIF::ESIGN_LOCK ) );
-            if ( $row && $row['is_lock'] == SignatureIF::ESIGN_LOCK ) {
+            $row = sqlQuery($statement, array( $this->_encounterId, 'form_encounter', SignatureIF::ESIGN_LOCK ));
+            if ($row && $row['is_lock'] == SignatureIF::ESIGN_LOCK) {
                 $locked = true;
             }
         }
@@ -112,10 +112,10 @@ class Form_Signable extends DbRow_Signable implements SignableIF
         // but this may not always be the case. TODO In the future, 
         // create a list in the list_options for formdir => table mapping
         $table = "form_".$this->_formDir;
-        if ( $this->_formDir == 'newpatient' ) {
+        if ($this->_formDir == 'newpatient') {
             $table = "form_encounter";
         }
-	if( $this->_formDir == 'procedure_order' ) {
+	if($this->_formDir == 'procedure_order') {
             $table = "procedure_order";
         }
 
@@ -123,17 +123,17 @@ class Form_Signable extends DbRow_Signable implements SignableIF
         // Get row from forms table
         $statement = "SELECT F.id, F.date, F.encounter, F.form_name, F.form_id, F.pid, F.user, F.formdir FROM forms F ";
         $statement .= "WHERE F.id = ? LIMIT 1";
-        $row = sqlQuery( $statement, array( $this->_formId ) );
+        $row = sqlQuery($statement, array( $this->_formId ));
         
         // Get form-specific data
-        $statement = "SELECT * FROM ".escape_table_name( $table )." ";
-        if( $this->_formDir == 'procedure_order' ) {
+        $statement = "SELECT * FROM ".escape_table_name($table)." ";
+        if($this->_formDir == 'procedure_order') {
             $statement .= "WHERE procedure_order_id = ? LIMIT 1";
         }
 	else {
             $statement .= "WHERE id = ? LIMIT 1";
         }
-        $formRow = sqlQuery( $statement, array( $row['form_id']) );
+        $formRow = sqlQuery($statement, array( $row['form_id']));
         
         return $formRow;
     }

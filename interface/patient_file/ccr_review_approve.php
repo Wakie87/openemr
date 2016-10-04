@@ -145,8 +145,8 @@ function submit_form(val){
 									if($res_pd['field_name'] == 'sex'){
 										echo "<td>" . ($patient_data[$res_pd['field_name']] ? text($patient_data[$res_pd['field_name']]): text($res_pd['field_name'])) . "</td>" .
 											"<td><select name='" . $res_pd['table_name'] . "-" . $res_pd['field_name'] . "' style='width:150px;' >" .
-                      "<option value='Male' " . ($res_pd['field_value'] == 'Male' ? 'selected' : '' ) . " >" . xlt('Male') . "</option>" .
-											"<option value='Female' ".($res_pd['field_value'] == 'Female' ? 'selected' : '' )." >".xlt('Female')."</option></select>" .
+                      "<option value='Male' " . ($res_pd['field_value'] == 'Male' ? 'selected' : '') . " >" . xlt('Male') . "</option>" .
+											"<option value='Female' ".($res_pd['field_value'] == 'Female' ? 'selected' : '')." >".xlt('Female')."</option></select>" .
                       "<span style='color:red;padding-left:25px;' >" . text($query_oldpd['val']) . "</span></td>" .
 											"<td><select name='" . $res_pd['table_name'] . "-" . $res_pd['field_name'] . "-sel'>" .
                       "<option value='ignore' >" . xlt('Ignore') . "</option> " .

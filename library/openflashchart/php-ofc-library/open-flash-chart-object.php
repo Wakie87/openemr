@@ -1,22 +1,22 @@
 <?php
 
-function open_flash_chart_object_str( $width, $height, $url, $use_swfobject=true, $base='' )
+function open_flash_chart_object_str($width, $height, $url, $use_swfobject=true, $base='')
 {
     //
     // return the HTML as a string
     //
-    return _ofc( $width, $height, $url, $use_swfobject, $base );
+    return _ofc($width, $height, $url, $use_swfobject, $base);
 }
 
-function open_flash_chart_object( $width, $height, $url, $use_swfobject=true, $base='' )
+function open_flash_chart_object($width, $height, $url, $use_swfobject=true, $base='')
 {
     //
     // stream the HTML into the page
     //
-    echo _ofc( $width, $height, $url, $use_swfobject, $base );
+    echo _ofc($width, $height, $url, $use_swfobject, $base);
 }
 
-function _ofc( $width, $height, $url, $use_swfobject, $base )
+function _ofc($width, $height, $url, $use_swfobject, $base)
 {
     //
     // I think we may use swfobject for all browsers,
@@ -63,7 +63,7 @@ function _ofc( $width, $height, $url, $use_swfobject, $base )
     
     //$out[] = '<script type="text/javascript" src="'. $base .'js/ofc.js"></script>';
 
-    if( !isset( $open_flash_chart_seqno ) )
+    if(!isset($open_flash_chart_seqno))
     {
         $open_flash_chart_seqno = 1;
         $out[] = '<script type="text/javascript" src="'. $base .'js/swfobject.js"></script>';
@@ -75,7 +75,7 @@ function _ofc( $width, $height, $url, $use_swfobject, $base )
         $div_name .= '_'. $open_flash_chart_seqno;
     }
     
-    if( $use_swfobject )
+    if($use_swfobject)
     {
 		// Using library for auto-enabling Flash object on IE, disabled-Javascript proof  
 		$out[] = '<div id="'. $div_name .'"></div>';
@@ -100,7 +100,7 @@ function _ofc( $width, $height, $url, $use_swfobject, $base )
     $out[] = 'type="application/x-shockwave-flash" pluginspage="' . $protocol . '://www.macromedia.com/go/getflashplayer" id="'. $obj_id .'"/>';
     $out[] = '</object>';
 
-    if ( $use_swfobject ) {
+    if ($use_swfobject) {
 		$out[] = '</noscript>';
     }
     

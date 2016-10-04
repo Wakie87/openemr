@@ -121,7 +121,7 @@ function edih_upload_match_file($param_ar, $fidx) {
 	$ar_fn = array();
 	$ftype = '';
 	//
-	if (is_array($fidx) && isset($fidx['name']) ) {
+	if (is_array($fidx) && isset($fidx['name'])) {
 		$fn = basename($fidx['name']);
 		$ftmp = $fidx['tmp_name'];
 	} else {
@@ -131,14 +131,14 @@ function edih_upload_match_file($param_ar, $fidx) {
 	//csv_check_x12_obj($filepath, $type='') {
 	$x12obj = new edih_x12_file($ftmp, false);
 	//
-	if ( $x12obj->edih_hasGS() ) {
-		$ftype = csv_file_type( $x12obj->edih_type() );
-	} elseif ( $x12obj->edih_valid() ) {
-		if ( is_array($param_ar) && count($param_ar)) {
+	if ($x12obj->edih_hasGS()) {
+		$ftype = csv_file_type($x12obj->edih_type());
+	} elseif ($x12obj->edih_valid()) {
+		if (is_array($param_ar) && count($param_ar)) {
 			// csv_parameters("ALL");
 			foreach ($param_ar as $ky=>$par) {
-				if ( !isset($param_ar[$ky]['regex']) ) { continue; }
-				if ( preg_match($param_ar[$ky]['regex'], $fn) ) {
+				if (!isset($param_ar[$ky]['regex'])) { continue; }
+				if (preg_match($param_ar[$ky]['regex'], $fn)) {
 					$ftype = $ky;
 					break;
 				}
@@ -153,26 +153,26 @@ function edih_upload_match_file($param_ar, $fidx) {
 		return false;
 	}
 	//
-	if ( !$ftype ) {
-		csv_edihist_log( 'edih_upload_match_file: unable to classify file '.$fn );
+	if (!$ftype) {
+		csv_edihist_log('edih_upload_match_file: unable to classify file '.$fn);
 		$ar_fn['reject'] = array('name'=>$fn, 'comment'=>'unable to classify');
 		return $ar_fn;
 	}
 	//
 	$newname = $edih_upldir.DS.$fn;
 	//
-	if ( rename($ftmp, $newname) ) {
-		if ( chmod($newname, 0400) ) {
+	if (rename($ftmp, $newname)) {
+		if (chmod($newname, 0400)) {
 			$ar_fn['type'] = $ftype;
 			$ar_fn['name'] = $newname;
 		} else {
-			csv_edihist_log( 'edih_upload_match_file: failed to set permissions for '.$fn );
+			csv_edihist_log('edih_upload_match_file: failed to set permissions for '.$fn);
 			$ar_fn['reject'] = array('name'=>$fn, 'comment'=>'failed to set permissions');
 			unlink($newname);
 			return false;
 		}
 	} else {
-		csv_edihist_log( "edih_upload_match_file: unable to move $fn to uploads directory");
+		csv_edihist_log("edih_upload_match_file: unable to move $fn to uploads directory");
 		return false;
 	}
 	//
@@ -242,7 +242,7 @@ function edih_ziptoarray($zipfilename, $param_ar, $single=false) {
 			// extract the file to unzip tmp dir with read/write access
 			$chrs = file_put_contents($newname, $fstr);
 			// test crc
-			$newCrc = hexdec(hash_file("crc32b", $newname) );
+			$newCrc = hexdec(hash_file("crc32b", $newname));
 			//
 			if($newCrc !== $oldCrc && ($oldCrc + 4294967296) !== $newCrc) {
 				// failure case, mismatched crc file integrity values
@@ -262,9 +262,9 @@ function edih_ziptoarray($zipfilename, $param_ar, $single=false) {
 				$f_uplz = edih_upload_match_file($param_ar, $fzp, $html_str);
 				//
 				if (is_array($f_uplz) && count($f_uplz)) {
-					if ( isset($f_uplz['reject']) ) {
+					if (isset($f_uplz['reject'])) {
 						$f_zr['reject'][] = $f_uplz['reject'];
-					} elseif ( isset($f_uplz['name']) ) {
+					} elseif (isset($f_uplz['name'])) {
 						$f_zr[$f_uplz['type']][] = $f_uplz['name'];
 						$p_ct++;
 					}
@@ -310,7 +310,7 @@ function edih_upload_files() {
 		csv_edihist_log('edih_upload_files: Error: upload too large, max size is '.$pmax);
 		return false;
 	}
-	if (empty($_FILES) ) {
+	if (empty($_FILES)) {
 		csv_edihist_log('Error: upload files indicated, but none received.');
 		return false;
 	}
@@ -327,7 +327,7 @@ function edih_upload_files() {
 	if ($uplkey != "fileUplMulti") {
 		// Undefined | Multiple Files | $_FILES Corruption Attack
 	    // If this request falls under any of them, treat it invalid.
-	    if ( !isset($_FILES[$uplkey]['error']) || is_array($_FILES[$uplkey]['error']) ) {
+	    if (!isset($_FILES[$uplkey]['error']) || is_array($_FILES[$uplkey]['error'])) {
 			csv_edihist_log('edih_upload_files: Error: file array keys error');
 			return false;
 		}
@@ -359,7 +359,7 @@ function edih_upload_files() {
 	//begin the check and processing loop
 	foreach($files[$uplkey] as $idx=>$fa) {
 		// basic php verification checks
-		if ($fa['error'] !== UPLOAD_ERR_OK ) {
+		if ($fa['error'] !== UPLOAD_ERR_OK) {
 			//$html_str .= "Error: [{$fa['name']}] " . edih_upload_err_message($fa['error']) . "<br />" . PHP_EOL;
 			$err = edih_upload_err_message($fa['error']);
 			$f_ar['reject'][] = array('name'=>$fa['name'],'comment'=>$err);
@@ -367,14 +367,14 @@ function edih_upload_files() {
 			unset($files[$uplkey][$idx]);
 			continue;
 		}
-		if ( !is_uploaded_file($fa['tmp_name']) ) {
+		if (!is_uploaded_file($fa['tmp_name'])) {
 			//$html_str .= "Error: uploaded_file error for {$fa['name']}<br />". PHP_EOL;
 			$f_ar['reject'][] = array('name'=>$fa['name'],'comment'=>'php uploaded file error');
 			csv_edihist_log('edih_upload_files: _FILES error tmp_name '.$fa['name']);
 			unset($files[$uplkey][$idx]);
 			continue;
 		}
-		if ( !in_array($fa['type'], $m_types) ) {
+		if (!in_array($fa['type'], $m_types)) {
 			//$html_str .= "Error: mime-type {$fa['type']} not accepted for {$fa['name']} <br />" . PHP_EOL;
 			$f_ar['reject'][] = array('name'=>$fa['name'],'comment'=>'mime-type '.$fa['type']);
 			csv_edihist_log('edih_upload_files: _FILES error mime-type '.$fa['name'].' mime-type '.$fa['type']);
@@ -382,8 +382,8 @@ function edih_upload_files() {
 			continue;
 		}
 		// verify that we have a usable name
-		$fext = ( strpos($fa['name'], '.') ) ? pathinfo($fa['name'], PATHINFO_EXTENSION) : '';
-		if( $fext && preg_match('/'.$ext_types.'\?/i',$fext) ) {
+		$fext = (strpos($fa['name'], '.')) ? pathinfo($fa['name'], PATHINFO_EXTENSION) : '';
+		if($fext && preg_match('/'.$ext_types.'\?/i',$fext)) {
 			//$html_str .= 'Error: uploaded_file error for '.$fa['name'].' extension '.$fext.'<br />'. PHP_EOL;
 			$f_ar['reject'][] = array('name'=>$fa['name'],'comment'=>'extension '.$fext);
 			csv_edihist_log('edih_upload_files: _FILES error name '.$fa['name'].' extension '.$fext);
@@ -392,9 +392,9 @@ function edih_upload_files() {
 		}
 		if (is_string($fa['name'])) {
 			// check for null byte in file name, linux hidden file, directory
-			if (strpos($fa['name'], '.') === 0 || strpos($fa['name'], "\0") !== false || strpos($fa['name'], "./") !== false ) {
+			if (strpos($fa['name'], '.') === 0 || strpos($fa['name'], "\0") !== false || strpos($fa['name'], "./") !== false) {
 				//$html_str .= "Error: uploaded_file error for " . $fa['name'] . "<br />". PHP_EOL;
-				$fname = preg_replace( "/[^a-zA-Z0-9_.-]/","_", $fa['name'] );
+				$fname = preg_replace("/[^a-zA-Z0-9_.-]/","_", $fa['name']);
 				$f_ar['reject'][] = array('name'=>$fname,'comment'=>'null byte, hidden, invalid');
 				csv_edihist_log('edih_upload_files: null byte, hidden, invalid '.$fname);
 				unset($files[$uplkey][$idx]);
@@ -410,7 +410,7 @@ function edih_upload_files() {
 			unset($files[$uplkey][$idx]);
 			continue;
 		}
-		if ( !$fa['tmp_name'] || !$fa['size'] ) {
+		if (!$fa['tmp_name'] || !$fa['size']) {
 			//$html_str .= "Error: file name or size error <br />" . PHP_EOL;
 			$f_ar['reject'][] = array('name'=>(string)$fa['name'],'comment'=>'php file upload error');
 			unset($files[$uplkey][$idx]);
@@ -421,7 +421,7 @@ function edih_upload_files() {
 		//////////////////////////////////
 		// check for zip file archive -- sent to edih_ziptoarray
 		//
-		if ( strpos(strtolower($fa['name']), '.zip') || strpos($fa['type'], 'zip') ) {
+		if (strpos(strtolower($fa['name']), '.zip') || strpos($fa['type'], 'zip')) {
 			//
 			// this is a bit involved since we cannot predict how many files will be returned
 			// get an array of files from the zip unpack function"fileUplx12"
@@ -438,8 +438,8 @@ function edih_upload_files() {
 			if (is_array($f_upl) && count($f_upl)) {
 				// $tp is file type, fz is file name
 				foreach($f_upl as $tp=>$fz) {
-					if ( $tp == 'reject' ) {
-						if ( isset($f_ar['reject']) && is_array($fz) ) {
+					if ($tp == 'reject') {
+						if (isset($f_ar['reject']) && is_array($fz)) {
 							array_merge($f_ar['reject'], $fz);
 						} else {
 							$f_ar['reject'] = (is_array($fz)) ? $fz : array();
@@ -470,7 +470,7 @@ function edih_upload_files() {
 		//////////
 		$f_upl = edih_upload_match_file($param_ar, $fa);
 		//
-		if (is_array($f_upl) && count($f_upl) > 0 ) {
+		if (is_array($f_upl) && count($f_upl) > 0) {
 			$f_ar[$f_upl['type']][] = $f_upl['name'];
 			$p_ct++;
 		} else {
@@ -504,7 +504,7 @@ function edih_sort_upload($files_array, $html_out=true, $err_only=true) {
 	$rmk_htm = '';
 	$dirpath = csv_edih_basedir();
 	//
-	if ( is_array($files_array) && count($files_array) ) {
+	if (is_array($files_array) && count($files_array)) {
 		// we have some files
 		$p_ar = csv_parameters($type="ALL");
 		//
@@ -512,12 +512,12 @@ function edih_sort_upload($files_array, $html_out=true, $err_only=true) {
 		foreach ($files_array as $key=>$val) {
 			//
 			$prc_htm .=  "<ul class='fupl'>".PHP_EOL;
-			if ( isset($p_ar[$key]) ) {
+			if (isset($p_ar[$key])) {
 				$tp_dir = $p_ar[$key]['directory'];
 				$tp_base = basename($tp_dir);
 				$idx = 0;
 				$prc_htm .= "<li>type $key</li>".PHP_EOL;
-				if ( !is_array($val) || !count($val) ) {
+				if (!is_array($val) || !count($val)) {
 					$prc_htm .= "<li>no new files</li>" . PHP_EOL;
 					continue;
 				}
@@ -527,9 +527,9 @@ function edih_sort_upload($files_array, $html_out=true, $err_only=true) {
 					$nfb = basename($nf);
 					$testname = $tp_dir.DS.$nfb;
 					$prc_htm .= "<li>$nfb</li>".PHP_EOL;
-					if ( is_file($testname) ) {
+					if (is_file($testname)) {
 						$prc_htm .= "<li> -- file exists</li>" .PHP_EOL;
-					} elseif (rename($nf, $testname) ) {
+					} elseif (rename($nf, $testname)) {
 						$iscm = chmod($testname, 0400);
 						if (!$iscm) {
 							// if we could write, we should be able to set permissions

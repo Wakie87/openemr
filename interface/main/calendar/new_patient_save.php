@@ -75,15 +75,15 @@ if ($result = sqlQuery("select * from patient_data where lower(fname)=lower('".$
                     $pid
                     );
 
-    newEmployerData( $pid);
+    newEmployerData($pid);
 
-    newHistoryData( $pid);
+    newHistoryData($pid);
 
-    newInsuranceData( $pid, "primary");
+    newInsuranceData($pid, "primary");
 
-    newInsuranceData( $pid, "secondary");
+    newInsuranceData($pid, "secondary");
 
-    newInsuranceData( $pid, "tertiary");
+    newInsuranceData($pid, "tertiary");
 }
 
 ?>

@@ -193,7 +193,7 @@ function deliver_document($task) {
     $mail->MsgHTML("<html><HEAD> <TITLE>Fax Central openEMR</TITLE> <BASE HREF='http://www.oculoplasticsllc.com'> </HEAD><body><div class='wrapper'>".$cover_page."</div></body></html>");
     $mail->IsHTML(true);
     $mail->AltBody = $cover_page;
-    $mail->AddAttachment( $file_to_attach , $file_name );
+    $mail->AddAttachment($file_to_attach , $file_name);
     if ($mail->Send()) {
         return true;
     } else {

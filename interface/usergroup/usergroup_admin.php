@@ -234,27 +234,27 @@ if (isset($_POST["mode"])) {
     
     $insertUserSQL=
             "insert into users set " .
-            "username = '"         . trim(formData('rumple'       )) .
+            "username = '"         . trim(formData('rumple')) .
             "', password = '"      . 'NoLongerUsed'                  .
-            "', fname = '"         . trim(formData('fname'        )) .
-            "', mname = '"         . trim(formData('mname'        )) .
-            "', lname = '"         . trim(formData('lname'        )) .
-            "', federaltaxid = '"  . trim(formData('federaltaxid' )) .
-            "', state_license_number = '"  . trim(formData('state_license_number' )) .
-            "', newcrop_user_role = '"  . trim(formData('erxrole' )) .
-			"', physician_type = '"  . trim(formData('physician_type' )) .
-            "', authorized = '"    . trim(formData('authorized'   )) .
-            "', info = '"          . trim(formData('info'         )) .
+            "', fname = '"         . trim(formData('fname')) .
+            "', mname = '"         . trim(formData('mname')) .
+            "', lname = '"         . trim(formData('lname')) .
+            "', federaltaxid = '"  . trim(formData('federaltaxid')) .
+            "', state_license_number = '"  . trim(formData('state_license_number')) .
+            "', newcrop_user_role = '"  . trim(formData('erxrole')) .
+			"', physician_type = '"  . trim(formData('physician_type')) .
+            "', authorized = '"    . trim(formData('authorized')) .
+            "', info = '"          . trim(formData('info')) .
             "', federaldrugid = '" . trim(formData('federaldrugid')) .
-            "', upin = '"          . trim(formData('upin'         )) .
-            "', npi  = '"          . trim(formData('npi'          )).
-            "', taxonomy = '"      . trim(formData('taxonomy'     )) .
-            "', facility_id = '"   . trim(formData('facility_id'  )) .
-            "', specialty = '"     . trim(formData('specialty'    )) .
-            "', see_auth = '"      . trim(formData('see_auth'     )) .
-            "', cal_ui = '"        . trim(formData('cal_ui'       )) .
+            "', upin = '"          . trim(formData('upin')) .
+            "', npi  = '"          . trim(formData('npi')).
+            "', taxonomy = '"      . trim(formData('taxonomy')) .
+            "', facility_id = '"   . trim(formData('facility_id')) .
+            "', specialty = '"     . trim(formData('specialty')) .
+            "', see_auth = '"      . trim(formData('see_auth')) .
+            "', cal_ui = '"        . trim(formData('cal_ui')) .
             "', default_warehouse = '" . trim(formData('default_warehouse')) .
-            "', irnpool = '"       . trim(formData('irnpool'      )) .
+            "', irnpool = '"       . trim(formData('irnpool')) .
             "', calendar = '"      . $calvar                         .
             "', pwd_expiration_date = '" . trim("$exp_date") .
             "'";

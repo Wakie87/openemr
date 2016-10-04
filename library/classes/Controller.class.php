@@ -45,7 +45,7 @@ class Controller extends Smarty {
                foreach($_POST as $varname => $var) {
                        $varname = preg_replace("/[^A-Za-z0-9_]/","",$varname);
                        $func = "set_" . $varname;
-                       if (    (!(strpos("_",$varname) === 0)) && is_callable(array($obj,$func))       ) {
+                       if ((!(strpos("_",$varname) === 0)) && is_callable(array($obj,$func))) {
                                //echo "c: $func on w: "  . $var . "<br />";
 
 			       //modified 01-2010 by BGM to centralize to formdata.inc.php

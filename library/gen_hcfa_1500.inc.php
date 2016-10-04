@@ -174,7 +174,7 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
   if(!hcfa_1500_version_02_12())  // Box 8 Reserved for NUCC Use in 02/12
   {
     $tmp = $claim->patientOccupation();
-    if      ($tmp === 'STUDENT'   ) put_hcfa(16, 41, 1, 'X');
+    if      ($tmp === 'STUDENT') put_hcfa(16, 41, 1, 'X');
     else if ($tmp === 'PT STUDENT') put_hcfa(16, 47, 1, 'X');
     else if ($tmp !== 'UNEMPLOYED') put_hcfa(16, 35, 1, 'X');
   }

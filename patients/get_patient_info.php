@@ -49,7 +49,7 @@
     else {
         // keep the current session language token
     }
-    $_SESSION['language_direction'] = getLanguageDir( $_SESSION['language_choice'] );
+    $_SESSION['language_direction'] = getLanguageDir($_SESSION['language_choice']);
 
 
 
@@ -117,7 +117,7 @@
             $_SESSION['portal_username']=$_POST['uname'];
     $sql = "SELECT * FROM `patient_data` WHERE `pid` = ?";
 
-    if ($userData = sqlQuery($sql, array($auth['pid']) )) { // if query gets executed
+    if ($userData = sqlQuery($sql, array($auth['pid']))) { // if query gets executed
 
         if (empty($userData)) {
                             // no records for this pid, so escape
@@ -140,7 +140,7 @@
             exit;
         }
 
-        if ( $password_update)
+        if ($password_update)
             {
                 $code_new=$_POST['pass_new'];
                 $code_new_confirm=$_POST['pass_new_confirm'];
@@ -150,7 +150,7 @@
 
                 // Update the password and continue (patient is authorized)
                 privStatement("UPDATE ".TBL_PAT_ACC_ON
-                              ."  SET ".COL_POR_PWD."=?,".COL_POR_SALT."=?,".COL_POR_PWD_STAT."=1 WHERE id=?", array($new_hash,$new_salt,$auth['id']) );
+                              ."  SET ".COL_POR_PWD."=?,".COL_POR_SALT."=?,".COL_POR_PWD_STAT."=1 WHERE id=?", array($new_hash,$new_salt,$auth['id']));
                 $authorizedPortal = true;
             }
         }

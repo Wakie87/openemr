@@ -21,7 +21,7 @@ require_once("../../custom/code_types.inc.php");
 // Ensoftek: Jul-2015: Get the facility of the logged in user.
 function getLoggedInUserFacility(){
 	$sql = "SELECT f.name, f.facility_npi FROM users AS u LEFT JOIN facility AS f ON u.facility_id = f.id WHERE u.id=?";
-	$res = sqlStatement($sql, array($_SESSION['authUserID']) );
+	$res = sqlStatement($sql, array($_SESSION['authUserID']));
 	 while ($arow = sqlFetchArray($res)) {
 		return $arow;
 	}
@@ -67,11 +67,11 @@ if(isset($_POST['form_to_date'])) {
 //
 $form_code = isset($_POST['form_code']) ? $_POST['form_code'] : Array();
 //
-if (empty ($form_code) ) {
+if (empty ($form_code)) {
   $query_codes = '';
 } else {
   $query_codes = 'c.id in (';
-      foreach( $form_code as $code ){ $query_codes .= $code . ","; }
+      foreach($form_code as $code){ $query_codes .= $code . ","; }
       $query_codes = substr($query_codes ,0,-1);
       $query_codes .= ') and ';
 }
@@ -225,7 +225,7 @@ if ($_POST['form_get_hl7']==='true') {
 
   // send the header here
   header('Content-type: text/plain');
-  header('Content-Disposition: attachment; filename=' . $filename );
+  header('Content-Disposition: attachment; filename=' . $filename);
 
   // put the content in the file
   echo($content);

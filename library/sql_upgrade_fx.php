@@ -153,7 +153,7 @@ function tableHasIndex($tblname, $colname) {
  * @return boolean true if the table has been created using specified engine
  */
 function tableHasEngine($tblname, $engine) {
-  $row = sqlQuery( 'SELECT 1 FROM information_schema.tables WHERE table_name=? AND engine=? AND table_type="BASE TABLE"', array($tblname,$engine ) );
+  $row = sqlQuery('SELECT 1 FROM information_schema.tables WHERE table_name=? AND engine=? AND table_type="BASE TABLE"', array($tblname,$engine ));
   return (empty($row)) ? false : true;
 }
 
@@ -182,7 +182,7 @@ function clickOptionsMigrate() {
     $seq  = 10;
     $prev = '';
     echo "Importing clickoption setting<br>";
-    while (!feof($file_handle) ) {
+    while (!feof($file_handle)) {
       $line_of_text = fgets($file_handle);
       if (preg_match('/^#/', $line_of_text)) continue;
       if ($line_of_text == "") continue;
@@ -191,11 +191,11 @@ function clickOptionsMigrate() {
       $parts[1] = trim(str_replace("\r\n","",$parts[1]));
       if ($parts[0] != $prev) {
         $sql1 = "INSERT INTO list_options (`list_id`,`option_id`,`title`) VALUES (?,?,?)";
-        SqlStatement($sql1, array('lists',$parts[0].'_issue_list',ucwords(str_replace("_"," ",$parts[0])).' Issue List') );
+        SqlStatement($sql1, array('lists',$parts[0].'_issue_list',ucwords(str_replace("_"," ",$parts[0])).' Issue List'));
         $seq = 10;
       }
       $sql2 = "INSERT INTO list_options (`list_id`,`option_id`,`title`,`seq`) VALUES (?,?,?,?)";
-      SqlStatement($sql2, array($parts[0].'_issue_list', $parts[1], $parts[1], $seq) );
+      SqlStatement($sql2, array($parts[0].'_issue_list', $parts[1], $parts[1], $seq));
       $seq = $seq + 10;
       $prev = $parts[0];
     }
@@ -264,20 +264,20 @@ function CreateImmunizationManufacturerList() {
  * @param array $arg possible arguments: engine, table_name
  * @return SQLStatement
  */
-function getTablesList( $arg = array() ) {
+function getTablesList($arg = array()) {
     $binds = array();
     $sql = 'SELECT table_name FROM information_schema.tables WHERE table_schema=database() AND table_type="BASE TABLE"';
     
-    if( !empty($arg['engine'])) {
+    if(!empty($arg['engine'])) {
         $binds[] = $arg['engine'];
         $sql .= ' AND engine=?';
     }
     
-    if( !empty($arg['table_name'])) {
+    if(!empty($arg['table_name'])) {
         $binds[] = $arg['table_name'];
         $sql .= ' AND table_name=?';
     }
-    $res = sqlStatement( $sql, $binds );
+    $res = sqlStatement($sql, $binds);
 
     $records = array();
     while($row = sqlFetchArray($res)) {
@@ -293,8 +293,8 @@ function getTablesList( $arg = array() ) {
  * @param string $engine
  * ADODB will fail if there was an error during conversion
  */
-function MigrateTableEngine( $table, $engine ) {
-  $r = sqlStatement('ALTER TABLE `'.$table.'` ENGINE=?', $engine );
+function MigrateTableEngine($table, $engine) {
+  $r = sqlStatement('ALTER TABLE `'.$table.'` ENGINE=?', $engine);
   return true;
 }
 
@@ -568,7 +568,7 @@ function upgradeFromSqlFile($filename) {
       if ($skipping) echo "<font color='green'>Skipping section $line</font><br />\n";
     }
     else if (preg_match('/^#IfNotListOccupation/', $line)) {
-      if ( (listExists("Occupation")) || (!columnExists('patient_data','occupation')) ) {
+      if ((listExists("Occupation")) || (!columnExists('patient_data','occupation'))) {
         $skipping = true;
       }
       else {
@@ -580,7 +580,7 @@ function upgradeFromSqlFile($filename) {
       if ($skipping) echo "<font color='green'>Skipping section $line</font><br />\n";
     }
     else if (preg_match('/^#IfNotListReaction/', $line)) {
-      if ( (listExists("reaction")) || (!columnExists('lists','reaction')) ) {
+      if ((listExists("reaction")) || (!columnExists('lists','reaction'))) {
         $skipping = true;
       }
       else {
@@ -592,7 +592,7 @@ function upgradeFromSqlFile($filename) {
       if ($skipping) echo "<font color='green'>Skipping section $line</font><br />\n";
     }
     else if (preg_match('/^#IfNotListImmunizationManufacturer/', $line)){
-      if ( listExists("Immunization_Manufacturer") ) {
+      if (listExists("Immunization_Manufacturer")) {
         $skipping = true;
       }
       else {
@@ -631,7 +631,7 @@ function upgradeFromSqlFile($filename) {
     }
     // perform special actions if table has specific engine
     else if (preg_match('/^#IfTableEngine\s+(\S+)\s+(MyISAM|InnoDB)/', $line, $matches)) {
-      $skipping = !tableHasEngine( $matches[1], $matches[2] );
+      $skipping = !tableHasEngine($matches[1], $matches[2]);
       if ($skipping) echo "<font color='green'>Skipping section $line</font><br />\n";
     }
     // find MyISAM tables and attempt to convert them
@@ -639,23 +639,23 @@ function upgradeFromSqlFile($filename) {
       //tables that need to skip InnoDB migration (stay at MyISAM for now)
       $tables_skip_migration = array('form_eye_mag');
 
-      $tables_list = getTablesList( array('engine'=>'MyISAM'));
-      if( count($tables_list)==0 ) {
+      $tables_list = getTablesList(array('engine'=>'MyISAM'));
+      if(count($tables_list)==0) {
         $skipping = true;
       } else {
         $skipping = false;
         echo '<font color="black">Starting migration to InnoDB, please wait.</font><br />',"\n";
-        foreach( $tables_list as $k=>$t ) {
+        foreach($tables_list as $k=>$t) {
           if (in_array($t,$tables_skip_migration)) {
-            printf( '<font color="green">Table %s was purposefully skipped and NOT migrated to InnoDB.</font><br />', $t );
+            printf('<font color="green">Table %s was purposefully skipped and NOT migrated to InnoDB.</font><br />', $t);
             continue;
           }
-          $res = MigrateTableEngine( $t, 'InnoDB' );
-          if( $res === TRUE) {
-            printf( '<font color="green">Table %s migrated to InnoDB.</font><br />', $t );
+          $res = MigrateTableEngine($t, 'InnoDB');
+          if($res === TRUE) {
+            printf('<font color="green">Table %s migrated to InnoDB.</font><br />', $t);
           } else {
-            printf( '<font color="red">Error migrating table %s to InnoDB</font><br />', $t );
-            error_log( sprintf( 'Error migrating table %s to InnoDB', $t ));
+            printf('<font color="red">Error migrating table %s to InnoDB</font><br />', $t);
+            error_log(sprintf('Error migrating table %s to InnoDB', $t));
           }
         }
       }

@@ -410,7 +410,7 @@ if ($_GET['html'] == 1) {
         // only plot if we have both weight and heights. Skip if either is 0.
         // Rational is only well visit will need both, sick visit only needs weight
         // for some clinic.
-        if ($weight == 0 || $height == 0 ) { continue; }
+        if ($weight == 0 || $height == 0) { continue; }
 
         // get age of patient at this data-point
         // to get data from function getPatientAgeYMD including $age,$age_in_months, $ageinYMD
@@ -555,7 +555,7 @@ foreach ($datapoints as $data) {
     // only plot if we have both weight and heights. Skip if either is 0.
     // Rational is only well visit will need both, sick visit only needs weight
     // for some clinic.
-    if ($weight == 0 || $height == 0 ) { continue; }
+    if ($weight == 0 || $height == 0) { continue; }
     
     // get age of patient at this data-point
     // to get data from function getPatientAgeYMD including $age, $ageinYMD, $age_in_months

@@ -168,7 +168,7 @@
 		$encArr = array();
 		$patQry = "SELECT fe.encounter, fe.date,fe.pc_catid,opc.pc_catname FROM form_encounter fe inner join openemr_postcalendar_categories opc on opc.pc_catid = fe.pc_catid WHERE fe.pid = ? AND (DATE(fe.date) BETWEEN ? AND ?)";
 		$patRes = sqlStatement($patQry, array($patient_id, $from_date, $to_date));
-		while( $patRow = sqlFetchArray($patRes ) ){
+		while($patRow = sqlFetchArray($patRes)){
 			$encArr[] = $patRow;
 		}
 		
@@ -179,7 +179,7 @@
 		$diagArr = array();
 		$diagQry = "SELECT * FROM lists WHERE TYPE = ? AND pid = ? AND (DATE(date) BETWEEN ? AND ?)";
 		$diagRes = sqlStatement($diagQry, array($type, $patient_id, $from_date, $to_date));
-		while( $diagRow = sqlFetchArray($diagRes) ){
+		while($diagRow = sqlFetchArray($diagRes)){
 			$diagArr[] = $diagRow;
 		}
 		
@@ -190,7 +190,7 @@
 		$medArr = array();
 		$medQry = "SELECT * FROM prescriptions where patient_id = ? AND active = 0 AND (DATE(date_added) BETWEEN ? AND ?)";
 		$medRes = sqlStatement($medQry, array($patient_id, $from_date, $to_date));
-		while( $medRow = sqlFetchArray($medRes) ){
+		while($medRow = sqlFetchArray($medRes)){
 			$medArr[] = $medRow;
 		}
 		
@@ -201,7 +201,7 @@
 		$medArr = array();
 		$medQry = "SELECT * FROM prescriptions where patient_id = ? AND active = 1 AND (DATE(date_added) BETWEEN ? AND ?)";
 		$medRes = sqlStatement($medQry, array($patient_id, $from_date, $to_date));
-		while( $medRow = sqlFetchArray($medRes) ){
+		while($medRow = sqlFetchArray($medRes)){
 			$medArr[] = $medRow;
 		}
 	
@@ -217,7 +217,7 @@
 					"WHERE poc.procedure_order_title = ? AND po.patient_id = ? ".
 					"AND (po.date_ordered BETWEEN ? AND ?)";
 		$procRes = sqlStatement($procQry, array($proc_type, $patient_id, $from_date, $to_date));
-		while( $procRow = sqlFetchArray($procRes ) ){
+		while($procRow = sqlFetchArray($procRes)){
 			$procArr[] = $procRow;
 		}
 		
@@ -232,7 +232,7 @@
 					"WHERE v.pid = ? ".
 					"AND (v.date BETWEEN ? AND ?)";
 		$vitRes = sqlStatement($vitQry, array($patient_id, $from_date, $to_date));
-		while( $vitRow = sqlFetchArray($vitRes ) ){
+		while($vitRow = sqlFetchArray($vitRes)){
 			$vitArr[] = $vitRow;
 		}
 		
@@ -245,7 +245,7 @@
 					"WHERE patient_id = ? ".
 					"AND (administered_date BETWEEN ? AND ?)";
 		$immRes = sqlStatement($immQry, array($patient_id, $from_date, $to_date));
-		while( $immRow = sqlFetchArray($immRes ) ){
+		while($immRow = sqlFetchArray($immRes)){
 			$immArr[] = $immRow;
 		}
 		

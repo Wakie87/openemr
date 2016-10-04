@@ -61,12 +61,12 @@ $form_diagnosis = (isset($_POST['form_diagnosis'])) ? $_POST['form_diagnosis'] :
   }
 </script>
 
-<title><?php echo htmlspecialchars( xl('Find Patient Education Materials'), ENT_NOQUOTES); ?></title>
+<title><?php echo htmlspecialchars(xl('Find Patient Education Materials'), ENT_NOQUOTES); ?></title>
 </head>
 
 <body class="body_top">
 
-<span class='title'><?php echo htmlspecialchars( xl('Web Search'), ENT_NOQUOTES); ?> - <?php echo htmlspecialchars( xl('Patient Education Materials'), ENT_NOQUOTES); ?></span>
+<span class='title'><?php echo htmlspecialchars(xl('Web Search'), ENT_NOQUOTES); ?> - <?php echo htmlspecialchars(xl('Patient Education Materials'), ENT_NOQUOTES); ?></span>
 
 <form method='post' action='patient_edu_web_lookup.php' id='theform' onsubmit='return top.restoreSession()'>
 
@@ -79,13 +79,13 @@ $form_diagnosis = (isset($_POST['form_diagnosis'])) ? $_POST['form_diagnosis'] :
 	<table class='text'>
 		<tr>
 			<td>
-			   <?php echo htmlspecialchars( xl('Search in'), ENT_NOQUOTES);
+			   <?php echo htmlspecialchars(xl('Search in'), ENT_NOQUOTES);
                 echo '&nbsp;&nbsp;';
 				echo "<select name='form_lookup_at'>\n";
 				foreach ($websites as $key => $value) {
 				  echo "    <option value='" . htmlspecialchars($key, ENT_QUOTES) . "'";
 				  if ($key == $form_lookup_at) echo ' selected';
-				  echo ">" . htmlspecialchars( xl($key), ENT_NOQUOTES) . "</option>\n";
+				  echo ">" . htmlspecialchars(xl($key), ENT_NOQUOTES) . "</option>\n";
 				}
 				echo "</select>"; ?>
 			</td>
@@ -93,7 +93,7 @@ $form_diagnosis = (isset($_POST['form_diagnosis'])) ? $_POST['form_diagnosis'] :
         <tr>
             <td>
 			   <input type='text' name='form_diagnosis' size='60' value='<?php echo htmlspecialchars($form_diagnosis, ENT_QUOTES); ?>'
-				title='<?php echo htmlspecialchars( xl('Search Text'), ENT_QUOTES); ?>'>
+				title='<?php echo htmlspecialchars(xl('Search Text'), ENT_QUOTES); ?>'>
 			</td>
 		</tr>
 	</table>
@@ -108,7 +108,7 @@ $form_diagnosis = (isset($_POST['form_diagnosis'])) ? $_POST['form_diagnosis'] :
 				<div style='margin-left:15px'>
 					<a href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit();'>
 					<span>
-						<?php echo htmlspecialchars( xl('Submit'), ENT_NOQUOTES); ?>
+						<?php echo htmlspecialchars(xl('Submit'), ENT_NOQUOTES); ?>
 					</span>
 					</a>
 
@@ -124,7 +124,7 @@ $form_diagnosis = (isset($_POST['form_diagnosis'])) ? $_POST['form_diagnosis'] :
 
 <div class='text'>
 <?php
-  echo htmlspecialchars( xl('Please input search criteria above, and click Submit to view results. (Results will be displayed in a pop up window)'), ENT_NOQUOTES);
+  echo htmlspecialchars(xl('Please input search criteria above, and click Submit to view results. (Results will be displayed in a pop up window)'), ENT_NOQUOTES);
 ?>
 </div>
 <div class='text'>

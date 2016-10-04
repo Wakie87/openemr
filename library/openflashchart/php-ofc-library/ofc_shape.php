@@ -2,7 +2,7 @@
 
 class shape_point
 {
-	function shape_point( $x, $y )
+	function shape_point($x, $y)
 	{
 		$this->x = $x;
 		$this->y = $y;
@@ -11,14 +11,14 @@ class shape_point
 
 class shape
 {
-	function shape( $colour )
+	function shape($colour)
 	{
 		$this->type		= "shape";
 		$this->colour	= $colour;
 		$this->values	= array();
 	}
 	
-	function append_value( $p )
+	function append_value($p)
 	{
 		$this->values[] = $p;
 	}

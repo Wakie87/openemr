@@ -52,8 +52,8 @@ $form_id = $_REQUEST['form_id'];
 $form_type = $_REQUEST['form_type'];
 $uniqueID = $_REQUEST['uniqueID'];
 
-if ($issue && !acl_check('patients','med','','write') ) die(xlt("Edit is not authorized!"));
-if ( !acl_check('patients','med','',array('write','addonly') )) die(xlt("Add is not authorized!"));
+if ($issue && !acl_check('patients','med','','write')) die(xlt("Edit is not authorized!"));
+if (!acl_check('patients','med','',array('write','addonly'))) die(xlt("Add is not authorized!"));
 $PMSFH = build_PMSFH($pid);
 $patient = getPatientData($pid, "*");
 
@@ -774,16 +774,16 @@ function negate_radio(section) {
               $dateStart=$_POST['dateState'];
               $dateEnd=$_POST['dateEnd'];
               if ($dateStart && $dateEnd) {
-                    $result1 = sqlQuery("select $given from history_data where pid = ? and date >= ? and date <= ? order by date DESC limit 0,1", array($pid,$dateStart,$dateEnd) );
+                    $result1 = sqlQuery("select $given from history_data where pid = ? and date >= ? and date <= ? order by date DESC limit 0,1", array($pid,$dateStart,$dateEnd));
                 }
                 else if ($dateStart && !$dateEnd) {
-                    $result1 = sqlQuery("select $given from history_data where pid = ? and date >= ? order by date DESC limit 0,1", array($pid,$dateStart) );
+                    $result1 = sqlQuery("select $given from history_data where pid = ? and date >= ? order by date DESC limit 0,1", array($pid,$dateStart));
                 }
                 else if (!$dateStart && $dateEnd) {
-                    $result1 = sqlQuery("select $given from history_data where pid = ? and date <= ? order by date DESC limit 0,1", array($pid,$dateEnd) );
+                    $result1 = sqlQuery("select $given from history_data where pid = ? and date <= ? order by date DESC limit 0,1", array($pid,$dateEnd));
                 }
                 else {
-                    $result1 = sqlQuery("select $given from history_data where pid=? order by date DESC limit 0,1", array($pid) );
+                    $result1 = sqlQuery("select $given from history_data where pid=? order by date DESC limit 0,1", array($pid));
                 }
 
                 $group_fields_query = sqlStatement("SELECT * FROM layout_options " .
@@ -825,9 +825,9 @@ function negate_radio(section) {
                     } break;
                   }
                   $fldlength = empty($frow['fld_length']) ?  20 : $frow['fld_length'];
-                  $fldlength = htmlspecialchars( $fldlength, ENT_QUOTES);
-                  $result2[$field_id]['resnote'] = htmlspecialchars( $result2[$field_id]['resnote'], ENT_QUOTES);
-                  $result2[$field_id]['resdate'] = htmlspecialchars( $result2[$field_id]['resdate'], ENT_QUOTES);
+                  $fldlength = htmlspecialchars($fldlength, ENT_QUOTES);
+                  $result2[$field_id]['resnote'] = htmlspecialchars($result2[$field_id]['resnote'], ENT_QUOTES);
+                  $result2[$field_id]['resdate'] = htmlspecialchars($result2[$field_id]['resdate'], ENT_QUOTES);
                 } else if ($data_type == 2) {
                    $result2[$field_id]['resnote'] = nl2br(htmlspecialchars($currvalue,ENT_NOQUOTES));
                 }

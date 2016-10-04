@@ -10,7 +10,7 @@ while ($row=sqlFetchArray($res)) {
 	
 	if (!$flag_on) {
 		$flag_on=TRUE;
-		foreach ($row as $key => $value ){
+		foreach ($row as $key => $value){
 			$file.="$key,";
 		}
 		$file=substr($file,0,-1);

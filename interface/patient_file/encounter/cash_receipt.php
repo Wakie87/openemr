@@ -325,7 +325,7 @@ $encounter . "' and pid='$pid'"))
 ?>
 <table border="1" cellpadding=5>
 <?php
-if ($result = getBillingByEncounter($pid,$encounter,"*") ) {
+if ($result = getBillingByEncounter($pid,$encounter,"*")) {
 	$billing_html = array();
         $total = 0.0;
 	$copay = 0.0;

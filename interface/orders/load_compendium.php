@@ -100,9 +100,9 @@ if ($form_step == 0) {
   echo " <tr>\n";
   echo "  <td nowrap>" . xlt('Action') . "</td>\n";
   echo "  <td><select name='action'>";
-  echo "<option value='1'>" . xlt('Load Order Definitions'    ) . "</option>";
+  echo "<option value='1'>" . xlt('Load Order Definitions') . "</option>";
   echo "<option value='2'>" . xlt('Load Order Entry Questions') . "</option>";
-  echo "<option value='3'>" . xlt('Load OE Question Options'  ) . "</option>";
+  echo "<option value='3'>" . xlt('Load OE Question Options') . "</option>";
   echo "</td>\n";
   echo " </tr>\n";
 

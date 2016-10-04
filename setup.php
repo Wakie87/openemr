@@ -78,7 +78,7 @@ if (empty($site_id) || preg_match('/[^A-Za-z0-9\\-.]/', $site_id))
 // checking, then can be manually disabled here.
 $checkPermissions = True;
 
-$installer = new Installer( $_REQUEST );
+$installer = new Installer($_REQUEST);
 global $OE_SITE_DIR; // The Installer sets this
 
 $docsDirectory = "$OE_SITE_DIR/documents";
@@ -154,11 +154,11 @@ function cloneClicked() {
    echo "Error: PHP XML extension missing. To continue, install PHP XML extension, then restart web server.";
    exit(1);
  }
- if( !(extension_loaded("mysql") || extension_loaded("mysqlnd") || extension_loaded("mysqli"))   ) {
+ if(!(extension_loaded("mysql") || extension_loaded("mysqlnd") || extension_loaded("mysqli"))) {
    echo "Error: PHP MySQL extension missing. To continue, install and enable MySQL extension, then restart web server.";
    exit(1);
  }
- if( !(extension_loaded("mbstring") )   ) {
+ if(!(extension_loaded("mbstring"))) {
    echo "Error: PHP mb_string extension missing. To continue, install and enable mb_string extension, then restart web server.";
    exit(1);
  }
@@ -279,10 +279,10 @@ else {
     $siteslist = array();
     while (false !== ($sfname = readdir($dh))) {
       if (substr($sfname, 0, 1) == '.') continue;
-      if ($sfname == 'CVS'            ) continue;
-      if ($sfname == $site_id         ) continue;
+      if ($sfname == 'CVS') continue;
+      if ($sfname == $site_id) continue;
       $sitedir = "$OE_SITES_BASE/$sfname";
-      if (!is_dir($sitedir)               ) continue;
+      if (!is_dir($sitedir)) continue;
       if (!is_file("$sitedir/sqlconf.php")) continue;
       $siteslist[$sfname] = $sfname;
     }
@@ -330,24 +330,24 @@ else {
     $pass_step2_validation = TRUE;
     $error_step2_message   = "ERROR at ";
 
-    if ( ! $installer->char_is_valid($_REQUEST['server'])) {
+    if (! $installer->char_is_valid($_REQUEST['server'])) {
        $pass_step2_validation = FALSE;
        $error_step2_message .=  "Database Server Host, ";
     }
 
-    if ( ! $installer->char_is_valid($_REQUEST['port']))  {
+    if (! $installer->char_is_valid($_REQUEST['port']))  {
         $pass_step2_validation = FALSE;
         $error_step2_message .=  "Database Server Port, ";
     }
-    if ( ! $installer->char_is_valid($_REQUEST['dbname']))  {
+    if (! $installer->char_is_valid($_REQUEST['dbname']))  {
         $pass_step2_validation = FALSE;
         $error_step2_message .= "Database Name, ";
     }
-    if ( ! $installer->char_is_valid($_REQUEST['login']))  {
+    if (! $installer->char_is_valid($_REQUEST['login']))  {
         $pass_step2_validation = FALSE;
         $error_step2_message .= "Database Login Name, ";
     }
-    if ( ! $installer->char_is_valid($_REQUEST['pass']))  {
+    if (! $installer->char_is_valid($_REQUEST['pass']))  {
         $pass_step2_validation = FALSE;
         $error_step2_message .= "Database Login Password, ";
     }
@@ -357,23 +357,23 @@ else {
 
 
     if (empty($installer->clone_database)) {
-      if ( ! $installer->login_is_valid() ) {
+      if (! $installer->login_is_valid()) {
         echo "ERROR. Please pick a proper 'Login Name'.<br>\n";
         echo "Click Back in browser to re-enter.<br>\n";
         break;
       }
-      if ( ! $installer->iuser_is_valid() ) {
+      if (! $installer->iuser_is_valid()) {
         echo "ERROR. The 'Initial User' field can only contain one word and no spaces.<br>\n";
         echo "Click Back in browser to re-enter.<br>\n";
         break;
       }
-      if ( ! $installer->user_password_is_valid() ) {
+      if (! $installer->user_password_is_valid()) {
         echo "ERROR. Please pick a proper 'Initial User Password'.<br>\n";
         echo "Click Back in browser to re-enter.<br>\n";
         break;
       }
     }
-    if ( ! $installer->password_is_valid() ) {
+    if (! $installer->password_is_valid()) {
       echo "ERROR. Please pick a proper 'Password'.<br>\n";
       echo "Click Back in browser to re-enter.<br>\n";
       break;
@@ -387,7 +387,7 @@ else {
 
       echo "Connecting to MySQL Server...\n";
       flush();
-      if ( ! $installer->root_database_connection() ) {
+      if (! $installer->root_database_connection()) {
 	echo "ERROR.  Check your login credentials.\n";
 	echo $installer->error_message;
 	break;
@@ -399,11 +399,11 @@ else {
     }
 
     // Only pertinent if cloning another installation database
-    if ( ! empty($installer->clone_database)) {
+    if (! empty($installer->clone_database)) {
 
       echo "Dumping source database...";
       flush();
-      if ( ! $installer->create_dumpfiles() ) {
+      if (! $installer->create_dumpfiles()) {
         echo $installer->error_message;
         break;
       }
@@ -414,10 +414,10 @@ else {
     }
 
     // Only pertinent if mirroring another installation directory
-    if ( ! empty($installer->source_site_id)) {
+    if (! empty($installer->source_site_id)) {
 
       echo "Creating site directory...";
-      if ( ! $installer->create_site_directory() ) {
+      if (! $installer->create_site_directory()) {
         echo $installer->error_message;
         break;
       }
@@ -431,7 +431,7 @@ else {
     if ($inst != 2) {
       echo "Creating database...\n";
       flush();
-      if ( ! $installer->create_database() ) {
+      if (! $installer->create_database()) {
         echo "ERROR.  Check your login credentials.\n";
         echo $installer->error_message;
         break;
@@ -442,7 +442,7 @@ else {
 
       echo "Creating user with permissions for database...\n";
       flush();
-      if ( ! $installer->grant_privileges() ) {
+      if (! $installer->grant_privileges()) {
 	echo "ERROR when granting privileges to the specified user.\n";
 	echo $installer->error_message;
 	break;
@@ -458,7 +458,7 @@ else {
 
       echo "Connecting to MySQL Server...\n";
     }
-    if ( ! $installer->user_database_connection() ) {
+    if (! $installer->user_database_connection()) {
       echo "ERROR.  Check your login credentials.\n";
       echo $installer->error_message;
       break;
@@ -470,7 +470,7 @@ else {
     
     // Load the database files
     $dump_results = $installer->load_dumpfiles();
-    if ( ! $dump_results ) {
+    if (! $dump_results) {
       echo $installer->error_message;
       break;
     } else {
@@ -480,7 +480,7 @@ else {
 
     echo "Writing SQL configuration...\n";
     flush();
-    if ( ! $installer->write_configuration_file() ) {
+    if (! $installer->write_configuration_file()) {
       echo $installer->error_message;
       break;
     }
@@ -494,7 +494,7 @@ else {
 
       echo "Setting version indicators...\n";
       flush();
-      if ( ! $installer->add_version_info() ) {
+      if (! $installer->add_version_info()) {
         echo "ERROR.\n";
         echo $installer->error_message;;
         break;
@@ -506,7 +506,7 @@ else {
 
       echo "Writing global configuration defaults...\n";
       flush();
-      if ( ! $installer->insert_globals() ) {
+      if (! $installer->insert_globals()) {
         echo "ERROR.\n";
         echo $installer->error_message;;
         break;
@@ -518,7 +518,7 @@ else {
 
       echo "Adding Initial User...\n";
       flush();
-      if ( ! $installer->add_initial_user() ) {
+      if (! $installer->add_initial_user()) {
         echo $installer->error_message;
         break;
       }
@@ -526,7 +526,7 @@ else {
       flush();
     }
     
-    if ( ! empty($installer->clone_database) ) {
+    if (! empty($installer->clone_database)) {
       // Database was cloned, skip ACL setup.
       echo "Click 'continue' for further instructions.";
       $next_state = 7;
@@ -553,7 +553,7 @@ else {
     echo "<b>Step $state</b><br><br>\n";
     echo "Installing and Configuring Access Controls (php-GACL)...<br><br>";
     
-    if ( ! $installer->install_gacl() ) {
+    if (! $installer->install_gacl()) {
       echo $installer->error_message;
       break;
     }

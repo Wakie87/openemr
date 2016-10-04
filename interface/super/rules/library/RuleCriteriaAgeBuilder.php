@@ -6,7 +6,7 @@
  // as published by the Free Software Foundation; either version 2
  // of the License, or (at your option) any later version.
 
-require_once( library_src( 'RuleCriteriaBuilder.php') );
+require_once(library_src('RuleCriteriaBuilder.php'));
 /**
  * Description of RuleCriteriaAgeBuilder
  *
@@ -17,11 +17,11 @@ class RuleCriteriaAgeBuilder extends RuleCriteriaBuilder {
     /**
      * @return RuleCriteriaType
      */
-    function resolveRuleCriteriaType( $method, $methodDetail, $value ) {
-        if (strpos($method, "age_max") ) {
+    function resolveRuleCriteriaType($method, $methodDetail, $value) {
+        if (strpos($method, "age_max")) {
             return RuleCriteriaType::from(RuleCriteriaType::ageMax);
         }
-        if (strpos($method, "age_min") ) {
+        if (strpos($method, "age_min")) {
             return RuleCriteriaType::from(RuleCriteriaType::ageMin);
         }
         return null;
@@ -31,7 +31,7 @@ class RuleCriteriaAgeBuilder extends RuleCriteriaBuilder {
      * @param RuleCriteriaType $ruleCriteriaType
      * @return RuleCriteria
      */
-    function build( $ruleCriteriaType, $value, $methodDetail ) {
+    function build($ruleCriteriaType, $value, $methodDetail) {
         $method = $ruleCriteriaType->method;
         $criteria = new RuleCriteriaAge(
                 $method == 'age_max' ? 'max' : 'min',
@@ -47,13 +47,13 @@ class RuleCriteriaAgeBuilder extends RuleCriteriaBuilder {
      *
      * @param RuleCriteriaType $criteriaType
      */
-    function newInstance( $criteriaType ) {
-        if ( $criteriaType->code == RuleCriteriaType::ageMin ) {
-            return new RuleCriteriaAge( 'min' );
+    function newInstance($criteriaType) {
+        if ($criteriaType->code == RuleCriteriaType::ageMin) {
+            return new RuleCriteriaAge('min');
         }
 
-        if ( $criteriaType->code == RuleCriteriaType::ageMax ) {
-            return new RuleCriteriaAge( 'max' );
+        if ($criteriaType->code == RuleCriteriaType::ageMax) {
+            return new RuleCriteriaAge('max');
         }
 
         return null;

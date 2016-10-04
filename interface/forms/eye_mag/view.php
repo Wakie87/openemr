@@ -3329,7 +3329,7 @@ if ($refresh and $refresh != 'fullscreen') {
                                        echo "    <option value=''> " . text($prow['title']) . "\n";
                                       $res = sqlStatement("SELECT code_type, code, code_text,modifier FROM codes " .
                                         "WHERE superbill = ? AND active = 1 " .
-                                        "ORDER BY code_text", array($prow['option_id']) );
+                                        "ORDER BY code_text", array($prow['option_id']));
                                       while ($row = sqlFetchArray($res)) {
                                         $ctkey = alphaCodeType($row['code_type']);
                                         if ($code_types[$ctkey]['nofs']) continue;

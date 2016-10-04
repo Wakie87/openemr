@@ -100,7 +100,7 @@ function oemr_password_hash($plaintext,$salt)
     }
     else { // Otherwise use PHP crypt()
         $crypt_return = crypt($plaintext,$salt);
-        if ( ($crypt_return == '*0') || ($crypt_return == '*1') || (strlen($crypt_return) < 6) ) {
+        if (($crypt_return == '*0') || ($crypt_return == '*1') || (strlen($crypt_return) < 6)) {
             // Error code returned by crypt or not hash, so die
             error_log("FATAL ERROR: crypt() function is not working correctly in OpenEMR");
             die("FATAL ERROR: crypt() function is not working correctly in OpenEMR");

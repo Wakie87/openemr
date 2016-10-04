@@ -38,7 +38,7 @@
  */
 function edih_997_sbmtfile($icn, $filetype) {
 	//
-	if ( strlen($icn) == 13 ) {
+	if (strlen($icn) == 13) {
 		$bticn = substr($icn, 0, 9);
 		$stn = substr($icn, -4);
 	} else {
@@ -101,7 +101,7 @@ function edih_997_errdata($obj997) {
 			continue;
 		}
 			
-		if (strncmp($seg, 'AK2'.$de, 4) == 0 || strncmp($seg, 'IK2'.$de, 4) == 0 ) {
+		if (strncmp($seg, 'AK2'.$de, 4) == 0 || strncmp($seg, 'IK2'.$de, 4) == 0) {
 			$sar = explode($de, $seg);
 			//
 			$iserr = false;
@@ -111,7 +111,7 @@ function edih_997_errdata($obj997) {
 			// AK2*837*0001
 			continue;
 		}
-		if (strncmp($seg, 'AK3'.$de, 4) == 0 || strncmp($seg, 'IK3'.$de, 4) == 0 ) {
+		if (strncmp($seg, 'AK3'.$de, 4) == 0 || strncmp($seg, 'IK3'.$de, 4) == 0) {
 			$sar = explode($de, $seg);
 			//$idx = count($diag);
 			$idx++;
@@ -144,7 +144,7 @@ function edih_997_errdata($obj997) {
 			//
 			continue;
 		}
-		if (strncmp($seg, 'AK4'.$de, 4) == 0 || strncmp($seg, 'IK4'.$de, 4) == 0 ) {
+		if (strncmp($seg, 'AK4'.$de, 4) == 0 || strncmp($seg, 'IK4'.$de, 4) == 0) {
 			$sar = explode($de, $seg);
 			$diag['err'][$idx]['ik401'] = (isset($sar[1])) ?  $sar[1] : '';
 			$diag['err'][$idx]['ik402'] = (isset($sar[2])) ?  $sar[2] : '';
@@ -153,7 +153,7 @@ function edih_997_errdata($obj997) {
 			//
 			continue;
 		}
-		if (strncmp($seg, 'AK5'.$de, 4) == 0 || strncmp($seg, 'IK5'.$de, 4) == 0 ) {
+		if (strncmp($seg, 'AK5'.$de, 4) == 0 || strncmp($seg, 'IK5'.$de, 4) == 0) {
 			if ($iserr) {
 				$sar = explode($de, $seg);
 				$diag['err'][$idx]['ik501'] = (isset($sar[1])) ?  $sar[1] : '';

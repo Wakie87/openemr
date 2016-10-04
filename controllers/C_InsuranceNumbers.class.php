@@ -18,7 +18,7 @@ class C_InsuranceNumbers extends Controller {
                 $this->assign("FORM_ACTION", $GLOBALS['webroot']."/controller.php?" . $_SERVER['QUERY_STRING']);
                 $this->assign("CURRENT_ACTION", $GLOBALS['webroot']."/controller.php?" . "practice_settings&insurance_numbers&");
                 $this->assign("STYLE", $GLOBALS['style']);
-        		$this->assign("WEB_ROOT", $GLOBALS['webroot'] );
+        		$this->assign("WEB_ROOT", $GLOBALS['webroot']);
         }
 
         function default_action() {
@@ -28,7 +28,7 @@ class C_InsuranceNumbers extends Controller {
         function edit_action($id = "",$provider_id="",$p_obj = null) {
 
                 //case where a direct id is provided, doesn't matter if a provider id is available get it from the insurance_numbers record
-                if (get_class($this->insurance_numbers[0]) != "insurancenumbers" && is_numeric($id) ) {
+                if (get_class($this->insurance_numbers[0]) != "insurancenumbers" && is_numeric($id)) {
                         $this->insurance_numbers[0] = new InsuranceNumbers($id);
                         $this->providers[0] = new Provider($this->insurance_numbers[0]->get_provider_id());
                 }

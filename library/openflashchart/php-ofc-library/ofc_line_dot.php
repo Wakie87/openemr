@@ -2,23 +2,23 @@
 
 class dot_value
 {
-	function dot_value( $value, $colour )
+	function dot_value($value, $colour)
 	{
 		$this->value = $value;
 		$this->colour = $colour;
 	}
 	
-	function set_colour( $colour )
+	function set_colour($colour)
 	{
 		$this->colour = $colour;
 	}
 	
-	function set_size( $size )
+	function set_size($size)
 	{
 		$this->size = $size;
 	}
 	
-	function set_tooltip( $tip )
+	function set_tooltip($tip)
 	{
 		$this->tip = $tip;
 	}

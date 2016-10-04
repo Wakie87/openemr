@@ -247,14 +247,14 @@ else {
 }
 
 // Prepare look and feel of data points
-$s = new scatter_line( '#DB1750', 2 );
+$s = new scatter_line('#DB1750', 2);
 $def = new hollow_dot();
 $def->size(4)->halo_size(3)->tooltip('#val#<br>#date:Y-m-d H:i#');
-$s->set_default_dot_style( $def );
+$s->set_default_dot_style($def);
 if ($isBP) {
   //set up the other blood pressure line
-  $s_alt = new scatter_line( '#0000FF', 2 );
-  $s_alt->set_default_dot_style( $def );
+  $s_alt = new scatter_line('#0000FF', 2);
+  $s_alt->set_default_dot_style($def);
 }
 
 // Prepare and insert data
@@ -266,7 +266,7 @@ while ($row = sqlFetchArray($values)) {
       // apply unit conversion multiplier
       $y=$row["$name"]*$multiplier;
     }
-    else if ($isConvertFtoC ) {
+    else if ($isConvertFtoC) {
       // apply temp F to C conversion
       $y=convertFtoC($row["$name"]);
     }
@@ -277,7 +277,7 @@ while ($row = sqlFetchArray($values)) {
     $data[] = new scatter_value($x, $y);
   }
 }
-$s->set_values( $data );
+$s->set_values($data);
 if ($isBP) {
   //set up the other blood pressure line
   $data = array();
@@ -288,7 +288,7 @@ if ($isBP) {
       // apply unit conversion multiplier
       $y=$row["$name_alt"]*$multiplier;
     }
-    else if ($isConvertFtoC ) {
+    else if ($isConvertFtoC) {
       // apply temp F to C conversion
       $y=convertFtoC($row["$name_alt"]);
     }
@@ -299,12 +299,12 @@ if ($isBP) {
       $data[] = new scatter_value($x, $y);
     }
   }
-  $s_alt->set_values( $data );
+  $s_alt->set_values($data);
 }
 
 // Prepare the x-axis
 $x = new x_axis();
-$x->set_range( $ranges['min_date'], $ranges['max_date']  );
+$x->set_range($ranges['min_date'], $ranges['max_date']);
 // Calculate the steps and visible steps
 $step=($ranges['max_date'] - $ranges['min_date'])/60;
 $step_vis=2;
@@ -329,9 +329,9 @@ if ($name == "bpd") {
     // apply unit conversion multiplier
     $maximum = $ranges_alt["max_"."$name_alt"]*$multiplier;
   }
-  else if ($isConvertFtoC ) {
+  else if ($isConvertFtoC) {
     // apply temp F to C conversion
-    $maximum = convertFtoC( $ranges_alt["max_"."$name_alt"] );
+    $maximum = convertFtoC($ranges_alt["max_"."$name_alt"]);
   }
   else {
     // no conversion, so use raw value
@@ -343,9 +343,9 @@ else {
     // apply unit conversion multiplier
     $maximum = $ranges["max_"."$name"]*$multiplier;
   }
-  else if ($isConvertFtoC ) {
+  else if ($isConvertFtoC) {
     // apply temp F to C conversion
-    $maximum = convertFtoC( $ranges["max_"."$name"] );
+    $maximum = convertFtoC($ranges["max_"."$name"]);
   }
   else {
     // no conversion, so use raw value
@@ -353,25 +353,25 @@ else {
   }
 }
 // set the range and y-step
-$y->set_range( 0 , $maximum + getIdealYSteps( $maximum ) );
-$y->set_steps( getIdealYSteps( $maximum ) );
+$y->set_range(0 , $maximum + getIdealYSteps($maximum));
+$y->set_steps(getIdealYSteps($maximum));
 
 // Build and show the chart
 $chart = new open_flash_chart();
-$chart->set_title( new Title( $titleGraph ));
+$chart->set_title(new Title($titleGraph));
 if ($isBP) {
   // Set up both bp lines
-  $s -> set_key( $titleGraphLine1 , 10 );
-  $chart->add_element( $s );
-  $s_alt -> set_key( $titleGraphLine2 , 10 );
-  $chart->add_element( $s_alt );
+  $s -> set_key($titleGraphLine1 , 10);
+  $chart->add_element($s);
+  $s_alt -> set_key($titleGraphLine2 , 10);
+  $chart->add_element($s_alt);
 }
 else {
   // Set up the line
-  $chart->add_element( $s );
+  $chart->add_element($s);
 }
-$chart->set_x_axis( $x );
-$chart->add_y_axis( $y );
+$chart->set_x_axis($x);
+$chart->add_y_axis($y);
     
 //error_log("Chart: ".$chart->toPrettyString(),0);
 

@@ -1421,7 +1421,7 @@ class HTML2PDF
 
         // get the width and the position of the parent
         $old = $this->parsingCss->getOldValues();
-        if ( $old['width']) {
+        if ($old['width']) {
             $parentWidth = $old['width'];
             $parentX = $x;
         } else {

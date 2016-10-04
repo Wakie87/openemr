@@ -17,7 +17,7 @@ $provider_results = sqlQuery("select * from users where username='" . $_SESSION{
 
 ////////////////////////////////////////////////////////////////////
 // Function:	getPatientDateOfLastEncounter
-function getPatientDateOfLastEncounter( $nPid )
+function getPatientDateOfLastEncounter($nPid)
 {
   // get date of last encounter no codes
   $strEventDate = sqlQuery("SELECT MAX(pc_eventDate) AS max 
@@ -27,30 +27,30 @@ function getPatientDateOfLastEncounter( $nPid )
                   AND pc_eventDate >= '2007-01-01'");
   
   // now check if there was a previous encounter
-  if( $strEventDate['max'] != "" )
-    return( $strEventDate['max'] );
+  if($strEventDate['max'] != "")
+    return($strEventDate['max']);
   else
-    return( "00-00-0000" );
+    return("00-00-0000");
 }
 
-$m_strEventDate = getPatientDateOfLastEncounter( $result['pid'] );
+$m_strEventDate = getPatientDateOfLastEncounter($result['pid']);
 
 // get autosave id for Psychiatrisch Onderzoek
-$vectAutosave = sqlQuery( "SELECT id, autosave_flag, autosave_datetime FROM form_brief_aan_verwijzer
+$vectAutosave = sqlQuery("SELECT id, autosave_flag, autosave_datetime FROM form_brief_aan_verwijzer
                             WHERE pid = ".$_SESSION["pid"].
                             " AND groupname='".$_SESSION["authProvider"].
                             "' AND user='".$_SESSION["authUser"]."' AND
                             authorized=$userauthorized AND activity=1
                             AND autosave_flag=1 
-                            ORDER by id DESC limit 1" );
+                            ORDER by id DESC limit 1");
 
-if( $vectAutosave['id'] && $vectAutosave['id'] != "" && $vectAutosave['id'] > 0 )
+if($vectAutosave['id'] && $vectAutosave['id'] != "" && $vectAutosave['id'] > 0)
 {
   $obj = formFetch("form_brief_aan_verwijzer", $vectAutosave['id']);
   
 } else
 {
-  $obj = formFetch("form_brief_aan_verwijzer", (int)$_GET["id"] );
+  $obj = formFetch("form_brief_aan_verwijzer", (int)$_GET["id"]);
 }
 
 ?>
@@ -83,7 +83,7 @@ if( $vectAutosave['id'] && $vectAutosave['id'] != "" && $vectAutosave['id'] > 0 
 
 <?php
 
-if( $_GET["id"] )
+if($_GET["id"])
   $brief_aan_verwijzer_id = $_GET["id"];
 else
   $brief_aan_verwijzer_id = "0";

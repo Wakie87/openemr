@@ -25,11 +25,11 @@ if(isset($_POST['form_to_date'])) {
 //
 $form_code = isset($_POST['form_code']) ? $_POST['form_code'] : Array();
 //
-if (empty ($form_code) ) {
+if (empty ($form_code)) {
   $query_codes = '';
 } else {
   $query_codes = 'c.id in (';
-      foreach( $form_code as $code ){ $query_codes .= $code . ","; }
+      foreach($form_code as $code){ $query_codes .= $code . ","; }
       $query_codes = substr($query_codes ,0,-1);
       $query_codes .= ') and ';
 }
@@ -40,7 +40,7 @@ function tr($a) {
 
 function format_cvx_code($cvx_code) {
 
-	if ( $cvx_code < 10 ) {
+	if ($cvx_code < 10) {
 		return "0$cvx_code";
 	}
 	
@@ -229,7 +229,7 @@ if ($_POST['form_get_hl7']==='true') {
 
   // send the header here
   header('Content-type: text/plain');
-  header('Content-Disposition: attachment; filename=' . $filename );
+  header('Content-Disposition: attachment; filename=' . $filename);
 
   // put the content in the file
   echo($content);
@@ -455,7 +455,7 @@ onsubmit='return top.restoreSession()'>
 </div> <!-- end of results -->
 <?php } else { ?>
 <div class='text'>
-  <?php echo xl('Click Refresh to view all results, or please input search criteria above to view specific results.', 'e' ); ?>
+  <?php echo xl('Click Refresh to view all results, or please input search criteria above to view specific results.', 'e'); ?>
 </div>
 <?php } ?>
 </form>

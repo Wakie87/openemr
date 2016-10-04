@@ -50,21 +50,21 @@ class Controller_alerts extends BaseController {
 		$numrows = count($ids);
 		for ($i = 0; $i < $numrows; ++$i) {
 				
-		        if ( $actives[$i] == "on") {
+		        if ($actives[$i] == "on") {
 		        	$actives_final[] = "1";
 		        }
 		        else {
 		        	$actives_final[] = "0";;
 		        }
 		        
-		        if ( $passives[$i] == "on") {
+		        if ($passives[$i] == "on") {
 		        	$passives_final[] = "1";
 		        }
 		        else {
 		        	$passives_final[] = "0";;
 		        }
 		        
-		        if ( $reminders[$i] == "on") {
+		        if ($reminders[$i] == "on") {
 		        	$reminders_final[] = "1";
 		        }
 		        else {

@@ -216,7 +216,7 @@ require_once "$srcdir/clinical_rules.php";
      <?php
       //list off all targets with rule information shown when hover
       foreach ($all_alerts as $targetInfo => $alert) {
-       if ( ($row['category'] == 'clinical_reminder_widget') || ($row['category'] == 'active_reminder_popup') ) {
+       if (($row['category'] == 'clinical_reminder_widget') || ($row['category'] == 'active_reminder_popup')) {
         $rule_title = getListItemTitle("clinical_rules",$alert['rule_id']);
         $catAndTarget = explode(':',$targetInfo);
         $category = $catAndTarget[0];
@@ -238,7 +238,7 @@ require_once "$srcdir/clinical_rules.php";
      if (!empty($row['new_value'])) {
       //list new targets with rule information shown when hover
       foreach ($new_alerts as $targetInfo => $alert) {
-       if ( ($row['category'] == 'clinical_reminder_widget') || ($row['category'] == 'active_reminder_popup') ) {
+       if (($row['category'] == 'clinical_reminder_widget') || ($row['category'] == 'active_reminder_popup')) {
         $rule_title = getListItemTitle("clinical_rules",$alert['rule_id']);
         $catAndTarget = explode(':',$targetInfo);
         $category = $catAndTarget[0];

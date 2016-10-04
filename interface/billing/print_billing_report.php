@@ -66,7 +66,7 @@ if (!isset($_GET["mode"])) {
 <br>
 
 <?php 
-if ($my_authorized == "on" ) {
+if ($my_authorized == "on") {
     $my_authorized = 1;
 } else {
     $my_authorized = "%";
@@ -116,7 +116,7 @@ if (!isset($_GET["mode"])) {
     $my_authorized = $_GET["authorized"];
 }
 
-if ($my_authorized == "on" ) {
+if ($my_authorized == "on") {
     $my_authorized = 1;
 } else {
     $my_authorized = "%";

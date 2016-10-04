@@ -51,15 +51,15 @@ include_once("$srcdir/transactions.inc");
     <table>
     <tr>
         <td>
-            <span class="title"><?php echo htmlspecialchars( xl('Patient Transactions'), ENT_NOQUOTES); ?></span>&nbsp;</td>
+            <span class="title"><?php echo htmlspecialchars(xl('Patient Transactions'), ENT_NOQUOTES); ?></span>&nbsp;</td>
         <td>
             <!-- Define CSS Buttons -->
             <a href="add_transaction.php" class="css_button" onclick="top.restoreSession()">
-            <span><?php echo htmlspecialchars( xl('Add'), ENT_NOQUOTES); ?></span></a>
+            <span><?php echo htmlspecialchars(xl('Add'), ENT_NOQUOTES); ?></span></a>
         </td>
         <td>
             <a href="print_referral.php" onclick="top.restoreSession()" class="css_button" >
-            <span><?php echo htmlspecialchars( xl('View Blank Referral Form'), ENT_NOQUOTES); ?></span></a>
+            <span><?php echo htmlspecialchars(xl('View Blank Referral Form'), ENT_NOQUOTES); ?></span></a>
         </td>
     </tr>
     </table>
@@ -68,7 +68,7 @@ include_once("$srcdir/transactions.inc");
     <?php if ($result = getTransByPid($pid)) { ?>
         <div id='transactions_div'></div>
     <?php } else { ?>
-        <span class="text"><?php echo htmlspecialchars( xl('There are no transactions on file for this patient.'), ENT_NOQUOTES); ?></span>
+        <span class="text"><?php echo htmlspecialchars(xl('There are no transactions on file for this patient.'), ENT_NOQUOTES); ?></span>
     <?php } ?>
     </div>
 </body>

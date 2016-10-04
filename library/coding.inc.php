@@ -289,7 +289,7 @@ function echoLine($lino, $codetype, $code, $modifier, $auth = TRUE, $del = FALSE
 //
 $lino = 0;
 $encounter_provid = -1;
-if ($result = getBillingByEncounter($pid, $encounter, "*") ) {
+if ($result = getBillingByEncounter($pid, $encounter, "*")) {
 	foreach ($result as $iter) {
 		++$lino;
 		$del = $_POST['bill']["$lino"]['del']; // preserve Delete if checked

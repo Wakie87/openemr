@@ -42,12 +42,12 @@
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header("Cache-Control: private",false); // required for certain browsers
 		header('Content-type: application/xml');
-		header("Content-Disposition: attachment; filename=\"".basename($xmlurl)."\";" );
+		header("Content-Disposition: attachment; filename=\"".basename($xmlurl)."\";");
 		header("Content-Transfer-Encoding: binary");
 		header("Content-Length: ". filesize($xmlurl));
 		ob_clean();
 		flush();
-		readfile( $xmlurl );
+		readfile($xmlurl);
 	}else{
 		echo xlt("File path not found.");
 	}

@@ -622,7 +622,7 @@ function narrative($pid, $encounter, $cols, $form_id,$choice='full') {
           }
           ?>
           <?php 
-          if ($bad < '1' ) {  ?>
+          if ($bad < '1') {  ?>
         <td class="report_vitals">   
           <b class="underline"><?php echo xlt('Fields'); ?></b>
           <?php

@@ -86,7 +86,7 @@ $def->size(4)->halo_size(3)->tooltip('#val#<br>#date:Y-m-d H:i#');
 
 // Build and show the chart
 $chart = new open_flash_chart();
-$chart->set_title( new Title( $titleGraph ));
+$chart->set_title(new Title($titleGraph));
 
 
 // do this for each checked data-column
@@ -104,7 +104,7 @@ foreach($the_checked_cols as $col) {
 	// check if values are numeric
 	// and change date into UNIX-format
 	for ($i = 0; $i < $laenge; $i++){
-		if( is_numeric($the_value_array[$col][$i]) ) {
+		if(is_numeric($the_value_array[$col][$i])) {
 			// is numeric
 			$the_values[] = $the_value_array[$col][$i];
 			$the_dates[]  = strtotime($the_date_array[$i]); // convert to UNIX-format
@@ -119,13 +119,13 @@ foreach($the_checked_cols as $col) {
 	// -----------------------------------------------------------
 
 	
-	$s_{$col} = new scatter_line( $line_colors[$col] , 2 );
-	$s_{$col}->set_default_dot_style( $def );
+	$s_{$col} = new scatter_line($line_colors[$col] , 2);
+	$s_{$col}->set_default_dot_style($def);
 
 	// Prepare and insert data
-	$s_{$col}->set_values( $the_data );
-	$s_{$col}-> set_key( $the_item_names[$col] , 10 );
-	$chart->add_element( $s_{$col} );
+	$s_{$col}->set_values($the_data);
+	$s_{$col}-> set_key($the_item_names[$col] , 10);
+	$chart->add_element($s_{$col});
 } // end foreach data-column-------------------------------------
 //###############################################################
 
@@ -153,7 +153,7 @@ $maximum = $maxima[0];
 
 // Prepare the x-axis
 $x = new x_axis();
-$x->set_range( $lowest, $highest  );
+$x->set_range($lowest, $highest);
 
 // Calculate the steps and visible steps
 $step= ($highest - $lowest)/60;
@@ -177,12 +177,12 @@ $x->set_labels($labels);
 $y = new y_axis(); // $maximum is already set above
 
 // set the range and y-step
-$y->set_range( 0 , $maximum + getIdealYSteps( $maximum ) );
-$y->set_steps( getIdealYSteps( $maximum ) );
+$y->set_range(0 , $maximum + getIdealYSteps($maximum));
+$y->set_steps(getIdealYSteps($maximum));
 
 #	$chart->add_element( $s );   
-$chart->set_x_axis( $x );
-$chart->add_y_axis( $y );
+$chart->set_x_axis($x);
+$chart->add_y_axis($y);
  
 
 // echo a pretty ofc-string anyway

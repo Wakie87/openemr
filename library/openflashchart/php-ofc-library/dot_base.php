@@ -13,8 +13,8 @@ class dot_base
 	function dot_base($type, $value=null)
 	{
 		$this->type = $type;
-		if( isset( $value ) )
-			$this->value( $value );
+		if(isset($value))
+			$this->value($value);
 	}
 	
 	/**
@@ -22,7 +22,7 @@ class dot_base
 	 * for each point.
 	 * @param $value as integer, the Y position
 	 */
-	function value( $value )
+	function value($value)
 	{
 		$this->value = $value;
 	}
@@ -34,7 +34,7 @@ class dot_base
 	 * @param $x as integer
 	 * @param $y as integer
 	 */
-	function position( $x, $y )
+	function position($x, $y)
 	{
 		$this->x = $x;
 		$this->y = $y;
@@ -52,7 +52,7 @@ class dot_base
 	/**
 	 * The tooltip for this dot.
 	 */
-	function tooltip( $tip )
+	function tooltip($tip)
 	{
 		$this->tip = $tip;
 		return $this;
@@ -71,7 +71,7 @@ class dot_base
 	/**
 	 * a private method
 	 */
-	function type( $type )
+	function type($type)
 	{
 		$this->type = $type;
 		return $this;
@@ -80,7 +80,7 @@ class dot_base
 	/**
 	 * @param $size is an integer. The size of the hollow 'halo' around the dot that masks the line.
 	 */
-	function halo_size( $size )
+	function halo_size($size)
 	{
 		$tmp = 'halo-size';
 		$this->$tmp = $size;
@@ -96,7 +96,7 @@ class dot_base
 	 *  will call the JS function "hello_world(index)". It passes in the index of the
 	 *  point.
 	 */
-	function on_click( $do )
+	function on_click($do)
 	{
 		$tmp = 'on-click';
 		$this->$tmp = $do;
@@ -110,7 +110,7 @@ class hollow_dot extends dot_base
 {
 	function hollow_dot($value=null)
 	{
-		parent::dot_base( 'hollow-dot', $value );
+		parent::dot_base('hollow-dot', $value);
 	}
 }
 
@@ -124,7 +124,7 @@ class star extends dot_base
 	 */
 	function star($value=null)
 	{
-		parent::dot_base( 'star', $value );
+		parent::dot_base('star', $value);
 	}
 	
 	/**
@@ -155,7 +155,7 @@ class bow extends dot_base
 	 */
 	function bow($value=null)
 	{
-		parent::dot_base( 'bow', $value );
+		parent::dot_base('bow', $value);
 	}
 	
 	/**
@@ -179,7 +179,7 @@ class anchor extends dot_base
 	 */
 	function anchor($value=null)
 	{
-		parent::dot_base( 'anchor', $value );
+		parent::dot_base('anchor', $value);
 	}
 	
 	/**
@@ -212,7 +212,7 @@ class dot extends dot_base
 	 */
 	function dot($value=null)
 	{
-		parent::dot_base( 'dot', $value );
+		parent::dot_base('dot', $value);
 	}
 }
 
@@ -226,6 +226,6 @@ class solid_dot extends dot_base
 	 */
 	function solid_dot($value=null)
 	{
-		parent::dot_base( 'solid-dot', $value );
+		parent::dot_base('solid-dot', $value);
 	}
 }

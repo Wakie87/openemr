@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . "/../library/classes/Note.class.php");
 require_once(dirname(__FILE__) . "/../library/classes/CouchDB.class.php");
 require_once(dirname(__FILE__) . "/../library/forms.inc");
 require_once(dirname(__FILE__) . "/../library/formatting.inc.php");
-require_once(dirname(__FILE__) . "/../library/classes/postmaster.php"  );
+require_once(dirname(__FILE__) . "/../library/classes/postmaster.php");
 
 class C_Document extends Controller {
 
@@ -46,7 +46,7 @@ class C_Document extends Controller {
 		$category_name = $this->tree->get_node_name($category_id);
 		$this->assign("category_id", $category_id);
 		$this->assign("category_name", $category_name);
-		$this->assign("hide_encryption", $GLOBALS['hide_document_encryption'] );
+		$this->assign("hide_encryption", $GLOBALS['hide_document_encryption']);
 		$this->assign("patient_id", $patient_id);
 
     // Added by Rod to support document template download from general_upload.html.
@@ -101,8 +101,8 @@ class C_Document extends Controller {
         $doDecryption = false;
         $encrypted = $_POST['encrypted'];
         $passphrase = $_POST['passphrase'];
-        if ( !$GLOBALS['hide_document_encryption'] &&
-            $encrypted && $passphrase ) {
+        if (!$GLOBALS['hide_document_encryption'] &&
+            $encrypted && $passphrase) {
             $doDecryption = true;
         }
 
@@ -119,7 +119,7 @@ class C_Document extends Controller {
         }
 
         $sentUploadStatus = array();
-        if( count($_FILES['file']['name']) > 0){
+        if(count($_FILES['file']['name']) > 0){
             $upl_inc = 0;
             foreach($_FILES['file']['name'] as $key => $value){
                 $fname = $value;
@@ -140,7 +140,7 @@ class C_Document extends Controller {
                     if ($doDecryption) {
                       $filetext = $this->decrypt($filetext, $passphrase);
                     }
-                    if ( $_POST['destination'] != '' ) {
+                    if ($_POST['destination'] != '') {
                       $fname = $_POST['destination'];
                     }
                     $d = new Document();
@@ -286,7 +286,7 @@ class C_Document extends Controller {
 		$this->assign("web_path", $this->_link("retrieve") . "document_id=" . $d->get_id() . "&");
 		$this->assign("NOTE_ACTION",$this->_link("note"));
 		$this->assign("MOVE_ACTION",$this->_link("move") . "document_id=" . $d->get_id() . "&process=true");
-		$this->assign("hide_encryption", $GLOBALS['hide_document_encryption'] );
+		$this->assign("hide_encryption", $GLOBALS['hide_document_encryption']);
 
 		// Added by Rod to support document delete:
 		$delete_string = '';
@@ -309,7 +309,7 @@ class C_Document extends Controller {
 		$issues_options = "<option value='0'>-- " . xl('Select Issue') . " --</option>";
 		$ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 			"pid = ? " . // AND enddate IS NULL " .
-			"ORDER BY type, begdate", array($patient_id) );
+			"ORDER BY type, begdate", array($patient_id));
 		while ($irow = sqlFetchArray($ires)) {
 			$desc = $irow['type'];
 			if ($ISSUE_TYPES[$desc]) $desc = $ISSUE_TYPES[$desc][2];
@@ -325,7 +325,7 @@ class C_Document extends Controller {
 		$encOptions = "<option value='0'>-- " . xlt('Select Encounter') . " --</option>";
 		$result_docs = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe " .
 			"LEFT JOIN openemr_postcalendar_categories ON fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? ORDER BY fe.date desc",array($patient_id));
-		if ( sqlNumRows($result_docs) > 0)
+		if (sqlNumRows($result_docs) > 0)
 		while($row_result_docs = sqlFetchArray($result_docs)) {
 		 	$sel_enc = ($row_result_docs['encounter'] == $d->get_encounter_id()) ? ' selected' : '';
 			$encOptions .= "<option value='" . attr($row_result_docs['encounter']) . "' $sel_enc>". oeFormatShortDate(date('Y-m-d', strtotime($row_result_docs['date']))) . "-" . text($row_result_docs['pc_catname'])."</option>";
@@ -379,27 +379,27 @@ class C_Document extends Controller {
 		return $this->list_action($patient_id);
 	}
 	
-	function encrypt( $plaintext, $key, $cypher = 'tripledes', $mode = 'cfb' )
+	function encrypt($plaintext, $key, $cypher = 'tripledes', $mode = 'cfb')
     {
-        $td = mcrypt_module_open( $cypher, '', $mode, '');
-        $iv = mcrypt_create_iv( mcrypt_enc_get_iv_size( $td ), MCRYPT_RAND );
-        mcrypt_generic_init( $td, $key, $iv );
-        $crypttext = mcrypt_generic( $td, $plaintext );
-        mcrypt_generic_deinit( $td );
+        $td = mcrypt_module_open($cypher, '', $mode, '');
+        $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+        mcrypt_generic_init($td, $key, $iv);
+        $crypttext = mcrypt_generic($td, $plaintext);
+        mcrypt_generic_deinit($td);
         return $iv.$crypttext;
     }
 
-    function decrypt( $crypttext, $key, $cypher = 'tripledes', $mode = 'cfb' )
+    function decrypt($crypttext, $key, $cypher = 'tripledes', $mode = 'cfb')
     {
         $plaintext = '';
-        $td = mcrypt_module_open( $cypher, '', $mode, '' );
-        $ivsize = mcrypt_enc_get_iv_size( $td) ;
-        $iv = substr( $crypttext, 0, $ivsize );
-        $crypttext = substr( $crypttext, $ivsize );
-        if( $iv )
+        $td = mcrypt_module_open($cypher, '', $mode, '');
+        $ivsize = mcrypt_enc_get_iv_size($td) ;
+        $iv = substr($crypttext, 0, $ivsize);
+        $crypttext = substr($crypttext, $ivsize);
+        if($iv)
         {
-            mcrypt_generic_init( $td, $key, $iv );
-            $plaintext = mdecrypt_generic( $td, $crypttext );
+            mcrypt_generic_init($td, $key, $iv);
+            $plaintext = mdecrypt_generic($td, $crypttext);
         }
         return $plaintext;
     }
@@ -414,9 +414,9 @@ class C_Document extends Controller {
 	    $encrypted = $_POST['encrypted'];
 		$passphrase = $_POST['passphrase'];
 		$doEncryption = false;
-		if ( !$GLOBALS['hide_document_encryption'] &&
+		if (!$GLOBALS['hide_document_encryption'] &&
 		    $encrypted == "true" &&
-		    $passphrase ) {
+		    $passphrase) {
 		    $doEncryption = true;
 		}
 		
@@ -487,21 +487,21 @@ class C_Document extends Controller {
 			fwrite($fh,base64_decode($content));
 			fclose($fh);
 			$f = fopen($tmpcouchpath,"r");
-			if ( $doEncryption ) {
-				$filetext = fread( $f, filesize($tmpcouchpath) );
-			        $ciphertext = $this->encrypt( $filetext, $passphrase );
+			if ($doEncryption) {
+				$filetext = fread($f, filesize($tmpcouchpath));
+			        $ciphertext = $this->encrypt($filetext, $passphrase);
 			        $tmpfilepath = $GLOBALS['temporary_files_dir'];
 			        $tmpfilename = "/encrypted_".$d->get_url_file();
-			        $tmpfile = fopen( $tmpfilepath.$tmpfilename, "w+" );
-				fwrite( $tmpfile, $ciphertext );
-				fclose( $tmpfile );
-				header('Content-Disposition: attachment; filename='.$tmpfilename );
-			        header("Content-Type: application/octet-stream" );
-			        header("Content-Length: " . filesize( $tmpfilepath.$tmpfilename ) );
+			        $tmpfile = fopen($tmpfilepath.$tmpfilename, "w+");
+				fwrite($tmpfile, $ciphertext);
+				fclose($tmpfile);
+				header('Content-Disposition: attachment; filename='.$tmpfilename);
+			        header("Content-Type: application/octet-stream");
+			        header("Content-Length: " . filesize($tmpfilepath.$tmpfilename));
 			        ob_clean();
 				flush();
-				readfile( $tmpfilepath.$tmpfilename );
-				unlink( $tmpfilepath.$tmpfilename );
+				readfile($tmpfilepath.$tmpfilename);
+				unlink($tmpfilepath.$tmpfilename);
 			} else {
 				header("Content-Disposition: " . ($as_file ? "attachment" : "inline") . "; filename=\"" . basename($d->get_url()) . "\"");
 			        header("Content-Type: " . $d->get_mimetype());
@@ -562,7 +562,7 @@ class C_Document extends Controller {
 			    //normal case when serving the file referenced in database
                             if($disable_exit == true) {
                                 $f = fopen($url,"r");
-                                $filetext = fread( $f, filesize($url) );
+                                $filetext = fread($f, filesize($url));
                                 return $filetext;
                             }
                 header('Content-Description: File Transfer');
@@ -571,21 +571,21 @@ class C_Document extends Controller {
                 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
                 header('Pragma: public');
                             $f = fopen($url,"r");
-			    if ( $doEncryption ) {
-                                $filetext = fread( $f, filesize($url) );
-			        $ciphertext = $this->encrypt( $filetext, $passphrase );
+			    if ($doEncryption) {
+                                $filetext = fread($f, filesize($url));
+			        $ciphertext = $this->encrypt($filetext, $passphrase);
 			        $tmpfilepath = $GLOBALS['temporary_files_dir'];
 			        $tmpfilename = "/encrypted_".$d->get_url_file();
-			        $tmpfile = fopen( $tmpfilepath.$tmpfilename, "w+" );
-                    fwrite( $tmpfile, $ciphertext );
-                    fclose( $tmpfile );
-                    header('Content-Disposition: attachment; filename='.$tmpfilename );
-			        header("Content-Type: application/octet-stream" );
-			        header("Content-Length: " . filesize( $tmpfilepath.$tmpfilename ) );
+			        $tmpfile = fopen($tmpfilepath.$tmpfilename, "w+");
+                    fwrite($tmpfile, $ciphertext);
+                    fclose($tmpfile);
+                    header('Content-Disposition: attachment; filename='.$tmpfilename);
+			        header("Content-Type: application/octet-stream");
+			        header("Content-Length: " . filesize($tmpfilepath.$tmpfilename));
 			        ob_clean();
 		            flush();
-		            readfile( $tmpfilepath.$tmpfilename );
-                    unlink( $tmpfilepath.$tmpfilename );
+		            readfile($tmpfilepath.$tmpfilename);
+                    unlink($tmpfilepath.$tmpfilename);
 			    } else {
 			        header("Content-Disposition: " . ($as_file ? "attachment" : "inline") . "; filename=\"" . basename($d->get_url()) . "\"");
 			        header("Content-Type: " . $d->get_mimetype());
@@ -899,16 +899,16 @@ class C_Document extends Controller {
 			return;
 		}
 		}
-		$d = new Document( $document_id );
-		$current_hash = sha1_file( $url );
+		$d = new Document($document_id);
+		$current_hash = sha1_file($url);
 		$messages = xl('Current Hash').": ".$current_hash."<br>";
 		$messages .= xl('Stored Hash').": ".$d->get_hash()."<br>";
-		if ( $d->get_hash() == '' ) {
+		if ($d->get_hash() == '') {
 		    $d->hash = $current_hash;
 		    $d->persist();
 		    $d->populate();
 		    $messages .= xl('Hash did not exist for this file. A new hash was generated.');
-		} else if ( $current_hash != $d->get_hash() ) {
+		} else if ($current_hash != $d->get_hash()) {
 		    $messages .= xl('Hash does not match. Data integrity has been compromised.');
 		} else {
 		    $messages .= xl('Document passed integrity check.');
@@ -937,20 +937,20 @@ class C_Document extends Controller {
 
 		if (is_numeric($document_id)) {
 		    $messages = '';
-		    $d = new Document( $document_id );
+		    $d = new Document($document_id);
 		    $file_name = $d->get_url_file();
-		    if ( $docname != '' &&
-		         $docname != $file_name ) {
+		    if ($docname != '' &&
+		         $docname != $file_name) {
 		        $path = $d->get_url_filepath();
-		        $path = str_replace( $file_name, "", $path );
-		        $new_url = $this->_rename_file( $path.$docname );
-     		    if ( rename( $d->get_url(), $new_url ) ) {
+		        $path = str_replace($file_name, "", $path);
+		        $new_url = $this->_rename_file($path.$docname);
+     		    if (rename($d->get_url(), $new_url)) {
      		        // check the "converted" file, and delete it if it exists. It will be regenerated when report is run
      		        $url = preg_replace("|^(.*)://|","",$d->get_url());
      		        $convertedFile = substr(basename($url), 0, strrpos(basename($url), '.')) . '_converted.jpg';
                     $url = $GLOBALS['OE_SITE_DIR'] . '/documents/' . $patient_id . '/' . $convertedFile;
-     				if ( file_exists( $url ) ) {
-     				    unlink( $url );
+     				if (file_exists($url)) {
+     				    unlink($url);
      				}
      				$d->url = $new_url;
      	            $d->persist();
@@ -971,7 +971,7 @@ class C_Document extends Controller {
 			}
 			$couch_docid = $d->get_couch_docid();
 			$couch_revid = $d->get_couch_revid();
-			if($couch_docid && $couch_revid ){
+			if($couch_docid && $couch_revid){
 			$sql = "UPDATE documents SET docdate = $docdate, url = '".$_POST['docname']."', " .
 					"list_id = '$issue_id' " .
 					"WHERE id = '$document_id'";
@@ -1151,7 +1151,7 @@ class C_Document extends Controller {
 		  $from_name = $GLOBALS["practice_return_email_path"];
 		  $from =  $GLOBALS["practice_return_email_path"];
 		  $mail->AddReplyTo($from,$from_name);
-		  $mail->SetFrom($from,$from );
+		  $mail->SetFrom($from,$from);
 		  $to = $email ; $to_name =$email;
 		  $mail->AddAddress($to, $to_name);
 		  $subject = "Patient documents";
@@ -1189,13 +1189,13 @@ function tag_action_process($patient_id="", $document_id) {
 
 	if (is_numeric($document_id)) {
 		$messages = '';
-		$d = new Document( $document_id );
+		$d = new Document($document_id);
 		$file_name = $d->get_url_file();
 		if (!is_numeric($encounter_id)) {
 			$encounter_id = 0;
 		}
 		
-		$encounter_check = ( $encounter_check == 'on') ? 1 : 0;
+		$encounter_check = ($encounter_check == 'on') ? 1 : 0;
 		if ($encounter_check) {
 			$provider_id = $_SESSION['authUserID'] ;
 			
@@ -1206,7 +1206,7 @@ function tag_action_process($patient_id="", $document_id) {
 			$facility_id = $facilityRow['facility_id'];
 			// Get the primary Business Entity facility to set as billing facility, if null take user's facility as billing facility
 			$billingFacility = sqlQuery("SELECT id FROM facility WHERE primary_business_entity = 1");
-			$billingFacilityID = ( $billingFacility['id'] ) ? $billingFacility['id'] : $facility_id;
+			$billingFacilityID = ($billingFacility['id']) ? $billingFacility['id'] : $facility_id;
 			
 			$conn = $GLOBALS['adodb']['db'];
 			$encounter = $conn->GenID("sequences");
@@ -1223,7 +1223,7 @@ function tag_action_process($patient_id="", $document_id) {
 						encounter = ?";
 			$bindArray = array($event_date,$file_name,$facility,$_POST['visit_category_id'],(int)$facility_id,(int)$billingFacilityID,(int)$provider_id,$patient_id,$encounter);
 			$formID = sqlInsert($query,$bindArray);
-			addForm($encounter, "New Patient Encounter",$formID,"newpatient", $patient_id, "1", date("Y-m-d H:i:s"), $username );
+			addForm($encounter, "New Patient Encounter",$formID,"newpatient", $patient_id, "1", date("Y-m-d H:i:s"), $username);
 			$d->set_encounter_id($encounter);
 			
 		} else {

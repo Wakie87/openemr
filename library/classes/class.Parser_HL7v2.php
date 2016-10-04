@@ -13,7 +13,7 @@ class Parser_HL7v2 {
 	var $MSH;
 	var $EVN;
 
-	function __construct ( $message, $_options = NULL ) {
+	function __construct ($message, $_options = NULL) {
 		// Assume separator is a pipe
 		$this->message = $message;
 		$this->field_separator = '|';

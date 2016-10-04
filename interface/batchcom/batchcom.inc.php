@@ -13,7 +13,7 @@ function check_age ($age) {
 }
 
 function check_select ($select, $array) {
-	if (array_search($select,$array) OR 0===array_search($select,$array) ) { return TRUE ; } else { RETURN FALSE; }
+	if (array_search($select,$array) OR 0===array_search($select,$array)) { return TRUE ; } else { RETURN FALSE; }
 }
 
 function check_yes_no ($option) {

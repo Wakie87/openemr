@@ -122,7 +122,7 @@ if ($_POST['formaction']=='save' && $list_id) {
         $it_style    = formTrim($iter['style']);
         $it_fshow    = formTrim($iter['force_show']);
         
-        if ( (strlen($it_category) > 0) && (strlen($it_type) > 0) ) {
+        if ((strlen($it_category) > 0) && (strlen($it_type) > 0)) {
           sqlInsert("INSERT INTO issue_types ( " .
             "`active`,`category`,`ordering`, `type`, `plural`, `singular`, `abbreviation`, `style`, `force_show` " .
             ") VALUES ( "   .
@@ -170,7 +170,7 @@ if ($_POST['formaction']=='save' && $list_id) {
                   isset($id) &&
                   !empty($id) &&
                   $id != 0 &&
-                  $ok_map_cvx_codes == 1 ) {
+                  $ok_map_cvx_codes == 1) {
                     sqlStatement ("UPDATE `immunizations` " .
                                   "SET `cvx_code`='".$value."' " .
                                  "WHERE `immunization_id`='".$id."'");
@@ -296,7 +296,7 @@ function writeOptionLine($option_id, $title, $seq, $default, $value, $mapping=''
 
   // if not english and translating lists then show the translation
   if ($GLOBALS['translate_lists'] && $_SESSION['language_choice'] > 1) {
-       echo "  <td align='center' class='translation'>" . (htmlspecialchars( xl($title), ENT_QUOTES)) . "</td>\n";
+       echo "  <td align='center' class='translation'>" . (htmlspecialchars(xl($title), ENT_QUOTES)) . "</td>\n";
   }
   echo "  <td align='center' class='optcell'>";
   echo "<input type='text' name='opt[$opt_line_no][seq]' value='" .
@@ -371,7 +371,7 @@ function writeOptionLine($option_id, $title, $seq, $default, $value, $mapping=''
     echo "  <td align='center' class='optcell'>";
     echo "<input type='text' size='10' name='opt[$opt_line_no][value]' " .
          "value='" . htmlspecialchars($value,ENT_QUOTES) . "' onclick='sel_cvxcode(this)' " .
-         "title='" . htmlspecialchars( xl('Click to select or change CVX code'), ENT_QUOTES) . "'/>";
+         "title='" . htmlspecialchars(xl('Click to select or change CVX code'), ENT_QUOTES) . "'/>";
     echo "</td>\n";
   }
 
@@ -501,7 +501,7 @@ function ctSelector($opt_line_no, $data_array, $name, $option_array, $title='') 
   $value = isset($data_array[$name]) ? $data_array[$name] : '';
   $s = "  <td title='" . attr($title) . "' align='center' class='optcell'>";
   $s .= "<select name='opt[$opt_line_no][$name]' class='optin'>";
-  foreach ( $option_array as $key => $desc) {
+  foreach ($option_array as $key => $desc) {
     $s .= "<option value='" . attr($key) . "'";
     if ($key == $value) $s .= " selected";
     $s .= ">" . text($desc) . "</option>";
@@ -942,19 +942,19 @@ while ($row = sqlFetchArray($res)) {
                         xl('MVX Code','e');
                   } else if ($list_id == 'marital') {
                         xl('Marital Status','e');
-                  } else if ( $list_id == 'county' ) {
+                  } else if ($list_id == 'county') {
                         xl('INCITS Code','e'); //International Committee for Information Technology Standards
-                  }else if ( $list_id == 'immunization_registry_status' || $list_id == 'imm_vac_eligibility_results' ) {
+                  }else if ($list_id == 'immunization_registry_status' || $list_id == 'imm_vac_eligibility_results') {
                         xl('IIS Code','e');
-                  }else if ( $list_id == 'publicity_code' ) {
+                  }else if ($list_id == 'publicity_code') {
                         xl('CDC Code','e');
-                  }else if ( $list_id == 'immunization_refusal_reason' || $list_id == 'immunization_informationsource' ) {
+                  }else if ($list_id == 'immunization_refusal_reason' || $list_id == 'immunization_informationsource') {
                         xl('CDC-NIP Code','e');
-                  }else if ( $list_id == 'next_of_kin_relationship' || $list_id == 'immunization_administered_site') {
+                  }else if ($list_id == 'next_of_kin_relationship' || $list_id == 'immunization_administered_site') {
                         xl('HL7 Code','e');
-                  }else if ( $list_id == 'immunization_observation' ) {
+                  }else if ($list_id == 'immunization_observation') {
                         xl('LOINC Code','e');
-                  }else if ( $list_id == 'page_validation' ) {
+                  }else if ($list_id == 'page_validation') {
                               xl('Page Validation','e');
           } else {
 		  	xl('Notes','e');

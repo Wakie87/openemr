@@ -193,12 +193,12 @@ class ImmunizationController extends AbstractActionController
             $new_search     = $request->getPost('form_new_search',null);
             //endpagination
 
-            if ( empty ($form_code) ) {
+            if (empty ($form_code)) {
                 $query_codes = '';
             }
             else {
                 $query_codes = 'c.id in ( ';
-                foreach( $form_code as $code ){
+                foreach($form_code as $code){
                     $query_codes .= $code . ",";
                 }
                 $query_codes = substr($query_codes ,0,-1);
@@ -630,7 +630,7 @@ class ImmunizationController extends AbstractActionController
                     $patient_id = $r['patientid'];
                 }
                 header('Content-type: text/plain');
-                header('Content-Disposition: attachment; filename=' . $filename );
+                header('Content-Disposition: attachment; filename=' . $filename);
 
                 // put the content in the file
                 echo($content);
@@ -673,7 +673,7 @@ class ImmunizationController extends AbstractActionController
     */
     public function format_cvx_code($cvx_code)
     {
-        if ( $cvx_code < 10 ){
+        if ($cvx_code < 10){
             return "0$cvx_code";
         }
         return $cvx_code;

@@ -2,12 +2,12 @@
 
 class scatter_value
 {
-	function scatter_value( $x, $y, $dot_size=-1 )
+	function scatter_value($x, $y, $dot_size=-1)
 	{
 		$this->x = $x;
 		$this->y = $y;
 		
-		if( $dot_size > 0 )
+		if($dot_size > 0)
 		{
 			$tmp = 'dot-size';
 			$this->$tmp = $dot_size;
@@ -17,18 +17,18 @@ class scatter_value
 
 class scatter
 {
-	function scatter( $colour )
+	function scatter($colour)
 	{
 		$this->type      = "scatter";
-		$this->set_colour( $colour );
+		$this->set_colour($colour);
 	}
 	
-	function set_colour( $colour )
+	function set_colour($colour)
 	{
 		$this->colour = $colour;
 	}
 
-	function set_default_dot_style( $style )
+	function set_default_dot_style($style)
 	{
 		$tmp = 'dot-style';
 		$this->$tmp = $style;
@@ -40,7 +40,7 @@ class scatter
 	 *  - any class that inherits from scatter_value
 	 *  - <b>null</b>
 	 */
-	function set_values( $values )
+	function set_values($values)
 	{
 		$this->values = $values;
 	}

@@ -104,17 +104,17 @@ if ($form_age_cols > 0 && $form_age_cols < 50) {
 }
 
 $initial_colspan = 1;
-if ($is_due_ins      ) ++$initial_colspan;
-if ($form_cb_ssn     ) ++$initial_colspan;
-if ($form_cb_dob     ) ++$initial_colspan;
-if ($form_cb_pubpid  ) ++$initial_colspan;
-if ($form_cb_policy  ) ++$initial_colspan;
-if ($form_cb_phone   ) ++$initial_colspan;
-if ($form_cb_city    ) ++$initial_colspan;
-if ($form_cb_ins1    ) ++$initial_colspan;
+if ($is_due_ins) ++$initial_colspan;
+if ($form_cb_ssn) ++$initial_colspan;
+if ($form_cb_dob) ++$initial_colspan;
+if ($form_cb_pubpid) ++$initial_colspan;
+if ($form_cb_policy) ++$initial_colspan;
+if ($form_cb_phone) ++$initial_colspan;
+if ($form_cb_city) ++$initial_colspan;
+if ($form_cb_ins1) ++$initial_colspan;
 if ($form_cb_referrer) ++$initial_colspan;
-if ($form_provider   ) ++$initial_colspan;
-if ($form_payer_id   ) ++$initial_colspan;
+if ($form_provider) ++$initial_colspan;
+if ($form_payer_id) ++$initial_colspan;
 
 $final_colspan = $form_cb_adate ? 6 : 5;
 
@@ -779,7 +779,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
       $ptname = $erow['lname'] . ", " . $erow['fname'];
       if ($erow['mname']) $ptname .= " " . substr($erow['mname'], 0, 1);
 
-      if (!$is_due_ins ) $insname = '';
+      if (!$is_due_ins) $insname = '';
       $rows[$insname . '|' . $ptname . '|' . $encounter_id] = $row;
     } // end while
 
@@ -995,7 +995,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
         if ($form_cb_city) {
           echo "  <td class='detail'>&nbsp;" . attr($row['city']) . "</td>\n";
         }
-        if ($form_cb_ins1 || $form_payer_id ) {
+        if ($form_cb_ins1 || $form_payer_id) {
           echo "  <td class='detail'>&nbsp;" . attr($row['ins1']) . "</td>\n";
         }
         if ($form_provider) {

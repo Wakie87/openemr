@@ -51,7 +51,7 @@ $fac_msg_map = $facilities['msg_map'];
 
 // get patient data for send alert
 $db_patient = cron_getPhoneAlertpatientData($type, $before_trigger_hours);
-echo "<br>" . htmlspecialchars( xl("Total Records Found") . ": " . count($db_patient), ENT_QUOTES);
+echo "<br>" . htmlspecialchars(xl("Total Records Found") . ": " . count($db_patient), ENT_QUOTES);
 
 //Create a new instance of the phone service client
 $client = new MaviqClient($phone_id, $phone_token, $phone_url);
@@ -64,7 +64,7 @@ for($p=0;$p<count($db_patient);$p++)
 	$p_date = $prow['pc_eventDate'];
 	//Need to format date to m/d/Y for Maviq API
 	$pieces = explode("-",$p_date);
-	$appt_date = date("m/d/Y", mktime( 0,0,0,$pieces[1],$pieces[2],$pieces[0]));
+	$appt_date = date("m/d/Y", mktime(0,0,0,$pieces[1],$pieces[2],$pieces[0]));
 	$appt_time = $prow['pc_startTime'];
 	//get the greeting
 	$greeting = $fac_msg_map[$prow['pc_facility']];
@@ -106,7 +106,7 @@ for($p=0;$p<count($db_patient);$p++)
     }
 		
 	//echo $strMsg;
-	WriteLog( $strMsg );
+	WriteLog($strMsg);
 
 }
 
@@ -139,7 +139,7 @@ function cron_updateentry($type,$pid,$pc_eid)
 // Function:	cron_getPhoneAlertpatientData
 // Purpose:	get patient data for send to alert
 ////////////////////////////////////////////////////////////////////
-function cron_getPhoneAlertpatientData( $type, $trigger_hours )
+function cron_getPhoneAlertpatientData($type, $trigger_hours)
 {
 	
 	//Added by Yijin 1/12/10 to handle phone reminders. Patient needs to have hipaa Voice flag set to yes and a home phone
@@ -186,14 +186,14 @@ function cron_InsertNotificationLogEntry($prow,$phone_msg,$phone_gateway)
 	
 	$sql_loginsert = "INSERT INTO `notification_log` ( `iLogId` , `pid` , `pc_eid` , `message`, `type` , `patient_info` , `smsgateway_info` , `pc_eventDate` , `pc_endDate` , `pc_startTime` , `pc_endTime` , `dSentDateTime` ) VALUES ";
 	$sql_loginsert .= "(NULL , ?, ?, ?, 'Phone', ?, ?, ?, ?, ?, ?, ?)";
-	$db_loginsert = ( sqlStatement( $sql_loginsert, array($prow[pid], $prow[pc_eid], $message, $patient_info, $phone_gateway, $prow[pc_eventDate], $prow[pc_endDate], $prow[pc_startTime], $prow[pc_endTime], date("Y-m-d H:i:s"))));
+	$db_loginsert = (sqlStatement($sql_loginsert, array($prow[pid], $prow[pc_eid], $message, $patient_info, $phone_gateway, $prow[pc_eventDate], $prow[pc_endDate], $prow[pc_startTime], $prow[pc_endTime], date("Y-m-d H:i:s"))));
 }
 
 ////////////////////////////////////////////////////////////////////
 // Function:	WriteLog
 // Purpose:	written log into file
 ////////////////////////////////////////////////////////////////////
-function WriteLog( $data )
+function WriteLog($data)
 {
 	$log_file = $GLOBALS['phone_reminder_log_dir'];
 

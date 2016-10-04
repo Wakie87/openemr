@@ -570,7 +570,7 @@ if ($_REQUEST["mode"] == "new")             {
               sqlStatement('UPDATE prescriptions SET '
                 . 'medication = 0 where patient_id = ? '
                 . " and upper(trim(drug)) = ? "
-                . ' and medication = 1', array($pid,strtoupper($_REQUEST['form_title'])) );
+                . ' and medication = 1', array($pid,strtoupper($_REQUEST['form_title'])));
             }
         } else {
           $query =  "INSERT INTO lists ( " .

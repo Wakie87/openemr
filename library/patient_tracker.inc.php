@@ -150,7 +150,7 @@ function fetch_Patient_Tracker_Events($from_date, $to_date, $provider_id = null,
       //set null to $provider id if it's 'all'
       $provider_id = null;
     }
-    $events = fetchAppointments( $from_date, $to_date, null, $provider_id, $facility_id, $form_apptstatus, null, null, $form_apptcat, true );
+    $events = fetchAppointments($from_date, $to_date, null, $provider_id, $facility_id, $form_apptstatus, null, null, $form_apptcat, true);
     return $events;
 }
 
@@ -249,7 +249,7 @@ function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$r
   if ($room != $pc_appt['pc_room']) {
     sqlStatement("UPDATE `openemr_postcalendar_events` SET `pc_room` = ? WHERE `pc_eid` = ?", array($room,$eid));
   }
-  if( $GLOBALS['drug_screen'] && !empty($status)  && is_checkin($status)) {
+  if($GLOBALS['drug_screen'] && !empty($status)  && is_checkin($status)) {
     $yearly_limit = $GLOBALS['maximum_drug_test_yearly'];
     $percentage = $GLOBALS['drug_testing_percentage'];
     random_drug_test($tracker_id,$percentage,$yearly_limit);

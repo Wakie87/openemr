@@ -106,13 +106,13 @@ class C_FormVitals extends Controller {
 		if ($weight > 0 && $height > 0) {
 			$_POST["BMI"] = ($weight/$height/$height)*703;
 		}
-		if     ( $_POST["BMI"] > 42 )   $_POST["BMI_status"] = 'Obesity III';
-		elseif ( $_POST["BMI"] > 34 )   $_POST["BMI_status"] = 'Obesity II';
-		elseif ( $_POST["BMI"] > 30 )   $_POST["BMI_status"] = 'Obesity I';
-		elseif ( $_POST["BMI"] > 27 )   $_POST["BMI_status"] = 'Overweight';
-		elseif ( $_POST["BMI"] > 25 )   $_POST["BMI_status"] = 'Normal BL';
-		elseif ( $_POST["BMI"] > 18.5 ) $_POST["BMI_status"] = 'Normal';
-		elseif ( $_POST["BMI"] > 10 )   $_POST["BMI_status"] = 'Underweight';
+		if     ($_POST["BMI"] > 42)   $_POST["BMI_status"] = 'Obesity III';
+		elseif ($_POST["BMI"] > 34)   $_POST["BMI_status"] = 'Obesity II';
+		elseif ($_POST["BMI"] > 30)   $_POST["BMI_status"] = 'Obesity I';
+		elseif ($_POST["BMI"] > 27)   $_POST["BMI_status"] = 'Overweight';
+		elseif ($_POST["BMI"] > 25)   $_POST["BMI_status"] = 'Normal BL';
+		elseif ($_POST["BMI"] > 18.5) $_POST["BMI_status"] = 'Normal';
+		elseif ($_POST["BMI"] > 10)   $_POST["BMI_status"] = 'Underweight';
 		$temperature = $_POST["temperature"];
 		if ($temperature == '0' || $temperature == '') {
 			$_POST["temp_method"] = "";

@@ -12,7 +12,7 @@ class NFQ_0024_Numerator3 implements CqmFilterIF
         return "Numerator 3";
     }
     
-    public function test( CqmPatient $patient, $beginDate, $endDate )
+    public function test(CqmPatient $patient, $beginDate, $endDate)
     {
         //if ( Helper::check( ClinicalType::COMMUNICATION, Communication::COUNS_PHYS_ACTIVITY, $patient, $beginDate, $endDate ) ) {
         //    return true;
@@ -20,7 +20,7 @@ class NFQ_0024_Numerator3 implements CqmFilterIF
 
         $exercise = sqlQuery("SELECT * FROM `rule_patient_data` " .
                              "WHERE `category`='act_cat_edu' AND `item`='act_exercise' AND `complete`='YES' " .
-                             "AND `pid`=? AND `date`>=? AND `date`<=?", array($patient->id,$beginDate,$endDate) );
+                             "AND `pid`=? AND `date`>=? AND `date`<=?", array($patient->id,$beginDate,$endDate));
         if (!empty($exercise)) {
             return true;
         }

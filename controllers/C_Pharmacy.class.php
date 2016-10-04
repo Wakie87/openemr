@@ -15,7 +15,7 @@ class C_Pharmacy extends Controller {
 		$this->assign("FORM_ACTION", $GLOBALS['webroot']."/controller.php?" . $_SERVER['QUERY_STRING']);
 		$this->assign("CURRENT_ACTION", $GLOBALS['webroot']."/controller.php?" . "practice_settings&pharmacy&");
 		$this->assign("STYLE", $GLOBALS['style']);
-		$this->assign("WEB_ROOT", $GLOBALS['webroot'] );
+		$this->assign("WEB_ROOT", $GLOBALS['webroot']);
 		$this->Pharmacy = new Pharmacy();
 	}
 
@@ -27,7 +27,7 @@ class C_Pharmacy extends Controller {
 		if ($p_obj != null && get_class($p_obj) == "pharmacy") {
 			$this->pharmacies[0] = $p_obj;
 		}
-		elseif (get_class($this->pharmacies[0]) != "pharmacy" ) {
+		elseif (get_class($this->pharmacies[0]) != "pharmacy") {
 			$this->pharmacies[0] = new Pharmacy($id);
 		}
 

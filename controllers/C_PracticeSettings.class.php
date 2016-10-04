@@ -16,7 +16,7 @@ class C_PracticeSettings extends Controller {
 		$this->assign("FORM_ACTION", $GLOBALS['webroot']."/controller.php?" . $_SERVER['QUERY_STRING']);
 		$this->assign("TOP_ACTION", $GLOBALS['webroot']."/controller.php?" . "practice_settings" . "&");
 		$this->assign("STYLE", $GLOBALS['style']);
-	    $this->assign("CSS_HEADER",  $GLOBALS['css_header'] );
+	    $this->assign("CSS_HEADER",  $GLOBALS['css_header']);
 	}
 
 	function default_action($display = "") {
@@ -37,7 +37,7 @@ class C_PracticeSettings extends Controller {
 		$args = array_merge(array("pharmacy" => "",$arg => ""),$fga);
 
 		$display =  $c->act($args);
-		$this->assign("ACTION_NAME", xl("Pharmacies") );
+		$this->assign("ACTION_NAME", xl("Pharmacies"));
 		$this->default_action($display);
 	}
 
@@ -54,7 +54,7 @@ class C_PracticeSettings extends Controller {
 		$args = array_merge(array("insurance_company" => "",$arg => ""),$fga);
 
 		$display =  $c->act($args);
-		$this->assign("ACTION_NAME", xl("Insurance Companies") );
+		$this->assign("ACTION_NAME", xl("Insurance Companies"));
 		$this->default_action($display);
 	}
 
@@ -72,7 +72,7 @@ class C_PracticeSettings extends Controller {
 
 		$display =  $c->act($args);
 
-		$this->assign("ACTION_NAME", xl("Insurance Numbers") );
+		$this->assign("ACTION_NAME", xl("Insurance Numbers"));
 		$this->default_action($display);
 	}
 
@@ -90,7 +90,7 @@ class C_PracticeSettings extends Controller {
 
 		$display =  $c->act($args);
 
-		$this->assign("ACTION_NAME", xl("Documents") );
+		$this->assign("ACTION_NAME", xl("Documents"));
 		$this->default_action($display);
 	}
 
@@ -108,7 +108,7 @@ class C_PracticeSettings extends Controller {
 
 		$display =  $c->act($args);
 
-		$this->assign("ACTION_NAME", xl("Documents") );
+		$this->assign("ACTION_NAME", xl("Documents"));
 		$this->default_action($display);
 	}
 
@@ -126,7 +126,7 @@ class C_PracticeSettings extends Controller {
 
 		$display =  $c->act($args);
 
-		$this->assign("ACTION_NAME", xl("X12 Partners") );
+		$this->assign("ACTION_NAME", xl("X12 Partners"));
 		$this->default_action($display);
 	}
 
@@ -142,7 +142,7 @@ class C_PracticeSettings extends Controller {
 		$fga = array_slice($fga,1);
 		$args = array_merge(array("hl7" => "",$arg => ""),$fga);
 		$display =  $c->act($args);
-		$this->assign("ACTION_NAME", xl("HL7 Viewer") );
+		$this->assign("ACTION_NAME", xl("HL7 Viewer"));
 		$this->default_action($display);
 	}
 

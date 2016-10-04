@@ -49,7 +49,7 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 	$dr = $obj277->edih_delimiters()['r'];
 	$fn = $obj277->edih_filename();
 	//	
-	if ( !is_array($trans) || !count($trans) ) {
+	if (!is_array($trans) || !count($trans)) {
 		$str_html = "<p>Did not find transaction $bht03 in $fn</p>".PHP_EOL;
 		return $str_html;
 	}
@@ -88,7 +88,7 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 			// debug
 			// echo "$i loop: $loopid Segment: $seg".PHP_EOL;
 			//
-			if ( strncmp('BHT'.$de, $seg, 4) === 0 ) {
+			if (strncmp('BHT'.$de, $seg, 4) === 0) {
 				$loopid = 'Heading';
 				$sar = explode($de, $seg);
 				if (isset($sar[1])) {
@@ -103,10 +103,10 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 					$elem01 = '';
 				}
 				//
-				$elem02 = ( isset($sar[2]) && $sar[2] !== false) ? $cd27x->get_271_code('BHT02', $sar[2]) : "";
-				$elem03 = ( isset($sar[3]) && $sar[3]) ? $sar[3] : "";
-				$elem04 = ( isset($sar[4]) && $sar[4]) ? edih_format_date($sar[4]) : "";
-				$elem06 = ( isset($sar[6]) && $sar[6]) ? $cd27x->get_271_code('BHT06', $sar[6]) : "";
+				$elem02 = (isset($sar[2]) && $sar[2] !== false) ? $cd27x->get_271_code('BHT02', $sar[2]) : "";
+				$elem03 = (isset($sar[3]) && $sar[3]) ? $sar[3] : "";
+				$elem04 = (isset($sar[4]) && $sar[4]) ? edih_format_date($sar[4]) : "";
+				$elem06 = (isset($sar[6]) && $sar[6]) ? $cd27x->get_271_code('BHT06', $sar[6]) : "";
 				//
 				$hdr_html .= "<tr><td colspan=2><em>Reference:</em> $elem03</td><td colspan=2><em>Sequence:</em> $elem01</td></tr>".PHP_EOL;
 				$hdr_html .= "<tr><td colspan=2><em>Date:</em> $elem04</td><td colspan=2><em>Type:</em> $elem02</td>".PHP_EOL;
@@ -116,10 +116,10 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 				continue;
 			}
 			//
-			if ( strncmp('HL'.$de, $seg, 3) === 0 ) {
+			if (strncmp('HL'.$de, $seg, 3) === 0) {
 				$sar = explode($de, $seg);
-				$elem03 = ( isset($sar[3]) ) ? $sar[3] : "";
-				if ( $elem03 == '20') {						// level code
+				$elem03 = (isset($sar[3])) ? $sar[3] : "";
+				if ($elem03 == '20') {						// level code
 					$loopid = '2000A';						// info source (payer)
 					$cls = "src";
 					$src_html .= "<tr class='$cls'><td colspan=4><b>Information Source</b></td></tr>".PHP_EOL;
@@ -152,19 +152,19 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 				continue;
 			}
 			//	
-			if ( strncmp('NM1'.$de, $seg, 4) === 0 ) {
+			if (strncmp('NM1'.$de, $seg, 4) === 0) {
 				$sar = explode($de, $seg);
 				//
-				$nm101 = ( isset($sar[1]) ) ? $sar[1] : '';
+				$nm101 = (isset($sar[1])) ? $sar[1] : '';
 				$descr = ($nm101) ? $cd27x->get_271_code('NM101', $nm101) : "";
 				//
-				$name = (isset($sar[3]) && $sar[3] ) ? $sar[3] : "";
+				$name = (isset($sar[3]) && $sar[3]) ? $sar[3] : "";
 				$name .= (isset($sar[7]) && $sar[7]) ? " {$sar[7]}" : "";
 				$name .= (isset($sar[4]) && $sar[4]) ? ", {$sar[4]}" : "";
 				$name .= (isset($sar[5]) &&  $sar[5]) ? " {$sar[5]}" : "";
 				$nm109 = (isset($sar[9]) &&  $sar[9]) ? $sar[9] : "";
 				//
-				$nm108 = (isset($sar[8]) && $sar[8] ) ? $cd27x->get_271_code('NM108', $sar[8]) : "";
+				$nm108 = (isset($sar[8]) && $sar[8]) ? $cd27x->get_271_code('NM108', $sar[8]) : "";
 				//
 				if ($loopid == '2000A') {
 					$src_html .= "<tr class='$cls'><td>&gt;</td><td colspan=3 title='$descr'>$name</td></tr>" .PHP_EOL;
@@ -183,7 +183,7 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 					$sbr_nm1_html .= "<tr class='$cls'><td>&gt;</td><td colspan=3 title='$descr'><em>$nm108</em> $nm109</td></tr>" .PHP_EOL;
 					$h3_lbl = $name;
 					$loopid = '2100D';
-				} elseif ( $loopid == '2000E' ) {
+				} elseif ($loopid == '2000E') {
 					$dep_nm1_html .= "<tr class='$cls'><td>&gt;</td><td colspan=3 title='$descr'>$name</td></tr>" .PHP_EOL;
 					$dep_nm1_html .= "<tr class='$cls'><td>&gt;</td><td colspan=3 title='$descr'><em>$nm108</em> $nm109</td></tr>" .PHP_EOL;
 					$h3_lbl = $name;
@@ -193,7 +193,7 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 				continue;
 			}
 			//								//
-			if ( strncmp('PER'.$de, $seg, 4) === 0 ) {
+			if (strncmp('PER'.$de, $seg, 4) === 0) {
 				$sar = explode($de, $seg);
 				//
 				$elem01 = (isset($sar[1])) ? $sar[1] : '';
@@ -215,13 +215,13 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 				continue;
 			}
 			//				
-			if ( strncmp('TRN'.$de, $seg, 4) === 0 ) {
+			if (strncmp('TRN'.$de, $seg, 4) === 0) {
 				$sar = explode($de, $seg);
 				//
-				$elem01 = ( isset($sar[1]) && $sar[1] == "1" ) ? "Transaction Ref" : "Trace";
-				$elem02 = ( isset($sar[2]) ) ? $sar[2] : '';
-				$elem03 = ( isset($sar[3]) ) ? $sar[3] : '';
-				$elem04 = ( isset($sar[4]) ) ? $sar[4] : '';
+				$elem01 = (isset($sar[1]) && $sar[1] == "1") ? "Transaction Ref" : "Trace";
+				$elem02 = (isset($sar[2])) ? $sar[2] : '';
+				$elem03 = (isset($sar[3])) ? $sar[3] : '';
+				$elem04 = (isset($sar[4])) ? $sar[4] : '';
 				//
 				if ($loopid == '2100B') {
 					$rcv_html .= "<tr class='$cls'><td>&gt;</td><td colspan=3><em>$elem01</em> $elem02</td></tr>".PHP_EOL;
@@ -242,15 +242,15 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 				continue;
 			}
 			//
-			if ( strncmp('STC'.$de, $seg, 4) === 0 ) {
+			if (strncmp('STC'.$de, $seg, 4) === 0) {
 				$sar = explode($de, $seg);
 				//		
-				if ( isset($sar[1]) ) {
-					if ( strpos($sar[1], $ds) ) {       // claim status category : claim status : entity identifier
+				if (isset($sar[1])) {
+					if (strpos($sar[1], $ds)) {       // claim status category : claim status : entity identifier
 						$scda = explode($ds, $sar[1]);
-						$sc101 = ( isset($scda[0]) && $scda[0]) ? $cd27x->get_271_code('HCCSCC', $scda[0]) : "";
-						$sc102 = ( isset($scda[1]) && $scda[1]) ? $cd27x->get_271_code('HCCSC', $scda[1]) : "";
-						$sc103 = ( isset($scda[2]) && $scda[2]) ? $cd27x->get_271_code('NM101', $scda[2]) : "";
+						$sc101 = (isset($scda[0]) && $scda[0]) ? $cd27x->get_271_code('HCCSCC', $scda[0]) : "";
+						$sc102 = (isset($scda[1]) && $scda[1]) ? $cd27x->get_271_code('HCCSC', $scda[1]) : "";
+						$sc103 = (isset($scda[2]) && $scda[2]) ? $cd27x->get_271_code('NM101', $scda[2]) : "";
 					}
 				} else {
 					$stc01 = $sar[1];
@@ -278,32 +278,32 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 				$stc09 = (isset($sar[9]) && $sar[9]) ? $sar[9] : "";						// check or eft number
 				//
 				$stc10 = "";
-				if ( isset($sar[10]) && $sar[10]) { 	// claim status category : claim status : entity identifier
-					if ( strpos($sar[10], $ds) ) {
+				if (isset($sar[10]) && $sar[10]) { 	// claim status category : claim status : entity identifier
+					if (strpos($sar[10], $ds)) {
 						$scda = explode($ds, $sar[1]);
-						$sc201 = ( isset($scda[0]) && $scda[0]) ? $cd27x->get_271_code('HCCSCC', $scda[0]) : "";
-						$sc202 = ( isset($scda[1]) && $scda[1]) ? $cd27x->get_271_code('HCCSC', $scda[1]) : "";
-						$sc203 = ( isset($scda[2]) && $scda[2]) ? $cd27x->get_271_code('NM101', $scda[2]) : "";
-						$sc204 = ( isset($scda[3]) && $scda[3] = 'RA') ? "Rx Reject/Payment Codes" : "";
+						$sc201 = (isset($scda[0]) && $scda[0]) ? $cd27x->get_271_code('HCCSCC', $scda[0]) : "";
+						$sc202 = (isset($scda[1]) && $scda[1]) ? $cd27x->get_271_code('HCCSC', $scda[1]) : "";
+						$sc203 = (isset($scda[2]) && $scda[2]) ? $cd27x->get_271_code('NM101', $scda[2]) : "";
+						$sc204 = (isset($scda[3]) && $scda[3] = 'RA') ? "Rx Reject/Payment Codes" : "";
 					} else {
 						$stc10 = $sar[10];
 					}
 				}
 				//
 				$stc11 = "";
-				if ( isset($sar[11]) && $sar[11]) { 	// claim status category : claim status : entity identifier
-					if ( strpos($sar[10], $ds) ) {
+				if (isset($sar[11]) && $sar[11]) { 	// claim status category : claim status : entity identifier
+					if (strpos($sar[10], $ds)) {
 						$scda = explode($ds, $sar[1]);
-						$sc301 = ( isset($scda[0]) && $scda[0]) ? $cd27x->get_271_code('HCCSCC', $scda[0]) : "";
-						$sc302 = ( isset($scda[1]) && $scda[1]) ? $cd27x->get_271_code('HCCSC', $scda[1]) : "";
-						$sc303 = ( isset($scda[2]) && $scda[2]) ? $cd27x->get_271_code('NM101', $scda[2]) : "";
-						$sc304 = ( isset($scda[3]) && $scda[3] = 'RA') ? "Rx Reject/Payment Codes" : "";
+						$sc301 = (isset($scda[0]) && $scda[0]) ? $cd27x->get_271_code('HCCSCC', $scda[0]) : "";
+						$sc302 = (isset($scda[1]) && $scda[1]) ? $cd27x->get_271_code('HCCSC', $scda[1]) : "";
+						$sc303 = (isset($scda[2]) && $scda[2]) ? $cd27x->get_271_code('NM101', $scda[2]) : "";
+						$sc304 = (isset($scda[3]) && $scda[3] = 'RA') ? "Rx Reject/Payment Codes" : "";
 					} else {
 						$stc11 = $sar[10];
 					}
 				}
 				//
-				$stc12 =  ( isset($sar[12]) && $sar[12]) ? $sar[12] : "";    // message
+				$stc12 =  (isset($sar[12]) && $sar[12]) ? $sar[12] : "";    // message
 				//
 				$stc_html = (isset($sc101)) ? "<tr class='$cls'><td>$stc03</td><td colspan=2>$sc101</td><td>$stc02 $stc04</td></tr>".PHP_EOL : "";
 				$stc_html .= (isset($sc102)) ? "<tr class='$cls'><td>&gt;</td><td colspan=3>$sc102</td></tr>".PHP_EOL : "";
@@ -331,16 +331,16 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 			}
 			// in 277CA, expect QTY followed by AMT
 			// do not expect QTY or AMT in regular 277
-			if ( strncmp('QTY'.$de, $seg, 4) === 0 ) {
+			if (strncmp('QTY'.$de, $seg, 4) === 0) {
 				$sar = explode($de, $seg);
-				if ( isset($sar[1]) ) {
-					if ($sar[1] == '90' ) {
+				if (isset($sar[1])) {
+					if ($sar[1] == '90') {
 						$qtystr = "Acknowledged Quantity ";
-					} elseif ($sar[1] == 'AA' ) {
+					} elseif ($sar[1] == 'AA') {
 						$qtystr = "Unacknowledged Quantity ";
-					} elseif ($sar[1] == 'QA' ) {
+					} elseif ($sar[1] == 'QA') {
 						$qtystr = "Quantity Approved ";
-					} elseif ($sar[1] == 'QC' ) {
+					} elseif ($sar[1] == 'QC') {
 						$qtystr = "Quantity Disapproved ";
 					} else {
 						$qtystr = "Quantity ";
@@ -352,7 +352,7 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 				$qtystr .= (isset($sar[2]) && $sar[2]) ? $sar[2] : "";
 			}
 			//
-			if ( strncmp('AMT'.$de, $seg, 4) === 0 ) {
+			if (strncmp('AMT'.$de, $seg, 4) === 0) {
 				$sar = explode($de, $seg);
 				// 277CA
 				$amtstr = (isset($sar[1])  && $sar[1] == 'YU') ? "Amt " :"Amt Rej ";
@@ -373,7 +373,7 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 				continue;
 			}
 			//
-			if ( strncmp('REF'.$de, $seg, 4) === 0 ) {
+			if (strncmp('REF'.$de, $seg, 4) === 0) {
 				$sar = explode($de, $seg);
 				//					
 				//
@@ -385,16 +385,16 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 					$rcv_html .= "<tr class='$cls'><td>&gt;</td><td colspan=2><em>$elem01</em> $elem02</td><td>$elem03</td></tr>".PHP_EOL;
 				} elseif ($loopid == '2200C') {
 					$prv_html .= "<tr class='$cls'><td>&gt;</td><td colspan=2><em>$elem01</em> $elem02</td><td>$elem03</td></tr>".PHP_EOL;
-				} elseif ($loopid == '2200D' || $loopid == '2220D'  ) {
+				} elseif ($loopid == '2200D' || $loopid == '2220D') {
 					$sbr_stc_html .= "<tr class='$cls'><td>&gt;</td><td colspan=2><em>$elem01</em> $elem02</td><td>$elem03</td></tr>".PHP_EOL;
-				} elseif ($loopid == '2200E' || $loopid == '2220E'  ) {
+				} elseif ($loopid == '2200E' || $loopid == '2220E') {
 					$dep_stc_html .= "<tr class='$cls'><td>&gt;</td><td colspan=2><em>$elem01</em> $elem02</td><td>$elem03</td></tr>".PHP_EOL;
 				}
 				//
 				continue;
 			}
 			//					
-			if ( strncmp('DTP'.$de, $seg, 4) === 0 ) {
+			if (strncmp('DTP'.$de, $seg, 4) === 0) {
 				//
 				$sar = explode($de, $seg);
 				$var = '';
@@ -404,11 +404,11 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 				$elem03 = (isset($sar[3])) ? $sar[3] : '';
 				//			
 				$idtype = ($elem01) ? $cd27x->get_271_code('DTP', $elem01) : "";
-				if ( $elem02 == 'D8' && $elem03) {
+				if ($elem02 == 'D8' && $elem03) {
 					$var = edih_format_date($elem03);
-				} elseif ( $elem02 == 'RD8' && $elem03) {
-					$var = edih_format_date( substr($elem03, 0, 8) );
-					$var .= ' - '.edih_format_date( substr($elem03, -8) );
+				} elseif ($elem02 == 'RD8' && $elem03) {
+					$var = edih_format_date(substr($elem03, 0, 8));
+					$var .= ' - '.edih_format_date(substr($elem03, -8));
 				}
 				//
 				if ($loopid == '2200D' || $loopid == '2220D') {
@@ -420,17 +420,17 @@ function edih_277_transaction_html($obj277, $bht03, $accordion=false) {
 				continue;
 			}
 			//		
-			if ( strncmp('SVC'.$de, $seg, 4) === 0 ) {
+			if (strncmp('SVC'.$de, $seg, 4) === 0) {
 				//
 				$sar = explode($de, $seg);
 				//
 				$elem01 = '';							// composite procedure code source:code:modifier:modifier
-				if ( isset($sar[1]) && $sar[1]) {
+				if (isset($sar[1]) && $sar[1]) {
 					// construct a code source code modifier string	
-					if ( strpos($sar[1], $ds) ) {
+					if (strpos($sar[1], $ds)) {
 						$scda = explode($ds, $sar[1]);
 						reset($scda);
-						while ( list($key, $val) = each($scda) ) {
+						while (list($key, $val) = each($scda)) {
 							if ($key == 0 && $val) {
 								$elem01 = $cd27x->get_271_code('EB13',$val);
 							} else {
@@ -500,7 +500,7 @@ function edih_277_html($filename, $bht03='') {
 	// create a display for an individual 277 response
 	$html_str = '';
 	//
-	if ( $filename ) {
+	if ($filename) {
 		$fn = $filename;
 	} else {
 		csv_edihist_log ("edih_277_html: called with no file arguments");
@@ -510,7 +510,7 @@ function edih_277_html($filename, $bht03='') {
 	
 	if ($fn) {
 		$obj277 = csv_check_x12_obj($fn, 'f277');
-        if ($obj277 && 'edih_x12_file' == get_class($obj277) ) {
+        if ($obj277 && 'edih_x12_file' == get_class($obj277)) {
 			if ($bht03) {
 				// particular transaction
 				$html_str .= edih_277_transaction_html($obj277, $bht03);

@@ -28,7 +28,7 @@
         return "Exclusion";
     }
     
-    public function test( CqmPatient $patient, $beginDate, $endDate )
+    public function test(CqmPatient $patient, $beginDate, $endDate)
     {
        //Children who are taking antibiotics in the 30 days prior to the diagnosis of pharyngitis	 
 		$antibiotics  = implode(',',Codes::lookup(Medication::ANTIBIOTIC_FOR_PHARYNGITIS,'RXNORM'));
@@ -60,7 +60,7 @@
 				 " or l.diagnosis in($tonsillitis_snomed_codes) or l.diagnosis in ($tonsillitis_icd9_codes) or l.diagnosis in ($tonsillitis_icd10_codes)) ".
 				 " AND DATEDIFF(l.date,p.date_added) between 0 and 30 AND p.active = 1";
 		
-		$check = sqlQuery( $query, array($patient->id, $beginDate, $endDate) );
+		$check = sqlQuery($query, array($patient->id, $beginDate, $endDate));
 		if ($check['cnt'] >= 1){//more than one medication it will exclude
 			return true;
 		}else{

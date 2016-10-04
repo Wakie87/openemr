@@ -244,7 +244,7 @@ function issue_diagnoses($pid,$encounter)
           " ( ( l.enddate IS NULL) OR (l.enddate IS NOT NULL AND l.enddate>=NOW()) ) ".
           " ORDER BY ie.encounter DESC,l.id";
     $results=sqlStatement($sql,$parameters);
-    while( $res=sqlFetchArray($results))
+    while($res=sqlFetchArray($results))
     {
         $title=$res['title'];
         $db_id=$res['id'];

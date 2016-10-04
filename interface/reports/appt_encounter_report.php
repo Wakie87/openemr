@@ -292,7 +292,7 @@ $(document).ready(function() {
 </div> <!-- end apptenc_report_parameters -->
 
 <?php
- if ($_POST['form_refresh'] ) {
+ if ($_POST['form_refresh']) {
 ?>
 <div id="report_results">
 <table id='mymaintable'>
@@ -504,7 +504,7 @@ $(document).ready(function() {
 </div> <!-- end the apptenc_report_results -->
 <?php } else { ?>
 <div class='text'>
- 	<?php echo xl('Please input search criteria above, and click Submit to view results.', 'e' ); ?>
+ 	<?php echo xl('Please input search criteria above, and click Submit to view results.', 'e'); ?>
 </div>
 <?php } ?>
 

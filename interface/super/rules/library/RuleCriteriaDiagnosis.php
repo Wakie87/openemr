@@ -17,7 +17,7 @@ class RuleCriteriaDiagnosis extends RuleCriteria {
     var $codeType;
     var $id;
 
-    function __construct( $title, $codeType='', $id='' ) {
+    function __construct($title, $codeType='', $id='') {
         $this->title = $title;
         $this->codeType = $codeType;
         $this->id = $id;
@@ -26,7 +26,7 @@ class RuleCriteriaDiagnosis extends RuleCriteria {
     function getRequirements() {
         $codeManager = new CodeManager();
         $code = $codeManager->get($this->id);
-        if ( is_null( $code ) ) {
+        if (is_null($code)) {
             return $this->codeType . ":" . $this->id;
         }
         return $code->display();

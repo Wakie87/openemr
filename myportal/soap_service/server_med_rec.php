@@ -333,7 +333,7 @@ class Userforms extends UserAudit{
 			<tr>
 			<td class=text>
 			<?php
-			echo htmlspecialchars($b['code_type'],ENT_QUOTES) . ":\t" .htmlspecialchars( $b['code'],ENT_QUOTES) . "&nbsp;". htmlspecialchars($b['modifier'],ENT_QUOTES) . "&nbsp;&nbsp;&nbsp;" . htmlspecialchars($b['code_text'],ENT_QUOTES) . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			echo htmlspecialchars($b['code_type'],ENT_QUOTES) . ":\t" .htmlspecialchars($b['code'],ENT_QUOTES) . "&nbsp;". htmlspecialchars($b['modifier'],ENT_QUOTES) . "&nbsp;&nbsp;&nbsp;" . htmlspecialchars($b['code_text'],ENT_QUOTES) . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 			?>
 			</td>
 			<td class=text>
@@ -463,7 +463,7 @@ class Userforms extends UserAudit{
 		  try {
 			  $event = isset ($data['event']) ? $data['event'] : 'patient-record';
 			  $menu_item = isset($data['menu_item']) ? $data['menu_item'] : 'Dashboard';
-			  newEvent($event, 1, '', 1, '', $pid,$log_from = 'patient-portal', $menu_item  );
+			  newEvent($event, 1, '', 1, '', $pid,$log_from = 'patient-portal', $menu_item);
 		  }catch (Exception $e) {
 
 		  }
@@ -572,7 +572,7 @@ class Userforms extends UserAudit{
 		  $all[$iter] = $row;
 		}
 
-		$responseString = $this->arrayToXml($all );
+		$responseString = $this->arrayToXml($all);
 
 		return $responseString;
 	  }
@@ -625,7 +625,7 @@ class Userforms extends UserAudit{
             if($ret!==TRUE) return("$config_err 4");
 
             $ret = phimail_write_expect_OK($fp,"TO $recipient\n");
-            if($ret!==TRUE) return( xl("Delivery is not allowed to the specified Direct Address.") );
+            if($ret!==TRUE) return(xl("Delivery is not allowed to the specified Direct Address."));
 
             $ret=fgets($fp,1024); //ignore extra server data
 
@@ -696,7 +696,7 @@ class Userforms extends UserAudit{
             if(substr($ret,5)=="ERROR") {
                 //log the failure
                 newEvent("transmit-ccd",$reqBy,$_SESSION['authProvider'],0,$ret,$pid);
-                return( xl("The message could not be sent at this time."));
+                return(xl("The message could not be sent at this time."));
             }
 
             /**
@@ -708,7 +708,7 @@ class Userforms extends UserAudit{
             if($msg_id[0]!="QUEUED" || !isset($msg_id[2])) { //unexpected response
              $ret = "UNEXPECTED RESPONSE: " . $ret;
              newEvent("transmit-ccd",$reqBy,$_SESSION['authProvider'],0,$ret,$pid);
-             return( xl("There was a problem sending the message."));
+             return(xl("There was a problem sending the message."));
             }
             newEvent("transmit-".$xml_type,$reqBy,$_SESSION['authProvider'],1,$ret,$pid);
             $adodb=$GLOBALS['adodb']['db'];

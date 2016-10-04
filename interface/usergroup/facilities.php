@@ -9,26 +9,26 @@ $alertmsg = '';
 /*		Inserting New facility					*/
 if (isset($_POST["mode"]) && $_POST["mode"] == "facility" && $_POST["newmode"] != "admin_facility") {
   $insert_id=sqlInsert("INSERT INTO facility SET " .
-  "name = '"         . trim(formData('facility'    )) . "', " .
-  "phone = '"        . trim(formData('phone'       )) . "', " .
-  "fax = '"          . trim(formData('fax'         )) . "', " .
-  "street = '"       . trim(formData('street'      )) . "', " .
-  "city = '"         . trim(formData('city'        )) . "', " .
-  "state = '"        . trim(formData('state'       )) . "', " .
-  "postal_code = '"  . trim(formData('postal_code' )) . "', " .
+  "name = '"         . trim(formData('facility')) . "', " .
+  "phone = '"        . trim(formData('phone')) . "', " .
+  "fax = '"          . trim(formData('fax')) . "', " .
+  "street = '"       . trim(formData('street')) . "', " .
+  "city = '"         . trim(formData('city')) . "', " .
+  "state = '"        . trim(formData('state')) . "', " .
+  "postal_code = '"  . trim(formData('postal_code')) . "', " .
   "country_code = '" . trim(formData('country_code')) . "', " .
-  "federal_ein = '"  . trim(formData('federal_ein' )) . "', " .
-  "website = '"      . trim(formData('website'     )) . "', " .
-  "email = '"      	 . trim(formData('email'       )) . "', " .
-  "color = '"  . trim(formData('ncolor' )) . "', " .
-  "service_location = '"  . trim(formData('service_location' )) . "', " .
-  "billing_location = '"  . trim(formData('billing_location' )) . "', " .
-  "accepts_assignment = '"  . trim(formData('accepts_assignment' )) . "', " .
-  "pos_code = '"  . trim(formData('pos_code' )) . "', " .
-  "domain_identifier = '"  . trim(formData('domain_identifier' )) . "', " .
-  "attn = '"  . trim(formData('attn' )) . "', " .
-  "tax_id_type = '"  . trim(formData('tax_id_type' )) . "', " .
-  "primary_business_entity = '"  . trim(formData('primary_business_entity' )) . "', ".
+  "federal_ein = '"  . trim(formData('federal_ein')) . "', " .
+  "website = '"      . trim(formData('website')) . "', " .
+  "email = '"      	 . trim(formData('email')) . "', " .
+  "color = '"  . trim(formData('ncolor')) . "', " .
+  "service_location = '"  . trim(formData('service_location')) . "', " .
+  "billing_location = '"  . trim(formData('billing_location')) . "', " .
+  "accepts_assignment = '"  . trim(formData('accepts_assignment')) . "', " .
+  "pos_code = '"  . trim(formData('pos_code')) . "', " .
+  "domain_identifier = '"  . trim(formData('domain_identifier')) . "', " .
+  "attn = '"  . trim(formData('attn')) . "', " .
+  "tax_id_type = '"  . trim(formData('tax_id_type')) . "', " .
+  "primary_business_entity = '"  . trim(formData('primary_business_entity')) . "', ".
   "facility_npi = '" . trim(formData('facility_npi')) . "',".
   "facility_code = '" . trim(formData('facility_id')) . "'");
 }
@@ -59,7 +59,7 @@ if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
 		primary_business_entity='" . trim(formData('primary_business_entity')) . "' ,
 		tax_id_type='" . trim(formData('tax_id_type')) . "' ,
     facility_code = '" . trim(formData('facility_id')) . "'
-	where id='" . trim(formData('fid')) . "'" );
+	where id='" . trim(formData('fid')) . "'");
 }
 
 ?>
@@ -148,7 +148,7 @@ $(document).ready(function(){
  if (count($result2)<=0)
   {?>
   <tr height="25">
-		<td colspan="3"  style="text-align:center;font-weight:bold;"> <?php echo xl( "Currently there are no facilities." ); ?></td>
+		<td colspan="3"  style="text-align:center;font-weight:bold;"> <?php echo xl("Currently there are no facilities."); ?></td>
 	</tr>
   <?php }
 ?>

@@ -342,7 +342,7 @@ $bgcolor = ((++$orow & 1) ? "#ffdddd" : "#ddddff");
 	}
 
   if (! $_POST['form_csvexport']) {
-       if ( $_POST['form_refresh'] && count($print) != 1)
+       if ($_POST['form_refresh'] && count($print) != 1)
 	{
 		echo "<span style='font-size:10pt;'>";
                 echo xlt('No matches found. Try search again.');
@@ -353,7 +353,7 @@ $bgcolor = ((++$orow & 1) ? "#ffdddd" : "#ddddff");
 		
 if (!$_POST['form_refresh'] && !$_POST['form_csvexport']) { ?>
 <div class='text'>
- 	<?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>
+ 	<?php echo xlt('Please input search criteria above, and click Submit to view results.'); ?>
 </div>
 <?php } ?>
 </form>

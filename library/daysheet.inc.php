@@ -169,7 +169,7 @@ function array_natsort($aryData, $strIndex, $strSortBy, $strSortType=false) {
      }
     //date must be in nice format (e.g. 2002-07-11)
 
-    function getBillsBetweendayReport( $code_type,
+    function getBillsBetweendayReport($code_type,
         $cols = "id,date,pid,code_type,code,user,authorized,x12_partner_id")
     {
         GenerateTheQueryPart();

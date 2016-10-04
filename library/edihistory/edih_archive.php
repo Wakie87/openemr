@@ -63,7 +63,7 @@ function edih_archive_report($period = '') {
 	//
 	$bdir = csv_edih_basedir();
 	$params = csv_parameters('ALL');
-	if ( !is_array($params)	 && count($params) ) {
+	if (!is_array($params)	 && count($params)) {
 		csv_edihist_log("edih_archive_report: invalid csv_parameters");
 		return "<p>There was an error creating the report.</p>";
 	}
@@ -83,7 +83,7 @@ function edih_archive_report($period = '') {
 		$tp = $param['type'];
 		$fdir = $param['directory'];
 		//
-		if ( is_dir($fdir) ) {
+		if (is_dir($fdir)) {
 			$dir_ar = scandir($fdir);
 			if (is_array($dir_ar) && ((count($dir_ar)-2) > 0)) {
 				$str_html .= "<H3><em>Type</em> ".$tp."</H3>".PHP_EOL;
@@ -119,7 +119,7 @@ function edih_archive_report($period = '') {
 					csv_edihist_log("edih_archive_report: error $tp file count $dir_ct with csv rows $row_ct");
 				}
 				//
-				$mis = ($fntp_ct == $dir_ct ) ? "(check/eft count or ISA--IEA count)" : "(mismatch csv $fntp_ct dir $dir_ct)";
+				$mis = ($fntp_ct == $dir_ct) ? "(check/eft count or ISA--IEA count)" : "(mismatch csv $fntp_ct dir $dir_ct)";
 				//
 				if ($tp == 'f837')  {
 					$str_html .= "<li><em>Note:</em> 837 Claims files are not archived </li>".PHP_EOL;
@@ -157,15 +157,15 @@ function edih_archive_date($period) {
 	if (!$period) { return $dtpd2; }
 	$is_period = preg_match('/\d{1,2}(?=m)/', $period, $matches);
 	//
-	if ( count($matches) ) {
+	if (count($matches)) {
 		$gtdt = getdate();
 		//
-		if ( strpos($period, 'm') ) {
+		if (strpos($period, 'm')) {
 			// take the number part of 'period'
 			// so modstr will be '-N month'
 			$modstr = '-'.$matches[0].' month';
 			$dtstr1 = $gtdt['mon'].'/01/'.$gtdt['year'];
-		}  elseif ( strpos($period, 'y') ) {
+		}  elseif (strpos($period, 'y')) {
 			$modstr = '-'.$matches[0].' year';
 			$dtstr1 = $gtdt['mon'].'/01/'.$gtdt['year'];
 		} else {
@@ -174,7 +174,7 @@ function edih_archive_date($period) {
 		}
 		//
 		if ($modstr) {
-			$dtpd1 = date_create( $dtstr1 );
+			$dtpd1 = date_create($dtstr1);
 			$dtm = date_modify($dtpd1, $modstr);
 			$dtpd2 = $dtm->format('Ymd');
 		} else {
@@ -203,21 +203,21 @@ function edih_archive_date($period) {
  */
 function edih_archive_filenames($csv_ar, $archive_date) {
 	//
-	if ( $archive_date && strlen($archive_date) == 8 && is_numeric($archive_date) ) {
+	if ($archive_date && strlen($archive_date) == 8 && is_numeric($archive_date)) {
 		$testdate = (string)$archive_date;
 	} else {
 		csv_edihist_log("edih_archive_filenames: invalid archive date $archive_date");
 		return false;
 	}
 	//
-	if ( !is_array($csv_ar) || !count($csv_ar) ) {
+	if (!is_array($csv_ar) || !count($csv_ar)) {
 		csv_edihist_log("edih_archive_filenames: failed to get csv file array $file_type");
 		return false;
 	}
 	//
 	$fn_ar = array();
 	foreach($csv_ar as $row) {
-		if ( strcmp($row['Date'], $archive_date) < 0 ) {
+		if (strcmp($row['Date'], $archive_date) < 0) {
 			$fn_ar[] = $row['FileName'];
 		}
 	}
@@ -241,7 +241,7 @@ function edih_archive_filenames($csv_ar, $archive_date) {
  */
 function edih_archive_csv_split($csv_ar, $filename_array) {
 	//
-	if ( !is_array($filename_array) || !count($filename_array) ) {
+	if (!is_array($filename_array) || !count($filename_array)) {
 		csv_edihist_log('csv_archive_table; invalid filename array');
 		return false;
 	}
@@ -260,7 +260,7 @@ function edih_archive_csv_split($csv_ar, $filename_array) {
 	$arch_ar['keep'] = array();
 	//
 	foreach($csv_ar as $row) {
-		if ( in_array($row['FileName'], $filename_array) ) {
+		if (in_array($row['FileName'], $filename_array)) {
 			$arch_ar['arch'][] = $row;
 		} else {
 			$arch_ar['keep'][] = $row;
@@ -300,7 +300,7 @@ function edih_archive_create_zip($parameters, $filename_ar, $archive_date, $arch
 	$fn_ar2 = array();
 	// to handle possibility of more than 200 files in the archive
 	// use the 'chunk' method
-	if ( count($filename_ar) > $f_max) {
+	if (count($filename_ar) > $f_max) {
 		$fn_ar2 = array_chunk($filename_ar, $f_max);
 	} else {
 		$fn_ar2[] = $filename_ar;
@@ -311,7 +311,7 @@ function edih_archive_create_zip($parameters, $filename_ar, $archive_date, $arch
 	//
 	$zip_obj = new ZipArchive();
 	csv_edihist_log("edih_archive_create_zip: now opening archive $archive_filename");
-	if (is_file($zip_name) ) {
+	if (is_file($zip_name)) {
 		$isOK = $zip_obj->open($zip_name, ZIPARCHIVE::CHECKCONS);
 		if ($isOK) {
 			if ($zip_obj->locateName($ft) === false) {
@@ -334,11 +334,11 @@ function edih_archive_create_zip($parameters, $filename_ar, $archive_date, $arch
 	}
 	// we are working with the open archive
 	// now add the old csv files to the archive
-	if ( is_file($tmp_dir.DS.$files_csv_arch) ) {
+	if (is_file($tmp_dir.DS.$files_csv_arch)) {
 		csv_edihist_log("edih_archive_create_zip: now adding $files_csv_arch to archive");
 		$isOK = $zip_obj->addFile($tmp_dir.DS.$files_csv_arch, 'csv'.DS.$files_csv_arch);
 	}
-	if ( is_file($tmp_dir.DS.$claims_csv_arch) ) {
+	if (is_file($tmp_dir.DS.$claims_csv_arch)) {
 		csv_edihist_log("edih_archive_create_zip: now adding $claims_csv_arch to archive");
 		$isOK = $zip_obj->addFile($tmp_dir.DS.$claims_csv_arch, 'csv'.DS.$claims_csv_arch);
 	}
@@ -354,7 +354,7 @@ function edih_archive_create_zip($parameters, $filename_ar, $archive_date, $arch
 	csv_edihist_log("edih_archive_create_zip: with file name groups ".count($fn_ar2));
 	foreach($fn_ar2 as $fnz) {
 		// reopen the zip archive on each loop so the open file count is controlled
-		if (is_file($zip_name) ) {
+		if (is_file($zip_name)) {
 			csv_edihist_log("edih_archive_create_zip: now opening archive");
 			$isOK = $zip_obj->open($zip_name, ZIPARCHIVE::CHECKCONS);
 		}
@@ -365,7 +365,7 @@ function edih_archive_create_zip($parameters, $filename_ar, $archive_date, $arch
 			csv_edihist_log("edih_archive_create_zip: now adding $ft files to archive");
 			foreach($fnz as $fz) {
 				if ($fz == '.' || $fz == '..') { continue; }
-				if (is_file($fdir.DS.$fz) && is_readable($fdir.DS.$fz) ) {
+				if (is_file($fdir.DS.$fz) && is_readable($fdir.DS.$fz)) {
 					$isOK = $zip_obj->addFile($fdir.DS.$fz, $ft.DS.$fz);
 				} else {
 					// possible that file is in csv table, but not in directory?
@@ -407,8 +407,8 @@ function edih_archive_create_zip($parameters, $filename_ar, $archive_date, $arch
  */
 function edih_archive_move_old($parameters, $filename_ar) {
 	//
-	if ( !is_array($filename_ar) || !count($filename_ar) ) { return false; }
-	if ( !is_array($parameters) || !count($parameters) ) { return false; }
+	if (!is_array($filename_ar) || !count($filename_ar)) { return false; }
+	if (!is_array($parameters) || !count($parameters)) { return false; }
 	//
 	clearstatcache(true);
 	//
@@ -489,7 +489,7 @@ function edih_archive_csv_array($filetype, $csv_type, $filepath='') {
 	// relies on first row being header or column names
 	if (($fh = fopen($csv_arch_path, "rb")) !== false) {
 	    while (($data = fgetcsv($fh, 2048, ",")) !== false) {
-			if ( is_null($data) ) { continue; }
+			if (is_null($data)) { continue; }
 			if ($row) {
 				for($i=0; $i<$ct; $i++) {
 					$csv_ar[$ky][$h[$i]] = $data[$i];
@@ -993,7 +993,7 @@ function edih_archive_main($period) {
 		return $out_html;
 	}
 	//		
-	if (is_dir($archive_dir) ) {
+	if (is_dir($archive_dir)) {
 		if (is_file($archive_dir.DS.$arch_fn)) {
 			csv_edihist_log("edih_archive_main: archive file $arch_fn already exists");
 			$out_html = "Archive: archive file $arch_fn already exists<br>" .PHP_EOL;
@@ -1018,7 +1018,7 @@ function edih_archive_main($period) {
 		}
 		$fdir = $p['directory'];
 		$scan = scandir($fdir);
-		if ( !$scan || count($scan) < 3 ) { continue; }
+		if (!$scan || count($scan) < 3) { continue; }
 		//
 		$files_csv = $p['files_csv'];
 		$claims_csv = $p['claims_csv'];
@@ -1085,7 +1085,7 @@ function edih_archive_main($period) {
 					$frws = edih_archive_rewrite_csv($fn_files_keep, $fh_ar, $arch_new['keep']);
 					$out_html .= "type $ft keep files_csv file with $frws rows<br>";
 				}
-				if ( isset($arch_new['arch'])) {
+				if (isset($arch_new['arch'])) {
 					// write the old
 					$frws2 = edih_archive_rewrite_csv($fn_files_arch, $fh_ar, $arch_new['arch']);
 					$out_html .= "type $ft archive files_csv file with $frws2 rows<br>";

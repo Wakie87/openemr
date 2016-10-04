@@ -49,7 +49,7 @@ class Documents extends AbstractPlugin
 	 * @param String $key Encryption Key
 	 * @return String
 	 */
-	public function encrypt($plaintext,$key,$cypher = 'tripledes', $mode = 'cfb' )
+	public function encrypt($plaintext,$key,$cypher = 'tripledes', $mode = 'cfb')
 	{
                 $obj = new \C_Document();
                 $obj->encrypt($plaintext, $key, $cypher, $mode);

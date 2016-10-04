@@ -94,7 +94,7 @@ class FeeSheetHtml extends FeeSheet {
       // Normally would use generate_select_list() but it's not flexible enough here.
       $s .= "<select name='" . attr($tagname) . "'";
       if (!$disabled) $s .= " onchange='warehouse_changed(this);'";
-      if ($disabled ) $s .= " disabled";
+      if ($disabled) $s .= " disabled";
       $s .= ">";
       $s .= "<option value=''>" . text($toptext) . "</option>";
       $lres = sqlStatement("SELECT * FROM list_options " .
@@ -131,7 +131,7 @@ class FeeSheetHtml extends FeeSheet {
     // echo "<!-- pr_id = '$pr_id', pr_selector = '$pr_selector' -->\n"; // debugging
     $s = "<select name='" . attr($tagname) . "'";
     if (!$disabled) $s .= " onchange='pricelevel_changed(this);'";
-    if ($disabled ) $s .= " disabled";
+    if ($disabled) $s .= " disabled";
     $s .= ">";
     $s .= "<option value=''>" . text($toptext) . "</option>";
     $lres = sqlStatement("SELECT lo.*, p.pr_price " .

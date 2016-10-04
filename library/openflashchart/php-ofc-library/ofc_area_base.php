@@ -13,7 +13,7 @@ class area extends line
 	/**
 	 * the fill colour
 	 */
-	function set_fill_colour( $colour )
+	function set_fill_colour($colour)
 	{
 		$this->fill = $colour;
 	}
@@ -21,13 +21,13 @@ class area extends line
 	/**
 	 * sugar: see set_fill_colour
 	 */
-	function fill_colour( $colour )
+	function fill_colour($colour)
 	{
-		$this->set_fill_colour( $colour );
+		$this->set_fill_colour($colour);
 		return $this;
 	}
 	
-	function set_fill_alpha( $alpha )
+	function set_fill_alpha($alpha)
 	{
 		$tmp = "fill-alpha";
 		$this->$tmp = $alpha;

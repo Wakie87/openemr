@@ -115,7 +115,7 @@ function arPostSession($payer_id,$check_number,$check_date,$pay_total,$post_to_d
     if (empty($time)) $time = date('Y-m-d H:i:s');
 
     sqlBeginTrans();
-    $sequence_no = sqlQuery( "SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", array($patient_id, $encounter_id));
+    $sequence_no = sqlQuery("SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", array($patient_id, $encounter_id));
     $query = "INSERT INTO ar_activity ( " .
       "pid, encounter, sequence_no, code_type, code, modifier, payer_type, post_time, post_user, " .
       "session_id, memo, pay_amount " .
@@ -196,7 +196,7 @@ function arPostSession($payer_id,$check_number,$check_date,$pay_total,$post_to_d
     if (empty($time)) $time = date('Y-m-d H:i:s');
 
     sqlBeginTrans();
-    $sequence_no = sqlQuery( "SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", array($patient_id, $encounter_id));
+    $sequence_no = sqlQuery("SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", array($patient_id, $encounter_id));
     $query = "INSERT INTO ar_activity ( " .
       "pid, encounter, sequence_no, code_type, code, modifier, payer_type, post_user, post_time, " .
       "session_id, memo, adj_amount " .
@@ -226,7 +226,7 @@ function arPostSession($payer_id,$check_number,$check_date,$pay_total,$post_to_d
     $query = "SELECT provider FROM insurance_data WHERE " .
       "pid = ? AND type = ? AND date <= ? " .
       "ORDER BY date DESC LIMIT 1";
-    $nprow = sqlQuery($query, array($patient_id,$value,$date_of_service) );
+    $nprow = sqlQuery($query, array($patient_id,$value,$date_of_service));
     if (empty($nprow)) return 0;
     return $nprow['provider'];
   }

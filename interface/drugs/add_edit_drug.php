@@ -483,11 +483,11 @@ else {
   <td>
    <table border='0' width='100%'>
     <tr>
-     <td class='drugsonly'><b><?php echo xlt('Name'    ); ?></b></td>
+     <td class='drugsonly'><b><?php echo xlt('Name'); ?></b></td>
      <td class='drugsonly'><b><?php echo xlt('Schedule'); ?></b></td>
      <td class='drugsonly'><b><?php echo xlt('Interval'); ?></b></td>
-     <td class='drugsonly'><b><?php echo xlt('Qty'     ); ?></b></td>
-     <td class='drugsonly'><b><?php echo xlt('Refills' ); ?></b></td>
+     <td class='drugsonly'><b><?php echo xlt('Qty'); ?></b></td>
+     <td class='drugsonly'><b><?php echo xlt('Refills'); ?></b></td>
 <?php
   // Show a heading for each price level.  Also create an array of prices
   // for new template lines.

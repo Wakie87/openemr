@@ -95,7 +95,7 @@ tr.selected {
 <?php 
 	$query = "SELECT * FROM amendments WHERE pid = ? ORDER BY amendment_date DESC";
 	$resultSet = sqlStatement($query,array($pid));
-	if ( sqlNumRows($resultSet)) { ?>
+	if (sqlNumRows($resultSet)) { ?>
 			<table cellspacing="0" cellpadding="0" style="width:100%">
 				<tr>
 					<td><a href="javascript:checkForAmendments();" class="css_button"><span><?php echo xlt("Print Amendments"); ?></span></a></td>

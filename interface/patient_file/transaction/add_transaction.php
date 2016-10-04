@@ -164,7 +164,7 @@ $(document).ready(function() {
 
 <script language="JavaScript">
 
-var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QUOTES); ?>';
+var mypcc = '<?php echo htmlspecialchars($GLOBALS['phone_country_code'], ENT_QUOTES); ?>';
 
 $(document).ready(function(){
   $("#send_sum_flag").click(function() {
@@ -224,7 +224,7 @@ function sel_related(e) {
 // Process click on Delete link.
 function deleteme() {
 // onclick='return deleteme()'
- dlgopen('../deleter.php?transaction=<?php echo htmlspecialchars( $transid, ENT_QUOTES); ?>', '_blank', 500, 450);
+ dlgopen('../deleter.php?transaction=<?php echo htmlspecialchars($transid, ENT_QUOTES); ?>', '_blank', 500, 450);
  return false;
 }
 
@@ -252,11 +252,11 @@ function validate(f) {
  <?php generate_layout_validation($form_id); ?>
 
  var msg = "";
- msg += "<?php echo htmlspecialchars( xl('The following fields are required'), ENT_QUOTES); ?>:\n\n";
+ msg += "<?php echo htmlspecialchars(xl('The following fields are required'), ENT_QUOTES); ?>:\n\n";
  for ( var i = 0; i < errMsgs.length; i++ ) {
 	msg += errMsgs[i] + "\n";
  }
- msg += "\n<?php echo htmlspecialchars( xl('Please fill them in before continuing.'), ENT_QUOTES); ?>";
+ msg += "\n<?php echo htmlspecialchars(xl('Please fill them in before continuing.'), ENT_QUOTES); ?>";
 
  if ( errMsgs.length > 0 ) {
 	alert(msg);
@@ -286,20 +286,20 @@ div.tab {
 
 </head>
 <body class="body_top" onload="<?php echo $body_onload_code; ?>" >
-<form name='new_transaction' method='post' action='add_transaction.php?transid=<?php echo htmlspecialchars( $transid, ENT_QUOTES); ?>' onsubmit='return validate(this)'>
+<form name='new_transaction' method='post' action='add_transaction.php?transid=<?php echo htmlspecialchars($transid, ENT_QUOTES); ?>' onsubmit='return validate(this)'>
 <input type='hidden' name='mode' value='add'>
 
 	<table>
 	    <tr>
             <td>
-                <b><?php echo htmlspecialchars( xl('Add/Edit Patient Transaction'), ENT_NOQUOTES); ?></b>&nbsp;</td><td>
+                <b><?php echo htmlspecialchars(xl('Add/Edit Patient Transaction'), ENT_NOQUOTES); ?></b>&nbsp;</td><td>
                  <a href="javascript:;" class="css_button" onclick="submitme();">
-                    <span><?php echo htmlspecialchars( xl('Save'), ENT_NOQUOTES); ?></span>
+                    <span><?php echo htmlspecialchars(xl('Save'), ENT_NOQUOTES); ?></span>
                  </a>
              </td>
              <td>
                 <a href="transactions.php" class="css_button" onclick="top.restoreSession()">
-                    <span><?php echo htmlspecialchars( xl('Cancel'), ENT_NOQUOTES); ?></span>
+                    <span><?php echo htmlspecialchars(xl('Cancel'), ENT_NOQUOTES); ?></span>
                 </a>
             </td>
         </tr>
@@ -307,7 +307,7 @@ div.tab {
 
 	<table class="text">
 	    <tr><td>
-        <?php echo htmlspecialchars( xl('Transaction Type'), ENT_NOQUOTES); ?>:&nbsp;</td><td>
+        <?php echo htmlspecialchars(xl('Transaction Type'), ENT_NOQUOTES); ?>:&nbsp;</td><td>
 	<?php echo generate_select_list('title','transactions',$form_id,'','','','titleChanged()'); ?>
         </td></tr>
 	</table>
@@ -419,9 +419,9 @@ while ($frow = sqlFetchArray($fres)) {
     if ($field_id == 'refer_date') {
       $currvalue = date('Y-m-d');
     }
-    else if ($field_id == 'body' && $transid > 0 ) {
+    else if ($field_id == 'body' && $transid > 0) {
 	   $tmp = sqlQuery("SELECT reason FROM form_encounter WHERE " .
-        "pid = ? ORDER BY date DESC LIMIT 1", array($pid) );
+        "pid = ? ORDER BY date DESC LIMIT 1", array($pid));
       if (!empty($tmp)) $currvalue = $tmp['reason'];
     }
   }
@@ -432,7 +432,7 @@ while ($frow = sqlFetchArray($fres)) {
     $group_seq  = substr($this_group, 0, 1);
     $group_name = substr($this_group, 1);
     $last_group = $this_group;
-    $group_seq_esc = htmlspecialchars( $group_seq, ENT_QUOTES);
+    $group_seq_esc = htmlspecialchars($group_seq, ENT_QUOTES);
     if($group_seq == 1)	echo "<div class='tab current' id='div_$group_seq_esc'>";
     else echo "<div class='tab' id='div_$group_seq_esc'>";
     echo " <table border='0' cellpadding='0'>\n";
@@ -450,7 +450,7 @@ while ($frow = sqlFetchArray($fres)) {
   // Handle starting of a new label cell.
   if ($titlecols > 0) {
     end_cell();
-    $titlecols_esc = htmlspecialchars( $titlecols, ENT_QUOTES);
+    $titlecols_esc = htmlspecialchars($titlecols, ENT_QUOTES);
     echo "<td width='70' valign='top' colspan='$titlecols_esc'";
     echo ($frow['uor'] == 2) ? " class='required'" : " class='bold'";
     if ($cell_count == 2) echo " style='padding-left:10pt'";
@@ -464,14 +464,14 @@ while ($frow = sqlFetchArray($fres)) {
   echo "<b>";
 
   // Modified 6-09 by BM - Translate if applicable
-  if ($frow['title']) echo (htmlspecialchars( xl_layout_label($frow['title']), ENT_NOQUOTES) . ":"); else echo "&nbsp;";
+  if ($frow['title']) echo (htmlspecialchars(xl_layout_label($frow['title']), ENT_NOQUOTES) . ":"); else echo "&nbsp;";
 
   echo "</b>";
 
   // Handle starting of a new data cell.
   if ($datacols > 0) {
     end_cell();
-    $datacols_esc = htmlspecialchars( $datacols, ENT_QUOTES);
+    $datacols_esc = htmlspecialchars($datacols, ENT_QUOTES);
     echo "<td valign='top' colspan='$datacols_esc' class='text'";
     // This ID is used by skip conditions.
     echo " id='value_id_" . attr($field_id) . "'";

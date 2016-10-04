@@ -321,7 +321,7 @@ function create_and_download_certificates()
 	
     /* Create a zip file containing the CertificateAuthority, Server, and admin files */
    try {
-    if (! (class_exists('ZipArchive')) ) {
+    if (! (class_exists('ZipArchive'))) {
      	 $_SESSION["zip_error"]="Error, Class ZipArchive does not exist";
 	 return;
     }

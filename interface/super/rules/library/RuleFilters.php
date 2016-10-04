@@ -21,8 +21,8 @@ class RuleFilters {
     /**
      * @param RuleCriteria $criteria
      */
-    function add( $criteria ) {
-        array_push( $this->criteria, $criteria );
+    function add($criteria) {
+        array_push($this->criteria, $criteria);
     }
 
 }

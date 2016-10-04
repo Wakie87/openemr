@@ -28,19 +28,19 @@ class RuleAction {
     }
 
     function getTitle() {
-        return getLabel( $this->category, 'rule_action_category' ) . " - " . getLabel( $this->item, 'rule_action' );
+        return getLabel($this->category, 'rule_action_category') . " - " . getLabel($this->item, 'rule_action');
     }
 
     function getCategoryLabel() {
-        if ( !$this->categoryLbl ) {
-            $this->categoryLbl = getLabel( $this->category, 'rule_action_category');
+        if (!$this->categoryLbl) {
+            $this->categoryLbl = getLabel($this->category, 'rule_action_category');
         }
         return $this->categoryLbl;
     }
 
     function getItemLabel() {
-        if ( !$this->itemLbl ) {
-            $this->itemLbl = getLabel( $this->item, 'rule_action');
+        if (!$this->itemLbl) {
+            $this->itemLbl = getLabel($this->item, 'rule_action');
         }
         return $this->itemLbl;
     }

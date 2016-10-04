@@ -46,7 +46,7 @@ else {
 if ($_POST["form_patient"])
 $form_patient = isset($_POST['form_patient']) ? $_POST['form_patient'] : '';
 $form_pid = isset($_POST['form_pid']) ? $_POST['form_pid'] : '';
-if ($form_patient == '' ) $form_pid = '';
+if ($form_patient == '') $form_pid = '';
 ?>
 <html>
 
@@ -262,7 +262,7 @@ if ($form_patient == '' ) $form_pid = '';
 <div id="superbill_results">
 
 <?php
-if( !(empty($_POST['start']) || empty($_POST['end']))) {
+if(!(empty($_POST['start']) || empty($_POST['end']))) {
     $sql = "select * from facility where billing_location = 1";
     $db = $GLOBALS['adodb']['db'];
     $results = $db->Execute($sql);

@@ -131,7 +131,7 @@ if ($start_date && $end_date)
 <?php
 $form_user = $_REQUEST['form_user'];
 $form_pid = $_REQUEST['form_pid'];
-if ($form_patient == '' ) $form_pid = '';
+if ($form_patient == '') $form_pid = '';
 
 $get_sdate=$start_date ? $start_date : date("Y-m-d H:i:s");
 $get_edate=$end_date ? $end_date : date("Y-m-d H:i:s");
@@ -280,7 +280,7 @@ if ($ret = getEvents(array('sdate' => $get_sdate,'edate' => $get_edate, 'user' =
     }
   }
   
-  if( count($dispArr) == 0 ){?>
+  if(count($dispArr) == 0){?>
 	 <TR class="oneresult">
 		 <?php 
 			$colspan = 4;

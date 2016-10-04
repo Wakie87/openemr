@@ -18,7 +18,7 @@ class sms
  	var $username = "";
  	var $password = "";
 	
- 	function sms( $strUser, $strPass )
+ 	function sms($strUser, $strPass)
  	{
  	  $this->username = $strUser;
           $this->password = $strPass;
@@ -42,7 +42,7 @@ class sms
  		$request .= "&to=".urlencode($phoneNo);
 
         	// larry :: default if not defined - TODO  replace 
-        	if( !$sender )
+        	if(!$sender)
                   $request .= "&from=BosmanGGZ";
                 else
  		  $request .= "&from=".urlencode($sender);

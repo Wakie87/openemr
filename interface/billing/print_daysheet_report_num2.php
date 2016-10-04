@@ -83,7 +83,7 @@ if (!isset($_GET["mode"])) {
 <br>
 
 <?php 
-if ($my_authorized === 'on' ) {
+if ($my_authorized === 'on') {
     $my_authorized = true;
 } else {
     $my_authorized = '%';
@@ -131,7 +131,7 @@ if (!isset($_GET["mode"])) {
     $my_authorized = $_GET["authorized"];
 }
 
-if ($my_authorized === 'on' ) {
+if ($my_authorized === 'on') {
     $my_authorized = true;
 } else {
     $my_authorized = '%';
@@ -376,7 +376,7 @@ if ($totals_only != 1) {
 		print "<tr><td colspan=50><hr><span class=bold>" . "     " . text($name{"fname"}) . " " . text($name{"lname"}) . "</span><br><br></td></tr><tr>\n";
         //==================================
 
-    if ($iter{'code_type'} === 'COPAY' || $iter{'code_type'} === 'Patient Payment' || $iter{'code_type'} === 'Insurance Payment' ) {
+    if ($iter{'code_type'} === 'COPAY' || $iter{'code_type'} === 'Patient Payment' || $iter{'code_type'} === 'Insurance Payment') {
 
       print "<td width=40><span class=text><center><b>" . xlt("Units") . "</b></center>";
       print "</span></td><td width=100><span class=text><center><b>" . xlt("Fee"). "</b></center>" ;
@@ -407,7 +407,7 @@ if ($totals_only != 1) {
 	// get dollar amounts to appear on pat,ins payments and copays
 
 	if ($iter{'code_type'} != 'payment_info') {
-	if ($iter{'code_type'} === 'COPAY' || $iter{'code_type'} === 'Patient Payment' || $iter{'code_type'} === 'Insurance Payment' ) {
+	if ($iter{'code_type'} === 'COPAY' || $iter{'code_type'} === 'Patient Payment' || $iter{'code_type'} === 'Insurance Payment') {
 	   print "<td width=40><span class=text><center>" . "1". "</center>" ;
 	  
 	  // start fee output
@@ -415,39 +415,39 @@ if ($totals_only != 1) {
 	  //    [ins_code] => 0.00
 	  //    [pat_adjust_dollar] => 0.00
 	  //    [ins_adjust_dollar] => 0.00
-	  if (($iter{'ins_adjust_dollar'}) != 0 AND ($iter{'code_type'}) === 'Insurance Payment' ){
+	  if (($iter{'ins_adjust_dollar'}) != 0 AND ($iter{'code_type'}) === 'Insurance Payment'){
 	   print  "</span></td><td width=100><span class=text><center>" . text("(". $iter{'ins_adjust_dollar'}.")"). "</center>";
 	  }
-	  if (($iter{'ins_code'}) != 0 AND ($iter{'code_type'}) === 'Insurance Payment' ){
+	  if (($iter{'ins_code'}) != 0 AND ($iter{'code_type'}) === 'Insurance Payment'){
 	   print  "</span></td><td width=100><span class=text><center>" . text("(". $iter{'ins_code'}.")"). "</center>";
 	  }
-	  if (($iter{'code_type'}) != "Patient Payment" AND ($iter{'code_type'}) != 'Insurance Payment' ){
+	  if (($iter{'code_type'}) != "Patient Payment" AND ($iter{'code_type'}) != 'Insurance Payment'){
 	   print  "</span></td><td width=100><span class=text><center>" . text("(". $iter{"code"}.")"). "</center>";
 	  }
-	  if (($iter{'pat_adjust_dollar'}) != 0 AND ($iter{'code_type'}) === 'Patient Payment' ){
+	  if (($iter{'pat_adjust_dollar'}) != 0 AND ($iter{'code_type'}) === 'Patient Payment'){
 	   print  "</span></td><td width=100><span class=text><center>" . text("(". $iter{'pat_adjust_dollar'}.")"). "</center>";
 	  }
-	  if (($iter{'pat_code'}) != 0 AND ($iter{'code_type'}) === 'Patient Payment' ){
+	  if (($iter{'pat_code'}) != 0 AND ($iter{'code_type'}) === 'Patient Payment'){
 	   print  "</span></td><td width=100><span class=text><center>" . text("(". $iter{'pat_code'}.")"). "</center>";
 	  }
       // end fee output
 
-	 if (($iter{'ins_adjust_dollar'}) != 0 AND ($iter{'code_type'}) === 'Insurance Payment' ){
+	 if (($iter{'ins_adjust_dollar'}) != 0 AND ($iter{'code_type'}) === 'Insurance Payment'){
 	     print  "</span></td><td width=250><span class=text><center>" . xlt('Insurance Adjustment'). "</center>";
 	 }
-	 if (($iter{'pat_adjust_dollar'}) != 0 AND ($iter{'code_type'}) === 'Patient Payment' ){
+	 if (($iter{'pat_adjust_dollar'}) != 0 AND ($iter{'code_type'}) === 'Patient Payment'){
 	     print  "</span></td><td width=250><span class=text><center>" . xlt('Patient Adjustment'). "</center>";
 	 }
-	 if (($iter{'ins_code'}) > 0 AND ($iter{'code_type'}) === 'Insurance Payment' ){
+	 if (($iter{'ins_code'}) > 0 AND ($iter{'code_type'}) === 'Insurance Payment'){
 	     print  "</span></td><td width=250><span class=text><center>" . xlt('Insurance Payment'). "</center>";
 	 }
-	 if (($iter{'pat_code'}) > 0 AND ($iter{'code_type'}) === 'Patient Payment' AND $iter{'paytype'} != 'PCP' ){
+	 if (($iter{'pat_code'}) > 0 AND ($iter{'code_type'}) === 'Patient Payment' AND $iter{'paytype'} != 'PCP'){
 	     print  "</span></td><td width=250><span class=text><center>" . xlt('Patient Payment'). "</center>";
 	 }
-	 if (($iter{'ins_code'}) < 0 AND ($iter{'code_type'}) === 'Insurance Payment' ){
+	 if (($iter{'ins_code'}) < 0 AND ($iter{'code_type'}) === 'Insurance Payment'){
 	     print  "</span></td><td width=250><span class=text><center>" . xlt('Insurance Credit'). "</center>";
 	 }
-	 if (($iter{'pat_code'}) < 0 AND ($iter{'code_type'}) === 'Patient Payment' AND $iter{'paytype'} != 'PCP' ){
+	 if (($iter{'pat_code'}) < 0 AND ($iter{'code_type'}) === 'Patient Payment' AND $iter{'paytype'} != 'PCP'){
 	     print  "</span></td><td width=250><span class=text><center>" . xlt('Patient Credit'). "</center>";
 	 }
 	 if ($iter{'paytype'} === 'PCP') {
@@ -714,7 +714,7 @@ print "<br><br>";
 ?><font size = 5 ><?php echo xlt('Totals for '). $from_date . ' ' . xlt('To') . ' ' . $to_date ?></font><?php
 }
 
-for ($i=1 ; $i<$k; ) {
+for ($i=1 ; $i<$k;) {
 print "<table border=1><tr>\n";
 print "<br><br>";
 

@@ -41,24 +41,24 @@ if ($patient && ! $_POST['form_from_date']) {
 }
 
 $show_available_times = false;
-if ( $_POST['form_show_available'] ) {
+if ($_POST['form_show_available']) {
 	$show_available_times = true;
 }
 
 $chk_with_out_provider = false;
-if ( $_POST['with_out_provider'] ) {
+if ($_POST['with_out_provider']) {
 	$chk_with_out_provider = true;
 }
 
 $chk_with_out_facility = false;
-if ( $_POST['with_out_facility'] ) {
+if ($_POST['with_out_facility']) {
 	$chk_with_out_facility = true;
 }
 
 //$to_date   = fixDate($_POST['form_to_date'], '');
 $provider  = $_POST['form_provider'];
 $facility  = $_POST['form_facility'];  //(CHEMED) facility filter
-$form_orderby = getComparisonOrder( $_REQUEST['form_orderby'] ) ?  $_REQUEST['form_orderby'] : 'date';
+$form_orderby = getComparisonOrder($_REQUEST['form_orderby']) ?  $_REQUEST['form_orderby'] : 'date';
 
 // Reminders related stuff
 $incl_reminders = isset($_POST['incl_reminders']) ? 1 : 0;
@@ -257,7 +257,7 @@ function fetch_reminders($pid, $appt_date) {
 			<tr>
 			    <td></td>
 				<td><label><input type='checkbox' name='form_show_available'
-					<?php  if ( $show_available_times ) echo ' checked'; ?>> <?php  echo xlt('Show Available Times'); # check this to show available times on the report ?>
+					<?php  if ($show_available_times) echo ' checked'; ?>> <?php  echo xlt('Show Available Times'); # check this to show available times on the report ?>
 				</label></td>
 			    <td></td>
                 <td><label><input type="checkbox" name="incl_reminders" id="incl_reminders" 
@@ -284,7 +284,7 @@ function fetch_reminders($pid, $appt_date) {
 				<div style='margin-left: 15px'>
                                 <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
 				<span> <?php echo xlt('Submit'); ?> </span> </a> 
-                                <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
+                                <?php if ($_POST['form_refresh'] || $_POST['form_orderby']) { ?>
         <a href='#' class='css_button' id='printbutton'> 
                                     <span> <?php echo xlt('Print'); ?> </span> </a> 
                                 <a href='#' class='css_button' onclick='window.open("../patient_file/printed_fee_sheet.php?fill=2","_blank")' onsubmit='return top.restoreSession()'> 
@@ -361,25 +361,25 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
 	$with_out_provider = null;
 	$with_out_facility = null;
 
-	if( isset($_POST['with_out_provider']) ){
+	if(isset($_POST['with_out_provider'])){
 		$with_out_provider = $_POST['with_out_provider'];
 	}
 	
-	if( isset($_POST['with_out_facility']) ){
+	if(isset($_POST['with_out_facility'])){
 		$with_out_facility = $_POST['with_out_facility'];
 	}
-	$appointments = fetchAppointments( $from_date, $to_date, $patient, $provider, $facility, $form_apptstatus, $with_out_provider, $with_out_facility,$form_apptcat );
+	$appointments = fetchAppointments($from_date, $to_date, $patient, $provider, $facility, $form_apptstatus, $with_out_provider, $with_out_facility,$form_apptcat);
 	
-	if ( $show_available_times ) {
-		$availableSlots = getAvailableSlots( $from_date, $to_date, $provider, $facility );
-		$appointments = array_merge( $appointments, $availableSlots );
+	if ($show_available_times) {
+		$availableSlots = getAvailableSlots($from_date, $to_date, $provider, $facility);
+		$appointments = array_merge($appointments, $availableSlots);
 	}
 
-	$appointments = sortAppointments( $appointments, $form_orderby );
+	$appointments = sortAppointments($appointments, $form_orderby);
     $pid_list = array();  // Initialize list of PIDs for Superbill option
     $totalAppontments = count($appointments);
 	
-	foreach ( $appointments as $appointment ) {
+	foreach ($appointments as $appointment) {
                 array_push($pid_list,$appointment['pid']);
 		$patient_id = $appointment['pid'];
 		$docname  = $appointment['ulname'] . ', ' . $appointment['ufname'] . ' ' . $appointment['umname'];

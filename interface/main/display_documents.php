@@ -37,8 +37,8 @@ date_sub($curdate, date_interval_create_from_date_string("7 days"));
 $sub_date = date_format($curdate, 'Y-m-d');
 
 // Set the default dates for Lab document search
-$form_from_doc_date = ( $_GET['form_from_doc_date'] ) ? $_GET['form_from_doc_date'] : oeFormatShortDate(fixDate($_GET['form_from_doc_date'],$sub_date));
-$form_to_doc_date = ( $_GET['form_to_doc_date'] ) ? $_GET['form_to_doc_date'] : oeFormatShortDate(fixDate($_GET['form_to_doc_date'],date("Y-m-d")));
+$form_from_doc_date = ($_GET['form_from_doc_date']) ? $_GET['form_from_doc_date'] : oeFormatShortDate(fixDate($_GET['form_from_doc_date'],$sub_date));
+$form_to_doc_date = ($_GET['form_to_doc_date']) ? $_GET['form_to_doc_date'] : oeFormatShortDate(fixDate($_GET['form_to_doc_date'],date("Y-m-d")));
 
 if($GLOBALS['date_display_format'] == 1) {
    $title_tooltip = "MM/DD/YYYY";
@@ -224,16 +224,16 @@ $display_collapse_msg = "display:inline;";
 	</tr>
 	<?php
 	if (sqlNumRows($resultSet)) {
-		while ( $row = sqlFetchArray($resultSet) ) {
+		while ($row = sqlFetchArray($resultSet)) {
 			$url = $GLOBALS['webroot'] . "/controller.php?document&retrieve&patient_id=" . attr($row["foreign_id"]) . "&document_id=" . attr($row["id"]) . '&as_file=false';
 			// Get the notes for this document.
 			$notes = array();
 			$note = '';
-			if ( $row['docNotes'] ) {
+			if ($row['docNotes']) {
 				$notes = explode("|",$row['docNotes']);
 				$dates = explode("|", $row['docDates']);
 			}
-			for ( $i = 0 ; $i < count($notes) ; $i++ )
+			for ($i = 0 ; $i < count($notes) ; $i++)
 				$note .= oeFormatShortDate(date('Y-m-d', strtotime($dates[$i]))) . " : " . text($notes[$i]) . "<br />";
 			?>
 			<tr class="text">
@@ -243,7 +243,7 @@ $display_collapse_msg = "display:inline;";
 				</td>
 				<td><?php echo text($row['pname']); ?> </td>
 				<td><?php echo $note; ?> &nbsp;</td>
-				<td align="center"><?php echo ( $row['encounter_id'] ) ? text($row['encounter_id']) : ''; ?> </td>
+				<td align="center"><?php echo ($row['encounter_id']) ? text($row['encounter_id']) : ''; ?> </td>
 			</tr>
 		<?php } ?>
 	<?php } ?>

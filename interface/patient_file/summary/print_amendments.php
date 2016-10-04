@@ -70,7 +70,7 @@ function printAmendment($amendmentID,$lastAmendment) {
 	
 	echo "<hr>";
 	echo "<span class='bold'>" . xlt("History") . "</span><br>";
-	$pageBreak = ( $lastAmendment ) ? "" : "page-break-after:always";
+	$pageBreak = ($lastAmendment) ? "" : "page-break-after:always";
 	echo "<table border='1' cellspacing=0 cellpadding=3 style='width:75%;margin-top:10px;margin-bottom:20px;" . $pageBreak . "'>";
 	echo "<tr class='text bold'>";
 	echo "<th align=left style='width:10%'>" . xlt("Date") . "</th>";
@@ -80,7 +80,7 @@ function printAmendment($amendmentID,$lastAmendment) {
 	
 	$query = "SELECT u.fname,u.lname,ah.* FROM amendments_history ah INNER JOIN users u ON ah.created_by = u.id WHERE ah.amendment_id = ?";
 	$resultSet = sqlStatement($query,array($amendmentID));
-	while( $row = sqlFetchArray($resultSet)) {
+	while($row = sqlFetchArray($resultSet)) {
 		echo "<tr class=text>";
 		$created_date = date('Y-m-d', strtotime($row['created_time']));
 		echo "<td>" . oeFormatShortDate($created_date) . "</td>";
@@ -113,8 +113,8 @@ function printAmendment($amendmentID,$lastAmendment) {
 	<p></p>
 
 	<?php
-		for ( $i = 0 ; $i < count($amendmentsList) ; $i++ ) {
-			$lastAmendment = ( $i == count($amendmentsList) - 1 ) ? true : false;
+		for ($i = 0 ; $i < count($amendmentsList) ; $i++) {
+			$lastAmendment = ($i == count($amendmentsList) - 1) ? true : false;
 			printAmendment($amendmentsList[$i],$lastAmendment);
 		}
 	?>

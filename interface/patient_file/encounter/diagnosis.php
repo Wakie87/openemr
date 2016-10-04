@@ -199,7 +199,7 @@ function validate(f) {
 <font class=more><?php echo $tmore;?></font></a>
 
 <?php
-if( !empty( $_GET["back"] ) || !empty( $_POST["back"] ) ){
+if(!empty($_GET["back"]) || !empty($_POST["back"])){
 	print "&nbsp;<a href=\"superbill_codes.php\" target=\"$target\" onclick=\"top.restoreSession()\"><font class=more>$tback</font></a>";
 	print "<input type=\"hidden\" name=\"back\" value=\"1\">";
 }
@@ -216,7 +216,7 @@ if( !empty( $_GET["back"] ) || !empty( $_POST["back"] ) ){
 </a>
 <table border="0">
 <?php
-if ($result = getBillingByEncounter($pid,$encounter,"*") ) {
+if ($result = getBillingByEncounter($pid,$encounter,"*")) {
 	$billing_html = array();
 	$total = 0.0;
   $ndclino = 0;

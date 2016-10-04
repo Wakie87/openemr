@@ -30,20 +30,20 @@ class bar_value
 	 * @param $top as integer. The Y value of the top of the bar
 	 * @param OPTIONAL $bottom as integer. The Y value of the bottom of the bar, defaults to Y min.
 	 */
-	function bar_value( $top, $bottom=null )
+	function bar_value($top, $bottom=null)
 	{
 		$this->top = $top;
 		
-		if( isset( $bottom ) )
+		if(isset($bottom))
 			$this->bottom = $bottom;
 	}
 	
-	function set_colour( $colour )
+	function set_colour($colour)
 	{
 		$this->colour = $colour;
 	}
 	
-	function set_tooltip( $tip )
+	function set_tooltip($tip)
 	{
 		$this->tip = $tip;
 	}

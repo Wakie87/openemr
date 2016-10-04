@@ -56,25 +56,25 @@ $(document).ready(function(){
 </head>
 
 <?php // collect data
-  $recordRequest = sqlQuery("SELECT * FROM `amc_misc_data` WHERE `pid`=? AND `amc_id`='provide_rec_pat_amc' AND (`date_completed` IS NULL OR `date_completed`='') ORDER BY `date_created` DESC", array($pid) );
+  $recordRequest = sqlQuery("SELECT * FROM `amc_misc_data` WHERE `pid`=? AND `amc_id`='provide_rec_pat_amc' AND (`date_completed` IS NULL OR `date_completed`='') ORDER BY `date_created` DESC", array($pid));
 ?>
 
 <body class="body_top">
 
 <table cellspacing='0' cellpadding='0' border='0'>
 <tr>
-<td><span class="title"><?php echo htmlspecialchars( xl('Patient Records Request'), ENT_NOQUOTES); ?></span>&nbsp;&nbsp;&nbsp;</td>
+<td><span class="title"><?php echo htmlspecialchars(xl('Patient Records Request'), ENT_NOQUOTES); ?></span>&nbsp;&nbsp;&nbsp;</td>
 </tr>
 </table>
 <br>
 <br>
 
 <?php if (empty($recordRequest)) { ?>
-  <a href="javascript:void(0)" id="req_button" class="css_button"><span><?php echo htmlspecialchars( xl('Patient Record Request'), ENT_NOQUOTES);?></span></a>
+  <a href="javascript:void(0)" id="req_button" class="css_button"><span><?php echo htmlspecialchars(xl('Patient Record Request'), ENT_NOQUOTES);?></span></a>
   <br>
   <span class="text" id="openreq" style="display:none"><?php echo htmlspecialchars(xl('The patient record request has been recorded.'), ENT_NOQUOTES) ?></span>
 <?php } else { ?>
-  <a href="javascript:void(0)" id="req_button" class="css_button" style="display:none"><span><?php echo htmlspecialchars( xl('Patient Record Request'), ENT_NOQUOTES);?></span></a>
+  <a href="javascript:void(0)" id="req_button" class="css_button" style="display:none"><span><?php echo htmlspecialchars(xl('Patient Record Request'), ENT_NOQUOTES);?></span></a>
   <br>
   <span class="text" id="openreq"><?php echo htmlspecialchars(xl('There is already an open patient record request.'), ENT_NOQUOTES) ?></span>
 <?php } ?>

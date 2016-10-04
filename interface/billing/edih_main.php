@@ -48,8 +48,8 @@ define('SITE_IN', 1);
 // Try to prevent search for too short encounter value
 if (!defined("ENCOUNTER_MIN_DIGIT_LENGTH")) define("ENCOUNTER_MIN_DIGIT_LENGTH", 1);
 // these delimiters are hardcoded into OpenEMR batch files   
-if (!defined("SEG_ELEM_DELIM")) define( "SEG_ELEM_DELIM" , "*");
-if (!defined("SEG_TERM_DELIM")) define( "SEG_TERM_DELIM" , "~");
+if (!defined("SEG_ELEM_DELIM")) define("SEG_ELEM_DELIM" , "*");
+if (!defined("SEG_TERM_DELIM")) define("SEG_TERM_DELIM" , "~");
 //clearinghouse practice
 if (!defined("IBR_DELIMITER")) define("IBR_DELIMITER", "|");
 //
@@ -123,19 +123,19 @@ if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 	// === log user access on POST requests ===========          
 	csv_edihist_log("User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a"));
 	// =====================================
-	if ( isset($_POST['NewFiles']) && isset($_FILES['fileUplMulti']) ) {
+	if (isset($_POST['NewFiles']) && isset($_FILES['fileUplMulti'])) {
 		// process new files button clicked
 		$html_str = edih_disp_file_upload();
 		
-	} elseif ( isset($_POST['viewx12Files']) && isset($_FILES['fileUplx12']) ) {
+	} elseif (isset($_POST['viewx12Files']) && isset($_FILES['fileUplx12'])) {
 		// process new files button clicked
 		$html_str = edih_disp_x12file();
 		
-	} elseif (isset($_POST['notes_hidden']) ) {
+	} elseif (isset($_POST['notes_hidden'])) {
 		// user notes
 		$html_str = edih_user_notes();
 				
-	} elseif (isset($_POST['ArchiveRequest']) ) {
+	} elseif (isset($_POST['ArchiveRequest'])) {
 		// request to archive edi files  
 		$req = filter_input(INPUT_POST, 'ArchiveRequest', FILTER_SANITIZE_STRING);
 		if ($req == 'requested') {
@@ -143,7 +143,7 @@ if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 		} else {
 			$html_str .= "<p>Input Error: for edi files archive function</p>".PHP_EOL;
 		}
-	} elseif (isset($_POST['ArchiveRestore']) ) {
+	} elseif (isset($_POST['ArchiveRestore'])) {
 		// request to restore an archive of edi files  
 		$req = filter_input(INPUT_POST, 'ArchiveRestore', FILTER_SANITIZE_STRING);
 		if ($req == 'restore') {
@@ -171,7 +171,7 @@ if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 		// initial ajax request
 		$html_str = edih_php_inivals();
 		
-	}  elseif ( isset($_GET['csvtbllist']) ) {
+	}  elseif (isset($_GET['csvtbllist'])) {
 		// list of available csv tables
 		$tbl = filter_input(INPUT_GET, 'csvtbllist', FILTER_SANITIZE_STRING);
 		//
@@ -183,7 +183,7 @@ if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 			return $html_str;
 		}
 		
-	} elseif ( isset($_GET['archlist']) ) {
+	} elseif (isset($_GET['archlist'])) {
 		// list of csv archive files
 		$tbl = filter_input(INPUT_GET, 'archlist', FILTER_SANITIZE_STRING);
 		if ($tbl == 'yes') {
@@ -194,33 +194,33 @@ if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 			return $html_str;
 		}
 		
-	} elseif ( isset($_GET['loglist']) ) {
+	} elseif (isset($_GET['loglist'])) {
 		// initial setup -- populate log file select { loglist: 'yes' }, 
 		$la = filter_input(INPUT_GET, 'loglist', FILTER_SANITIZE_STRING);
 		$html_str = edih_disp_logfiles();
 
-	} elseif ( isset( $_GET['archivelog']) ) {
+	} elseif (isset($_GET['archivelog'])) {
 		// Notes tab  [archive log files if older than 7 days]
 		// ========= log user access for user commands ===========          
 		csv_edihist_log("User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a"));
 		// =====================================		
 		$html_str = edih_disp_logfiles();
 		
-	} elseif ( isset( $_GET['logshowfile']) ) {
+	} elseif (isset($_GET['logshowfile'])) {
 		// New Files tab  [ Process New ]
 		// ========= log user access for user commands ===========          
 		csv_edihist_log("User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a"));
 		// =====================================
 		$html_str = edih_disp_log();
 
-	} elseif ( isset( $_GET['ProcessFiles']) ) {
+	} elseif (isset($_GET['ProcessFiles'])) {
 		// New Files tab  [ Process New ]
 		// ========= log user access for user commands ===========          
 		csv_edihist_log("User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a"));
 		// =====================================
 		$html_str = edih_disp_file_process();
 		
-	} elseif ( isset( $_GET['gtbl']) ) {
+	} elseif (isset($_GET['gtbl'])) {
 		// get from a csv_table
 		// ========= log user access for user commands ===========          
 		csv_edihist_log("User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a"));
@@ -232,7 +232,7 @@ if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 		} elseif ($gtb == 'claim') {
 			$html_str = edih_disp_x12trans();
 		} elseif ($gtb == 'hist') {
-			$chkd = (isset( $_GET['chkdenied'])) ? filter_input(INPUT_GET, 'chkdenied', FILTER_SANITIZE_STRING) : '';
+			$chkd = (isset($_GET['chkdenied'])) ? filter_input(INPUT_GET, 'chkdenied', FILTER_SANITIZE_STRING) : '';
 			if ($chkd == 'yes') {
 				$html_str = edih_disp_denied_claims();
 			} else {
@@ -243,21 +243,21 @@ if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 			csv_edihist_log("GET error: missing parameter, no 'gtbl' value");
 		}
 		
-	} elseif ( isset($_GET['csvShowTable']) ) {
+	} elseif (isset($_GET['csvShowTable'])) {
 		// view a csv table
 		// ========= log user access for user commands ===========          
 		csv_edihist_log("User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a"));
 		// =======================================			
 		$html_str = edih_disp_csvtable();
 		
-	} elseif ( isset($_GET['hist_enctr']) ) {
+	} elseif (isset($_GET['hist_enctr'])) {
 		// history for encounter
 		// ========= log user access for user commands ===========          
 		csv_edihist_log("User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a"));
 		// =======================================		
 		$html_str = edih_disp_clmhist();
 				
-	}  elseif ( isset($_GET['ckprocessed']) ) {
+	}  elseif (isset($_GET['ckprocessed'])) {
 		// whether 835 payment file has been applied to pt balance
 		// ========= log user access for user commands ===========          
 		csv_edihist_log("User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a"));
@@ -269,7 +269,7 @@ if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 			$html_str = "alert('$html_str')";
 		}
 		
-	} elseif ( isset( $_GET['chkdenied']) ) {
+	} elseif (isset($_GET['chkdenied'])) {
 		// files csv table
 		// ========= log user access for user commands ===========          
 		csv_edihist_log("User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a"));
@@ -282,27 +282,27 @@ if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 			csv_edihist_log("GET error: missing parameter, invalid 'chkdenied' value");
 		}
 				
-	} elseif ( isset($_GET['showlog']) ) {
+	} elseif (isset($_GET['showlog'])) {
 		// show the edi_history log
 		// ========= log user access for user commands ===========          
 		csv_edihist_log("User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a"));
 		// =======================================		
 		$lgnm = (isset($_GET['log_select'])) ? filter_input(INPUT_GET, 'log_select', FILTER_SANITIZE_STRING) : '';
 		$la = (isset($_GET['logshowfile'])) ? filter_input(INPUT_GET, 'logshowfile', FILTER_SANITIZE_STRING) : '';
-		if ( $la == 'getlog' && $lgnm ) {
+		if ($la == 'getlog' && $lgnm) {
 			$html_str = csv_log_html($lgnm);
 		} else {
 			$html_str = "Show Log: input parameter error<br />" ;
 		}
 		
-	} elseif ( isset($_GET['getnotes']) ) {
+	} elseif (isset($_GET['getnotes'])) {
 		// ========= log user access for user commands ===========          
 		csv_edihist_log("User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a"));
 		// =======================================		
 		$la = filter_input(INPUT_GET, 'getnotes', FILTER_SANITIZE_STRING);
 		$html_str = ($la) ? edih_user_notes() : "input parameter error<br />";
 		
-	} elseif ( isset($_GET['archivereport']) ) {
+	} elseif (isset($_GET['archivereport'])) {
 		// ========= log user access for user commands ===========          
 		csv_edihist_log("User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a"));
 		// =======================================		

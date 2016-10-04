@@ -240,11 +240,11 @@ if ($result['errmsg']) {
  </tr>
 
  <tr class='head'>
-  <th><?php echo xlt('Portal ID'   ); ?></td>
-  <th><?php echo xlt('Name in EMR' ); ?></td>
-  <th><?php echo xlt('Date/Time'   ); ?></td>
+  <th><?php echo xlt('Portal ID'); ?></td>
+  <th><?php echo xlt('Name in EMR'); ?></td>
+  <th><?php echo xlt('Date/Time'); ?></td>
   <th><?php echo xlt('Request Type'); ?></td>
-  <th><?php echo xlt('Delete'      ); ?></td>
+  <th><?php echo xlt('Delete'); ?></td>
  </tr>
 
 <?php
@@ -258,7 +258,7 @@ while ($v1 || $v2) {
     $postid = $v1[1]['postid'];
     $ptname = patientNameFromLogin($v1[1]['user']);
     echo "  <td>" . text($v1[1]['user']) . "</td>\n";
-    echo "  <td>" . text($ptname       ) . "</td>\n";
+    echo "  <td>" . text($ptname) . "</td>\n";
     echo "  <td style='cursor:pointer;color:blue;'";
     echo " onclick=\"openRequest(" .
          "'" . addslashes($postid)      . "'," .
@@ -273,7 +273,7 @@ while ($v1 || $v2) {
     $messageid = $v2[1]['messageid'];
     $ptname = patientNameFromLogin($v2[1]['user']);
     echo "  <td>" . text($v2[1]['user']) . "</td>\n";
-    echo "  <td>" . text($ptname       ) . "</td>\n";
+    echo "  <td>" . text($ptname) . "</td>\n";
     echo "  <td style='cursor:pointer;color:blue;'";
     echo " onclick=\"openMessage(" .
          "'" . addslashes($messageid)      . "'" .

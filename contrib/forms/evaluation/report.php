@@ -3,7 +3,7 @@
 include_once("../../globals.php");
 include_once($GLOBALS["srcdir"]."/api.inc");
 include_once($GLOBALS["srcdir"]."/sql.inc");
-function evaluation_report( $pid, $encounter, $cols, $id) {
+function evaluation_report($pid, $encounter, $cols, $id) {
 $count = 0;
 $data = formFetch("form_evaluation", $id);
 $sql = "SELECT name from form_evaluation_checks where foreign_id = '" . add_escape_custom($id) . "'";
@@ -22,8 +22,8 @@ if ($data) {
 		if ($value == "on") {
 			$value = "yes";
 		}
-	
-		$key=ucwords(str_replace("_"," ",$key));
+
+		$key = ucwords(str_replace("_"," ",$key));
 		if (is_numeric($key)){
 			$key = "check";
 		}
@@ -37,4 +37,4 @@ if ($data) {
 }
 print "</tr></table>";
 }
-?> 
+?>

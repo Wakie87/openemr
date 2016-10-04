@@ -126,7 +126,7 @@ class InstModuleTable
    * @param unknown_type $base
    * @return boolean
    */
-  public function register($directory,$rel_path,$state=0, $base = "custom_modules" )
+  public function register($directory,$rel_path,$state=0, $base = "custom_modules")
   {
     $sql = "SELECT mod_active FROM modules WHERE mod_directory = ?";
     $params = array(
@@ -233,7 +233,7 @@ class InstModuleTable
    * @param string $cols
    * @return Ambigous <boolean, unknown>
    */
-  function getRegistryEntry( $id, $cols = "" )
+  function getRegistryEntry($id, $cols = "")
   {
     $sql = "SELECT mod_directory FROM modules WHERE mod_id = ?";
     $results   = $this->applicationTable->zQuery($sql, array($id));
@@ -254,7 +254,7 @@ class InstModuleTable
    * @param int 		$id		Module PK
    * @param string 	$mod	Status
    */
-  public function updateRegistered ( $id, $mod = '', $values = '' )
+  public function updateRegistered ($id, $mod = '', $values = '')
   {
     if($mod == "mod_active=1"){
       $resp	= $this->checkDependencyOnEnable($id);

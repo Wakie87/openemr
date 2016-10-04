@@ -6,7 +6,7 @@
  */
 class title
 {
-	function title( $text='' )
+	function title($text='')
 	{
 		$this->text = $text;
 	}
@@ -31,7 +31,7 @@ class title
      * - padding-bottom
      * just like the css we use all the time :-)
 	 */
-	function set_style( $css )
+	function set_style($css)
 	{
 		$this->style = $css;
 		//"{font-size: 20px; color:#0000ff; font-family: Verdana; text-align: center;}";		

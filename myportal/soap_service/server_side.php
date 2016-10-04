@@ -379,17 +379,17 @@ class UserService extends Userforms
 	 $doc = new DOMDocument();
 	 $doc->formatOutput = true;
 	 
-	 $root = $doc->createElement( "root" );
-	 $doc->appendChild( $root );
+	 $root = $doc->createElement("root");
+	 $doc->appendChild($root);
 	
-	 $level = $doc->createElement( "level" );
-	 $root->appendChild( $level );
+	 $level = $doc->createElement("level");
+	 $root->appendChild($level);
 	 
-	 $element = $doc->createElement( "text" );
+	 $element = $doc->createElement("text");
 	 $element->appendChild(
-	   $doc->createTextNode( $text )
+	   $doc->createTextNode($text)
 	   );
-	 $level->appendChild( $element );
+	 $level->appendChild($element);
 	 return $doc->saveXML();
 	}
 	else{
@@ -405,18 +405,18 @@ class UserService extends Userforms
 	  $doc = new DOMDocument();
 	  $doc->formatOutput = true;
 	 
-	  $root = $doc->createElement( "root" );
-	  $doc->appendChild( $root );
+	  $root = $doc->createElement("root");
+	  $doc->appendChild($root);
 	
 	 
-	   $level = $doc->createElement( "level" );
-	   $root->appendChild( $level );
+	   $level = $doc->createElement("level");
+	   $root->appendChild($level);
 	   foreach($var as $key=>$value){
-	   $element = $doc->createElement( "$key" );
+	   $element = $doc->createElement("$key");
 	   $element->appendChild(
-	       $doc->createTextNode( $value )
+	       $doc->createTextNode($value)
 	   );
-	   $level->appendChild( $element );
+	   $level->appendChild($element);
 	       }
 	   
 	 return $doc->saveXML();
@@ -449,28 +449,28 @@ class UserService extends Userforms
 	   $doc = new DOMDocument();
 	   $doc->formatOutput = true;
 	   
-	   $root = $doc->createElement( "root" );
-	   $doc->appendChild( $root );
+	   $root = $doc->createElement("root");
+	   $doc->appendChild($root);
 	
-	       $level = $doc->createElement( "level" );
-	       $root->appendChild( $level );
+	       $level = $doc->createElement("level");
+	       $root->appendChild($level);
 	 
-	   $filename = $doc->createElement( "name" );
+	   $filename = $doc->createElement("name");
 	   $filename->appendChild(
-	   $doc->createTextNode( $path_parts['basename'] )
+	   $doc->createTextNode($path_parts['basename'])
 	   );
-	   $level->appendChild( $filename );
+	   $level->appendChild($filename);
 	   
-	   $type = $doc->createElement( "type" );
+	   $type = $doc->createElement("type");
 	   $type->appendChild(
-	   $doc->createTextNode( $path_parts['extension'] )
+	   $doc->createTextNode($path_parts['extension'])
 	   );
-	   $level->appendChild( $type );
-	   $content = $doc->createElement( "file" );
+	   $level->appendChild($type);
+	   $content = $doc->createElement("file");
 	   $content->appendChild(
-	   $doc->createTextNode( base64_encode($returnData) )
+	   $doc->createTextNode(base64_encode($returnData))
 	   );
-	   $level->appendChild( $content );
+	   $level->appendChild($content);
 	   return $doc->saveXML();
 	}
 	else{
@@ -1017,18 +1017,18 @@ static  public function batch_despatch($var,$func,$data_credentials){
 	 $doc = new DOMDocument();
 	 $doc->formatOutput = true;
 	 
-	 $root = $doc->createElement( "root" );
-	 $doc->appendChild( $root );
+	 $root = $doc->createElement("root");
+	 $doc->appendChild($root);
       while($row = sqlFetchArray($sql_result_set))
 	 {
-	   $level = $doc->createElement( "level" );
-	   $root->appendChild( $level );
+	   $level = $doc->createElement("level");
+	   $root->appendChild($level);
 	   foreach($row as $key=>$value){
-	   $element = $doc->createElement( "$key" );
+	   $element = $doc->createElement("$key");
 	   $element->appendChild(
-	       $doc->createTextNode( $value )
+	       $doc->createTextNode($value)
 	   );
-	   $level->appendChild( $element );
+	   $level->appendChild($element);
 	   }
 	 }
 	 return $doc->saveXML();
@@ -1037,16 +1037,16 @@ static  public function batch_despatch($var,$func,$data_credentials){
 	public function resourcetoxml2($row){
 		$doc = new DOMDocument();
 		$doc->formatOutput = true;
-		$root = $doc->createElement( "root" );
-		$doc->appendChild( $root );
-		$level = $doc->createElement( "level" );
-		$root->appendChild( $level );
+		$root = $doc->createElement("root");
+		$doc->appendChild($root);
+		$level = $doc->createElement("level");
+		$root->appendChild($level);
 		foreach($row as $key=>$value){
-			$element = $doc->createElement( "$key" );
+			$element = $doc->createElement("$key");
 			$element->appendChild(
-				$doc->createTextNode( $value )
+				$doc->createTextNode($value)
 			);
-			$level->appendChild( $element );
+			$level->appendChild($element);
 		}
 		return $doc->saveXML();
 	}

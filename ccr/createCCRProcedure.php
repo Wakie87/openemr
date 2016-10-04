@@ -46,7 +46,7 @@
 		$e_Text = $ccr->createElement('Text', $row['type']);
 		$e_Type->appendChild($e_Text);
 		
-		$e_Description = $ccr->createElement('Description' );
+		$e_Description = $ccr->createElement('Description');
 		$e_Procedure->appendChild($e_Description);
 
 		$e_Text = $ccr->createElement('Text', $row['proc_title']);
@@ -75,7 +75,7 @@
 		$e_Location = $ccr->createElement('Location');
 		$e_Locations->appendChild($e_Location);
 
-		$e_Description = $ccr->createElement('Description' );
+		$e_Description = $ccr->createElement('Description');
 		$e_Location->appendChild($e_Description);
 
 		$e_Text = $ccr->createElement('Text', $row['laterality']);
@@ -96,7 +96,7 @@
 		$e_Duration = $ccr->createElement('Duration');
 		$e_Procedure->appendChild($e_Duration);
 
-		$e_Description = $ccr->createElement('Description' );
+		$e_Description = $ccr->createElement('Description');
 		$e_Duration->appendChild($e_Description);
 
 		$e_Text = $ccr->createElement('Text', 'None');

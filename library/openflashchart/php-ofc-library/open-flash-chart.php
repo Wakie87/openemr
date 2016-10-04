@@ -68,57 +68,57 @@ class open_flash_chart
 		$this->elements = array();
 	}
 	
-	function set_title( $t )
+	function set_title($t)
 	{
 		$this->title = $t;
 	}
 	
-	function set_x_axis( $x )
+	function set_x_axis($x)
 	{
 		$this->x_axis = $x;
 	}
 	
-	function set_y_axis( $y )
+	function set_y_axis($y)
 	{
 		$this->y_axis = $y;
 	}
 	
-	function add_y_axis( $y )
+	function add_y_axis($y)
 	{
 		$this->y_axis = $y;
 	}
 
-	function set_y_axis_right( $y )
+	function set_y_axis_right($y)
 	{
 		$this->y_axis_right = $y;
 	}
 	
-	function add_element( $e )
+	function add_element($e)
 	{
 		$this->elements[] = $e;
 	}
 	
-	function set_x_legend( $x )
+	function set_x_legend($x)
 	{
 		$this->x_legend = $x;
 	}
 
-	function set_y_legend( $y )
+	function set_y_legend($y)
 	{
 		$this->y_legend = $y;
 	}
 	
-	function set_bg_colour( $colour )
+	function set_bg_colour($colour)
 	{
 		$this->bg_colour = $colour;
 	}
 	
-	function set_radar_axis( $radar )
+	function set_radar_axis($radar)
 	{
 		$this->radar_axis = $radar;
 	}
 	
-	function set_tooltip( $tooltip )
+	function set_tooltip($tooltip)
 	{
 		$this->tooltip = $tooltip;
 	}
@@ -134,7 +134,7 @@ class open_flash_chart
 	 *
 	 * This needs a bit of love and attention
 	 */
-	function set_number_format($num_decimals, $is_fixed_num_decimals_forced, $is_decimal_separator_comma, $is_thousand_separator_disabled )
+	function set_number_format($num_decimals, $is_fixed_num_decimals_forced, $is_decimal_separator_comma, $is_thousand_separator_disabled)
 	{
 		$this->num_decimals = $num_decimals;
 		$this->is_fixed_num_decimals_forced = $is_fixed_num_decimals_forced;
@@ -161,13 +161,13 @@ class open_flash_chart
 		else
 		{
 			$json = new Services_JSON();
-			return $json->encode( $this );
+			return $json->encode($this);
 		}
 	}
 	
 	function toPrettyString()
 	{
-		return json_format( $this->toString() );
+		return json_format($this->toString());
 	}
 }
 

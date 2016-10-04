@@ -27,7 +27,7 @@ function diag_code_types($format='json',$sqlEscape=false)
     $diagCodes=array();
     foreach($code_types as $key=>$ct)
     {
-        if($ct['active'] && $ct['diag'] )
+        if($ct['active'] && $ct['diag'])
         {
             if($format=='json')
             {

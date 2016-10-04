@@ -72,7 +72,7 @@ while ($ctrow = sqlFetchArray($ctres)) {
     'nofs' => $ctrow['ct_nofs'],
     'diag' => $ctrow['ct_diag'],
     'mask' => $ctrow['ct_mask'],
-    'label'=> ( (empty($ctrow['ct_label'])) ? $ctrow['ct_key'] : $ctrow['ct_label'] ),
+    'label'=> ((empty($ctrow['ct_label'])) ? $ctrow['ct_key'] : $ctrow['ct_label']),
     'external'=> $ctrow['ct_external'],
     'claim' => $ctrow['ct_claim'],
     'proc' => $ctrow['ct_proc'],
@@ -392,11 +392,11 @@ function main_code_set_search($form_code_type,$search_term,$limit=NULL,$category
 
   // do the search
   if (!empty($form_code_type)) {
-    if ( is_array($form_code_type) && (count($form_code_type) > 1) ) {
+    if (is_array($form_code_type) && (count($form_code_type) > 1)) {
       // run the multiple code set search
       return multiple_code_set_search($form_code_type,$search_term,$limit,$modes,$count,$active,$start,$number,$filter_elements);
     }
-    if ( is_array($form_code_type) && (count($form_code_type) == 1) ) {
+    if (is_array($form_code_type) && (count($form_code_type) == 1)) {
       // prepare the variable (ie. convert the one array item to a string) for the non-multiple code set search
       $form_code_type = $form_code_type[0];
     }
@@ -451,7 +451,7 @@ function code_set_search($form_code_type,$search_term="",$count=false,$active=tr
                  "dt.selector LIKE ? ) " .
                  "AND d.drug_id = dt.drug_id " .
                  "ORDER BY d.name, dt.selector, dt.drug_id $limit_query";
-   $res = sqlStatement($query, array("%".$search_term."%", "%".$search_term."%") );
+   $res = sqlStatement($query, array("%".$search_term."%", "%".$search_term."%"));
   }
   else { // Start a codes search
       // We are looking up the external table id here.  An "unset" value gets treated as 0(zero) without this test.  This way we can differentiate between "unset" and explicitly zero.
@@ -509,7 +509,7 @@ function code_set_search($form_code_type,$search_term="",$count=false,$active=tr
             }
             // Ensure the external table exists
             $check_table = sqlQuery("SHOW TABLES LIKE '".$table."'");
-            if ( (empty($check_table)) ) {HelpfulDie("Missing table in code set search:".$table);}
+            if ((empty($check_table))) {HelpfulDie("Missing table in code set search:".$table);}
             
             $sql_bind_array = array();
             if ($count) {
@@ -539,7 +539,7 @@ function code_set_search($form_code_type,$search_term="",$count=false,$active=tr
             {
               $join_table=$join_info[JOIN_TABLE];
               $check_table = sqlQuery("SHOW TABLES LIKE '".$join_table."'");
-              if ( (empty($check_table)) ) {HelpfulDie("Missing join table in code set search:".$join_table);}
+              if ((empty($check_table))) {HelpfulDie("Missing join table in code set search:".$join_table);}
               $query.=" INNER JOIN ". $join_table;
               $query.=" ON ";
               $not_first=false;
@@ -643,7 +643,7 @@ function lookup_code_descriptions($codes,$desc_detail="code_text") {
   global $code_types, $code_external_tables;
 
   // ensure $desc_detail is set properly
-  if ( ($desc_detail != "code_text") && ($desc_detail != "code_text_short") ) {
+  if (($desc_detail != "code_text") && ($desc_detail != "code_text_short")) {
     $desc_detail="code_text";
   }
 
@@ -669,7 +669,7 @@ function lookup_code_descriptions($codes,$desc_detail="code_text") {
         {
           $join_table=$join_info[JOIN_TABLE];
           $check_table = sqlQuery("SHOW TABLES LIKE '".$join_table."'");
-          if ( (empty($check_table)) ) {HelpfulDie("Missing join table in code set search:".$join_table);}
+          if ((empty($check_table))) {HelpfulDie("Missing join table in code set search:".$join_table);}
           $sql.=" INNER JOIN ". $join_table;
           $sql.=" ON ";
           $not_first=false;
@@ -754,7 +754,7 @@ function sequential_code_set_search($form_code_type,$search_term,$limit=NULL,$mo
   // Return the Search Results (loop through each mode in order)
   foreach ($modes as $mode) {
     $res = code_set_search($form_code_type,$search_term,$count,$active,false,$start,$number,$filter_elements,$limit,$mode);
-    if ( ($count && $res>0) || (!$count && sqlNumRows($res)>0) ) {
+    if (($count && $res>0) || (!$count && sqlNumRows($res)>0)) {
       if ($is_hit_mode) {
         // just return the mode
         return $mode;
@@ -865,7 +865,7 @@ function multiple_code_set_search($form_code_types=array(),$search_term,$limit=N
 * @return recordset/integer
 */
 function limit_query_string($limit=NULL,$start=NULL,$number=NULL,$return_only_one=false) {
-  if ( !is_null($start) && !is_null($number) ) {
+  if (!is_null($start) && !is_null($number)) {
     // For pagination of results
     $limit_query = " LIMIT $start, $number ";
   }

@@ -20,8 +20,8 @@ class RuleActions {
     /**
      * @param RuleAction $action
      */
-    function add( $action ) {
-        array_push( $this->actions, $action );
+    function add($action) {
+        array_push($this->actions, $action);
     }
 }
 ?>

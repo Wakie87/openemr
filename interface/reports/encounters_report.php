@@ -308,7 +308,7 @@ $res = sqlStatement($query);
 					</span>
 					</a>
 
-					<?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
+					<?php if ($_POST['form_refresh'] || $_POST['form_orderby']) { ?>
             <a href='#' class='css_button' id='printbutton'>
 						<span>
 							<?php echo xlt('Print'); ?>
@@ -423,10 +423,10 @@ if ($res) {
       }
 
       // Compute billing status.
-      if ($billed_count && $unbilled_count) $status = xl('Mixed' );
-      else if ($billed_count              ) $status = xl('Closed');
-      else if ($unbilled_count            ) $status = xl('Open'  );
-      else                                  $status = xl('Empty' );
+      if ($billed_count && $unbilled_count) $status = xl('Mixed');
+      else if ($billed_count) $status = xl('Closed');
+      else if ($unbilled_count) $status = xl('Open');
+      else                                  $status = xl('Empty');
 ?>
  <tr bgcolor='<?php echo $bgcolor ?>'>
   <td>
@@ -476,7 +476,7 @@ if ($res) {
 </div>  <!-- end encresults -->
 <?php } else { ?>
 <div class='text'>
- 	<?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>
+ 	<?php echo xlt('Please input search criteria above, and click Submit to view results.'); ?>
 </div>
 <?php } ?>
 

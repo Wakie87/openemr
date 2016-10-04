@@ -52,7 +52,7 @@ function calendar_arrived($form_pid) {
 			array($form_pid,$Today));
 		if(sqlNumRows($result_event)==0)//no appointment
 		 {
-			echo "<br><br><br>".htmlspecialchars( xl('Sorry No Appointment is Fixed'), ENT_QUOTES ).". ".htmlspecialchars( xl('No Encounter could be created'), ENT_QUOTES ).".";
+			echo "<br><br><br>".htmlspecialchars(xl('Sorry No Appointment is Fixed'), ENT_QUOTES).". ".htmlspecialchars(xl('No Encounter could be created'), ENT_QUOTES).".";
 			die;
 		 }
 		else//one appointment
@@ -89,7 +89,7 @@ function calendar_arrived($form_pid) {
 				 }
 				elseif($pc_eventDate>$Today)//the frequency does not match today,no need to increment furthur.
 				 {
-					echo "<br><br><br>".htmlspecialchars( xl('Sorry No Appointment is Fixed'), ENT_QUOTES ).". ".htmlspecialchars( xl('No Encounter could be created'), ENT_QUOTES ).".";
+					echo "<br><br><br>".htmlspecialchars(xl('Sorry No Appointment is Fixed'), ENT_QUOTES).". ".htmlspecialchars(xl('No Encounter could be created'), ENT_QUOTES).".";
 					die;
 				 break;
 				 }
@@ -146,7 +146,7 @@ function todaysEncounterCheck($patient_id, $enc_date = '', $reason = '', $fac_id
 	}
 	$dos = $enc_date ? $enc_date : $today;
 	$visit_reason = $reason ? $reason : 'Please indicate visit reason';
-  $tmprow = sqlQuery("SELECT username, facility, facility_id FROM users WHERE id = ?", array($_SESSION["authUserID"]) );
+  $tmprow = sqlQuery("SELECT username, facility, facility_id FROM users WHERE id = ?", array($_SESSION["authUserID"]));
   $username = $tmprow['username'];
   $facility = $tmprow['facility'];
   $facility_id = $fac_id ? (int)$fac_id : $tmprow['facility_id'];

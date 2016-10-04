@@ -741,7 +741,7 @@ while ($prow = sqlFetchArray($pres)) {
   echo "    <option value=''> " . text(xl_list_label($prow['title'])) . "\n";
   $res = sqlStatement("SELECT code_type, code, code_text,modifier FROM codes " .
     "WHERE superbill = ? AND active = 1 " .
-    "ORDER BY code_text", array($prow['option_id']) );
+    "ORDER BY code_text", array($prow['option_id']));
   while ($row = sqlFetchArray($res)) {
     $ctkey = $fs->alphaCodeType($row['code_type']);
     if ($code_types[$ctkey]['nofs']) continue;
@@ -1024,7 +1024,7 @@ if ($_POST['bill']) {
 $query = "SELECT ds.*, di.warehouse_id FROM drug_sales AS ds, drug_inventory AS di WHERE " .
   "ds.pid = ? AND ds.encounter = ?  AND di.inventory_id = ds.inventory_id " .
   "ORDER BY sale_id";
-$sres = sqlStatement($query, array($fs->pid, $fs->encounter) );
+$sres = sqlStatement($query, array($fs->pid, $fs->encounter));
 // $prod_lino = 0;
 while ($srow = sqlFetchArray($sres)) {
   // ++$prod_lino;
@@ -1110,7 +1110,7 @@ if ($_POST['newcodes'] && !$alertmsg) {
     $newsel  = $arrcode[2];
     if ($newtype == 'COPAY') {
       $tmp = sqlQuery("SELECT copay FROM insurance_data WHERE pid = ? " .
-        "AND type = 'primary' ORDER BY date DESC LIMIT 1", array($fs->pid) );
+        "AND type = 'primary' ORDER BY date DESC LIMIT 1", array($fs->pid));
       $code = formatMoneyNumber(0 + $tmp['copay']);
       $fs->addServiceLineItem(array(
         'codetype'    => $newtype,
@@ -1143,7 +1143,7 @@ if ($_POST['newcodes'] && !$alertmsg) {
       if ($newtype == 'HCPCS' && $ndc_applies) {
         $tmp = sqlQuery("SELECT ndc_info FROM billing WHERE " .
           "code_type = ? AND code = ? AND ndc_info LIKE 'N4%' " .
-          "ORDER BY date DESC LIMIT 1", array($newtype,$code) );
+          "ORDER BY date DESC LIMIT 1", array($newtype,$code));
         if (!empty($tmp)) $ndc_info = $tmp['ndc_info'];
       }
       $fs->addServiceLineItem(array(

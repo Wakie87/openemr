@@ -51,7 +51,7 @@ function football_injury_audit_report($pid, $encounter, $cols, $id) {
  echo "<table cellpadding='0' cellspacing='0'>\n";
  echo " <tr>\n";
 
- if ($row['fiinjmin'] ) fi_report_item("Min of Injury", $row['fiinjmin']);
+ if ($row['fiinjmin']) fi_report_item("Min of Injury", $row['fiinjmin']);
  if ($row['fiinjtime']) fi_report_item("During", $arr_injtime[$row['fiinjtime']]);
  if ($row['fimatchtype']) fi_report_item("Match Type", $arr_match_type[$row['fimatchtype']]);
  foreach ($arr_activity as $key => $value) {

@@ -106,7 +106,7 @@ if (!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
  * @param string $msg_str  the log message
  * @return int             number of characters written
  */
-function csv_edihist_log ( $msg_str ) {
+function csv_edihist_log ($msg_str) {
 	//
 	//$dir = dirname(__FILE__).DS.'log';
 	//$dir = $GLOBALS['OE_EDIH_DIR'].DS.'log';
@@ -114,7 +114,7 @@ function csv_edihist_log ( $msg_str ) {
 	$logfile = 'edih_log_'.date('Y-m-d').'.txt';
 	$dir = csv_edih_basedir().DS.'log';
 	$rslt = 0;
-	if ( is_string($msg_str) && strlen($msg_str) ) {
+	if (is_string($msg_str) && strlen($msg_str)) {
 		$tm = date('Ymd:Hms') . ' ' . $msg_str . PHP_EOL;
 		//
 		$rslt = file_put_contents($dir.DS.$logfile, $tm, FILE_APPEND);
@@ -136,8 +136,8 @@ function csv_edihist_log ( $msg_str ) {
 function csv_log_html($logname='') {
 	$html_str = "<div class='filetext'>".PHP_EOL."<ol class='logview'>".PHP_EOL;
     $fp = csv_edih_basedir().DS.'log'.DS.$logname;
-    if ( is_file($fp) ) {
-		$fh = fopen( $fp, 'r');
+    if (is_file($fp)) {
+		$fh = fopen($fp, 'r');
 		if ($fh !== FALSE) {
 			while (($buffer = fgets($fh)) !== false) {
 				$html_str .= "<li>".$buffer."</li>".PHP_EOL;
@@ -192,7 +192,7 @@ function csv_log_manage($list=true) {
 				//echo '== date difference '.$ldate.' '.$interval->format('%R%a days').PHP_EOL;
 				if ($interval->format('%R%a') < -7) {
 					// older log files are put in zip archive
-					if ( is_file($dir.DS.$log) ) { $old_ar[] = $log; }
+					if (is_file($dir.DS.$log)) { $old_ar[] = $log; }
 				}
 			}
 		}
@@ -215,7 +215,7 @@ function csv_log_manage($list=true) {
 				$zip->close();
 				$dte = $datetime1->format('Ymd');
 				$ok = rename($dir.DS.$archname, $dir.DS.$dte.'_'.$archname);
-				csv_edihist_log('csv_log_archive: rename full archive '.$dte.'_'.$archname );
+				csv_edihist_log('csv_log_archive: rename full archive '.$dte.'_'.$archname);
 				if ($ok) {
 					$ok = $zip->open($archname, ZipArchive::CREATE);
 					if (!$ok) {
@@ -231,9 +231,9 @@ function csv_log_manage($list=true) {
 					if (is_file($dir.DS.$lg)) {
 						$a = $zip->addFile($dir.DS.$lg, $lg);
 						if ($a) {
-							csv_edihist_log('csv_log_archive: add to archive '.$lg );
+							csv_edihist_log('csv_log_archive: add to archive '.$lg);
 						} else {
-							csv_edihist_log('csv_log_archive: error archiving '.$lg );
+							csv_edihist_log('csv_log_archive: error archiving '.$lg);
 						}
 					}
 				}
@@ -272,8 +272,8 @@ function csv_notes_file($content='', $open=true) {
 	$str_html = '';
     //$fp = $GLOBALS['OE_EDIH_DIR'].'/edi_notes.txt';
     $fp = csv_edih_basedir().DS.'archive'.DS.'edi_notes.txt';
-	if (! is_writable($fp) ) {
-		$fh = fopen( $fp, 'a+b');
+	if (! is_writable($fp)) {
+		$fh = fopen($fp, 'a+b');
 		fclose($fh);
 	}
 	// for retrieving notes
@@ -295,10 +295,10 @@ function csv_notes_file($content='', $open=true) {
 	} elseif (strlen($content)) {
 		//echo "csv_notes_file: we have content<br>".PHP_EOL;
 		// use finfo php class
-		if ( class_exists('finfo') ) {
+		if (class_exists('finfo')) {
 			$finfo = new finfo(FILEINFO_MIME);
 		    $mimeinfo = $finfo->buffer($content);
-		    if ( strncmp($mimeinfo, 'text/plain; charset=us-ascii', 28) !== 0 ) {
+		    if (strncmp($mimeinfo, 'text/plain; charset=us-ascii', 28) !== 0) {
 				csv_edihist_log('csv_notes_file: invalid mime-type '.$mimeinfo);
 				$str_html = 'csv_notes_file: invalid mime-type <br>'.$mimeinfo;
 				//
@@ -351,7 +351,7 @@ function csv_edih_tmpdir() {
     //$systmp = stripcslashes($systmp);
     //$systdir = $systmp.DS.'edihist';
     //if ( $tdir && (is_dir($tdir) || mkdir($tdir, 0755) ) ) {
-	if ( $tdir) {
+	if ($tdir) {
 		return $tdir;
 	} else {
 		return false;
@@ -397,7 +397,7 @@ function csv_setup() {
        return false;
     }
 	//
-	if (is_writable($basedir) ) {
+	if (is_writable($basedir)) {
 		$isOK = true;
 		//csv_edihist_log('setup: directory '.$basedir);
 		$out_str .= 'EDI_History Setup should not overwrite existing data.<br>'.PHP_EOL;
@@ -406,7 +406,7 @@ function csv_setup() {
 		if (is_dir($edihist_dir) || mkdir($edihist_dir, 0755)) {
 			$out_str .= 'created folder '.$edihist_dir.'<br>'.PHP_EOL;
 			$isOK = true;
-			if (is_dir($csv_dir) || mkdir($csv_dir, 0755) ) {
+			if (is_dir($csv_dir) || mkdir($csv_dir, 0755)) {
 				$out_str .= 'created folder '.$csv_dir.'<br>'.PHP_EOL;
 				$isOK = true;
 			} else {
@@ -414,7 +414,7 @@ function csv_setup() {
 				$out_str .= 'Setup: Failed to create csv folder... '.'<br>'.PHP_EOL;
 				die('Failed to create csv folder... '.$archive_dir);
 			}
-			if (is_dir($archive_dir) || mkdir($archive_dir, 0755) ) {
+			if (is_dir($archive_dir) || mkdir($archive_dir, 0755)) {
 				$out_str .= 'created folder '.$archive_dir.'<br>'.PHP_EOL;
 				$isOK = true;
 			} else {
@@ -422,7 +422,7 @@ function csv_setup() {
 				$out_str .= 'Setup: Failed to create archive folder... '.'<br>'.PHP_EOL;
 				die('Failed to create archive folder... ');
 			}
-			if (is_dir($log_dir) || mkdir($log_dir, 0755) ) {
+			if (is_dir($log_dir) || mkdir($log_dir, 0755)) {
 				$out_str .= 'created folder '.$log_dir.'<br>'.PHP_EOL;
 				$isOK = true;
 			} else {
@@ -430,7 +430,7 @@ function csv_setup() {
 				$out_str .= 'Setup: Failed to create log folder... '.'<br>'.PHP_EOL;
 				die('Failed to create log folder... ');
 			}
-			if (is_dir($tmp_dir) || mkdir($tmp_dir, 0755) ) {
+			if (is_dir($tmp_dir) || mkdir($tmp_dir, 0755)) {
 				$out_str .= 'created folder '.$tmp_dir.PHP_EOL;
 				$isOK = true;
 			} else {
@@ -522,8 +522,8 @@ function csv_setup() {
 function csv_clear_tmpdir() {
 	//
     $tmpdir = csv_edih_tmpdir();
-    if ( basename($tmpdir) != 'tmp' ) {
-		csv_edihist_log ( 'tmp dir not /edi/history/tmp');
+    if (basename($tmpdir) != 'tmp') {
+		csv_edihist_log ('tmp dir not /edi/history/tmp');
 		return false;
 	}
 	$tmp_files = scandir($tmpdir);
@@ -532,7 +532,7 @@ function csv_clear_tmpdir() {
 			if ($tmpf == "." || $tmpf == "..") {
 				// can't delete . and ..
 				continue;
-			} elseif (is_file($tmpdir.DS.$tmpf) ) {
+			} elseif (is_file($tmpdir.DS.$tmpf)) {
 				unlink($tmpdir.DS.$tmpf);
 			} elseif(is_dir($tmpdir.DS.$tmpf)) {
 				$tdir_ar = scandir($tmpdir.DS.$tmpf);
@@ -574,14 +574,14 @@ function csv_check_x12_obj($filepath, $type='') {
 	//
 	if ($fp) {
 		$x12obj = new edih_x12_file($fp);
-		if ( 'edih_x12_file' == get_class($x12obj) ) {
+		if ('edih_x12_file' == get_class($x12obj)) {
 			if ($x12obj->edih_valid() == 'ovigs') {
-				$ok = count( $x12obj->edih_segments() );
-				$ok = ($ok) ?  count( $x12obj->edih_envelopes() ) : false;
-				$ok = ($ok) ?  count( $x12obj->edih_delimiters() ) : false;
+				$ok = count($x12obj->edih_segments());
+				$ok = ($ok) ?  count($x12obj->edih_envelopes()) : false;
+				$ok = ($ok) ?  count($x12obj->edih_delimiters()) : false;
 				if (!$ok) {
 					csv_edihist_log("csv_check_x12_obj: object missing properties [$filepath]");
-					csv_edihist_log( $x12obj->edih_message() );
+					csv_edihist_log($x12obj->edih_message());
 					return false;
 				}
 			} else {
@@ -615,7 +615,7 @@ function csv_check_x12_obj($filepath, $type='') {
 function csv_check_filepath($filename, $type='ALL') {
 	//
 	// if file is readable, just return it
-	if ( is_file($filename) && is_readable($filename) ) {
+	if (is_file($filename) && is_readable($filename)) {
 		return $filename;
 	}
 	//
@@ -625,13 +625,13 @@ function csv_check_filepath($filename, $type='ALL') {
 	//
 	if ($type && $type != 'ALL') {
 		$p = csv_parameters($type);
-		if (is_array($p) && array_key_exists('type', $p) ) {
+		if (is_array($p) && array_key_exists('type', $p)) {
             $fp = $p['directory'].DS.$fn;
 		}
 	} else {
 		$p_ar = csv_parameters("ALL");
 		foreach ($p_ar as $tp=>$par) {
-			if ( !$p_ar[$tp]['regex'] || !preg_match($p_ar[$tp]['regex'], $fn) ) {
+			if (!$p_ar[$tp]['regex'] || !preg_match($p_ar[$tp]['regex'], $fn)) {
 				continue;
 			} else {
                 $fp = $p_ar[$tp]['directory'].DS.$fn;
@@ -639,7 +639,7 @@ function csv_check_filepath($filename, $type='ALL') {
 			}
 		}
 	}
-	if ( is_file($fp) && is_readable($fp) ) { $goodpath = realpath($fp); }
+	if (is_file($fp) && is_readable($fp)) { $goodpath = realpath($fp); }
 	//
 	return $goodpath;
 }
@@ -660,27 +660,27 @@ function csv_file_type($type, $gs_code=false) {
 		$tp_type = (string)$type;
 	}
 	//
-	if ( strpos('|f837|batch|HC', $tp_type) ) {
+	if (strpos('|f837|batch|HC', $tp_type)) {
 		$tp = ($gs_code) ? 'HC' : 'f837';
-	} elseif ( strpos('|f835|era|HP', $tp_type) ) {
+	} elseif (strpos('|f835|era|HP', $tp_type)) {
 		$tp = ($gs_code) ? 'HP' : 'f835';
-	} elseif ( strpos('|f999|f997|ack|ta1|FA', $tp_type) ) {
+	} elseif (strpos('|f999|f997|ack|ta1|FA', $tp_type)) {
 		$tp = ($gs_code) ? 'FA' : 'f997';
-	} elseif ( strpos('|f277|HN', $tp_type) ) {
+	} elseif (strpos('|f277|HN', $tp_type)) {
 		$tp = ($gs_code) ? 'HN' : 'f277';
-	} elseif ( strpos('|f276|HR', $tp_type) ) {
+	} elseif (strpos('|f276|HR', $tp_type)) {
 		$tp = ($gs_code) ? 'HR' : 'f276';
-	} elseif ( strpos('|f271|HB', $tp_type) ) {
+	} elseif (strpos('|f271|HB', $tp_type)) {
 		$tp = ($gs_code) ? 'HB' : 'f271';
-	} elseif ( strpos('|f270|HS', $tp_type) ) {
+	} elseif (strpos('|f270|HS', $tp_type)) {
 		$tp = ($gs_code) ? 'HS' : 'f270';
-	} elseif ( strpos('|f278|HI', $tp_type) ) {
+	} elseif (strpos('|f278|HI', $tp_type)) {
 		$tp = ($gs_code) ? 'HI' : 'f278';
 	} else {
 		$tp = '';
 	}
 	//
-	if ( !$tp) {
+	if (!$tp) {
 		csv_edihist_log('csv_file_type error: incorrect type '.$tp_type);
 	}
 	return $tp;
@@ -741,7 +741,7 @@ function csv_parameters($type='ALL') {
 	$p_ar['f835'] = array('type'=>'f835', 'directory'=>$edihist_dir.DS.'f835', 'claims_csv'=>$edihist_dir.DS.'csv'.DS.'claims_f835.csv',
 						'files_csv'=>$edihist_dir.DS.'csv'.DS.'files_f835.csv', 'filedate'=>'Date', 'claimdate'=>'SvcDate', 'regex'=>'/835[0-9]{5}\.835*|\.(era|ERA|835)$/i');
 	//
-	if ( array_key_exists($tp, $p_ar) ) {
+	if (array_key_exists($tp, $p_ar)) {
 		return $p_ar[$tp];
 	} else {
 		return $p_ar;
@@ -764,7 +764,7 @@ function csv_table_select_list($outtp='json') {
 	$tbllist = scandir($csvdir);
 	$idx = 0;
 	foreach($tbllist as $csvf) {
-		if ($csvf == "." || $csvf == ".." ) { continue; }
+		if ($csvf == "." || $csvf == "..") { continue; }
 		if (strpos($csvf, 'old') === 0) { continue; }
 		if (filesize($csvdir.DS.$csvf) < 70) { continue; }
 		if (substr($csvf, -1) == '~') { continue; }
@@ -835,7 +835,7 @@ function csv_dirfile_list($type) {
 		return false;
 	}
 	$params = csv_parameters($tp);
-	if (empty($params) || csv_singlerecord_test($params) == false ) {
+	if (empty($params) || csv_singlerecord_test($params) == false) {
 		csv_edihist_log("csv_dirfile_list() error: incorrect type $type");
 		return false;
 	}
@@ -850,7 +850,7 @@ function csv_dirfile_list($type) {
 					continue;
 				} elseif ($tp == 'f837' && ($file == 'history' || $file == 'README.txt')) {
 					continue;
-				} elseif (is_file($search_dir.DS.$file) ) {
+				} elseif (is_file($search_dir.DS.$file)) {
 					$dirfiles[] = $file;
 				} else {
 					if ($tp == 'f837' && $file == 'history') { continue; }
@@ -887,7 +887,7 @@ function csv_processed_files_list($type) {
 	$processed_files = array();
 	$param = csv_parameters($tp);
 	$hdr_ar = csv_table_header($tp, 'file');
-	if ( is_array($hdr_ar) ) {
+	if (is_array($hdr_ar)) {
 		foreach($hdr_ar as $k=>$hd) {
 			if ($hd == 'FileName') { $csv_col = $k; break; }
 		}
@@ -903,7 +903,7 @@ function csv_processed_files_list($type) {
 	//
 	//$idx = 0;
 	if (is_file($csv_file)) {
-		if (($fh1 = fopen( $csv_file, "r" )) !== FALSE) {
+		if (($fh1 = fopen($csv_file, "r")) !== FALSE) {
 		    while (($data = fgetcsv($fh1, 1024, ",")) !== FALSE) {
 				$processed_files[] = $data[$csv_col];
 				//
@@ -913,7 +913,7 @@ function csv_processed_files_list($type) {
 			}
 			fclose($fh1);
 		} else {
-			csv_edihist_log ("csv_list_processed_files: failed to access $csv_file" );
+			csv_edihist_log ("csv_list_processed_files: failed to access $csv_file");
 			return false;
 		}
 	} else {
@@ -972,7 +972,7 @@ function edih_errseg_parse($err_seg, $id=false) {
 	// note: multiple IK3 segments are allowed in 997/999 x12
 	//
 	$ret_ar = array();
-	if ( !$err_seg || strpos($err_seg, 'IK3') === false) {
+	if (!$err_seg || strpos($err_seg, 'IK3') === false) {
 		csv_edihist_log('edih_errseg_parse: invalid argument');
 		return $ret_ar;
 	}
@@ -1040,7 +1040,7 @@ function edih_csv_order($csvdata) {
 function edih_format_telephone ($str_val) {
 	$strtel = (string)$str_val;
 	$strtel = preg_replace('/\D/', '', $strtel);
-	if ( strlen($strtel) != 10 ) {
+	if (strlen($strtel) != 10) {
 		csv_edihist_log('edih_format_telephone: invalid argument: '.$str_val);
 		return $str_val;
 	} else {
@@ -1124,12 +1124,12 @@ function edih_format_percent ($str_val) {
  */
 function csv_thead_html($file_type, $csv_type, $tblhd=null) {
 	//
-	if (is_array($tblhd) & count($tblhd) ) {
+	if (is_array($tblhd) & count($tblhd)) {
 		$hvals = $tblhd;
 	} else {
 		$hvals = csv_table_header($file_type, $csv_type);
 	}
-	if ( is_array($hvals) && count($hvals) ) {
+	if (is_array($hvals) && count($hvals)) {
 		$str_html = '';
 	} else {
 		return false;
@@ -1159,7 +1159,7 @@ function csv_table_header($file_type, $csv_type) {
 	$ct = strpos('|claim', $ct) ? 'claim' : $ct;
 	//
 	$hdr = array();
-	if (!$ft || !$ct ) {
+	if (!$ft || !$ct) {
 		csv_edihist_log ('csv_table_header error: incorrect file ['.$file_type.']or csv ['.$csv_type.'] type');
 		return $hdr;
 	}
@@ -1200,7 +1200,7 @@ function csv_table_header($file_type, $csv_type) {
 		csv_edihist_log ('edih_csv_table_header() error: failed to match file type ['.$ft.'] or csv type ['.$ct.']');
 		return false;
 	}
-	if (count($hdr) ) {
+	if (count($hdr)) {
 		return $hdr;
 	} else {
 		return false;
@@ -1267,7 +1267,7 @@ function csv_files_header($file_type, $csv_type) {
 function csv_convert_bytes($bytes) {
 	$sizes = array('Bytes', 'KB', 'MB', 'GB', 'TB');
 	if ($bytes == 0) { return 'n/a'; }
-	$i = floor( log($bytes) / log(1024) );
+	$i = floor(log($bytes) / log(1024));
 	//$i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 	if ($i == 0) {
 		return $bytes.' '.$sizes[$i];
@@ -1282,11 +1282,11 @@ function csv_convert_bytes($bytes) {
  * @param array
  * @return bool   false if arrayis multidimensional
  */
-function csv_singlerecord_test ( $array ) {
+function csv_singlerecord_test ($array) {
 	// the two versions of count() are compared
 	// if the array has a sub-array, count recursive is greater
-	if ( is_array($array) ) {
-		$is_sngl = count($array, COUNT_RECURSIVE ) == count( $array, COUNT_NORMAL);
+	if (is_array($array)) {
+		$is_sngl = count($array, COUNT_RECURSIVE) == count($array, COUNT_NORMAL);
 	} else {
 		$is_sngl = false;
 	}
@@ -1343,7 +1343,7 @@ function csv_assoc_array($file_type, $csv_type) {
 	$ky = -1;
 	if (($fh = fopen($fp, "rb")) !== false) {
 	    while (($data = fgetcsv($fh, 2048, ",")) !== false) {
-			if ( is_null($data) ) { continue; }
+			if (is_null($data)) { continue; }
 			if ($row) {
 				for($i=0; $i<$ct; $i++) {
 					$csv_ar[$ky][$h[$i]] = $data[$i];
@@ -1398,14 +1398,14 @@ function csv_array_flatten($array) {
  */
 function edih_csv_write($csv_data) {
 	//
-	if ( ! (is_array($csv_data) && count($csv_data)) ){
+	if (! (is_array($csv_data) && count($csv_data))){
 		csv_edihist_log('edih_csv_write(): invalid data array');
 		return false;
 	}
 	//
 	foreach($csv_data as $icn=>$isa) {
 		// should be array[icn] => [file][j][key]  [claim][j][key]  [type]
-		$ft = ( isset($isa['type']) ) ? $isa['type'] : '';
+		$ft = (isset($isa['type'])) ? $isa['type'] : '';
 		if (!$ft) {
 			csv_edihist_log('edih_csv_write(): invalid file type');
 			continue;
@@ -1456,7 +1456,7 @@ function edih_csv_write($csv_data) {
 			$chrs = 0;
 			$rws = 0;
 			//
-			$fh = fopen( $fp, 'ab');
+			$fh = fopen($fp, 'ab');
 			if (is_resource($fh)) {
 				// to assure proper order of data in each row, the
 				// csv row is assembled by matching keys to the header row
@@ -1465,7 +1465,7 @@ function edih_csv_write($csv_data) {
 					for ($i=0; $i<$ct; $i++) {
 						$csvrow[$i] = $row[$order_ar[$i]];
 					}
-					$chrs += fputcsv ( $fh , $csvrow );
+					$chrs += fputcsv ($fh , $csvrow);
 					$rws++;
 				}
 			} else {
@@ -1555,7 +1555,7 @@ function csv_search_record($file_type, $csv_type, $search_ar, $expect='1') {
 		csv_edihist_log('csv_search_record: failed to open '.$fp);
 		return false;
 	}
-	if (empty($ret_ar) ) {
+	if (empty($ret_ar)) {
 		return false;
 	} else {
 		return $ret_ar;
@@ -1646,7 +1646,7 @@ function csv_file_by_enctr($clm01, $filetype='f837') {
 		} else {
 			while (($data = fgetcsv($fh1, 1024, ",")) !== FALSE) {
 				// check for a match
-				if ( strcmp($data[2], $pe) === 0 ) {
+				if (strcmp($data[2], $pe) === 0) {
 					for ($i=0; $i<$hct; $i++) { $val[$h_ar[$i]] = $data[$i]; }
 					$ret_ar[] = $val;  // $ret_ar[] = array_combine($h_ar, $data);
 				}
@@ -1813,17 +1813,17 @@ function csv_denied_by_file($filetype, $filename, $trace='') {
 				// check filename, then status
 				if ($trace) {
 					if ($data[4] == $trace) {
-						if (!in_array($data[3], array('1', '2', '3', '19', '20', '21')) ) { $ret_ar[] = $data; }
+						if (!in_array($data[3], array('1', '2', '3', '19', '20', '21'))) { $ret_ar[] = $data; }
 					}
 				} elseif ($data[5] == $filename) {
-					if (!in_array($data[3], array('1', '2', '3', '19', '20', '21')) ) { $ret_ar[] = $data; }
+					if (!in_array($data[3], array('1', '2', '3', '19', '20', '21'))) { $ret_ar[] = $data; }
 				}
 			
 			}
 		} elseif ($ft == 'f277') {
 			while (($data = fgetcsv($fh1, 1024, ",")) !== false) {
 				if ($data[5] == $filename) {
-					if ( !strpos('|A1|A2|A5', substr($data[3], 0, 2))) {
+					if (!strpos('|A1|A2|A5', substr($data[3], 0, 2))) {
 						$ret_ar[] = $data;
 					}
 				}
@@ -1854,32 +1854,32 @@ function csv_denied_by_file($filetype, $filename, $trace='') {
 * @param string $pid_enctr   the value from element CLM01
 * return array               array('pid' => $pid, 'enctr' => $enc)
 */
-function csv_pid_enctr_parse( $pid_enctr ) {
+function csv_pid_enctr_parse($pid_enctr) {
 	// evaluate the patient account field
 	//
-	if (!$pid_enctr || !is_string($pid_enctr) ) {
+	if (!$pid_enctr || !is_string($pid_enctr)) {
 		csv_edihist_log("csv_pid_enctr_parse: invalid argument");
 		return false;
 	}
 	$pval = trim($pid_enctr);
-	if ( strpos($pval, '-') ) {
+	if (strpos($pval, '-')) {
 		$pid = substr($pval, 0, strpos($pval, '-'));
 		$enc = substr($pval, strpos($pval, '-')+1);
-	} elseif ( ctype_digit($pval) ) {
-		if ( preg_match('/(19|20)\d{2}[01]\d{1}[0-3]\d{1}/', $pval) ) {
+	} elseif (ctype_digit($pval)) {
+		if (preg_match('/(19|20)\d{2}[01]\d{1}[0-3]\d{1}/', $pval)) {
 			$enc = $pval;
 		} else {
-			$enc = ( strlen($pval) ) >= ENCOUNTER_MIN_DIGIT_LENGTH ? $pval : '';
+			$enc = (strlen($pval)) >= ENCOUNTER_MIN_DIGIT_LENGTH ? $pval : '';
 			$pid = '';
 		}
-	} elseif (	preg_match('/\D/', $pval, $match2, PREG_OFFSET_CAPTURE) ) {
+	} elseif (preg_match('/\D/', $pval, $match2, PREG_OFFSET_CAPTURE)) {
 		$inv_split = (count($match2)) ? preg_split('/\D/', $pval, 2, PREG_SPLIT_NO_EMPTY) : false;
 		if ($inv_split) {
 			$pid = $inv_split[0];
 			$enc = $inv_split[1];
 		}
 	} else {
-		$enc = ( strlen($pval) ) >= ENCOUNTER_MIN_DIGIT_LENGTH ? $pval : '';
+		$enc = (strlen($pval)) >= ENCOUNTER_MIN_DIGIT_LENGTH ? $pval : '';
 		$pid = '';
 	}
 	return array('pid' => $pid, 'enctr' => $enc);

@@ -57,9 +57,9 @@ foreach ($result as $iter) {
     
     
     if (getdate() == strtotime($iter{"date"})) {
-        $date_string = "Today, " . date( "D F dS" ,strtotime($iter{"date"}));
+        $date_string = "Today, " . date("D F dS" ,strtotime($iter{"date"}));
     } else {
-        $date_string = date( "D F dS" ,strtotime($iter{"date"}));
+        $date_string = date("D F dS" ,strtotime($iter{"date"}));
     }
     
     print "<tr><td width=20% valign=top><font class='bold'>".text($date_string)."</font> <font class='bold'>(".text($iter{"user"}).")</font><br>" . "<font class='text'>" . text($iter{"body"}) . "</font></td></tr>\n";

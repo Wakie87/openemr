@@ -246,7 +246,7 @@ if ($form_step == 3) {
 }
 
 if ($form_step == 4) {
-  if ((!empty($phpgacl_location)) && ($phpgacl_location != $srcdir."/../gacl") ) {
+  if ((!empty($phpgacl_location)) && ($phpgacl_location != $srcdir."/../gacl")) {
     $form_status .= xl('Dumping phpGACL web directory tree') . "...<br />";
     echo nl2br($form_status);
     $cur_dir = getcwd();

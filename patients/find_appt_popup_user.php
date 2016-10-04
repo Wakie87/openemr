@@ -20,7 +20,7 @@ $landingpage = "index.php?site=".$_SESSION['site_id'];
 //
 
 // kick out if patient not authenticated
-if ( isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite']) ) {
+if (isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite'])) {
   $pid = $_SESSION['pid'];
 }
 else {
@@ -37,7 +37,7 @@ $ignoreAuth = 1;
 
  // Exit if the modify calendar for portal flag is not set
  if (!($GLOBALS['portal_onsite_appt_modify'])) {
-   echo htmlspecialchars( xl('You are not authorized to schedule appointments.'),ENT_NOQUOTES);
+   echo htmlspecialchars(xl('You are not authorized to schedule appointments.'),ENT_NOQUOTES);
    exit;
  }
 

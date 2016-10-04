@@ -393,7 +393,7 @@ $sqlstmt = "select
                                 pr.document_id AS procedure_result_document_id";
 	}
 
-	if ( $type == 'Procedure') {
+	if ($type == 'Procedure') {
     $sqlstmt = $sqlstmt.",po.date_ordered AS procedure_order_date_ordered,
             pt.standard_code AS procedure_type_standard_code,
             pc.procedure_name as procedure_name,
@@ -405,7 +405,7 @@ $sqlstmt = "select
             po.control_id AS procedure_order_control_id ";
   }
 
-       if ( $type == 'Medical History') {
+       if ($type == 'Medical History') {
 		$sqlstmt = $sqlstmt.",hd.date AS history_data_date,
             hd.tobacco AS history_data_tobacco,
             hd.alcohol AS history_data_alcohol,
@@ -432,7 +432,7 @@ $sqlstmt = "select
 	}elseif($_POST['form_diagnosis_medprb'] == true){
 		$sqlstmt = $sqlstmt." left outer join lists as li on (li.pid  = pd.pid AND (li.type='medical_problem')) ";
 	}
-  if ( $type == 'Procedure' ||( strlen($form_lab_results)!=0) || $_POST['lab_results'] == true) {
+  if ($type == 'Procedure' ||(strlen($form_lab_results)!=0) || $_POST['lab_results'] == true) {
     $sqlstmt = $sqlstmt." left outer join procedure_order as po on po.patient_id = pd.pid
     left outer join procedure_order_code as pc on pc.procedure_order_id = po.procedure_order_id
     left outer join procedure_report as pp on pp.procedure_order_id   = po.procedure_order_id
@@ -443,7 +443,7 @@ $sqlstmt = "select
 		$sqlstmt = $sqlstmt." left outer join procedure_result as pr on pr.procedure_report_id = pp.procedure_report_id ";
 	}
 	//Immunization added in clinical report
-	if (strlen($form_immunization)!=0 ) {
+	if (strlen($form_immunization)!=0) {
 		$sqlstmt = $sqlstmt." LEFT OUTER JOIN immunizations as imm ON imm.patient_id = pd.pid
 						  LEFT OUTER JOIN codes as immc ON imm.cvx_code = immc.id ";
 	}
@@ -451,7 +451,7 @@ $sqlstmt = "select
 	       $sqlstmt=$sqlstmt." left outer join prescriptions AS r on r.patient_id=pd.pid
                         LEFT OUTER JOIN drugs AS d ON d.drug_id = r.drug_id";
 	}
-      if ( $type == 'Medical History') {
+      if ($type == 'Medical History') {
               $sqlstmt = $sqlstmt." left outer join history_data as hd on hd.pid   =  pd.pid 
             and (isnull(hd.tobacco)  = 0
             or isnull(hd.alcohol)  = 0
@@ -623,7 +623,7 @@ if(sqlNumRows($result) > 0)
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td align="center">
-			<span onclick="javascript:Toggle_trGrpHeader2(<?php echo $row_id; ?>,<?php echo $img_id; ?>);"><img src="../pic/blue-down-arrow.gif" id="<?php echo $img_id; $img_id++; ?>" title="<?php echo htmlspecialchars( xl('Click here to view patient details'), ENT_QUOTES); ?>" /></span>
+			<span onclick="javascript:Toggle_trGrpHeader2(<?php echo $row_id; ?>,<?php echo $img_id; ?>);"><img src="../pic/blue-down-arrow.gif" id="<?php echo $img_id; $img_id++; ?>" title="<?php echo htmlspecialchars(xl('Click here to view patient details'), ENT_QUOTES); ?>" /></span>
 			</td></tr>
 			<table width="100%" align="center" id = "<?php echo $row_id; $row_id++;?>" class="border1" style="display:none; font-size:13px;" cellpadding=5>
 				<tr bgcolor="#C3FDB8" align="left"> 
@@ -746,7 +746,7 @@ if(sqlNumRows($result) > 0)
 
 <!-- Procedures Report Start-->
 				<?php
-				if ( $type == 'Procedure')
+				if ($type == 'Procedure')
                 		{
 				?>
                         	<tr bgcolor="#C3FDB8" align= "left">
@@ -784,7 +784,7 @@ if(sqlNumRows($result) > 0)
 
 <!-- Medical History Report Start-->
 				<?php
-				if ( $type == 'Medical History')
+				if ($type == 'Medical History')
                 		{
 				?>
                         	<tr bgcolor="#C3FDB8" align= "left">
@@ -829,7 +829,7 @@ if(sqlNumRows($result) > 0)
 
 <!-- Service Codes Report Start-->
 				<?php 
-				if ( $type == 'Service Codes') {
+				if ($type == 'Service Codes') {
 				?>
                         	<tr bgcolor="#C3FDB8" align= "left">
 				<td colspan=11><b><?php echo "#"; echo htmlspecialchars(xl('Service Codes'),ENT_NOQUOTES);?><b></td></tr>
@@ -868,7 +868,7 @@ if(sqlNumRows($result) > 0)
 						<td>
 					    <?php 
 						if ($row["amount_administered"] > 0) {
-							echo htmlspecialchars( $row["amount_administered"] . " " . generate_display_field(array('data_type'=>'1','list_id'=>'drug_units'), $row['amount_administered_unit']) , ENT_NOQUOTES);
+							echo htmlspecialchars($row["amount_administered"] . " " . generate_display_field(array('data_type'=>'1','list_id'=>'drug_units'), $row['amount_administered_unit']) , ENT_NOQUOTES);
 						}else{
 							echo "&nbsp;";
 						}

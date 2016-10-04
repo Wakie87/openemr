@@ -84,7 +84,7 @@ function clinical_summary_widget($patient_id,$mode,$dateTarget='',$organize_mode
     // Deal with plan names first
     if (isset($action['is_plan']) && $action['is_plan'])  {
       echo "<br><b>";
-      echo htmlspecialchars( xl("Plan"), ENT_NOQUOTES) . ": ";
+      echo htmlspecialchars(xl("Plan"), ENT_NOQUOTES) . ": ";
       echo generate_display_field(array('data_type'=>'1','list_id'=>'clinical_plans'),$action['id']);
       echo "</b><br>";
       continue;
@@ -96,7 +96,7 @@ function clinical_summary_widget($patient_id,$mode,$dateTarget='',$organize_mode
       $rule_title = getListItemTitle("clinical_rules",$action['rule_id']);
       $ruleData = sqlQuery("SELECT `developer`, `funding_source`, `release_version`, `web_reference` " .
                            "FROM `clinical_rules` " .
-                           "WHERE  `id`=? AND `pid`=0", array($action['rule_id']) );
+                           "WHERE  `id`=? AND `pid`=0", array($action['rule_id']));
       $developer = $ruleData['developer'];
       $funding_source = $ruleData['funding_source'];
       $release = $ruleData['release_version'];
@@ -113,7 +113,7 @@ function clinical_summary_widget($patient_id,$mode,$dateTarget='',$organize_mode
       if (!empty($release)) {
         $tooltip .= xla('Rule Release') . ": " . attr($release);
       }
-      if ( (!empty($tooltip)) || (!empty($web_reference)) ) {
+      if ((!empty($tooltip)) || (!empty($web_reference))) {
         if (!empty($web_reference)) {
           $tooltip = "<a href='".attr($web_reference)."' target='_blank' style='white-space: pre-line;' title='".$tooltip."'>?</a>";
         }
@@ -125,8 +125,8 @@ function clinical_summary_widget($patient_id,$mode,$dateTarget='',$organize_mode
 
     if ($action['custom_flag']) {
       // Start link for reminders that use the custom rules input screen
-      $url = "../rules/patient_data.php?category=".htmlspecialchars( $action['category'], ENT_QUOTES);
-	  $url .= "&item=".htmlspecialchars( $action['item'], ENT_QUOTES);
+      $url = "../rules/patient_data.php?category=".htmlspecialchars($action['category'], ENT_QUOTES);
+	  $url .= "&item=".htmlspecialchars($action['item'], ENT_QUOTES);
       echo "<a href='".$url."' class='iframe medium_modal' onclick='top.restoreSession()'>";
     }
     else if ($action['clin_rem_link']) {
@@ -190,7 +190,7 @@ function clinical_summary_widget($patient_id,$mode,$dateTarget='',$organize_mode
 
   // Compare the current with most recent action log (this function will also log the current actions)
   // Only when $mode is reminders-due
-  if ($mode == "reminders-due" && $GLOBALS['enable_alert_log'] ) {
+  if ($mode == "reminders-due" && $GLOBALS['enable_alert_log']) {
     $new_targets = compare_log_alerts($patient_id,$current_targets,'clinical_reminder_widget',$_SESSION['authId']);
     if (!empty($new_targets) && $GLOBALS['enable_cdr_new_crp']) {
       // If there are new action(s), then throw a popup (if the enable_cdr_new_crp global is turned on)
@@ -242,7 +242,7 @@ function active_alert_summary($patient_id,$mode,$dateTarget='',$organize_mode='d
     // Deal with plan names first
     if ($action['is_plan']) {
       $returnOutput .= "<br><b>";
-      $returnOutput .= htmlspecialchars( xl("Plan"), ENT_NOQUOTES) . ": ";
+      $returnOutput .= htmlspecialchars(xl("Plan"), ENT_NOQUOTES) . ": ";
       $returnOutput .= generate_display_field(array('data_type'=>'1','list_id'=>'clinical_plans'),$action['id']);
       $returnOutput .= "</b><br>";
       continue;
@@ -360,7 +360,7 @@ function allergy_conflict($patient_id,$mode,$user,$test=FALSE) {
  
   // If there are conflicts, $test is FALSE, and alert logging is on, then run through compare_log_alerts
   $new_conflicts = array();
-  if ( (!empty($conflicts_unique)) && $GLOBALS['enable_alert_log'] && ($test===FALSE) ) {
+  if ((!empty($conflicts_unique)) && $GLOBALS['enable_alert_log'] && ($test===FALSE)) {
     $new_conflicts = compare_log_alerts($patient_id,$conflicts_unique,'allergy_alert',$_SESSION['authId'],$mode);
   }
 
@@ -406,14 +406,14 @@ function compare_log_alerts($patient_id,$current_targets,$category='clinical_rem
   // Collect most recent action_log
   $prior_targets_sql = sqlQuery("SELECT `value` FROM `clinical_rules_log` " .
                                  "WHERE `category` = ? AND `pid` = ? AND `uid` = ? " .
-                                 "ORDER BY `id` DESC LIMIT 1", array($category,$patient_id,$userid) );
+                                 "ORDER BY `id` DESC LIMIT 1", array($category,$patient_id,$userid));
   $prior_targets = array();
   if (!empty($prior_targets_sql['value'])) {
     $prior_targets = json_decode($prior_targets_sql['value'], true);
   }
 
   // Compare the current with most recent log
-  if ( ($category == 'clinical_reminder_widget') || ($category == 'active_reminder_popup') ) {
+  if (($category == 'clinical_reminder_widget') || ($category == 'active_reminder_popup')) {
     //using fancy structure to store multiple elements
     $new_targets = array_diff_key($current_targets,$prior_targets);
   }
@@ -425,7 +425,7 @@ function compare_log_alerts($patient_id,$current_targets,$category='clinical_rem
   // Store current action_log and the new items
   //  If $log_trigger=='all'
   //  or If $log_trigger=='new' and there are new items 
-  if ( ($log_trigger=='all') || (($log_trigger=='new')  && (!empty($new_targets))) ) {
+  if (($log_trigger=='all') || (($log_trigger=='new')  && (!empty($new_targets)))) {
     $current_targets_json = json_encode($current_targets);
     $new_targets_json = '';
     if (!empty($new_targets)) {
@@ -433,7 +433,7 @@ function compare_log_alerts($patient_id,$current_targets,$category='clinical_rem
     }
     sqlInsert("INSERT INTO `clinical_rules_log` " .
               "(`date`,`pid`,`uid`,`category`,`value`,`new_value`) " .
-              "VALUES (NOW(),?,?,?,?,?)", array($patient_id,$userid,$category,$current_targets_json,$new_targets_json) );
+              "VALUES (NOW(),?,?,?,?,?)", array($patient_id,$userid,$category,$current_targets_json,$new_targets_json));
   }
 
   // Return new actions (if there are any)
@@ -520,9 +520,9 @@ function test_rules_clinic_batch_method($provider='',$type='',$dateTarget='',$mo
   setTotalItemsReportDatabase($report_id,$totalNumPatients);
 
   // Set ability to itemize report if this feature is turned on
-  if ( ( ($type == "active_alert" || $type == "passive_alert")          && ($GLOBALS['report_itemizing_standard']) ) ||
-       ( ($type == "cqm" || $type == "cqm_2011" || $type == "cqm_2014") && ($GLOBALS['report_itemizing_cqm'])      ) ||
-       ( ($type == "amc" || $type == "amc_2011" || $type == "amc_2014" || $type == "amc_2014_stage1" || $type == "amc_2014_stage2") && ($GLOBALS['report_itemizing_amc'])      ) ) {
+  if ((($type == "active_alert" || $type == "passive_alert")          && ($GLOBALS['report_itemizing_standard'])) ||
+       (($type == "cqm" || $type == "cqm_2011" || $type == "cqm_2014") && ($GLOBALS['report_itemizing_cqm'])) ||
+       (($type == "amc" || $type == "amc_2011" || $type == "amc_2014" || $type == "amc_2014_stage1" || $type == "amc_2014_stage2") && ($GLOBALS['report_itemizing_amc']))) {
     $GLOBALS['report_itemizing_temp_flag_and_id'] = $report_id;
   }
   else {
@@ -715,21 +715,21 @@ function test_rules_clinic($provider='',$type='',$dateTarget='',$mode='',$patien
     $rules = resolve_rules_sql($type,$patient_id,FALSE,$plan,$user);
   }
 
-  foreach( $rules as $rowRule ) {
+  foreach($rules as $rowRule) {
 
     // If using cqm or amc type, then use the hard-coded rules set.
     // Note these rules are only used in report mode.
     if ($rowRule['cqm_flag'] || $rowRule['amc_flag']) {
 
-      require_once( dirname(__FILE__)."/classes/rulesets/ReportManager.php");
+      require_once(dirname(__FILE__)."/classes/rulesets/ReportManager.php");
       $manager = new ReportManager();
       if ($rowRule['amc_flag']) {
         // Send array of dates ('dateBegin' and 'dateTarget')
-        $tempResults = $manager->runReport( $rowRule, $patientData, $dateArray, $options );
+        $tempResults = $manager->runReport($rowRule, $patientData, $dateArray, $options);
       }
       else {
         // Send target date
-        $tempResults = $manager->runReport( $rowRule, $patientData, $dateTarget );
+        $tempResults = $manager->runReport($rowRule, $patientData, $dateTarget);
       }
       if (!empty($tempResults)) {
         foreach ($tempResults as $tempResult) {
@@ -768,7 +768,7 @@ function test_rules_clinic($provider='',$type='',$dateTarget='',$mode='',$patien
     // Find the number of target groups
     $targetGroups = returnTargetGroups($rowRule['id']);
 
-    if ( (count($targetGroups) == 1) || ($mode == "report") ) {
+    if ((count($targetGroups) == 1) || ($mode == "report")) {
 
       // If report itemization is turned on, then iterate the rule id iterator
       if ($GLOBALS['report_itemizing_temp_flag_and_id']) {
@@ -776,7 +776,7 @@ function test_rules_clinic($provider='',$type='',$dateTarget='',$mode='',$patien
       }
 
       //skip this section if not report and more than one target group
-      foreach( $patientData as $rowPatient ) {
+      foreach($patientData as $rowPatient) {
 
         // First, deal with deceased patients
         //  (for now will simply skip the patient)
@@ -795,7 +795,7 @@ function test_rules_clinic($provider='',$type='',$dateTarget='',$mode='',$patien
         if ($GLOBALS['report_itemizing_temp_flag_and_id']) {
           $temp_track_pass = 1;
         }
-        foreach ( $target_dates as $dateFocus ) {
+        foreach ($target_dates as $dateFocus) {
 
           //Skip if date is set to SKIP
           if ($dateFocus == "SKIP") {
@@ -909,7 +909,7 @@ function test_rules_clinic($provider='',$type='',$dateTarget='',$mode='',$patien
         //Reset the target counter
         $pass_target = 0;
 
-        foreach( $patientData as $rowPatient ) {
+        foreach($patientData as $rowPatient) {
 
           // First, deal with deceased patients
           //  (for now will simply skip the patient)
@@ -925,7 +925,7 @@ function test_rules_clinic($provider='',$type='',$dateTarget='',$mode='',$patien
           if ($GLOBALS['report_itemizing_temp_flag_and_id']) {
             $temp_track_pass = 1;
           }
-          foreach ( $target_dates as $dateFocus ) {
+          foreach ($target_dates as $dateFocus) {
 
             //Skip if date is set to SKIP
             if ($dateFocus == "SKIP") {
@@ -1068,7 +1068,7 @@ function buildPatientArray($patient_id='',$provider='',$pat_prov_rel='primary',$
     }
     else {
       // Look at an individual physician
-      if( $pat_prov_rel == 'encounter' ){
+      if($pat_prov_rel == 'encounter'){
         // Choose patients that are related to specific physician by an encounter
         if ($start == NULL || $batchSize == NULL || $onlyCount) {
           $rez = sqlStatementCdrEngine("SELECT DISTINCT `pid` FROM `form_encounter` ".
@@ -1087,14 +1087,14 @@ function buildPatientArray($patient_id='',$provider='',$pat_prov_rel='primary',$
         // Choose patients that are assigned to the specific physician (primary physician in patient demographics)
         if ($start == NULL || $batchSize == NULL || $onlyCount) {
           $rez = sqlStatementCdrEngine("SELECT `pid` FROM `patient_data` " .
-                              "WHERE `providerID`=? ORDER BY `pid`", array($provider) );
+                              "WHERE `providerID`=? ORDER BY `pid`", array($provider));
           if ($onlyCount) {
             $patientNumber = sqlNumRows($rez);
           }
         }
         else {
           $rez = sqlStatementCdrEngine("SELECT `pid` FROM `patient_data` " .
-                              "WHERE `providerID`=? ORDER BY `pid` LIMIT ?,?", array($provider,($start-1),$batchSize) );
+                              "WHERE `providerID`=? ORDER BY `pid` LIMIT ?,?", array($provider,($start-1),$batchSize));
         }
       }
     }
@@ -1146,12 +1146,12 @@ function test_filter($patient_id,$rule,$dateTarget) {
   if (!empty($filter)) {
     $row = $filter[0];
     if ($row ['method_detail'] == "year") {
-      if ( $row['value'] && ($row['value'] > $patientAgeYears) ) {
+      if ($row['value'] && ($row['value'] > $patientAgeYears)) {
         return false;
       }
     }
     if ($row ['method_detail'] == "month") {
-      if ( $row['value'] && ($row['value'] > $patientAgeMonths) ) {
+      if ($row['value'] && ($row['value'] > $patientAgeMonths)) {
         return false;
       }
     }
@@ -1161,12 +1161,12 @@ function test_filter($patient_id,$rule,$dateTarget) {
   if (!empty($filter)) {
     $row = $filter[0];
     if ($row ['method_detail'] == "year") {
-      if ( $row['value'] && ($row['value'] < $patientAgeYears) ) {
+      if ($row['value'] && ($row['value'] < $patientAgeYears)) {
         return false;
       }
     }
     if ($row ['method_detail'] == "month") {
-      if ( $row['value'] && ($row['value'] < $patientAgeMonths) ) {
+      if ($row['value'] && ($row['value'] < $patientAgeMonths)) {
         return false;
       }
     }
@@ -1177,7 +1177,7 @@ function test_filter($patient_id,$rule,$dateTarget) {
   $filter = resolve_filter_sql($rule,'filt_sex');
   if (!empty($filter)) {
     $row = $filter[0];
-    if ( $row['value'] && ($row['value'] != $patientData['sex']) ) {
+    if ($row['value'] && ($row['value'] != $patientData['sex'])) {
       return false;
     }
   }
@@ -1221,7 +1221,7 @@ function test_filter($patient_id,$rule,$dateTarget) {
 function returnTargetGroups($rule) {
 
   $sql = sqlStatementCdrEngine("SELECT DISTINCT `group_id` FROM `rule_target` " .
-    "WHERE `id`=?", array($rule) );
+    "WHERE `id`=?", array($rule));
 
   $groups = array();
   for($iter=0; $row=sqlFetchArray($sql); $iter++) {
@@ -1292,11 +1292,11 @@ function resolve_plans_sql($type='',$patient_id='0',$configurableOnly=FALSE) {
 
   // Need to select rules (use custom if exist)
   foreach ($returnArray as $plan) {
-    $customPlan = sqlQueryCdrEngine("SELECT * FROM `clinical_plans` WHERE `id`=? AND `pid`=?", array($plan['id'],$patient_id) );
+    $customPlan = sqlQueryCdrEngine("SELECT * FROM `clinical_plans` WHERE `id`=? AND `pid`=?", array($plan['id'],$patient_id));
 
     // Decide if use default vs custom plan (preference given to custom plan)
     if (!empty($customPlan)) {
-      if ($type == "cqm" ) {
+      if ($type == "cqm") {
         // For CQM , do not use custom plans (these are to create standard clinic wide reports)
         $goPlan = $plan;
       }
@@ -1350,7 +1350,7 @@ function resolve_plans_sql($type='',$patient_id='0',$configurableOnly=FALSE) {
  */
 function collect_plan($plan,$patient_id='0') {
 
-  return sqlQueryCdrEngine("SELECT * FROM `clinical_plans` WHERE `id`=? AND `pid`=?", array($plan,$patient_id) );
+  return sqlQueryCdrEngine("SELECT * FROM `clinical_plans` WHERE `id`=? AND `pid`=?", array($plan,$patient_id));
 
 }
 
@@ -1382,17 +1382,17 @@ function set_plan_activity_patient($plan,$type,$setting,$patient_id) {
 
   // Collect patient specific plan, if already exists.
   $query = "SELECT * FROM `clinical_plans` WHERE `id` = ? AND `pid` = ?";
-  $patient_plan = sqlQueryCdrEngine($query, array($plan,$patient_id) );
+  $patient_plan = sqlQueryCdrEngine($query, array($plan,$patient_id));
 
   if (empty($patient_plan)) {
     // Create a new patient specific plan with flags all set to default
     $query = "INSERT into `clinical_plans` (`id`, `pid`) VALUES (?,?)";
-    sqlStatementCdrEngine($query, array($plan, $patient_id) );
+    sqlStatementCdrEngine($query, array($plan, $patient_id));
   }
 
   // Update patient specific row
   $query = "UPDATE `clinical_plans` SET `" . escape_sql_column_name($type."_flag",array("clinical_plans")) . "`= ? WHERE id = ? AND pid = ?";
-  sqlStatementCdrEngine($query, array($setting,$plan,$patient_id) );
+  sqlStatementCdrEngine($query, array($setting,$plan,$patient_id));
 
 }
 
@@ -1427,7 +1427,7 @@ function resolve_rules_sql($type='',$patient_id='0',$configurableOnly=FALSE,$pla
     $planReturnArray = array();
     foreach ($returnArray as $rule) {
       $standardRule = sqlQueryCdrEngine("SELECT * FROM `clinical_plans_rules` " .
-                               "WHERE `plan_id`=? AND `rule_id`=?", array($plan,$rule['id']) );
+                               "WHERE `plan_id`=? AND `rule_id`=?", array($plan,$rule['id']));
       if (!empty($standardRule)) {
         array_push($planReturnArray,$rule);
       }
@@ -1444,7 +1444,7 @@ function resolve_rules_sql($type='',$patient_id='0',$configurableOnly=FALSE,$pla
     // If user is set, then check if user has access to the rule
     if (!empty($user)) {
       $access_control = explode(':',$rule['access_control']);
-      if ( !empty($access_control[0]) && !empty($access_control[1]) ) {
+      if (!empty($access_control[0]) && !empty($access_control[1])) {
         // Section and ACO filters are not empty, so do the test for access.
         if (!acl_check($access_control[0],$access_control[1],$user)) {
           // User does not have access to this rule, so skip the rule.
@@ -1460,11 +1460,11 @@ function resolve_rules_sql($type='',$patient_id='0',$configurableOnly=FALSE,$pla
       }
     }
 
-    $customRule = sqlQueryCdrEngine("SELECT * FROM `clinical_rules` WHERE `id`=? AND `pid`=?", array($rule['id'],$patient_id) );
+    $customRule = sqlQueryCdrEngine("SELECT * FROM `clinical_rules` WHERE `id`=? AND `pid`=?", array($rule['id'],$patient_id));
 
     // Decide if use default vs custom rule (preference given to custom rule)
     if (!empty($customRule)) {
-      if ($type == "cqm" || $type == "amc" ) {
+      if ($type == "cqm" || $type == "amc") {
         // For CQM and AMC, do not use custom rules (these are to create standard clinic wide reports)
         $goRule = $rule;
       }
@@ -1514,7 +1514,7 @@ function resolve_rules_sql($type='',$patient_id='0',$configurableOnly=FALSE,$pla
  */
 function collect_rule($rule,$patient_id='0') {
 
-  return sqlQueryCdrEngine("SELECT * FROM `clinical_rules` WHERE `id`=? AND `pid`=?", array($rule,$patient_id) );
+  return sqlQueryCdrEngine("SELECT * FROM `clinical_rules` WHERE `id`=? AND `pid`=?", array($rule,$patient_id));
   
 }
 
@@ -1546,21 +1546,21 @@ function set_rule_activity_patient($rule,$type,$setting,$patient_id) {
 
   //Collect main rule to allow setting of the access_control
   $original_query = "SELECT * FROM `clinical_rules` WHERE `id` = ? AND `pid` = 0";
-  $patient_rule_original = sqlQueryCdrEngine($original_query, array($rule) );
+  $patient_rule_original = sqlQueryCdrEngine($original_query, array($rule));
 
   // Collect patient specific rule, if already exists.
   $query = "SELECT * FROM `clinical_rules` WHERE `id` = ? AND `pid` = ?";
-  $patient_rule = sqlQueryCdrEngine($query, array($rule,$patient_id) );
+  $patient_rule = sqlQueryCdrEngine($query, array($rule,$patient_id));
 
   if (empty($patient_rule)) {
     // Create a new patient specific rule with flags all set to default
     $query = "INSERT into `clinical_rules` (`id`, `pid`, `access_control`) VALUES (?,?,?)";
-    sqlStatementCdrEngine($query, array($rule, $patient_id, $patient_rule_original['access_control']) );
+    sqlStatementCdrEngine($query, array($rule, $patient_id, $patient_rule_original['access_control']));
   }
 
   // Update patient specific row
   $query = "UPDATE `clinical_rules` SET `" . add_escape_custom($type) . "_flag`= ?, `access_control` = ? WHERE id = ? AND pid = ?";
-  sqlStatementCdrEngine($query, array($setting,$patient_rule_original['access_control'],$rule,$patient_id) );
+  sqlStatementCdrEngine($query, array($setting,$patient_rule_original['access_control'],$rule,$patient_id));
 
 }
 
@@ -1573,7 +1573,7 @@ function set_rule_activity_patient($rule,$type,$setting,$patient_id) {
  */
 function resolve_reminder_sql($rule,$reminder_method) {
   $sql = sqlStatementCdrEngine("SELECT `method_detail`, `value` FROM `rule_reminder` " .
-    "WHERE `id`=? AND `method`=?", array($rule, $reminder_method) );
+    "WHERE `id`=? AND `method`=?", array($rule, $reminder_method));
 
   $returnArray= array();
   for($iter=0; $row=sqlFetchArray($sql); $iter++) {
@@ -1592,7 +1592,7 @@ function resolve_reminder_sql($rule,$reminder_method) {
  */
 function resolve_filter_sql($rule,$filter_method,$include_flag=1) {
   $sql = sqlStatementCdrEngine("SELECT `method_detail`, `value`, `required_flag` FROM `rule_filter` " .
-    "WHERE `id`=? AND `method`=? AND `include_flag`=?", array($rule, $filter_method, $include_flag) );
+    "WHERE `id`=? AND `method`=? AND `include_flag`=?", array($rule, $filter_method, $include_flag));
 
   $returnArray= array();
   for($iter=0; $row=sqlFetchArray($sql); $iter++) {
@@ -1614,11 +1614,11 @@ function resolve_target_sql($rule,$group_id='',$target_method,$include_flag=1) {
 
   if ($group_id) {
     $sql = sqlStatementCdrEngine("SELECT `value`, `required_flag`, `interval` FROM `rule_target` " .
-      "WHERE `id`=? AND `group_id`=? AND `method`=? AND `include_flag`=?", array($rule, $group_id, $target_method, $include_flag) );
+      "WHERE `id`=? AND `group_id`=? AND `method`=? AND `include_flag`=?", array($rule, $group_id, $target_method, $include_flag));
   }
   else {
     $sql = sqlStatementCdrEngine("SELECT `value`, `required_flag`, `interval` FROM `rule_target` " .
-      "WHERE `id`=? AND `method`=? AND `include_flag`=?", array($rule, $target_method, $include_flag) );
+      "WHERE `id`=? AND `method`=? AND `include_flag`=?", array($rule, $target_method, $include_flag));
   }
 
   $returnArray= array();
@@ -1642,14 +1642,14 @@ function resolve_action_sql($rule,$group_id='') {
       "FROM `rule_action` as a " .
       "JOIN `rule_action_item` as b " .
       "ON a.category = b.category AND a.item = b.item " .
-      "WHERE a.id=? AND a.group_id=?", array($rule,$group_id) );
+      "WHERE a.id=? AND a.group_id=?", array($rule,$group_id));
   }
   else {
     $sql = sqlStatementCdrEngine("SELECT b.category, b.item, b.value, b.custom_flag " .
       "FROM `rule_action` as a " .
       "JOIN `rule_action_item` as b " .
       "ON a.category = b.category AND a.item = b.item " .
-      "WHERE a.id=?", array($rule) );
+      "WHERE a.id=?", array($rule));
   }
 
   $returnArray= array();
@@ -1683,7 +1683,7 @@ function database_check($patient_id,$filter,$interval='',$dateTarget='') {
     $intervalValue = $interval[0]['interval'];
   }
   $cond_loop = 0;
-  foreach( $filter as $row ) {
+  foreach($filter as $row) {
   	
     // Row description
     //   [0]=>special modes
@@ -1760,7 +1760,7 @@ function procedure_check($patient_id,$filter,$interval='',$dateTarget='') {
     $intervalValue = $interval[0]['interval'];
   }
 
-  foreach( $filter as $row ) {
+  foreach($filter as $row) {
     // Row description
     // [0]=>title [1]=>code [2]=>value comparison [3]=>value [4]=>number of hits comparison [5]=>number of hits
     //   code description
@@ -1809,7 +1809,7 @@ function appointment_check($patient_id,$dateTarget='') {
     "FROM openemr_postcalendar_events " .
     "WHERE openemr_postcalendar_events.pc_eventDate > ? " .
     "AND openemr_postcalendar_events.pc_eventDate <= ? " .
-    "AND openemr_postcalendar_events.pc_pid = ?", array($currentDate,$dateTarget,$patient_id) );
+    "AND openemr_postcalendar_events.pc_pid = ?", array($currentDate,$dateTarget,$patient_id));
 
   // return results of check
   //
@@ -1837,7 +1837,7 @@ function lists_check($patient_id,$filter,$dateTarget) {
   // Set date to current if not set
   $dateTarget = ($dateTarget) ? $dateTarget : date('Y-m-d H:i:s');
 
-  foreach ( $filter as $row ) {
+  foreach ($filter as $row) {
     if (exist_lists_item($patient_id, $row['method_detail'], $row['value'], $dateTarget)) {
       // Record the match
       $isMatch = true;
@@ -1911,7 +1911,7 @@ function exist_database_item($patient_id,$table,$column='',$data_comp,$data='',$
     $sql = sqlStatementCdrEngine("SELECT * " .
       "FROM `" . add_escape_custom($table)  . "` " .
       " ". $whereTables. " ".
-      "WHERE " . add_escape_custom($patient_id_label)  . "=? " . $customSQL, array($patient_id) );
+      "WHERE " . add_escape_custom($patient_id_label)  . "=? " . $customSQL, array($patient_id));
   }
   else {
     // search for number of specific items
@@ -1920,7 +1920,7 @@ function exist_database_item($patient_id,$table,$column='',$data_comp,$data='',$
       " ". $whereTables. " ".
       "WHERE `" . add_escape_custom($column) ."`" . $compSql . "? " .
       "AND " . add_escape_custom($patient_id_label)  . "=? " . $customSQL .
-      $dateSql, array($data,$patient_id) );
+      $dateSql, array($data,$patient_id));
   }
 
   // See if number of returned items passes the comparison
@@ -2043,7 +2043,7 @@ function exist_custom_item($patient_id,$category,$item,$complete,$num_items_comp
     "AND `item`=? " .
     "AND `complete`=? " .
     "AND `" . add_escape_custom($patient_id_label)  . "`=? " .
-    $dateSql, array($category,$item,$complete,$patient_id) );
+    $dateSql, array($category,$item,$complete,$patient_id));
 
   // See if number of returned items passes the comparison
   return itemsNumberCompare($num_items_comp, $num_items_thres, sqlNumRows($sql));
@@ -2072,9 +2072,9 @@ function exist_lifestyle_item($patient_id,$lifestyle,$status,$dateTarget) {
     // Only ensuring any data has been entered into the field
     $stringFlag = true;
   }
-  if ( $history[$lifestyle] &&
+  if ($history[$lifestyle] &&
        $history[$lifestyle] != '|0|' &&
-       $stringFlag ) {
+       $stringFlag) {
     return true;
   }
   else {
@@ -2112,7 +2112,7 @@ function exist_lists_item($patient_id,$type,$value,$dateTarget) {
         "AND `pid`=? " .
         "AND `title`=? " .
         "AND ( (`begdate` IS NULL AND `date`<=?) OR (`begdate` IS NOT NULL AND `begdate`<=?) ) " .
-        "AND ( (`enddate` IS NULL) OR (`enddate` IS NOT NULL AND `enddate`>=?) )", array($type,$patient_id,$code,$dateTarget,$dateTarget,$dateTarget) );
+        "AND ( (`enddate` IS NULL) OR (`enddate` IS NOT NULL AND `enddate`>=?) )", array($type,$patient_id,$code,$dateTarget,$dateTarget,$dateTarget));
       if (!empty($response)) return true;
     }
     else {
@@ -2122,7 +2122,7 @@ function exist_lists_item($patient_id,$type,$value,$dateTarget) {
         "AND `pid`=? " .
         "AND `diagnosis` LIKE ? " .
         "AND ( (`begdate` IS NULL AND `date`<=?) OR (`begdate` IS NOT NULL AND `begdate`<=?) ) " .
-        "AND ( (`enddate` IS NULL) OR (`enddate` IS NOT NULL AND `enddate`>=?) )", array($type,$patient_id,"%".$code_type.":".$code."%",$dateTarget,$dateTarget,$dateTarget) );
+        "AND ( (`enddate` IS NULL) OR (`enddate` IS NOT NULL AND `enddate`>=?) )", array($type,$patient_id,"%".$code_type.":".$code."%",$dateTarget,$dateTarget,$dateTarget));
       if (!empty($response)) return true;
     }
   }
@@ -2134,7 +2134,7 @@ function exist_lists_item($patient_id,$type,$value,$dateTarget) {
       "AND `pid`=? " .
       "AND `title`=? ".
       "AND ( (`begdate` IS NULL AND `date`<=?) OR (`begdate` IS NOT NULL AND `begdate`<=?) ) " .
-      "AND ( (`enddate` IS NULL) OR (`enddate` IS NOT NULL AND `enddate`>=?) )", array($type,$patient_id,$value,$dateTarget,$dateTarget,$dateTarget) );
+      "AND ( (`enddate` IS NULL) OR (`enddate` IS NOT NULL AND `enddate`>=?) )", array($type,$patient_id,$value,$dateTarget,$dateTarget,$dateTarget));
     if (!empty($response)) return true;
 
     if($type == 'medication'){ // Special case needed for medication as it need to be looked into current medications (prescriptions table) from ccda import
@@ -2436,7 +2436,7 @@ function reminder_results_integrate($reminderOldArray, $reminderNew) {
   // If duplicate reminder, then replace the old one
   $duplicate = false;
   foreach ($reminderOldArray as $reminderOld) {
-    if (  $reminderOld['pid'] == $reminderNew['pid'] &&
+    if ($reminderOld['pid'] == $reminderNew['pid'] &&
           $reminderOld['category'] == $reminderNew['category'] &&
           $reminderOld['item'] == $reminderNew['item']) {
       array_push($results, $reminderNew);
@@ -2465,22 +2465,22 @@ function reminder_results_integrate($reminderOldArray, $reminderNew) {
  */
 function itemsNumberCompare($comp, $thres, $num_items) {
 
-  if ( ($comp == "eq") && ($num_items == $thres) ) {
+  if (($comp == "eq") && ($num_items == $thres)) {
     return true;
   }
-  else if ( ($comp == "ne") && ($num_items != $thres) && ($num_items > 0) ) {
+  else if (($comp == "ne") && ($num_items != $thres) && ($num_items > 0)) {
     return true;
   }
-  else if ( ($comp == "gt") && ($num_items > $thres) ) {
+  else if (($comp == "gt") && ($num_items > $thres)) {
     return true;
   }
-  else if ( ($comp == "ge") && ($num_items >= $thres) ) {
+  else if (($comp == "ge") && ($num_items >= $thres)) {
     return true;
   }
-  else if ( ($comp == "lt") && ($num_items < $thres) && ($num_items > 0) ) {
+  else if (($comp == "lt") && ($num_items < $thres) && ($num_items > 0)) {
     return true;
   }
-  else if ( ($comp == "le") && ($num_items <= $thres) && ($num_items > 0) ) {
+  else if (($comp == "le") && ($num_items <= $thres) && ($num_items > 0)) {
     return true;
   }
   else {

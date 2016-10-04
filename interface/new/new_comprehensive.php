@@ -15,7 +15,7 @@ require_once("$srcdir/validation/LBF_Validation.php");
 require_once ("$srcdir/patientvalidation.inc.php");
 
 // Check authorization.
-if (!acl_check('patients','demo','',array('write','addonly') ))
+if (!acl_check('patients','demo','',array('write','addonly')))
   die("Adding demographics is not authorized.");
 
 $CPR = 4; // cells per row
@@ -23,7 +23,7 @@ $CPR = 4; // cells per row
 $searchcolor = empty($GLOBALS['layout_search_color']) ?
   '#ffff55' : $GLOBALS['layout_search_color'];
 
-$WITH_SEARCH = ($GLOBALS['full_new_patient_form'] == '1' || $GLOBALS['full_new_patient_form'] == '2' );
+$WITH_SEARCH = ($GLOBALS['full_new_patient_form'] == '1' || $GLOBALS['full_new_patient_form'] == '2');
 $SHORT_FORM  = ($GLOBALS['full_new_patient_form'] == '2' || $GLOBALS['full_new_patient_form'] == '3' || $GLOBALS['full_new_patient_form'] == '4');
 
 function getLayoutRes() {
@@ -835,7 +835,7 @@ enable_modals();
             $mflist .= "'" . htmlentities($field_id) . "'";
         }
 ?>
-        <?php if ( ($GLOBALS['full_new_patient_form'] == '4') && (checkIfPatientValidationHookIsActive()) ):?>
+        <?php if (($GLOBALS['full_new_patient_form'] == '4') && (checkIfPatientValidationHookIsActive())):?>
             // Use zend module patient validation hook to open the controller and send the dup-checker fields.
             var url ='<?php echo  $GLOBALS['web_root']."/interface/modules/zend_modules/public/patientvalidation";?>';
         <?php else:?>

@@ -151,11 +151,11 @@ function rhl7Date($s) {
 }
 
 function rhl7Abnormal($s) {
-  if ($s == ''  ) return 'no';
-  if ($s == 'N' ) return 'no';
-  if ($s == 'A' ) return 'yes';
-  if ($s == 'H' ) return 'high';
-  if ($s == 'L' ) return 'low';
+  if ($s == '') return 'no';
+  if ($s == 'N') return 'no';
+  if ($s == 'A') return 'yes';
+  if ($s == 'H') return 'high';
+  if ($s == 'L') return 'low';
   if ($s == 'HH') return 'vhigh';
   if ($s == 'LL') return 'vlow';
   return rhl7Text($s);
@@ -196,7 +196,7 @@ function rhl7MimeType($fileext) {
  */
 function rhl7DecodeData($enctype, &$src) {
   if ($enctype == 'Base64') return base64_decode($src);
-  if ($enctype == 'A'     ) return rhl7Text($src);
+  if ($enctype == 'A') return rhl7Text($src);
   if ($enctype == 'Hex') {
     $data = '';
     for ($i = 0; $i < strlen($src) - 1; $i += 2) {
@@ -260,12 +260,12 @@ function rhl7UpdateReportWithSpecimen(&$amain, $specimen, $d2) {
 function getPerformingOrganizationDetails($obx23, $obx24, $obx25, $componentdelimiter, $commentdelim) {
   $s = null;
 
-  if ( !empty($obx23) || !empty($obx24) || !empty($obx25) )
+  if (!empty($obx23) || !empty($obx24) || !empty($obx25))
   {
     // Organization Name
     // OBX23 Example: "Century Hospital^^^^^NIST-AA-1&2.16.840.1.113883.3.72.5.30.1&ISO^XX^^^987"
     $obx23_segs = explode($componentdelimiter, $obx23);
-    if ( !empty($obx23_segs[0]) )
+    if (!empty($obx23_segs[0]))
     {
       $s .= $obx23_segs[0] . $commentdelim;
     }
@@ -273,7 +273,7 @@ function getPerformingOrganizationDetails($obx23, $obx24, $obx25, $componentdeli
     // Medical Director
     // OBX25 Example: "2343242^Knowsalot^Phil^J.^III^Dr.^^^NIST-AA-1&2.16.840.1.113883.3.72.5.30.1&ISO^L^^^DNSPM"
     //             Dr. Phil Knowsalot J. III
-    if ( !empty($obx25) )
+    if (!empty($obx25))
     {
       $obx25_segs = explode($componentdelimiter, $obx25);
       $s .= "$obx25_segs[5] $obx25_segs[2] $obx25_segs[1] $obx25_segs[3] $obx25_segs[4]" . $commentdelim;
@@ -281,12 +281,12 @@ function getPerformingOrganizationDetails($obx23, $obx24, $obx25, $componentdeli
 
     // Organization Address
     // OBX24 Example: "2070 Test Park^^Los Angeles^CA^90067^USA^B^^06037"
-    if ( !empty($obx24) )
+    if (!empty($obx24))
     {
       $obx24_segs = explode($componentdelimiter, $obx24);
       //$s .= "$obx24_segs[0] $obx24_segs[1], $obx24_segs[2], $obx24_segs[3], $obx24_segs[4], $obx24_segs[5]" . $commentdelim;
       $s .= "$obx24_segs[0]$commentdelim$obx24_segs[2], $obx24_segs[3] $obx24_segs[4]$commentdelim$obx24_segs[5]$commentdelim";
-      if ( !empty($obx24_segs[8]) )
+      if (!empty($obx24_segs[8]))
       {
         $s .= "County/Parish Code: $obx24_segs[8]$commentdelim";
       }
@@ -789,7 +789,7 @@ function receive_hl7_results(&$hl7, &$matchreq, $lab_id=0, $direction='B', $dryr
         if (!$dryrun) {
 
           sqlBeginTrans();
-          $procedure_order_seq = sqlQuery( "SELECT IFNULL(MAX(procedure_order_seq),0) + 1 AS increment FROM procedure_order_code WHERE procedure_order_id = ? ", array($in_orderid));
+          $procedure_order_seq = sqlQuery("SELECT IFNULL(MAX(procedure_order_seq),0) + 1 AS increment FROM procedure_order_code WHERE procedure_order_id = ? ", array($in_orderid));
           sqlInsert("INSERT INTO procedure_order_code SET " .
             "procedure_order_id = ?, " .
             "procedure_order_seq = ?, " .

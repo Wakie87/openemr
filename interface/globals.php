@@ -216,7 +216,7 @@ if (!empty($glrow)) {
   }
   else {
     if (!empty($_POST['authUser'])) {
-      $temp_sql_ret = sqlQuery("SELECT `id` FROM `users` WHERE `username` = ?", array($_POST['authUser']) );
+      $temp_sql_ret = sqlQuery("SELECT `id` FROM `users` WHERE `username` = ?", array($_POST['authUser']));
       if (!empty($temp_sql_ret['id'])) {
         //Set the user id from the login variable
         $temp_authuserid = $temp_sql_ret['id'];
@@ -227,7 +227,7 @@ if (!empty($glrow)) {
     $glres_user = sqlStatement("SELECT `setting_label`, `setting_value` " .
       "FROM `user_settings` " .
       "WHERE `setting_user` = ? " .
-      "AND `setting_label` LIKE 'global:%'", array($temp_authuserid) );
+      "AND `setting_label` LIKE 'global:%'", array($temp_authuserid));
     for($iter=0; $row=sqlFetchArray($glres_user); $iter++) {
       //remove global_ prefix from label
       $row['setting_label'] = substr($row['setting_label'],7);
@@ -287,9 +287,9 @@ if (!empty($glrow)) {
 // Additional logic to override theme name.
 // For RTL languages we substitute the theme name with the name of RTL-adapted CSS file.
     $rtl_override = false;
-    if( isset( $_SESSION['language_direction'] )) {
-        if( $_SESSION['language_direction'] == 'rtl' &&
-        !strpos($GLOBALS['css_header'], 'rtl')  ) {
+    if(isset($_SESSION['language_direction'])) {
+        if($_SESSION['language_direction'] == 'rtl' &&
+        !strpos($GLOBALS['css_header'], 'rtl')) {
 
             // the $css_header_value is set above
             $rtl_override = true;
@@ -300,26 +300,26 @@ if (!empty($glrow)) {
         //$_SESSION['language_direction'] is not set, so will use the default language
         $default_lang_id = sqlQuery('SELECT lang_id FROM lang_languages WHERE lang_description = ?',array($GLOBALS['language_default']));
 
-        if ( getLanguageDir( $default_lang_id['lang_id'] ) === 'rtl' && !strpos($GLOBALS['css_header'], 'rtl')) { // @todo eliminate 1 SQL query
+        if (getLanguageDir($default_lang_id['lang_id']) === 'rtl' && !strpos($GLOBALS['css_header'], 'rtl')) { // @todo eliminate 1 SQL query
             $rtl_override = true;
         }
     }
 
 
     // change theme name, if the override file exists.
-    if( $rtl_override ) {
+    if($rtl_override) {
         // the $css_header_value is set above
         $new_theme = 'rtl_' . $temp_css_theme_name;
 
         // Check file existance
-        if( file_exists( $include_root.'/themes/'.$new_theme ) ) {
+        if(file_exists($include_root.'/themes/'.$new_theme)) {
             $GLOBALS['css_header'] = $rootdir.'/themes/'.$new_theme.'?v='.$v_js_includes;
         } else {
             // throw a warning if rtl'ed file does not exist.
-            error_log("Missing theme file ".text($include_root).'/themes/'.text($new_theme)   );
+            error_log("Missing theme file ".text($include_root).'/themes/'.text($new_theme));
         }
     }
-    unset( $temp_css_theme_name, $new_theme,$rtl_override);
+    unset($temp_css_theme_name, $new_theme,$rtl_override);
     // end of RTL section
 
   //
@@ -403,7 +403,7 @@ if (!empty($special_timeout)) {
 
 //Version tag
 $patch_appending = "";
-if ( ($v_realpatch != '0') && (!(empty($v_realpatch))) ) {
+if (($v_realpatch != '0') && (!(empty($v_realpatch)))) {
 $patch_appending = " (".$v_realpatch.")";
 }
 $openemr_version = "$v_major.$v_minor.$v_patch".$v_tag.$patch_appending;
@@ -427,7 +427,7 @@ $GLOBALS['include_de_identification']=0;
 // don't include the authentication module - we do this to avoid
 // include loops.
 
-if ( ($ignoreAuth_offsite_portal === true) && ($GLOBALS['portal_offsite_enable'] == 1) ) {
+if (($ignoreAuth_offsite_portal === true) && ($GLOBALS['portal_offsite_enable'] == 1)) {
   $ignoreAuth = true;
 }
 if (!$ignoreAuth) {

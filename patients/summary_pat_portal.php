@@ -24,7 +24,7 @@ $landingpage = "index.php?site=".$_SESSION['site_id'];
 //
 
 // kick out if patient not authenticated
-if ( isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite']) ) {
+if (isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite'])) {
   $pid = $_SESSION['pid'];
 }
 else {
@@ -392,7 +392,7 @@ $(document).ready(function(){
     <!-- start left column div -->
     <div style='float:left; margin-right:20px'>
      <table cellspacing=0 cellpadding=0>
-      <?php if ( $GLOBALS['activate_ccr_ccd_report'] ) { // show CCR/CCD reporting options ?>
+      <?php if ($GLOBALS['activate_ccr_ccd_report']) { // show CCR/CCD reporting options ?>
        <tr>
         <td width='650px'>
           <?php
@@ -519,7 +519,7 @@ $(document).ready(function(){
         </td>
        </tr>
 <?php } // end CCR/CCD reporting options ?>
-<?php if ( $GLOBALS['portal_onsite_document_download'] ) { ?>
+<?php if ($GLOBALS['portal_onsite_document_download']) { ?>
 <?php echo "<tr><td width='650px'>";
 $widgetTitle = xl('Documents');
 $widgetLabel = "documents";
@@ -627,7 +627,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
     </tr>
 	
 <!-- Amendments -->
-<?php if ( $GLOBALS['amendments'] ) { ?>
+<?php if ($GLOBALS['amendments']) { ?>
 	<tr>
 	<td width='650px'>
 <?php
@@ -662,7 +662,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 	  "u.id = e.pc_aid AND e.pc_catid = c.pc_catid " .
 	  "ORDER BY e.pc_eventDate, e.pc_startTime";
 	  //echo $query;
-	 $res = sqlStatement($query, array($pid) );
+	 $res = sqlStatement($query, array($pid));
 
 	// appointments expand collapse widget
 	$widgetTitle = xl("Appointments");

@@ -73,10 +73,10 @@ function thisLineItem($patient_id, $encounter_id, $description, $transdate, $qty
 
   if ($_POST['form_details']) {
     if ($_POST['form_csvexport']) {
-      echo '"' . display_desc($product         ) . '",';
+      echo '"' . display_desc($product) . '",';
       echo '"' . oeFormatShortDate(display_desc($transdate)) . '",';
       echo '"' . display_desc($invnumber) . '",';
-      echo '"' . display_desc($qty      ) . '",';
+      echo '"' . display_desc($qty) . '",';
       echo '"' . formatcyp($rowcyp) . '",';
       echo '"' . formatcyp($rowresult) . '"' . "\n";
     }

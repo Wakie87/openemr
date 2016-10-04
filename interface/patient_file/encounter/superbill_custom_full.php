@@ -60,7 +60,7 @@ if (isset($mode)) {
   }
 
   if ($mode == "delete") {
-    sqlStatement("DELETE FROM codes WHERE id = ?", array($code_id) );
+    sqlStatement("DELETE FROM codes WHERE id = ?", array($code_id));
     $code_id = 0;
   }
   else if ($mode == "add" || $mode == "modify_complete") { // this covers both adding and modifying
@@ -87,9 +87,9 @@ if (isset($mode)) {
         "reportable = "    . add_escape_custom($reportable);
       if ($code_id) {
         $query = "UPDATE codes SET $sql WHERE id = ?";
-        sqlStatement($query, array($code_id) );
+        sqlStatement($query, array($code_id));
         sqlStatement("DELETE FROM prices WHERE pr_id = ? AND " .
-          "pr_selector = ''", array($code_id) );
+          "pr_selector = ''", array($code_id));
       }
       else {
         $code_id = sqlInsert("INSERT INTO codes SET $sql");
@@ -100,7 +100,7 @@ if (isset($mode)) {
           if ($value) {
             sqlStatement("INSERT INTO prices ( " .
               "pr_id, pr_selector, pr_level, pr_price ) VALUES ( " .
-              "?, '', ?, ?)", array($code_id,$key,$value) );
+              "?, '', ?, ?)", array($code_id,$key,$value));
           }
         }
         $code = $code_type = $code_text = $modifier = $superbill = "";
@@ -115,7 +115,7 @@ if (isset($mode)) {
   }
   else if ($mode == "edit") { // someone clicked [Edit]
     $sql = "SELECT * FROM codes WHERE id = ?";
-    $results = sqlStatement($sql, array($code_id) );
+    $results = sqlStatement($sql, array($code_id));
     while ($row = sqlFetchArray($results)) {
       $code         = $row['code'];
       $code_text    = $row['code_text'];
@@ -235,7 +235,7 @@ foreach ($code_types as $key => $value) {
 ?>
  }
  if (!codetype) {
-  alert('<?php echo addslashes( xl('This code type does not accept relations.') ); ?>');
+  alert('<?php echo addslashes(xl('This code type does not accept relations.')); ?>');
   return;
  }
  dlgopen('find_code_popup.php', '_blank', 500, 400);
@@ -244,12 +244,12 @@ foreach ($code_types as $key => $value) {
 // Some validation for saving a new code entry.
 function validEntry(f) {
  if (!f.code.value) {
-  alert('<?php echo addslashes( xl('No code was specified!') ); ?>');
+  alert('<?php echo addslashes(xl('No code was specified!')); ?>');
   return false;
  }
 <?php if ($GLOBALS['ippf_specific']) { ?>
  if (f.code_type.value == 12 && !f.related_code.value) {
-  alert('<?php echo addslashes( xl('A related IPPF code is required!') ); ?>');
+  alert('<?php echo addslashes(xl('A related IPPF code is required!')); ?>');
   return false;
  }
 <?php } ?>
@@ -267,7 +267,7 @@ function submitAdd() {
 function submitUpdate() {
  var f = document.forms[0];
  if (! parseInt(f.code_id.value)) {
-  alert('<?php echo addslashes( xl('Cannot update because you are not editing an existing entry!') ); ?>');
+  alert('<?php echo addslashes(xl('Cannot update because you are not editing an existing entry!')); ?>');
   return;
  }
  if (!validEntry(f)) return;
@@ -356,7 +356,7 @@ foreach ($code_types as $key => $value) {
 
    <?php $external_sets = array(); ?>
    <?php foreach ($code_types as $key => $value) { ?>
-     <?php if ( !($value['external']) ) { ?>
+     <?php if (!($value['external'])) { ?>
        <?php if ($mode != "modify") { ?>
          <option value="<?php  echo attr($value['id']) ?>"<?php if ($code_type == $value['id']) echo " selected" ?>><?php echo xlt($value['label']) ?></option>
        <?php } ?>
@@ -399,7 +399,7 @@ foreach ($code_types as $key => $value) {
 <?php } ?>
 
    &nbsp;&nbsp;
-   <input type='checkbox' name='active' value='1'<?php if (!empty($active) || ($mode == 'modify' && $active == NULL) ) echo ' checked'; ?> />
+   <input type='checkbox' name='active' value='1'<?php if (!empty($active) || ($mode == 'modify' && $active == NULL)) echo ' checked'; ?> />
    <?php echo xlt('Active'); ?>
   </td>
  </tr>
@@ -461,7 +461,7 @@ generate_form_field(array('data_type'=>1,'field_id'=>'superbill','list_id'=>'sup
 $pres = sqlStatement("SELECT lo.option_id, lo.title, p.pr_price " .
   "FROM list_options AS lo LEFT OUTER JOIN prices AS p ON " .
   "p.pr_id = ? AND p.pr_selector = '' AND p.pr_level = lo.option_id " .
-  "WHERE lo.list_id = 'pricelevel' AND lo.activity = 1 ORDER BY lo.seq, lo.title", array($code_id) );
+  "WHERE lo.list_id = 'pricelevel' AND lo.activity = 1 ORDER BY lo.seq, lo.title", array($code_id));
 for ($i = 0; $prow = sqlFetchArray($pres); ++$i) {
   if ($i) echo "&nbsp;&nbsp;";
   echo text(xl_list_label($prow['title'])) . " ";
@@ -605,10 +605,10 @@ if (!empty($all)) {
     if ($iter["code_external"] > 0) {
       // If there is no entry in codes sql table, then default to active
       //  (this is reason for including NULL below)
-      echo "  <td class='text'>" . ( ($iter["active"] || $iter["active"]==NULL) ? xlt('Yes') : xlt('No')) . "</td>\n";
+      echo "  <td class='text'>" . (($iter["active"] || $iter["active"]==NULL) ? xlt('Yes') : xlt('No')) . "</td>\n";
     }
     else {
-      echo "  <td class='text'>" . ( ($iter["active"]) ? xlt('Yes') : xlt('No')) . "</td>\n";
+      echo "  <td class='text'>" . (($iter["active"]) ? xlt('Yes') : xlt('No')) . "</td>\n";
     }
     echo "  <td class='text'>" . ($iter["reportable"] ? xlt('Yes') : xlt('No')) . "</td>\n";
     echo "  <td class='text'>" . ($iter["financial_reporting"] ? xlt('Yes') : xlt('No')) . "</td>\n";

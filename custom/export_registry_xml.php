@@ -42,15 +42,15 @@ if (!empty($GLOBALS['cdr_report_nice'])) {
 
 function getLabelNumber($label) {
 	
-	if ( strlen($label) == 0) {
+	if (strlen($label) == 0) {
 		return "1";
 	}
 
 	$tokens = explode(" ", $label);
 	
 	$num_tokens = sizeof($tokens);
-	if ( $tokens[$num_tokens-1] != null ) {
-		if ( is_numeric($tokens[$num_tokens-1])) {
+	if ($tokens[$num_tokens-1] != null) {
+		if (is_numeric($tokens[$num_tokens-1])) {
 			return $tokens[$num_tokens-1];
 		}
 	}
@@ -60,7 +60,7 @@ function getLabelNumber($label) {
 }
 
 function getMeasureNumber($row) {
-       if (!empty($row['cqm_pqri_code']) || !empty($row['cqm_nqf_code']) ) {
+       if (!empty($row['cqm_pqri_code']) || !empty($row['cqm_nqf_code'])) {
          if (!empty($row['cqm_pqri_code'])) {
          	return $row['cqm_pqri_code'];
          }
@@ -87,7 +87,7 @@ $xml->open_submission();
 $xml->add_file_audit_data();
 
 // Add the registry entries
-if ( $nested == 'false') {
+if ($nested == 'false') {
 	$xml->add_registry('A');
 }
 else {
@@ -96,7 +96,7 @@ else {
 
 
 // Add the measure groups.
-if ( $nested == 'false' ) {
+if ($nested == 'false') {
         // Collect results (note using the batch method to decrease memory overhead and improve performance)
 	$dataSheet = test_rules_clinic_batch_method('collate_outer','cqm_2011',$target_date,'report','','');
 }
@@ -109,7 +109,7 @@ $firstProviderFlag = TRUE;
 $firstPlanFlag = TRUE;
 $existProvider = FALSE;
 
-if ( $nested == 'false' ){
+if ($nested == 'false'){
      $xml->open_measure_group('X');
 }
 
@@ -137,7 +137,7 @@ foreach ($dataSheet as $row) {
 		}
  	}
     else if (isset($row['is_provider'])) {
-    	if ( $firstProviderFlag == FALSE ){
+    	if ($firstProviderFlag == FALSE){
 		     $xml->close_provider();
     	}
       	 // Add the provider
@@ -150,8 +150,8 @@ foreach ($dataSheet as $row) {
 	           $physician_ids['tin'] = $row['federaltaxid'];
 	       }
 	     }
-	     $physician_ids['encounter-from-date'] = '01-01-' . date('Y', strtotime($target_date ));
-	     $physician_ids['encounter-to-date'] = '12-31-' . date('Y', strtotime($target_date ));
+	     $physician_ids['encounter-from-date'] = '01-01-' . date('Y', strtotime($target_date));
+	     $physician_ids['encounter-to-date'] = '12-31-' . date('Y', strtotime($target_date));
 	     
        	 $xml->open_provider($physician_ids);
 	     $firstProviderFlag = FALSE;
@@ -159,16 +159,16 @@ foreach ($dataSheet as $row) {
    }
    else { // isset($row['is_plan'])
 
-   	    if ( $firstPlanFlag == FALSE ) {
-   	    	if ( $firstProviderFlag == FALSE ) {
+   	    if ($firstPlanFlag == FALSE) {
+   	    	if ($firstProviderFlag == FALSE) {
 		    	$xml->close_provider();
    	    	}
-    	 	if ( $nested == 'true' ) {
+    	 	if ($nested == 'true') {
     	 		$xml->close_measure_group();
     	 	}
     	}
    	
-    	 if ( $nested == 'true' ){
+    	 if ($nested == 'true'){
     	 	$xml->open_measure_group($row['cqm_measure_group']);
     	 }
 	     $firstPlanFlag = FALSE;
@@ -177,7 +177,7 @@ foreach ($dataSheet as $row) {
  	 	
 }
 
-if ( $existProvider == TRUE ){
+if ($existProvider == TRUE){
    	$xml->close_provider();
 	$xml->close_measure_group();
 }
@@ -191,11 +191,11 @@ $xml->close_submission();
 <?php html_header_show();?>
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>        
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
-<title><?php echo htmlspecialchars( xl('Export PQRI Report'), ENT_NOQUOTES); ?></title>
+<title><?php echo htmlspecialchars(xl('Export PQRI Report'), ENT_NOQUOTES); ?></title>
 </head>
 <body>
 
-<p><?php echo htmlspecialchars( xl('The exported data appears in the text area below. You can copy and paste this into an email or to any other desired destination.'), ENT_NOQUOTES); ?></p>
+<p><?php echo htmlspecialchars(xl('The exported data appears in the text area below. You can copy and paste this into an email or to any other desired destination.'), ENT_NOQUOTES); ?></p>
 
 <center>
 <form>
@@ -204,7 +204,7 @@ $xml->close_submission();
 <?php echo $xml->getXml(); ?>
 </textarea>
 
-<p><input type='button' value='<?php echo htmlspecialchars( xl('OK'), ENT_QUOTES); ?>' onclick='window.close()' /></p>
+<p><input type='button' value='<?php echo htmlspecialchars(xl('OK'), ENT_QUOTES); ?>' onclick='window.close()' /></p>
 </form>
 </center>
 

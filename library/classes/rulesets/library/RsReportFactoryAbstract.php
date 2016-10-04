@@ -8,5 +8,5 @@
 //
 abstract class RsReportFactoryAbstract
 {
-    public abstract function createReport( $className, $rowRule, $patients, $dateTarget, $options );
+    public abstract function createReport($className, $rowRule, $patients, $dateTarget, $options);
 }

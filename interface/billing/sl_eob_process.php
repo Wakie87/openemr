@@ -61,7 +61,7 @@ require_once("$srcdir/billing.inc");
             else $last_invnumber = $invnumber;
         if ($code == $last_code) $code = '&nbsp;';
             else $last_code = $code;
-        if ($amount ) $amount  = sprintf("%.2f", $amount );
+        if ($amount) $amount  = sprintf("%.2f", $amount);
         if ($balance) $balance = sprintf("%.2f", $balance);
         $dline =
             " <tr bgcolor='$bgcolor'>\n" .
@@ -109,7 +109,7 @@ require_once("$srcdir/billing.inc");
         {
         $StringToEcho="<br/><br/><br/><br/><br/><br/>";
         $StringToEcho.="<table border='1' cellpadding='0' cellspacing='0'  width='750'>";
-        $StringToEcho.="<tr bgcolor='#cccccc'><td width='50'></td><td class='dehead' width='150' align='center'>".htmlspecialchars( xl('Check Number'), ENT_QUOTES)."</td><td class='dehead' width='400'  align='center'>".htmlspecialchars( xl('Payee Name'), ENT_QUOTES)."</td><td class='dehead'  width='150' align='center'>".htmlspecialchars( xl('Check Amount'), ENT_QUOTES)."</td></tr>";
+        $StringToEcho.="<tr bgcolor='#cccccc'><td width='50'></td><td class='dehead' width='150' align='center'>".htmlspecialchars(xl('Check Number'), ENT_QUOTES)."</td><td class='dehead' width='400'  align='center'>".htmlspecialchars(xl('Payee Name'), ENT_QUOTES)."</td><td class='dehead'  width='150' align='center'>".htmlspecialchars(xl('Check Amount'), ENT_QUOTES)."</td></tr>";
         $WarningFlag=false;
         for ($check_count=1;$check_count<=$out['check_count'];$check_count++)
          {
@@ -136,7 +136,7 @@ require_once("$srcdir/billing.inc");
         }
         $StringToEcho.="<tr bgcolor='#cccccc'><td colspan='4' align='center'><input type='submit'  name='CheckSubmit' value='Submit'/></td></tr>";
         if($WarningFlag==true)
-            $StringToEcho.="<tr bgcolor='#ff0000'><td colspan='4' align='center'>".htmlspecialchars( xl('Warning, Check Number already exist in the database'), ENT_QUOTES)."</td></tr>";
+            $StringToEcho.="<tr bgcolor='#ff0000'><td colspan='4' align='center'>".htmlspecialchars(xl('Warning, Check Number already exist in the database'), ENT_QUOTES)."</td></tr>";
          $StringToEcho.="</table>";
         }
         else
@@ -523,25 +523,25 @@ require_once("$srcdir/billing.inc");
         
          <tr bgcolor="#cccccc">
           <td class="dehead">
-           <?php echo htmlspecialchars( xl('Patient'), ENT_QUOTES) ?>
+           <?php echo htmlspecialchars(xl('Patient'), ENT_QUOTES) ?>
           </td>
           <td class="dehead">
-           <?php echo htmlspecialchars( xl('Invoice'), ENT_QUOTES) ?>
+           <?php echo htmlspecialchars(xl('Invoice'), ENT_QUOTES) ?>
           </td>
           <td class="dehead">
-           <?php echo htmlspecialchars( xl('Code'), ENT_QUOTES) ?>
+           <?php echo htmlspecialchars(xl('Code'), ENT_QUOTES) ?>
           </td>
           <td class="dehead">
-           <?php echo htmlspecialchars( xl('Date'), ENT_QUOTES) ?>
+           <?php echo htmlspecialchars(xl('Date'), ENT_QUOTES) ?>
           </td>
           <td class="dehead">
-           <?php echo htmlspecialchars( xl('Description'), ENT_QUOTES) ?>
+           <?php echo htmlspecialchars(xl('Description'), ENT_QUOTES) ?>
           </td>
           <td class="dehead" align="right">
-           <?php echo htmlspecialchars( xl('Amount'), ENT_QUOTES) ?>&nbsp;
+           <?php echo htmlspecialchars(xl('Amount'), ENT_QUOTES) ?>&nbsp;
           </td>
           <td class="dehead" align="right">
-           <?php echo htmlspecialchars( xl('Balance'), ENT_QUOTES) ?>&nbsp;
+           <?php echo htmlspecialchars(xl('Balance'), ENT_QUOTES) ?>&nbsp;
           </td>
          </tr>
         
@@ -553,7 +553,7 @@ require_once("$srcdir/billing.inc");
           $alertmsg = parse_era($GLOBALS['OE_SITE_DIR'] . "/era/$eraname.edi", 'era_callback');
         if(!$debug)
          {
-              $StringIssue=htmlspecialchars( xl("Total Distribution for following check number is not full"), ENT_QUOTES).': ';
+              $StringIssue=htmlspecialchars(xl("Total Distribution for following check number is not full"), ENT_QUOTES).': ';
               $StringPrint='No';
               foreach($InsertionId as $key => $value)
                 {

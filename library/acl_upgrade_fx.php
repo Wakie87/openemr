@@ -39,7 +39,7 @@ function get_acl_version() {
  * @param  integer  $acl_version  access control version
  */
 function set_acl_version($acl_version) {
-  sqlStatement("UPDATE `version` SET `v_acl` = ?", array($acl_version) );
+  sqlStatement("UPDATE `version` SET `v_acl` = ?", array($acl_version));
 }
 
 /**
@@ -102,7 +102,7 @@ function addNewACL($title, $name, $return_value, $note) {
                             $parent_id = $gacl->get_root_group_id();
                             $aro_id = $gacl->add_group($name, $title, $parent_id, 'ARO');
                             $temp_acl_id = $gacl->add_acl(array("placeholder"=>array("filler")), NULL, array($aro_id), NULL, NULL, 1, 1, $return_value, $note);
-                            if ($aro_id ) {
+                            if ($aro_id) {
                                 echo "The '$title' group has been successfully added.</BR>";
                             }
                             else {

@@ -5,30 +5,30 @@
  */
 class x_axis_label
 {
-	function x_axis_label( $text, $colour, $size, $rotate )
+	function x_axis_label($text, $colour, $size, $rotate)
 	{
-		$this->set_text( $text );
-		$this->set_colour( $colour );
-		$this->set_size( $size );
-		$this->set_rotate( $rotate );
+		$this->set_text($text);
+		$this->set_colour($colour);
+		$this->set_size($size);
+		$this->set_rotate($rotate);
 	}
 	
-	function set_text( $text )
+	function set_text($text)
 	{
 		$this->text = $text;
 	}
 	
-	function set_colour( $colour )
+	function set_colour($colour)
 	{
 		$this->colour = $colour;
 	}
 	
-	function set_size( $size )
+	function set_size($size)
 	{
 		$this->size = $size;
 	}
 	
-	function set_rotate( $rotate )
+	function set_rotate($rotate)
 	{
 		$this->rotate = $rotate;
 	}

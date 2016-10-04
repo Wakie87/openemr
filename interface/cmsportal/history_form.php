@@ -132,9 +132,9 @@ function validate() {
 
 <table width='100%' cellpadding='1' cellspacing='2'>
  <tr class='head'>
-  <th align='left'><?php echo xlt('Field'        ); ?></th>
+  <th align='left'><?php echo xlt('Field'); ?></th>
   <th align='left'><?php echo xlt('Current Value'); ?></th>
-  <th align='left'><?php echo xlt('New Value'    ); ?></th>
+  <th align='left'><?php echo xlt('New Value'); ?></th>
  </tr>
 
 <?php

@@ -9,20 +9,20 @@ include_once("../globals.php");
 include_once("$srcdir/registry.inc");
 include_once("$srcdir/sql.inc");
 if ($_GET['method'] == "enable"){
-	updateRegistered ( $_GET['id'], "state=1" );
+	updateRegistered ($_GET['id'], "state=1");
 }
 elseif ($_GET['method'] == "disable"){
-	updateRegistered ( $_GET['id'], "state=0" );
+	updateRegistered ($_GET['id'], "state=0");
 }
 elseif ($_GET['method'] == "install_db"){
-	$dir = getRegistryEntry ( $_GET['id'], "directory" );
+	$dir = getRegistryEntry ($_GET['id'], "directory");
 	if (installSQL ("$srcdir/../interface/forms/{$dir['directory']}"))
-		updateRegistered ( $_GET['id'], "sql_run=1" );
+		updateRegistered ($_GET['id'], "sql_run=1");
 	else
 		$err = xl('ERROR: could not open table.sql, broken form?');
 }
 elseif ($_GET['method'] == "register"){
-	registerForm ( $_GET['name'] ) or $err=xl('error while registering form!');
+	registerForm ($_GET['name']) or $err=xl('error while registering form!');
 }
 $bigdata = getRegistered("%") or $bigdata = false;
 
@@ -150,14 +150,14 @@ for ($i=0; false != ($fname = readdir($dp)); $i++)
 // ballards 11/05/2005 fixed bug in removing registered form from the list
 if ($bigdata != false)
 {
-	foreach ( $bigdata as $registry )
+	foreach ($bigdata as $registry)
 	{
 		$key = array_search($registry['directory'], $inDir) ;  /* returns integer or FALSE */
 		unset($inDir[$key]);
 	}
 }
 
-foreach ( $inDir as $fname )
+foreach ($inDir as $fname)
 {
         // added 8-2009 by BM - do not show the metric vitals form as option since deprecated
 	//  also added a toggle in globals.php in case user wants the option to add this deprecated form

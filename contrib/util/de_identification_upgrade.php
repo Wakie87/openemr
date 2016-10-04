@@ -109,7 +109,7 @@ function upgradeFromSqlFile_de($filename) {
 
 $sqldir = "$webserver_root/sql";
 $dh = opendir($sqldir);
-if (! $dh) die( xl("Cannot read","e")." ".$sqldir);
+if (! $dh) die(xl("Cannot read","e")." ".$sqldir);
 closedir($dh);
 ?>
 <html>

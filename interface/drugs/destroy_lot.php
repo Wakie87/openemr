@@ -26,7 +26,7 @@
 
  if (!acl_check('admin', 'drugs')) die(xlt('Not authorized'));
  if (!$drug_id) die(xlt('Drug ID missing!'));
- if (!$lot_id ) die(xlt('Lot ID missing!'));
+ if (!$lot_id) die(xlt('Lot ID missing!'));
 ?>
 <html>
 <head>
@@ -60,7 +60,7 @@ td { font-size:10pt; }
    "destroy_method = '"  . add_escape_custom($_POST['form_method'])    . "', " .
    "destroy_witness = '" . add_escape_custom($_POST['form_witness'])   . "', " .
    "destroy_notes = '"   . add_escape_custom($_POST['form_notes'])     . "' "  .
-   "WHERE drug_id = ? AND inventory_id = ?", array($drug_id,$lot_id) );
+   "WHERE drug_id = ? AND inventory_id = ?", array($drug_id,$lot_id));
 
   // Close this window and redisplay the updated list of drugs.
   //

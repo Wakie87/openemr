@@ -23,12 +23,12 @@ $CPR = 4; // cells per row
 $formname = isset($_GET['formname']) ? $_GET['formname'] : '';
 
 $tmp = sqlQuery("SELECT title FROM list_options WHERE " .
-  "list_id = 'lbfnames' AND option_id = ? AND activity = 1 LIMIT 1", array($formname) );
+  "list_id = 'lbfnames' AND option_id = ? AND activity = 1 LIMIT 1", array($formname));
 $formtitle = $tmp['title'];
 
 $fres = sqlStatement("SELECT * FROM layout_options " .
   "WHERE form_id = ? AND uor > 0 " .
-  "ORDER BY group_name, seq", array($formname) );
+  "ORDER BY group_name, seq", array($formname));
 ?>
 <html>
 <head>

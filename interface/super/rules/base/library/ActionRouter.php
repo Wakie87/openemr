@@ -32,7 +32,7 @@ class ActionRouter {
     }
 
     function route() {
-        if ( !$this->action ) {
+        if (!$this->action) {
             $this->action = "default";
         }
 
@@ -51,7 +51,7 @@ class ActionRouter {
         }
     }
 
-    function perform( $action ) {
+    function perform($action) {
         $action_method = '_action_' . $action;
 
         // execute the default action if action is not found
@@ -62,7 +62,7 @@ class ActionRouter {
         // resolve view location
         $viewName = $result->_view;
         $view_location = $this->path . "/view/" . $viewName;
-        if ( !is_file($view_location) ) {
+        if (!is_file($view_location)) {
             // try common
             $view_location = base_dir() . "base/view/" . $viewName;
         }
@@ -72,16 +72,16 @@ class ActionRouter {
 
         // set helpers
         $helpers = $viewBean->helpers;
-        if ( !is_null($helpers) ) {
-            foreach( $helpers as $helper ) {
-                $helperPath = $this->resolveHelper( $helper );
-                if ( !is_null($helperPath) ) {
+        if (!is_null($helpers)) {
+            foreach($helpers as $helper) {
+                $helperPath = $this->resolveHelper($helper);
+                if (!is_null($helperPath)) {
                     require_once($helperPath);
                 }
             }
         }
 
-        if ( !is_file($view_location) ) {
+        if (!is_file($view_location)) {
             // no view template
             return $result;
         }
@@ -90,22 +90,22 @@ class ActionRouter {
         $viewBean->_webRoot = $this->webRoot;
         $viewBean->_view_body = $view_location;
 
-        $template = $this->resolveTemplate( $result->_template );
+        $template = $this->resolveTemplate($result->_template);
         require($template);
 
         return $result;
     }
 
-    function resolveTemplate( $templateName ) {
+    function resolveTemplate($templateName) {
         // try local
         $template_location = $this->path . "/template/" . $templateName;
 
         // try common
-        if ( !is_file($template_location) ) {
+        if (!is_file($template_location)) {
             $template_location = base_dir() . "base/template/" . $templateName;
         }
 
-        if ( is_file($template_location) ) {
+        if (is_file($template_location)) {
             // return template if its found
             return $template_location;
         } else {
@@ -115,16 +115,16 @@ class ActionRouter {
         }
     }
 
-    function resolveHelper( $name ) {
+    function resolveHelper($name) {
         // try local
         $location = $this->path . "/helper/" . $name;
 
         // try common
-        if ( !is_file($location) ) {
+        if (!is_file($location)) {
             $location = base_dir() . "base/helper/" . $name;
         }
 
-        if ( is_file($location) ) {
+        if (is_file($location)) {
             // return template if its found
             return $location;
         } else {

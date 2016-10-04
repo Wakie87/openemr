@@ -33,7 +33,7 @@
  * @param string  the code
  * @return string
  */
-function edih_997_code_text ( $ak_seg_field, $ak_code ) {
+function edih_997_code_text ($ak_seg_field, $ak_code) {
 	// the Availity 997 file has codes with certain errors
 	// which correspond to the messages in these arrays
 	//
@@ -110,7 +110,7 @@ function edih_997_code_text ( $ak_seg_field, $ak_code ) {
          'I6' => 'Implementation dependent segment missing',
          );
 	// array_key_exists($ak_seg_field, $aktext) && array_key_exists($ak_code, $aktext[$ak_seg_field]) )
-	return ( isset($aktext[$ak_seg_field][$ak_code]) ) ? $aktext[$ak_seg_field][$ak_code] : '';
+	return (isset($aktext[$ak_seg_field][$ak_code])) ? $aktext[$ak_seg_field][$ak_code] : '';
 	//if ( isset($aktext[$ak_seg_field][$ak_code]) ) {
 	//	return $aktext[$ak_seg_field][$ak_code];
 	//} else {
@@ -164,7 +164,7 @@ function edih_997_ta1_code($code) {
 		'030' => 'Invalid delivery time Code in Deferred Delivery Request',
 		'031' => 'Invalid grade of Service Code'
 		);
-	if ( array_key_exists($code, $ta1code) ) {
+	if (array_key_exists($code, $ta1code)) {
 		return 	$ta1code[$code];
 	} else {
 		return "Code $code not found in TA1 codes table. <br />";

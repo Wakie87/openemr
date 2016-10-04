@@ -57,7 +57,7 @@ $(document).ready(function(){
  }
 ?>
 
-<?php if (acl_check('patients','med','',array('write','addonly') )) { ?>
+<?php if (acl_check('patients','med','',array('write','addonly'))) { ?>
 <div>
     <span class="title"><?php echo htmlspecialchars(xl('Patient History / Lifestyle'),ENT_NOQUOTES); ?></span>
 </div>

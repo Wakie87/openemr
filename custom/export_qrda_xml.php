@@ -266,7 +266,7 @@ if(count($dataSheet) > 0){
 		$itemized_test_id = $row['itemized_test_id'];
 		$numerator_label = $row['numerator_label'];
 		if($row['cqm_nqf_code'] == "0024"){
-			if( $row['population_label'] == "Population Criteria 2" ){
+			if($row['population_label'] == "Population Criteria 2"){
 				if($row['numerator_label'] == "Numerator 1"){
 					$stratum_1_ipp 		= $row['initial_population'];
 					$stratum_1_exclude  = $row['excluded'];
@@ -277,7 +277,7 @@ if(count($dataSheet) > 0){
 				}else if($row['numerator_label'] == "Numerator 3"){
 					$stratum_1_numer3 = $row['pass_target'];
 				}
-			}else if( $row['population_label'] == "Population Criteria 3" ){
+			}else if($row['population_label'] == "Population Criteria 3"){
 				if($row['numerator_label'] == "Numerator 1"){
 					$stratum_2_ipp 		= $row['initial_population'];
 					$stratum_2_exclude  = $row['excluded'];
@@ -309,8 +309,8 @@ if(count($dataSheet) > 0){
 	}
 }
 
-$from_date = date('Y', strtotime($target_date ))."-01-01";
-$to_date =  date('Y', strtotime($target_date ))."-12-31";
+$from_date = date('Y', strtotime($target_date))."-01-01";
+$to_date =  date('Y', strtotime($target_date))."-12-31";
 $xml = new QRDAXml();
 
 #################################################################################################
@@ -632,20 +632,20 @@ if(count($dataSheet) > 0){
 		$tdTitle = generate_display_field(array('data_type'=>'1','list_id'=>'clinical_rules'),$row['id']);
 		
 		if (!empty($row['cqm_pqri_code'])) {
-			$tdTitle .= " " . htmlspecialchars( xl('PQRI') . ":" . $row['cqm_pqri_code'], ENT_NOQUOTES) . " ";
+			$tdTitle .= " " . htmlspecialchars(xl('PQRI') . ":" . $row['cqm_pqri_code'], ENT_NOQUOTES) . " ";
 		}
 		if (!empty($row['cqm_nqf_code'])) {
-			$tdTitle .= " " . htmlspecialchars( xl('NQF') . ":" . $row['cqm_nqf_code'], ENT_NOQUOTES) . " ";
+			$tdTitle .= " " . htmlspecialchars(xl('NQF') . ":" . $row['cqm_nqf_code'], ENT_NOQUOTES) . " ";
 		}
 		
-		if ( !(empty($row['concatenated_label'])) ) {
-			$tdTitle .= ", " . htmlspecialchars( xl( $row['concatenated_label'] ), ENT_NOQUOTES) . " ";
+		if (!(empty($row['concatenated_label']))) {
+			$tdTitle .= ", " . htmlspecialchars(xl($row['concatenated_label']), ENT_NOQUOTES) . " ";
         }
 		
 		$tdVersionNeutral = getUuid();
 		
 		if($preDefinedUniqIDRules[$row['cqm_nqf_code']] != ""){
-			if( ($row['cqm_nqf_code'] == "0421" ) )
+			if(($row['cqm_nqf_code'] == "0421"))
 				$tdVersionSpecific = $preDefinedUniqIDRules[$row['cqm_nqf_code']][$row['numerator_label']];
 			else if($row['cqm_nqf_code'] == "0024")
 				$tdVersionSpecific = $preDefinedUniqIDRules[$row['cqm_nqf_code']][$row['population_label']][$row['numerator_label']];
@@ -682,7 +682,7 @@ if(count($dataSheet) > 0){
 		foreach($CQMeausesArr as $cqmKey => $cqmVal){
 			
 			//DENEXCEP(Denominator Exception not needed for some rules are skipping here)
-			if( (in_array($row['cqm_nqf_code'], $denExcepNotNeedRules) ) && ($cqmKey == "exception_patients") ) continue;
+			if((in_array($row['cqm_nqf_code'], $denExcepNotNeedRules)) && ($cqmKey == "exception_patients")) continue;
 			
 			//get Itemized Data
 			if($cqmKey == "init_patients")
@@ -782,18 +782,18 @@ if(count($dataSheet) > 0){
 		
 		$tdTitle = generate_display_field(array('data_type'=>'1','list_id'=>'clinical_rules'),$row['id']);
 		if (!empty($row['cqm_pqri_code'])) {
-			$tdTitle .= " " . text( xl('PQRI') . ":" . $row['cqm_pqri_code']) . " ";
+			$tdTitle .= " " . text(xl('PQRI') . ":" . $row['cqm_pqri_code']) . " ";
 		}
 		if (!empty($row['cqm_nqf_code'])) {
-			$tdTitle .= " " . text( xl('NQF') . ":" . $row['cqm_nqf_code']) . " ";
+			$tdTitle .= " " . text(xl('NQF') . ":" . $row['cqm_nqf_code']) . " ";
 		}
 		
-		if ( !(empty($row['concatenated_label'])) ) {
-			$tdTitle .= ", " . text( xl( $row['concatenated_label'] )) . " ";
+		if (!(empty($row['concatenated_label']))) {
+			$tdTitle .= ", " . text(xl($row['concatenated_label'])) . " ";
         }
 		
 		###########################################################
-		if( ( !isset($skipMultNumArr[$row['cqm_nqf_code']]) ) || ($skipMultNumArr[$row['cqm_nqf_code']] == false) ){
+		if((!isset($skipMultNumArr[$row['cqm_nqf_code']])) || ($skipMultNumArr[$row['cqm_nqf_code']] == false)){
 			
 			//Entry open
 			$xml->open_entry();
@@ -876,7 +876,7 @@ if(count($dataSheet) > 0){
 			//$exDocID = getUuid();
 
 			
-			if( ($row['cqm_nqf_code'] == "0421" )){
+			if(($row['cqm_nqf_code'] == "0421")){
 				$exDocID = $preDefPopIdArr[$row['cqm_nqf_code']][$row['numerator_label']]["NUMER"];
 			}else if(($row['cqm_nqf_code'] == "0024")){
 				$exDocID = $preDefPopIdArr[$row['cqm_nqf_code']][$row['population_label']][$row['numerator_label']]["NUMER"];
@@ -910,7 +910,7 @@ if(count($dataSheet) > 0){
 		foreach($CQMeausesArr as $cqmKey => $cqmVal){
 			
 			//DENEXCEP(Denominator Exception not needed for some rules are skipping here)
-			if( (in_array($row['cqm_nqf_code'], $denExcepNotNeedRules) ) && ($cqmKey == "exception_patients") ) continue;
+			if((in_array($row['cqm_nqf_code'], $denExcepNotNeedRules)) && ($cqmKey == "exception_patients")) continue;
 			
 			//cqm 0024 alllowing only nuemerator 2 and numerator 3 for ipp1,ipp2 and 1pp3 to avoid repeatation 
 			if($row['cqm_nqf_code'] == '0024' && ($row['numerator_label'] == "Numerator 2" || $row['numerator_label'] == "Numerator 3") && $cqmKey != 'numer_patients') continue;
@@ -1389,9 +1389,9 @@ if(count($dataSheet) > 0){
 			$xml->open_customTag('externalObservation', $arr);
 			
 			//Modified HQMF_ID for CQM IDS
-			if( ($row['cqm_nqf_code'] == "0421" ) ){
+			if(($row['cqm_nqf_code'] == "0421")){
 				$refID = $preDefPopIdArr[$row['cqm_nqf_code']][$row['numerator_label']][$mainQrdaPopulationIncArr[$cqmKey]];
-			}else if( ($row['cqm_nqf_code'] == "0024") ){
+			}else if(($row['cqm_nqf_code'] == "0024")){
 				$refID = $preDefPopIdArr[$row['cqm_nqf_code']][$row['population_label']][$row['numerator_label']][$mainQrdaPopulationIncArr[$cqmKey]];
 			}else{
 				$refID = $preDefPopIdArr[$row['cqm_nqf_code']][$mainQrdaPopulationIncArr[$cqmKey]];

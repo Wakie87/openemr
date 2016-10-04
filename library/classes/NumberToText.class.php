@@ -128,7 +128,7 @@ class NumberToText {
 	            
 	            if ($convert > 0) {
 	                // we have something here, put it in
-	                if ( $section > 0 ) {
+	                if ($section > 0) {
 	                    $text = $this->n2t_convertthree($convert, $and, ($int > 0))." ".$big[$section-1]." ".$text;
 	                } else {
 	                    $text = $this->n2t_convertthree($convert, $and, ($int > 0));

@@ -19,7 +19,7 @@ $age = getPatientAge($result["DOB_YMD"]);
 
 ////////////////////////////////////////////////////////////////////
 // Function:	getPatientDateOfLastEncounter
-function getPatientDateOfLastEncounter( $nPid )
+function getPatientDateOfLastEncounter($nPid)
 {
   $strEventDate = sqlQuery("SELECT MAX(pc_eventDate) AS max 
                   FROM openemr_postcalendar_events 
@@ -29,27 +29,27 @@ function getPatientDateOfLastEncounter( $nPid )
                   AND pc_eventDate >= '2007-01-01'");
   
   // now check if there was a previous encounter
-  if( $strEventDate['max'] != "" )
-    return( $strEventDate['max'] );
+  if($strEventDate['max'] != "")
+    return($strEventDate['max']);
   else
-    return( "00-00-0000" );
+    return("00-00-0000");
 }
 
-$m_strEventDate = getPatientDateOfLastEncounter( $result['pid'] );
+$m_strEventDate = getPatientDateOfLastEncounter($result['pid']);
 
 // get autosave id
-$vectAutosave = sqlQuery( "SELECT id, autosave_flag, autosave_datetime FROM form_intakeverslag 
+$vectAutosave = sqlQuery("SELECT id, autosave_flag, autosave_datetime FROM form_intakeverslag 
                             WHERE pid = ".$_SESSION["pid"].
                             " AND groupname='".$_SESSION["authProvider"].
                             "' AND user='".$_SESSION["authUser"]."' AND
                             authorized=$userauthorized AND activity=1
                             AND autosave_flag=1 
-                            ORDER by id DESC limit 1" );
+                            ORDER by id DESC limit 1");
 
 $obj = formFetch("form_intakeverslag", $vectAutosave['id']);
 
 $tmpDate = stripslashes($obj{"intakedatum"});
-if( $tmpDate && $tmpDate != '0000-00-00 00:00:00' ) $m_strEventDate = $tmpDate;
+if($tmpDate && $tmpDate != '0000-00-00 00:00:00') $m_strEventDate = $tmpDate;
 
 ?>
 
@@ -83,7 +83,7 @@ if( $tmpDate && $tmpDate != '0000-00-00 00:00:00' ) $m_strEventDate = $tmpDate;
 
 <?php
 
-if( $vectAutosave['id'] )
+if($vectAutosave['id'])
   $intakeverslag_id = $vectAutosave['id'];
 else
   $intakeverslag_id = "0";

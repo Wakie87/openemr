@@ -39,7 +39,7 @@ function gen_x12_837($pid, $encounter, &$log, $encounter_claim=false) {
     "*" . $claim->x12gsreceiverid() .
     "*030911" .
     "*1630" .
-    "*" . ($CMS_5010 ? "^"     : "U"    ) .
+    "*" . ($CMS_5010 ? "^"     : "U") .
     "*" . ($CMS_5010 ? "00501" : "00401") .
     "*000000001" .
     "*" . $claim->x12gsisa14() .
@@ -571,7 +571,7 @@ function gen_x12_837($pid, $encounter, &$log, $encounter_claim=false) {
   // Segment DTP*297 (Last Worked Date) omitted.
   // Segment DTP*296 (Authorized Return to Work Date) omitted.
 
-  if (strcmp($claim->facilityPOS(),'21') == 0 && $claim->onsetDateValid() ) {
+  if (strcmp($claim->facilityPOS(),'21') == 0 && $claim->onsetDateValid()) {
     ++$edicount;
     $out .= "DTP" .     // Date of Hospitalization
       "*435" .
@@ -722,7 +722,7 @@ function gen_x12_837($pid, $encounter, &$log, $encounter_claim=false) {
    */
   if(!$CMS_5010 ||
           ($claim->providerNPIValid() &&
-          $claim->billingFacilityNPI() !== $claim->providerNPI() ))
+          $claim->billingFacilityNPI() !== $claim->providerNPI()))
   {
     ++$edicount;
     $out .= "NM1" .       // Loop 2310B Rendering Provider

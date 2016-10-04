@@ -144,15 +144,15 @@ if ($language) {
 
 <form method='post' action='education.php'>
 
-<input type='hidden' name='type'     value='<?php echo attr($codetype ); ?>' />
+<input type='hidden' name='type'     value='<?php echo attr($codetype); ?>' />
 <input type='hidden' name='code'     value='<?php echo attr($codevalue); ?>' />
-<input type='hidden' name='language' value='<?php echo attr($language ); ?>' />
+<input type='hidden' name='language' value='<?php echo attr($language); ?>' />
 
 <p class='bold'>
  <?php echo xlt('Select source'); ?>:
  <select name='source'>
   <option value='MLP'  ><?php echo xlt('MedlinePlus Connect'); ?></option>
-  <option value='Local'><?php echo xlt('Local Content'      ); ?></option>
+  <option value='Local'><?php echo xlt('Local Content'); ?></option>
  </select>
 </p>
 

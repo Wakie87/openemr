@@ -195,7 +195,7 @@ class Date_Calc {
             $year--;
         }
 
-        $day =     ( floor((13 * $month - 1) / 5) +
+        $day =     (floor((13 * $month - 1) / 5) +
                 $day + ($year % 100) +
                 floor(($year % 100) / 4) +
                 floor(($year / 100) / 4) - 2 *
@@ -557,7 +557,7 @@ class Date_Calc {
             	$days += 7;
 		}
         elseif($curr_weekday > $dow)
-            $days += 7 - ( $curr_weekday - $dow );
+            $days += 7 - ($curr_weekday - $dow);
         else
             $days += $dow - $curr_weekday;
 
@@ -599,7 +599,7 @@ class Date_Calc {
             	$days -= 7;
 		}
         elseif($curr_weekday < $dow)
-            $days -= 7 - ( $dow - $curr_weekday );
+            $days -= 7 - ($dow - $curr_weekday);
         else
             $days -= $curr_weekday - $dow;
 
@@ -720,9 +720,9 @@ class Date_Calc {
         if(strlen($year) == 1)
             $year = "0$year";
         if($year > 50)
-            return( "19$year" );
+            return("19$year");
         else
-            return( "20$year" );
+            return("20$year");
 
     } // end func defaultCentury
 
@@ -1176,9 +1176,9 @@ class Date_Calc {
             }
         }
 
-        return ( floor((  146097 * $century)    /  4 ) +
-                floor(( 1461 * $year)        /  4 ) +
-                floor(( 153 * $month +  2) /  5 ) +
+        return (floor((146097 * $century)    /  4) +
+                floor((1461 * $year)        /  4) +
+                floor((153 * $month +  2) /  5) +
                     $day +  1721119);
 
     } // end func dateToDays
@@ -1198,15 +1198,15 @@ class Date_Calc {
     {
 
         $days         -=     1721119;
-        $century     =    floor(( 4 * $days -  1) /  146097);
+        $century     =    floor((4 * $days -  1) /  146097);
         $days        =    floor(4 * $days - 1 - 146097 * $century);
         $day        =    floor($days /  4);
 
-        $year        =    floor(( 4 * $day +  3) /  1461);
+        $year        =    floor((4 * $day +  3) /  1461);
         $day        =    floor(4 * $day +  3 -  1461 * $year);
         $day        =    floor(($day +  4) /  4);
 
-        $month        =    floor(( 5 * $day -  3) /  153);
+        $month        =    floor((5 * $day -  3) /  153);
         $day        =    floor(5 * $day -  3 -  153 * $month);
         $day        =    floor(($day +  5) /  5);
 
@@ -1255,7 +1255,7 @@ class Date_Calc {
         $wdate = ($occurance - 1) * 7 + 1 +
                 (7 + $dayOfWeek - $DOW1) % 7;
 
-        if( $wdate > Date_Calc::daysInMonth($month,$year))
+        if($wdate > Date_Calc::daysInMonth($month,$year))
                 return -1;
         else
                 return(Date_Calc::dateFormat($wdate,$month,$year,$format));

@@ -28,7 +28,7 @@ $landingpage = "index.php?site=".$_SESSION['site_id'];
 //
 
 // kick out if patient not authenticated
-if ( isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite']) ) {
+if (isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite'])) {
   $pid = $_SESSION['pid'];
 }
 else {
@@ -47,7 +47,7 @@ global $ignoreAuth;
 
  // Exit if the modify calendar for portal flag is not set
  if (!($GLOBALS['portal_onsite_appt_modify'])) {
-   echo htmlspecialchars( xl('You are not authorized to schedule appointments.'),ENT_NOQUOTES);
+   echo htmlspecialchars(xl('You are not authorized to schedule appointments.'),ENT_NOQUOTES);
    exit;
  }
 
@@ -111,19 +111,19 @@ global $ignoreAuth;
 // EVENTS TO FACILITIES (lemonsoftware)
 //(CHEMED) get facility name
 // edit event case - if there is no association made, then insert one with the first facility
-if ( $eid ) {
+if ($eid) {
     $selfacil = '';
     $facility = sqlQuery("SELECT pc_facility, pc_multiple, pc_aid, facility.name
                             FROM openemr_postcalendar_events
                               LEFT JOIN facility ON (openemr_postcalendar_events.pc_facility = facility.id)
                               WHERE pc_eid = $eid");
-    if ( !$facility['pc_facility'] ) {
+    if (!$facility['pc_facility']) {
         $qmin = sqlQuery("SELECT facility_id as minId, facility FROM users WHERE id = ".$facility['pc_aid']);
         $min  = $qmin['minId'];
         $min_name = $qmin['facility'];
 
         // multiple providers case
-        if ( $GLOBALS['select_multi_providers'] ) {
+        if ($GLOBALS['select_multi_providers']) {
             $mul  = $facility['pc_multiple'];
             sqlStatement("UPDATE openemr_postcalendar_events SET pc_facility = $min WHERE pc_multiple = $mul");
         }
@@ -391,8 +391,8 @@ if ( $eid ) {
 // multi providers EOS
 ==========================================*/
 
-    } elseif (  !$row['pc_multiple'] ) {
-            if ( $GLOBALS['select_multi_providers'] ) {
+    } elseif (!$row['pc_multiple']) {
+            if ($GLOBALS['select_multi_providers']) {
                 $prov = $_POST['form_provider'][0];
             } else {
                 $prov =  $_POST['form_provider'];
@@ -559,7 +559,7 @@ sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
         if ($GLOBALS['select_multi_providers']) {
              // what is multiple key around this $eid?
             $row = sqlQuery("SELECT pc_multiple FROM openemr_postcalendar_events WHERE pc_eid = $eid");
-			if ( $row['pc_multiple'] ) {
+			if ($row['pc_multiple']) {
 				sqlStatement("DELETE FROM openemr_postcalendar_events WHERE pc_multiple = {$row['pc_multiple']}");
 			} else {
                                 sqlStatement("DELETE FROM openemr_postcalendar_events WHERE pc_eid = $eid");

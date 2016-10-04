@@ -52,7 +52,7 @@ class Holidays_Storage{
     public static function get_holidays_by_dates($start_date,$end_date){
         $holidays= array();
         $sql = 'SELECT * FROM openemr_postcalendar_events WHERE (pc_catid = ? OR pc_catid = ?) AND pc_eventDate >= ? AND pc_eventDate <= ?';
-        $res=sqlStatement($sql, array(self::CALENDAR_CATEGORY_HOLIDAY,self::CALENDAR_CATEGORY_CLOSED,$start_date,$end_date) );
+        $res=sqlStatement($sql, array(self::CALENDAR_CATEGORY_HOLIDAY,self::CALENDAR_CATEGORY_CLOSED,$start_date,$end_date));
         while ($row = sqlFetchArray($res)) {
             $holidays[] = $row['pc_eventDate'];
         }

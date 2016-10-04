@@ -362,7 +362,7 @@ $auth_relaxed  = acl_check('encounters', 'relaxed');
 if (is_numeric($pid)) {
     // Check for no access to the patient's squad.
     $result = getPatientData($pid, "fname,lname,squad");
-    echo htmlspecialchars( xl('for','',' ',' ') . $result['fname'] . " " . $result['lname'] );
+    echo htmlspecialchars(xl('for','',' ',' ') . $result['fname'] . " " . $result['lname']);
     if ($result['squad'] && ! acl_check('squads', $result['squad'])) {
         $auth_notes_a = $auth_notes = $auth_relaxed = 0;
     }
@@ -378,8 +378,8 @@ if (is_numeric($pid)) {
 <div style='margin-top:8px;'>
 <?php 
 // ESign for entire encounter
-$esign = $esignApi->createEncounterESign( $encounter );
-if ( $esign->isButtonViewable() ) {
+$esign = $esignApi->createEncounterESign($encounter);
+if ($esign->isButtonViewable()) {
     echo $esign->buttonHtml();
 }
 ?>
@@ -392,7 +392,7 @@ if ( $esign->isButtonViewable() ) {
 </div>
 
 <div class='encounter-summary-column'>
-<?php if ( $esign->isLogViewable() ) {
+<?php if ($esign->isLogViewable()) {
     $esign->renderLog();
 } ?>
 </div>
@@ -510,7 +510,7 @@ if ( $esign->isButtonViewable() ) {
 <!-- Get the documents tagged to this encounter and display the links and notes as the tooltip -->
 <?php 
 	$docs_list = getDocumentsByEncounter($pid,$_SESSION['encounter']);
-	if(count($docs_list) > 0 ) {
+	if(count($docs_list) > 0) {
 ?>
 <div class='enc_docs'>
 <span class="bold"><?php echo xlt("Document(s)"); ?>:</span>
@@ -523,11 +523,11 @@ if ( $esign->isButtonViewable() ) {
 			FROM notes WHERE foreign_id = ? GROUP BY foreign_id";
 		$noteData = sqlQuery($queryString,array($doc_iter[id]));
 		$note = '';
-		if ( $noteData ) {
+		if ($noteData) {
 			$notes = array();
 			$notes = explode("|",$noteData['docNotes']);
 			$dates = explode("|", $noteData['docDates']);
-			for ( $i = 0 ; $i < count($notes) ; $i++ )
+			for ($i = 0 ; $i < count($notes) ; $i++)
 				$note .= oeFormatShortDate(date('Y-m-d', strtotime($dates[$i]))) . " : " . $notes[$i] . "\n";
 		}
 ?>
@@ -575,14 +575,14 @@ if ( $esign->isButtonViewable() ) {
         $form_name = ($formdir == 'newpatient') ? xl('Patient Encounter') : xl_form_title($iter['form_name']);
 
         // Create the ESign instance for this form
-        $esign = $esignApi->createFormESign( $iter['id'], $formdir, $encounter );
+        $esign = $esignApi->createFormESign($iter['id'], $formdir, $encounter);
         echo "<tr>";
         echo "<td style='border-bottom:1px solid'>";
         // a link to edit the form
         echo "<div class='form_header_controls'>";
         
         // If the form is locked, it is no longer editable
-        if ( $esign->isLocked() ) {
+        if ($esign->isLocked()) {
             echo "<a href=# class='css_button_small form-edit-button-locked' id='form-edit-button-".attr($formdir)."-".attr($iter['id'])."'><span>".xlt('Locked')."</span></a>";
         } else {
             echo "<a class='css_button_small form-edit-button' id='form-edit-button-".attr($formdir)."-".attr($iter['id'])."' target='".
@@ -593,12 +593,12 @@ if ( $esign->isButtonViewable() ) {
             echo "<span>" . xlt('Edit') . "</span></a>";
         }
         
-        if ( $esign->isButtonViewable() ) {
+        if ($esign->isButtonViewable()) {
             echo $esign->buttonHtml();
         }
 
-        if (acl_check('admin', 'super') ) {
-            if ( $formdir != 'newpatient') {
+        if (acl_check('admin', 'super')) {
+            if ($formdir != 'newpatient') {
                 // a link to delete the form from the encounter
                 echo "<a target='_parent'" .
                     " href='$rootdir/patient_file/encounter/delete_form.php?" .
@@ -622,7 +622,7 @@ if ( $esign->isButtonViewable() ) {
         else {
           $form_author = $user['fname'] . "  " . $user['lname'];
         }
-        echo "<a href='#' onclick='divtoggle(\"spanid_$divnos\",\"divid_$divnos\");' class='small' id='aid_$divnos'><b>$form_name</b> <span class='text'>by " . htmlspecialchars( $form_author ) . "</span> (<span id=spanid_$divnos class=\"indicator\">" . xl('Collapse') . "</span>)</a></div>";
+        echo "<a href='#' onclick='divtoggle(\"spanid_$divnos\",\"divid_$divnos\");' class='small' id='aid_$divnos'><b>$form_name</b> <span class='text'>by " . htmlspecialchars($form_author) . "</span> (<span id=spanid_$divnos class=\"indicator\">" . xl('Collapse') . "</span>)</a></div>";
 
         echo "</td>\n";
         echo "</tr>";
@@ -641,7 +641,7 @@ if ( $esign->isButtonViewable() ) {
           call_user_func($formdir . "_report", $pid, $encounter, 2, $iter['form_id']);
         }
         
-        if ( $esign->isLogViewable() ) {
+        if ($esign->isLogViewable()) {
             $esign->renderLog();
         }
 

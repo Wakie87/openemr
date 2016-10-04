@@ -24,7 +24,7 @@ require_once(dirname(__FILE__) . "/../user.inc");
 
 //If 'mode' is either a 1 or 0 and 'target' ends with _expand
 //  Then will update the appropriate user _expand flag
-if (( $_POST['mode'] == 1 || $_POST['mode'] == 0 ) && ( substr($_POST['target'], -7, 7) == "_expand" )) {
+if (($_POST['mode'] == 1 || $_POST['mode'] == 0) && (substr($_POST['target'], -7, 7) == "_expand")) {
 
   //set the user setting
   setUserSetting($_POST['target'], $_POST['mode']);

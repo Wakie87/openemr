@@ -35,7 +35,7 @@ include_once("../../library/acl.inc");
 </td>
 
 <?php
- if (acl_check('patients','demo','',array('write','addonly') )) {
+ if (acl_check('patients','demo','',array('write','addonly'))) {
 ?>
 <td align="center" nowrap>
 &nbsp;<a class="menu" target=_top href="../new/new_patient.php" onclick="top.restoreSession()">
@@ -81,7 +81,7 @@ include_once("../../library/acl.inc");
 </td>
 
 <?php
-  if ( (acl_check('patients','demo','',array('write','addonly') )) &&
+  if ((acl_check('patients','demo','',array('write','addonly'))) &&
     is_readable("$webserver_root/custom/import.php")) {
 ?>
 <td align="center" nowrap>

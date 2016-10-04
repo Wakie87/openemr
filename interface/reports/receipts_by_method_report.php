@@ -591,7 +591,7 @@ if ($_POST['form_refresh']) {
 </div>
 <?php } else { ?>
 <div class='text'>
- 	<?php echo xl('Please input search criteria above, and click Submit to view results.', 'e' ); ?>
+ 	<?php echo xl('Please input search criteria above, and click Submit to view results.', 'e'); ?>
 </div>
 <?php } ?>
 

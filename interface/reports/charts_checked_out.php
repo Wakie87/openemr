@@ -87,7 +87,7 @@ $res = sqlStatement($query);
 $data_ctr = 0;
 while ($row = sqlFetchArray($res)) {
 
-if ( $data_ctr == 0 ) { ?>
+if ($data_ctr == 0) { ?>
 <table>
  <thead>
   <th> <?php xl('Chart','e'); ?> </th>
@@ -117,7 +117,7 @@ if ( $data_ctr == 0 ) { ?>
 $data_ctr++;
 } // end while
 
-if ( $data_ctr < 1 ) { ?>
+if ($data_ctr < 1) { ?>
 <span class='text'><?php xl('There are no charts checked out.','e'); ?></span>
 <?php
 }

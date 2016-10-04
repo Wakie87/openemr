@@ -46,8 +46,8 @@ class C_Prescription extends Controller {
 		$this->assign("WEIGHT_LOSS_CLINIC", $GLOBALS['weight_loss_clinic']);
 		$this->assign("SIMPLIFIED_PRESCRIPTIONS", $GLOBALS['simplified_prescriptions']);
 		$this->pconfig = $GLOBALS['oer_config']['prescriptions'];
-	    $this->assign("CSS_HEADER",  $GLOBALS['css_header'] );
-	    $this->assign("WEB_ROOT", $GLOBALS['webroot'] );
+	    $this->assign("CSS_HEADER",  $GLOBALS['css_header']);
+	    $this->assign("WEB_ROOT", $GLOBALS['webroot']);
 		$this->RxList = new RxList();
 
 		if ($GLOBALS['inhouse_pharmacy']) {
@@ -102,7 +102,7 @@ class C_Prescription extends Controller {
 		if ($p_obj != null && get_class($p_obj) == "prescription") {
 			$this->prescriptions[0] = $p_obj;
 		}
-		elseif (get_class($this->prescriptions[0]) != "prescription" ) {
+		elseif (get_class($this->prescriptions[0]) != "prescription") {
 			$this->prescriptions[0] = new Prescription($id);
 		}
 
@@ -262,7 +262,7 @@ class C_Prescription extends Controller {
 	}
 
 	function multiprintfax_header(& $pdf, $p) {
-		return $this->multiprint_header( $pdf, $p );
+		return $this->multiprint_header($pdf, $p);
 	}
 
 	function multiprint_header(& $pdf, $p) {
@@ -366,7 +366,7 @@ class C_Prescription extends Controller {
                         echo ('<span class="large"><b>' . xl('DEA') . ':</b>' . $p->provider->federal_drug_id . '</span><br>');
                     }
                     else {
-                        echo ('<b><span class="large">' . xl('DEA') . ':</span></b> ________________________<br>' );
+                        echo ('<b><span class="large">' . xl('DEA') . ':</span></b> ________________________<br>');
                     }
                 }
                 if ($GLOBALS['rx_enable_NPI']) {
@@ -401,7 +401,7 @@ class C_Prescription extends Controller {
 	        echo ("</td>\n");
 	        echo ("<td class='bordered'>\n");
                 echo ('<b><span class="small">' . xl('Date of Birth') . '</span></b>' . '<br>');
-                echo ($p->patient->date_of_birth );
+                echo ($p->patient->date_of_birth);
 	        echo ("</td>\n");
 	        echo ("</tr>\n");
 	        echo ("<tr>\n");
@@ -470,27 +470,27 @@ class C_Prescription extends Controller {
                 echo ("<body>\n");
         }
 
-	function multiprintfax_footer( & $pdf ) {
-		return $this->multiprint_footer( $pdf );
+	function multiprintfax_footer(& $pdf) {
+		return $this->multiprint_footer($pdf);
 	}
 
 	function multiprint_footer(& $pdf) {
-		if($this->pconfig['use_signature'] && ( $this->is_faxing || $this->is_print_to_fax ) ) {
+		if($this->pconfig['use_signature'] && ($this->is_faxing || $this->is_print_to_fax)) {
 			$sigfile = str_replace('{userid}', $_SESSION{"authUser"}, $this->pconfig['signature']);
 			if (file_exists($sigfile)) {
-				$pdf->ezText( xl('Signature') . ": ",12);
+				$pdf->ezText(xl('Signature') . ": ",12);
 				// $pdf->ezImage($sigfile, "", "", "none", "left");
 				$pdf->ezImage($sigfile, "", "", "none", "center");
-				$pdf->ezText( xl('Date') . ": " . date('Y-m-d'), 12);
-				if ( $this->is_print_to_fax ) {
+				$pdf->ezText(xl('Date') . ": " . date('Y-m-d'), 12);
+				if ($this->is_print_to_fax) {
 					$pdf->ezText(xl('Please do not accept this prescription unless it was received via facsimile.'));
 				}
 
 				$addenumFile = $this->pconfig['addendum_file'];
-				if ( file_exists( $addenumFile ) ) {
+				if (file_exists($addenumFile)) {
 					$pdf->ezText('');
 					$f = fopen($addenumFile, "r");
-					while ( $line = fgets($f, 1000) ) {
+					while ($line = fgets($f, 1000)) {
 						$pdf->ezText(rtrim($line));
 					}
 				}
@@ -543,14 +543,14 @@ class C_Prescription extends Controller {
 	}
 
 	function multiprintfax_body(& $pdf, $p){
-		return $this->multiprint_body( $pdf, $p );
+		return $this->multiprint_body($pdf, $p);
 	}
 
 	function multiprint_body(& $pdf, $p){
 		$pdf->ez['leftMargin'] += $pdf->ez['leftMargin'];
 		$pdf->ez['rightMargin'] += $pdf->ez['rightMargin'];
 		$d = $this->get_prescription_body_text($p);
-		if ( $pdf->ezText($d,10,array(),1) ) {
+		if ($pdf->ezText($d,10,array(),1)) {
 			$pdf->ez['leftMargin'] -= $pdf->ez['leftMargin'];
 			$pdf->ez['rightMargin'] -= $pdf->ez['rightMargin'];
 			$this->multiprint_footer($pdf);
@@ -585,7 +585,7 @@ class C_Prescription extends Controller {
 
 	function multiprintfax_action($id = "") {
 		$this->is_print_to_fax=true;
-		return $this->multiprint_action( $id );
+		return $this->multiprint_action($id);
 	}
 
 	function multiprint_action($id = "") {

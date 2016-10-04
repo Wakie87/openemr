@@ -68,7 +68,7 @@ function transmitCCD($ccd,$recipient,$requested_by,$xml_type="CCD") {
    if($ret!==TRUE) return("$config_err 4");
 
    $ret = phimail_write_expect_OK($fp,"TO $recipient\n");
-   if($ret!==TRUE) return( xl("Delivery is not allowed to the specified Direct Address.") );
+   if($ret!==TRUE) return(xl("Delivery is not allowed to the specified Direct Address."));
    
    $ret=fgets($fp,1024); //ignore extra server data
 
@@ -123,7 +123,7 @@ function transmitCCD($ccd,$recipient,$requested_by,$xml_type="CCD") {
    if(substr($ret,5)=="ERROR") {
        //log the failure
        newEvent("transmit-ccd",$reqBy,$_SESSION['authProvider'],0,$ret,$pid);
-       return( xl("The message could not be sent at this time."));
+       return(xl("The message could not be sent at this time."));
    }
 
    /**
@@ -135,7 +135,7 @@ function transmitCCD($ccd,$recipient,$requested_by,$xml_type="CCD") {
    if($msg_id[0]!="QUEUED" || !isset($msg_id[2])) { //unexpected response
 	$ret = "UNEXPECTED RESPONSE: " . $ret;
 	newEvent("transmit-ccd",$reqBy,$_SESSION['authProvider'],0,$ret,$pid);
-	return( xl("There was a problem sending the message."));
+	return(xl("There was a problem sending the message."));
    }
    newEvent("transmit-".$xml_type,$reqBy,$_SESSION['authProvider'],1,$ret,$pid);
    $adodb=$GLOBALS['adodb']['db'];

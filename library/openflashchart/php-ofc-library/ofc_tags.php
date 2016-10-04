@@ -8,7 +8,7 @@ class ofc_tags
 		$this->values	= array();
 	}
 	
-	function colour( $colour )
+	function colour($colour)
 	{
 		$this->colour = $colour;
 		return $this;
@@ -105,7 +105,7 @@ class ofc_tags
 	 *@param $border boolean.
 	 *@prarm $alpha real (0 to 1.0)
 	 */
-	function style($bold, $underline, $border, $alpha )
+	function style($bold, $underline, $border, $alpha)
 	{
 		$this->bold = $bold;
 		$this->border = $underline;

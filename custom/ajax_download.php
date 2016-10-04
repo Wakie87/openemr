@@ -36,13 +36,13 @@ require_once("qrda_functions.php");
 $reportID = $_POST['reportID'];
 $ruleID = $_POST['ruleID'];
 $counter = $_POST['counter'];
-$fileName = ( isset($_GET['fileName']) ) ? $_GET['fileName'] : "";
+$fileName = (isset($_GET['fileName'])) ? $_GET['fileName'] : "";
 $provider_id = $_POST['provider_id'];
 
-if ( $fileName ) {
+if ($fileName) {
 	$fileList = explode(",",$fileName);
 	//if ( strpos($fileName,",") !== FALSE ) {
-	if ( count($fileList) > 1 ) {
+	if (count($fileList) > 1) {
 		// Multiple files, zip them together
 		$zip = new ZipArchive;
 		$currentTime = date("Y-m-d-H-i-s");
@@ -51,12 +51,12 @@ if ( $fileName ) {
 		if ($zip->open($finalZip, ZIPARCHIVE::CREATE) != TRUE) {
 		   echo xlt("FAILURE: Couldn't create the zip");
 		}
-		foreach ( $fileList as $eachFile ) {
+		foreach ($fileList as $eachFile) {
                         check_file_dir_name($eachFile);
 			$zip->addFile($qrda_file_path.$eachFile,$eachFile);
 		}
 		$zip->close();
-		foreach ( $fileList as $eachFile ) {
+		foreach ($fileList as $eachFile) {
 			unlink($qrda_file_path.$eachFile);
 		}
 	} else  {
@@ -87,7 +87,7 @@ $patients = $criteriaPatients[$ruleID];
 $from_date = date('Y', strtotime($target_date))."-01-01";
 $to_date =  date('Y', strtotime($target_date))."-12-31";
 
-if ( count($patients) ) {
+if (count($patients)) {
 	$zip = new ZipArchive;
 	global $qrda_file_path;
 	$currentTime = date("Y-m-d-H-i-s");
@@ -96,7 +96,7 @@ if ( count($patients) ) {
 	if(file_exists($zipFileFullPath))
         unlink($zipFileFullPath);
 
-	foreach ( $patients as $patient ) {
+	foreach ($patients as $patient) {
 		$xml = new QRDAXml($ruleID);
 		$fileName = mainQrdaCatOneGenerate($xml, $patient, $ruleID, $provider_id);
 		$files[] = $fileName;
@@ -104,13 +104,13 @@ if ( count($patients) ) {
 	if ($zip->open($zipFileFullPath, ZIPARCHIVE::CREATE) != TRUE) {
         echo xlt("FAILURE: Couldn't create the zip");
 	}
-	foreach ( $files as $eachFile ) {
+	foreach ($files as $eachFile) {
 		$filePath = $qrda_file_path . $eachFile;
 		$zip->addFile($filePath,$eachFile);
 	}
 	$zip->close();
 	//Deleting the files after closing the zip
-	foreach ( $files as $eachFile ) {
+	foreach ($files as $eachFile) {
 		$filePath = $qrda_file_path . $eachFile;
 		unlink($filePath);
 	}

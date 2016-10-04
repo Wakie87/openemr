@@ -37,7 +37,7 @@ $csv_file_data = $holidays_controller->get_file_csv_data();
 //this part download the CSV file after the click on the href link
 if($_GET['download_file']==1) {
     $target_file=$holidays_controller->get_target_file();
-    if ( ! file_exists($target_file))
+    if (! file_exists($target_file))
     {
         echo xlt('file missing');
     }
@@ -96,7 +96,7 @@ if ($saved){
         !empty($_POST['sync'])
         ){
     echo "<p style='color:red'>" .
-        xlt('Operation Failed' );
+        xlt('Operation Failed');
     "</p>\n";
 }
 ?>

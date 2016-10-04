@@ -34,7 +34,7 @@ $fake_register_globals=false;
 if (isset($_GET['portal_auth'])) {
   $landingpage = "../patients/index.php";
   session_start();
-  if ( isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite']) ) {
+  if (isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite'])) {
     $pid = $_SESSION['pid'];
     $ignoreAuth=true;
     global $ignoreAuth;
@@ -156,7 +156,7 @@ function createCCR($action,$raw="no",$requested_by=""){
 
                 else if ($raw == "pure") {
 			// send a zip file that contains a separate xml data file and xsl stylesheet
-			if (! (class_exists('ZipArchive')) ) {
+			if (! (class_exists('ZipArchive'))) {
                                 displayError(xl("ERROR: Missing ZipArchive PHP Module"));
 				return;
 			}
@@ -170,14 +170,14 @@ function createCCR($action,$raw="no",$requested_by=""){
 				displayError(xl("ERROR: Unable to Create Zip Archive."));
 				return;
 			}
-                        if ( $zip->open($zipName, ZIPARCHIVE::CREATE) ) {
+                        if ($zip->open($zipName, ZIPARCHIVE::CREATE)) {
 				$zip->addFile("stylesheet/ccr.xsl", "stylesheet/ccr.xsl");
 				$xmlName = $tempDir . "/" . getReportFilename() . "-ccr.xml";
 				if (file_exists($xmlName)) {
 					unlink($xmlName);
 				}
 				$ccr->save($xmlName);
-				$zip->addFile($xmlName, basename($xmlName) );
+				$zip->addFile($xmlName, basename($xmlName));
 				$zip->close();
 				header("Pragma: public");
 				header("Expires: 0");
@@ -246,7 +246,7 @@ function createCCR($action,$raw="no",$requested_by=""){
 
                 if ($raw == "pure") {
                         // send a zip file that contains a separate xml data file and xsl stylesheet
-                        if (! (class_exists('ZipArchive')) ) {
+                        if (! (class_exists('ZipArchive'))) {
                                 displayError(xl("ERROR: Missing ZipArchive PHP Module"));
                                 return;
                         }
@@ -260,7 +260,7 @@ function createCCR($action,$raw="no",$requested_by=""){
                                 displayError(xl("ERROR: Unable to Create Zip Archive."));
                                 return;
                         }
-                        if ( $zip->open($zipName, ZIPARCHIVE::CREATE) ) {
+                        if ($zip->open($zipName, ZIPARCHIVE::CREATE)) {
                                 $zip->addFile("stylesheet/cda.xsl", "stylesheet/cda.xsl");
                                 $xmlName = $tempDir . "/" . getReportFilename() . "-ccd.xml";
                                 if (file_exists($xmlName)) {
@@ -270,7 +270,7 @@ function createCCR($action,$raw="no",$requested_by=""){
 					'type="text/xsl" href="stylesheet/cda.xsl"');
 				$ccd->insertBefore($e_styleSheet,$ccd->firstChild);
                                 $ccd->save($xmlName);
-                                $zip->addFile($xmlName, basename($xmlName) );
+                                $zip->addFile($xmlName, basename($xmlName));
                                 $zip->close();
                                 header("Pragma: public");
                                 header("Expires: 0");
@@ -375,7 +375,7 @@ if($_POST['ccrAction']) {
   if (substr($raw,0,4)=="send") {
     $send_to = trim(stripslashes(substr($raw,5)));
     if (!PHPMailer::ValidateAddress($send_to)) {
-      echo(htmlspecialchars( xl('Invalid recipient address. Please try again.'), ENT_QUOTES));
+      echo(htmlspecialchars(xl('Invalid recipient address. Please try again.'), ENT_QUOTES));
       return;
     }
     createCCR($_POST['ccrAction'],$raw,$_POST['requested_by']);

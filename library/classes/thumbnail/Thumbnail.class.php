@@ -52,7 +52,7 @@ class Thumbnail
         $type = isset($info['type']) ? $info['type'] : $info[2];
 
         // Check support of file type
-        if ( !(imagetypes() & $type) )
+        if (!(imagetypes() & $type))
         {
             // Server does not support file type
             return false;
@@ -92,12 +92,12 @@ class Thumbnail
         $sourceImage = imagecreatefromstring($content_file);
 
         // Calculate a proportional width and height no larger than the max size.
-        if ( ($width <= $this->max_size) && ($height <= $this->max_size) )
+        if (($width <= $this->max_size) && ($height <= $this->max_size))
         {
             // Input is smaller than thumbnail, do nothing
             return $sourceImage;
         }
-        elseif ( ($wRatio * $height) < $this->max_size )
+        elseif (($wRatio * $height) < $this->max_size)
         {
             // Image is horizontal
             $tHeight = ceil($wRatio * $height);
@@ -112,7 +112,7 @@ class Thumbnail
 
         $thumb = imagecreatetruecolor($tWidth, $tHeight);
 
-        if ( $sourceImage === false )
+        if ($sourceImage === false)
         {
             // Could not load image
             return false;
@@ -135,7 +135,7 @@ class Thumbnail
      */
     public function image_to_file($resource_file, $fileName, $quality = 80)
     {
-        if ( !$resource_file || file_exists($fileName) )
+        if (!$resource_file || file_exists($fileName))
         {
             return false;
         }
@@ -171,7 +171,7 @@ class Thumbnail
      */
     private function create_file($image_resource, $file_name = null ,$quality = 80)
     {
-        switch ( $this->thumbnail_type )
+        switch ($this->thumbnail_type)
         {
             case 'gif':
                 $file = imagegif($image_resource, $file_name);

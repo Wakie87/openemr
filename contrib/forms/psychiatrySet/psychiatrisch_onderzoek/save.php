@@ -18,15 +18,15 @@ foreach ($_POST as $k => $var)
 
 if($encounter == "") $encounter = date("Ymd");
 
-if( $_GET["mode"] == "new" )
+if($_GET["mode"] == "new")
 {
-    if( $_GET["id"] != '' )
+    if($_GET["id"] != '')
     {
       echo "lalala 1";
       $_GET["id"] = '0';
-      $newid = formSubmit( "form_psychiatrisch_onderzoek", $_POST, $_GET["id"], $userauthorized );
+      $newid = formSubmit("form_psychiatrisch_onderzoek", $_POST, $_GET["id"], $userauthorized);
       // add new form ???
-    addForm( $encounter, "Psychiatric Examination", $newid, "psychiatrisch_onderzoek", $pid, $userauthorized );
+    addForm($encounter, "Psychiatric Examination", $newid, "psychiatrisch_onderzoek", $pid, $userauthorized);
       
     } else
     {
@@ -38,7 +38,7 @@ if( $_GET["mode"] == "new" )
     
     
 
-} elseif( $_GET["mode"] == "update" )
+} elseif($_GET["mode"] == "update")
 {
 
   $strSql = "UPDATE form_psychiatrisch_onderzoek
@@ -56,7 +56,7 @@ if( $_GET["mode"] == "new" )
                 autosave_datetime=NOW() 
                   WHERE id = ".$_GET["id"].";";
 
-  sqlQuery( $strSql );
+  sqlQuery($strSql);
 
 }
 

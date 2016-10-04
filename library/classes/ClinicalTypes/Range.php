@@ -14,16 +14,16 @@ class Range
     public $lowerBound;
     public $upperBound;
     
-    public function __construct( $lowerBound, $upperBound )
+    public function __construct($lowerBound, $upperBound)
     {
         $this->lowerBound = $lowerBound;
         $this->upperBound = $upperBound;
     }
 
-    public function test( $val )
+    public function test($val)
     {
-        if ( $val > $this->lowerBound &&
-            $val < $this->upperBound ) {
+        if ($val > $this->lowerBound &&
+            $val < $this->upperBound) {
             return true;
         }
         

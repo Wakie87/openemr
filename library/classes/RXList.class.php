@@ -37,7 +37,7 @@ define('__CLASS_RXLIST_PHP__', true);
 
 class RxList {
 
-	function getPage ( $query ) {
+	function getPage ($query) {
 		$url = "http://www.rxlist.com/script/main/srchcont_rxlist.asp?src=".
 		//$url = "http://www.rxlist.com/cgi/rxlist.cgi?drug=".
 		// $url = "http://129.250.146.18/cgi/rxlist.cgi?drug=".
@@ -57,7 +57,7 @@ class RxList {
 		} // end checking for successful open
 	} // end function RxList::getPage
 
-	function get_list ( $query ) {
+	function get_list ($query) {
 		$page = RxList::getPage($query);
 		$tokens = RxList::parse2tokens($page);
 		$hash = RxList::tokens2hash($tokens);
@@ -75,7 +75,7 @@ class RxList {
         /* break the web page into a collection of TAGS 
          * such as <input ..> or <img ... >
          */
-	function parse2tokens( $page ) {
+	function parse2tokens($page) {
 		$pos = 0; $token = 0; unset ($tokens);
 		$in_token = false;
 		while ($pos < strlen($page)) {
@@ -108,7 +108,7 @@ class RxList {
 
 
         /* WTF does this crap do? */
-	function tokens2hash ( $tokens ) {
+	function tokens2hash ($tokens) {
 		$record = false; $current = 0; unset($hash); unset($all);
 		for ($pos=0; $pos<count($tokens); $pos++) {
 
@@ -156,9 +156,9 @@ class RxList {
                             and ($ending != ""))
                         {
                             //print "tokens[$pos] = ".htmlentities($tokens[$pos])."<BR>\n";
-                            if ((!(strpos(strtoupper($tokens[$pos]), "</A>"   ) === false)) or
+                            if ((!(strpos(strtoupper($tokens[$pos]), "</A>") === false)) or
                                 (!(strpos(strtoupper($tokens[$pos]), "</FONT>") === false)) or
-                                (!(strpos(strtoupper($tokens[$pos]), "</TD>"  ) === false)))
+                                (!(strpos(strtoupper($tokens[$pos]), "</TD>") === false)))
                             {
                                 // Find where anchor is
                                 $my_pos = strpos(strtoupper($tokens[$pos]), "<");

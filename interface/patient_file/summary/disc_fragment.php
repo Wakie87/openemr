@@ -88,7 +88,7 @@ if ($result != null){
 ?>
 </table>
 <?php
-if ( $has_disclosure == 0 ) //If there are no disclosures recorded
+if ($has_disclosure == 0) //If there are no disclosures recorded
 { ?>
 	<span class='text'> <?php echo htmlspecialchars(xl("There are no disclosures recorded for this patient."),ENT_NOQUOTES);
 	echo " "; echo htmlspecialchars(xl("To record disclosures, please click"),ENT_NOQUOTES); echo " ";echo "<a href='disclosure_full.php'>"; echo htmlspecialchars(xl("here"),ENT_NOQUOTES);echo "</a>.";

@@ -20,7 +20,7 @@ class CqmResult implements RsResultIF
     public $numerator; // Number of patients that pass target
     public $percentage; // Calculated percentage
 
-    public function __construct( $rowRule, $numeratorLabel, $populationLabel, $totalPatients, $denominator, $denom_exclusion, $numerator, $percentage,$ipp,$denom_exception)
+    public function __construct($rowRule, $numeratorLabel, $populationLabel, $totalPatients, $denominator, $denom_exclusion, $numerator, $percentage,$ipp,$denom_exception)
     {
         $this->rule = $rowRule;
         $this->numeratorLabel = $numeratorLabel;
@@ -43,8 +43,8 @@ class CqmResult implements RsResultIF
     public function format()
     {
     	$concatenated_label = '';
-	if ( $this->numeratorLabel != "Numerator" ) {
-		if ( $this->populationLabel != "Population Criteria" ) {
+	if ($this->numeratorLabel != "Numerator") {
+		if ($this->populationLabel != "Population Criteria") {
 			$concatenated_label = $this->populationLabel . ", " . $this->numeratorLabel;
 		}
 		else {
@@ -52,7 +52,7 @@ class CqmResult implements RsResultIF
 		}
 	}
 	else {
-		if ( $this->populationLabel != "Population Criteria" ) {
+		if ($this->populationLabel != "Population Criteria") {
 			$concatenated_label = $this->populationLabel;
 		}
 	}
@@ -69,11 +69,11 @@ class CqmResult implements RsResultIF
             'percentage' => $this->percentage,
         	'initial_population' => $this->ipp,
         	'exception' => $this->denom_exception);
-            $rowFormat = array_merge( $rowFormat, $this->rule );
+            $rowFormat = array_merge($rowFormat, $this->rule);
 
         // If itemization is turned on, then record the itemized_test_id 
         if ($GLOBALS['report_itemizing_temp_flag_and_id']) {
-            $rowFormat = array_merge( $rowFormat, $this->itemized_test_id );
+            $rowFormat = array_merge($rowFormat, $this->itemized_test_id);
         }
         
         return $rowFormat;

@@ -4,7 +4,7 @@ include_once("../../../library/api.inc");
 include_once("../../../library/sql.inc");
 include_once("../../../library/formdata.inc.php");
 $out_of_encounter = false;
-if ( (($_SESSION['encounter'] == '') || ($_SESSION['pid'] == '')) || ($_GET['mode'] == 'external')) {
+if ((($_SESSION['encounter'] == '') || ($_SESSION['pid'] == '')) || ($_GET['mode'] == 'external')) {
   $out_of_encounter = true;
 }
 //  formHeader("Form: CAMOS");
@@ -58,7 +58,7 @@ if (substr($_POST['hidden_mode'],0,3) == 'add') {
   elseif ($_POST['hidden_selection'] == 'change_subcategory') {
     $preselect_subcategory_override = $_POST['change_subcategory'];
     $category_id = $_POST['hidden_category'];
-    if ($category_id >= 0 ) {
+    if ($category_id >= 0) {
 
       $subcategory = formDataCore($subcategory);
 
@@ -71,7 +71,7 @@ if (substr($_POST['hidden_mode'],0,3) == 'add') {
     $preselect_item_override = $_POST['change_item'];
     $category_id = $_POST['hidden_category'];
     $subcategory_id = $_POST['hidden_subcategory'];
-    if (($category_id >= 0 ) && ($subcategory_id >=0)) {
+    if (($category_id >= 0) && ($subcategory_id >=0)) {
 
       $item = formDataCore($item);
 

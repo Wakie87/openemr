@@ -216,7 +216,7 @@ function msfFileChanged() {
   $imagesslist = array();
   while (false !== ($sfname = readdir($dh))) {
     if (substr($sfname, 0, 1) == '.') continue;
-    if ($sfname == 'CVS'            ) continue;
+    if ($sfname == 'CVS') continue;
     $imageslist[$sfname] = $sfname;
   }
   closedir($dh);

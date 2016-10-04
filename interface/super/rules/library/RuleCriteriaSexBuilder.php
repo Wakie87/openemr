@@ -16,8 +16,8 @@ class RuleCriteriaSexBuilder extends RuleCriteriaBuilder {
     /**
      * @return RuleCriteriaType
      */
-    function resolveRuleCriteriaType( $method, $methodDetail, $value ) {
-        if (strpos($method, "sex") ) {
+    function resolveRuleCriteriaType($method, $methodDetail, $value) {
+        if (strpos($method, "sex")) {
             return RuleCriteriaType::from(RuleCriteriaType::sex);
         }
         return null;
@@ -27,16 +27,16 @@ class RuleCriteriaSexBuilder extends RuleCriteriaBuilder {
      * @param RuleCriteriaType $ruleCriteriaType
      * @return RuleCriteria
      */
-    function build( $ruleCriteriaType, $value, $methodDetail ) {
-        return new RuleCriteriaSex( $value );
+    function build($ruleCriteriaType, $value, $methodDetail) {
+        return new RuleCriteriaSex($value);
     }
 
     /**
      *
      * @param RuleCriteriaType $criteriaType
      */
-    function newInstance( $criteriaType ) {
-        return new RuleCriteriaSex( 'Male' );
+    function newInstance($criteriaType) {
+        return new RuleCriteriaSex('Male');
     }
 
 }

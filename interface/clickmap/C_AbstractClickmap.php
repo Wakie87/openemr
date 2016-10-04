@@ -88,7 +88,7 @@ abstract class C_AbstractClickmap extends Controller {
     /**
      * @brief set up the passed in Model object to model the form.
      */
-    private function set_context( $model ) {
+    private function set_context($model) {
         $root = $GLOBALS['webroot'] . "/interface/clickmap";
         $model->saveAction = $GLOBALS['webroot'] . "/interface/forms/" . $model->getCode() . "/save.php";
         $model->template_dir = $root . "/template";

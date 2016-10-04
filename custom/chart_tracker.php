@@ -89,7 +89,7 @@ if ($form_newloc || $form_newuser) {
     "?, " .
     "? " .
     ")";
-  sqlInsert($query, array($form_curpid,date('Y-m-d H:i:s'),$form_newuser,$form_newloc) );
+  sqlInsert($query, array($form_curpid,date('Y-m-d H:i:s'),$form_newuser,$form_newloc));
   echo "<font color='green'>" . xlt('Save Successful for chart ID') . " " . "'" . text($form_curid) . "'.</font><br />";
 }
 
@@ -103,7 +103,7 @@ if ($form_newid) {
     "LEFT OUTER JOIN chart_tracker AS ct ON ct.ct_pid = pd.pid " .
     "WHERE pd.pubpid = ? " .
     "ORDER BY pd.pid ASC, ct.ct_when DESC LIMIT 1";
-  $row = sqlQuery($query, array($form_newid) );
+  $row = sqlQuery($query, array($form_newid));
   if (empty($row)) {
     echo "<font color='red'>" . xlt('Chart ID') . " " . "'" . text($form_newid) . "' " . xlt('not found') . "!</font><br />";
   }
@@ -118,8 +118,8 @@ if (!empty($row)) {
   $ct_location = $row['ct_location'];
   $current_location = xlt('Unassigned');
   if ($ct_userid) {
-    $urow = sqlQuery("SELECT fname, mname, lname FROM users WHERE id = ?", array($ct_userid) );
-    $current_location = text( $urow['lname'] . ", " . $urow['fname'] . " " . $urow['mname'] . " " . $row['ct_when'] );
+    $urow = sqlQuery("SELECT fname, mname, lname FROM users WHERE id = ?", array($ct_userid));
+    $current_location = text($urow['lname'] . ", " . $urow['fname'] . " " . $urow['mname'] . " " . $row['ct_when']);
   }
   else if ($ct_location) {
     $current_location = generate_display_field(array('data_type'=>'1','list_id'=>'chartloc'),$ct_location);
@@ -134,7 +134,7 @@ if (!empty($row)) {
 
   echo " <tr>\n";
   echo "  <td class='bold'>" . xlt('Name') . ":</td>\n";
-  echo "  <td class='text'>" . text( $row['lname'] . ", " . $row['fname'] . " " . $row['mname'] ) . "</td>\n";
+  echo "  <td class='text'>" . text($row['lname'] . ", " . $row['fname'] . " " . $row['mname']) . "</td>\n";
   echo " </tr>\n";
 
   echo " <tr>\n";

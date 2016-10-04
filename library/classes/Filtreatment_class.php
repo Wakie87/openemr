@@ -41,10 +41,10 @@ var $error = '';
  * @return void
  */
 function __construct() {
-    if ( get_magic_quotes_gpc() ) {
-        if ( !defined('MAGICQUOTES') ) define ('MAGICQUOTES', TRUE);
+    if (get_magic_quotes_gpc()) {
+        if (!defined('MAGICQUOTES')) define ('MAGICQUOTES', TRUE);
     } else {
-        if ( !defined('MAGICQUOTES') ) define ('MAGICQUOTES', FALSE);
+        if (!defined('MAGICQUOTES')) define ('MAGICQUOTES', FALSE);
     }
 }
 
@@ -63,11 +63,11 @@ function ft_integer($input) {
     $mnval      = (int)$this->minval;
     $mxval      = (int)$this->maxval;
 
-    if ( !$mnval && !$mxval ) {
+    if (!$mnval && !$mxval) {
         return $input_c;
-    } else if ( $mnval && $mxval ) {
+    } else if ($mnval && $mxval) {
         // check if they are in order (min <  max)
-        if ( $mnval > $mxval ) {
+        if ($mnval > $mxval) {
             $temp   = $mnval;
             $mnval  = $mxval;
             $mxval  = $temp;
@@ -77,8 +77,8 @@ function ft_integer($input) {
         return (($input >= $mnval) && ($input <= $mxval)) ? $input_c : FALSE;
     } else {
         // only one value set
-        if ( $mnval ) return (($input >= $mnval) ? $input_c : FALSE );
-        if ( $mxval ) return (($input <= $mxval) ? $input_c : FALSE );
+        if ($mnval) return (($input >= $mnval) ? $input_c : FALSE);
+        if ($mxval) return (($input <= $mxval) ? $input_c : FALSE);
     }
 
 }
@@ -98,11 +98,11 @@ function ft_float($input) {
     $mnval      = (float)$this->minval;
     $mxval      = (float)$this->maxval;
 
-    if ( !$mnval && !$mxval ) {
+    if (!$mnval && !$mxval) {
         return $input_c;
-    } else if ( $mnval && $mxval ) {
+    } else if ($mnval && $mxval) {
         // check if they are in order (min <  max)
-        if ( $this->ft_realcmp($mnval, $mxval) > 0 ) {
+        if ($this->ft_realcmp($mnval, $mxval) > 0) {
             $temp   = $mnval;
             $mnval  = $mxval;
             $mxval  = $temp;
@@ -110,22 +110,22 @@ function ft_float($input) {
 
         // and then check if the value is between these values
         $lt = $this->ft_realcmp($input, $mxval); //-1 or 0 for true
-        if ( $lt === -1 || $lt === 0 ) $lt = $input_c; else $lt = FALSE;
+        if ($lt === -1 || $lt === 0) $lt = $input_c; else $lt = FALSE;
 
         $gt = $this->ft_realcmp($input, $mnval); //1 or 0 for true
-        if ( $gt === 1 || $gt === 0 ) $gt = TRUE; else $gt = FALSE;
+        if ($gt === 1 || $gt === 0) $gt = TRUE; else $gt = FALSE;
   
-        return (( $lt && $gt ) ? $input_c : FALSE);
+        return (($lt && $gt) ? $input_c : FALSE);
     } else {
         // only one value set
-        if ( $mnval ) {
+        if ($mnval) {
             $gt = $this->ft_realcmp($input, $mnval); //1 or 0 for true
-            return ( $gt === 1 || $gt === 0 ) ? $input_c : FALSE;
+            return ($gt === 1 || $gt === 0) ? $input_c : FALSE;
         }
 
-        if ( $mxval ) {
+        if ($mxval) {
             $lt = $this->ft_realcmp($input, $mxval); //-1 or 0 for true
-            return ( $lt === -1 || $lt === 0 ) ? $input_c : FALSE;
+            return ($lt === -1 || $lt === 0) ? $input_c : FALSE;
         }
     }
 
@@ -141,12 +141,12 @@ function ft_float($input) {
  * @return string|bool - the string itselfs only for valid date
  */
 function ft_validdate($str) {
-    if ( preg_match("/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/", $str) ) {
+    if (preg_match("/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/", $str)) {
         $arr = explode("-",$str);     // splitting the array
         $yy = $arr[0];            // first element of the array is year
         $mm = $arr[1];            // second element is month
         $dd = $arr[2];            // third element is days
-        return ( checkdate($mm, $dd, $yy) ? $str : FALSE );
+        return (checkdate($mm, $dd, $yy) ? $str : FALSE);
     } else {
         return FALSE;
     }
@@ -174,7 +174,7 @@ function ft_email($email) {
     $local_array = explode(".", $email_array[0]);
 
     for ($i = 0; $i < sizeof($local_array); $i++) {
-        if ( !preg_match("/^(([A-Za-z0-9!#$%&'*+\/=?^_`{|}~-][A-Za-z0-9!#$%&'*+\/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$/", $local_array[$i]) ) {
+        if (!preg_match("/^(([A-Za-z0-9!#$%&'*+\/=?^_`{|}~-][A-Za-z0-9!#$%&'*+\/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$/", $local_array[$i])) {
              return FALSE;
         }
     }
@@ -244,7 +244,7 @@ function ft_strregex($value, $regex, $cv = 1) {
     switch ($cv) {
         // verify the string
         case '1':
-            $s = ( preg_match($regexfull, $value) ? FALSE : TRUE );
+            $s = (preg_match($regexfull, $value) ? FALSE : TRUE);
         break;
 
         // cleanup the string
@@ -253,10 +253,10 @@ function ft_strregex($value, $regex, $cv = 1) {
         break;
 
         // if $cv is not specified or it's wrong
-        default: if ( preg_match($regexfull, $value) ) $s = FALSE;
+        default: if (preg_match($regexfull, $value)) $s = FALSE;
     }
 
-    return ( $s ? $value : FALSE );
+    return ($s ? $value : FALSE);
 }
 
 
@@ -444,8 +444,8 @@ function ft_xss($str, $charset = 'ISO-8859-1') {
  * @return void
  */
 function display_error($mode = 1) {
-    $errstr = ( $this->error ) ? $this->error : '';
-    if ( $mode == 1 ) {
+    $errstr = ($this->error) ? $this->error : '';
+    if ($mode == 1) {
         echo '<br />' .$this->ft_xss($errstr) . '<br />';
     } else {
         return $this->ft_xss($errstr);
@@ -466,7 +466,7 @@ function display_error($mode = 1) {
 function ft_realcmp($r1, $r2) {
     $diff = $r1 - $r2;
 
-    if ( abs($diff) < EPSILON ) return 0;
+    if (abs($diff) < EPSILON) return 0;
     else return $diff < 0 ? -1 : 1;
 }
 

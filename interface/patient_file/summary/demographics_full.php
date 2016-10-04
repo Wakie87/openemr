@@ -32,7 +32,7 @@ require_once ("$srcdir/patientvalidation.inc.php");
   if ($result['squad'] && ! acl_check('squads', $result['squad']))
    die(xl('You are not authorized to access this squad.'));
  } else {
-  if (!acl_check('patients', 'demo', '', array('write','addonly') ))
+  if (!acl_check('patients', 'demo', '', array('write','addonly')))
    die(xl('Adding demographics is not authorized.'));
  }
 
@@ -243,7 +243,7 @@ function validate(f) {
 <?php generate_layout_validation('DEM'); ?>
 
  var msg = "";
- msg += "<?php xl('The following fields are required', 'e' ); ?>:\n\n";
+ msg += "<?php xl('The following fields are required', 'e'); ?>:\n\n";
  for ( var i = 0; i < errMsgs.length; i++ ) {
 	msg += errMsgs[i] + "\n";
  }
@@ -446,7 +446,7 @@ $group_seq=0; // this gives the DIV blocks unique IDs
 ?>
 <br>
   <div class="section-header">
-   <span class="text"><b> <?php xl("Demographics", "e" )?></b></span>
+   <span class="text"><b> <?php xl("Demographics", "e")?></b></span>
 </div>
 
 <div id="DEM" >
@@ -475,7 +475,7 @@ $group_seq=0; // this gives the DIV blocks unique IDs
 
 	?>
      <div class="section-header">
-         <span class="text"><b><?php xl("Insurance", "e" )?></b></span>
+         <span class="text"><b><?php xl("Insurance", "e")?></b></span>
      </div>
 	<div id="INSURANCE" >
 		<ul class="tabNav">
@@ -795,7 +795,7 @@ $use_validate_js=$GLOBALS['new_validate'];
     });
 
 //This code deals with demographics before save action -
-	<?php if ( ($GLOBALS['gbl_edit_patient_form'] == '1') && (checkIfPatientValidationHookIsActive()) ):?>
+	<?php if (($GLOBALS['gbl_edit_patient_form'] == '1') && (checkIfPatientValidationHookIsActive())):?>
 
                 //Use the Zend patient validation hook.
                 //TODO - get the edit part of patient validation hook to work smoothly and then

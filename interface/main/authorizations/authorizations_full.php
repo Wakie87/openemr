@@ -31,10 +31,10 @@ include_once("$srcdir/patient.inc");
 
 if (isset($_GET["mode"]) && $_GET["mode"] == "authorize") {
 newEvent("authorize",$_SESSION["authUser"],$_SESSION["authProvider"],1,$_GET["pid"]);
-sqlStatement("update billing set authorized=1 where pid=?", array($_GET["pid"]) );
-sqlStatement("update forms set authorized=1 where pid=?", array($_GET["pid"]) );
-sqlStatement("update pnotes set authorized=1 where pid=?", array($_GET["pid"]) );
-sqlStatement("update transactions set authorized=1 where pid=?", array($_GET["pid"]) );
+sqlStatement("update billing set authorized=1 where pid=?", array($_GET["pid"]));
+sqlStatement("update forms set authorized=1 where pid=?", array($_GET["pid"]));
+sqlStatement("update pnotes set authorized=1 where pid=?", array($_GET["pid"]));
+sqlStatement("update transactions set authorized=1 where pid=?", array($_GET["pid"]));
 
 }
 ?>
@@ -56,7 +56,7 @@ sqlStatement("update transactions set authorized=1 where pid=?", array($_GET["pi
 //	transactions
 
 //fetch billing information:
-if ($res = sqlStatement("select *, concat(u.fname,' ', u.lname) as user from billing LEFT JOIN users as u on billing.user = u.id where billing.authorized=0 and groupname=?", array ($groupname) )) {
+if ($res = sqlStatement("select *, concat(u.fname,' ', u.lname) as user from billing LEFT JOIN users as u on billing.user = u.id where billing.authorized=0 and groupname=?", array ($groupname))) {
 for ($iter = 0;$row = sqlFetchArray($res);$iter++)
 		$result[$iter] = $row;
 
@@ -74,7 +74,7 @@ $authorize{$iter{"pid"}}{"billing"} .= "<span class=small>" .
 }
 
 //fetch transaction information:
-if ($res = sqlStatement("select * from transactions where authorized=0 and groupname=?", array($groupname) )) {
+if ($res = sqlStatement("select * from transactions where authorized=0 and groupname=?", array($groupname))) {
 for ($iter = 0;$row = sqlFetchArray($res);$iter++)
 		$result2[$iter] = $row;
 
@@ -93,7 +93,7 @@ $authorize{$iter{"pid"}}{"transaction"} .= "<span class=small>" .
 
 if (empty($GLOBALS['ignore_pnotes_authorization'])) {
   //fetch pnotes information, exclude ALL deleted notes
-  if ($res = sqlStatement("select * from pnotes where authorized=0 and deleted!=1 and groupname=?", array($groupname) )) {
+  if ($res = sqlStatement("select * from pnotes where authorized=0 and deleted!=1 and groupname=?", array($groupname))) {
     for ($iter = 0;$row = sqlFetchArray($res);$iter++) $result3[$iter] = $row;
     if ($result3) {
       foreach ($result3 as $iter) {
@@ -107,7 +107,7 @@ if (empty($GLOBALS['ignore_pnotes_authorization'])) {
 }
 
 //fetch forms information:
-if ($res = sqlStatement("select * from forms where authorized=0 and groupname=?", array($groupname) )) {
+if ($res = sqlStatement("select * from forms where authorized=0 and groupname=?", array($groupname))) {
 for ($iter = 0;$row = sqlFetchArray($res);$iter++)
 		$result4[$iter] = $row;
 

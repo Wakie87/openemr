@@ -427,7 +427,7 @@ function download_file()
 
   <?php
   }
-  if($deIdentificationStatus == 0 )
+  if($deIdentificationStatus == 0)
   {
   //0 - There is no De Identification in progress. (start new De Identification process)
  ?>

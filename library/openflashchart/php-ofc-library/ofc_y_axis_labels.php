@@ -7,7 +7,7 @@ class y_axis_labels
 	/**
 	 * @param $steps which labels are generated
 	 */
-	function set_steps( $steps )
+	function set_steps($steps)
 	{
 		$this->steps = $steps;
 	}
@@ -16,12 +16,12 @@ class y_axis_labels
 	 *
 	 * @param $labels as an array of [y_axis_label or string]
 	 */
-	function set_labels( $labels )
+	function set_labels($labels)
 	{
 		$this->labels = $labels;
 	}
 	
-	function set_colour( $colour )
+	function set_colour($colour)
 	{
 		$this->colour = $colour;
 	}
@@ -29,7 +29,7 @@ class y_axis_labels
 	/**
 	 * font size in pixels
 	 */
-	function set_size( $size )
+	function set_size($size)
 	{
 		$this->size = $size;
 	}
@@ -42,7 +42,7 @@ class y_axis_labels
 		$this->rotate = 270;
 	}
 	
-	function rotate( $angle )
+	function rotate($angle)
 	{
 		$this->rotate = $angle;
 	}
@@ -50,7 +50,7 @@ class y_axis_labels
 	/**
 	 * @param $text default text that all labels inherit
 	 */
-	function set_text( $text )
+	function set_text($text)
 	{
 		$this->text = $text;
 	}

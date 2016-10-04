@@ -220,7 +220,7 @@ $check_res = $formid ? $check_res : array();
                             <input type="hidden" id="code_type_<?php echo $key + 1; ?>" name="code_type[]" class="code_type" value="<?php echo text($obj{"code_type"}); ?>">
                             <input type="hidden" id="table_code_<?php echo $key + 1; ?>" name="table_code[]" class="table_code" value="<?php echo text($obj{"table_code"}); ?>">                          
                         </td>
-                        <td id="ob_value_head_<?php echo $key + 1; ?>" class="forms ob_value_head" align="left" <?php if( !$obj{"ob_value"}) {?>style="display: none;" <?php }?>><?php echo xlt('Value'); ?>:</td>
+                        <td id="ob_value_head_<?php echo $key + 1; ?>" class="forms ob_value_head" align="left" <?php if(!$obj{"ob_value"}) {?>style="display: none;" <?php }?>><?php echo xlt('Value'); ?>:</td>
                         <td class="forms"> 
                            <?php 
                                 if((text($obj{"code"}) == '21612-7' || text($obj{"code"}) == '8661-1')) {
@@ -287,7 +287,7 @@ $check_res = $formid ? $check_res : array();
                     <input type="hidden" id="code_type_1" name="code_type[]" class="code_type" value="<?php echo text($obj{"code_type"}); ?>">
                     <input type="hidden" id="table_code_1" name="table_code[]" class="table_code" value="<?php echo text($obj{"table_code"}); ?>">
                 </td>
-                <td id="ob_value_head_1" class="forms ob_value_head" align="left" <?php if( !$obj{"ob_value"}) {?>style="display: none;" <?php }?>><?php echo xlt('Value'); ?>:</td>
+                <td id="ob_value_head_1" class="forms ob_value_head" align="left" <?php if(!$obj{"ob_value"}) {?>style="display: none;" <?php }?>><?php echo xlt('Value'); ?>:</td>
                 <td class="forms"> 
                   <?php 
                       if((text($obj{"code"}) == '21612-7' || text($obj{"code"}) == '8661-1')) {

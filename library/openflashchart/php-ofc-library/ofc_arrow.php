@@ -19,7 +19,7 @@ class ofc_arrow
 		$this->{"barb-length"} = $barb_length;
 	}
 	
-	function colour( $colour )
+	function colour($colour)
 	{
 		$this->colour = $colour;
 		return $this;

@@ -59,7 +59,7 @@ class PhoneNumber extends ORDataObject{
 		//echo $sql . "<bR />";
 		$results = sqlQ($sql);
 		//echo "sql: $sql";
-		while ($row = sqlFetchArray($results) ) {
+		while ($row = sqlFetchArray($results)) {
 			$phone_numbers[] = new PhoneNumber($row['id']);
 		}
 		return $phone_numbers;

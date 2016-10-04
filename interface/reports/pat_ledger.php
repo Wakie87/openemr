@@ -687,7 +687,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
                     $events = fetchNextXAppts($current_date2,$form_pid);
                     $next_appoint_date = oeFormatShortDate($events[0]['pc_eventDate']);
                     $next_appoint_time = substr($events[0]['pc_startTime'],0,5);
-                    if(strlen(umname) != 0 ) {
+                    if(strlen(umname) != 0) {
                         $next_appoint_provider = $events[0]['ufname'] . ' ' . $events[0]['umname'] . ' ' .  $events[0]['ulname'];
                     }
                     else
@@ -707,7 +707,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
       echo "</div>\n";
 }
 if (! $_REQUEST['form_csvexport']) {
-  if ( $_REQUEST['form_refresh'] && $orow <= 0) {
+  if ($_REQUEST['form_refresh'] && $orow <= 0) {
     echo "<span style='font-size:10pt;'>";
     echo xlt('No matches found. Try search again.');
     echo "</span>";
@@ -717,7 +717,7 @@ if (! $_REQUEST['form_csvexport']) {
 		
 if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
 <div class='text'>
-    <?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>
+    <?php echo xlt('Please input search criteria above, and click Submit to view results.'); ?>
 </div>
 <?php } ?>
 </form>

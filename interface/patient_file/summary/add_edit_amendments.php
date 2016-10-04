@@ -33,10 +33,10 @@ include_once("$srcdir/sql.inc");
 include_once("$srcdir/options.inc.php");
 
 $DateFormat=DateFormatRead();
-if ( isset($_POST['mode'] )) {
+if (isset($_POST['mode'])) {
 	$currentUser = $_SESSION['authUserID'];
 	$created_time = date('Y-m-d H:i');
-	if ( $_POST["amendment_id"] == "" ) {
+	if ($_POST["amendment_id"] == "") {
 		// New. Insert
 		$query = "INSERT INTO amendments SET 
 			amendment_date = ?,
@@ -47,7 +47,7 @@ if ( isset($_POST['mode'] )) {
 			created_by = ?,
 			created_time = ?";
 		$sqlBindArray = array(
-			DateToYYYYMMDD( $_POST['amendment_date']),
+			DateToYYYYMMDD($_POST['amendment_date']),
 			$_POST['form_amendment_by'],
 			$_POST['form_amendment_status'],
 			$pid,
@@ -99,8 +99,8 @@ if ( isset($_POST['mode'] )) {
 	exit;
 }
 
-$amendment_id = ( $amendment_id ) ? $amendment_id : $_REQUEST['id'];
-if ( $amendment_id ) {
+$amendment_id = ($amendment_id) ? $amendment_id : $_REQUEST['id'];
+if ($amendment_id) {
 	$query = "SELECT * FROM amendments WHERE amendment_id = ? ";
 	$resultSet = sqlQuery($query,array($amendment_id));
 	$amendment_date = $resultSet['amendment_date'];
@@ -113,9 +113,9 @@ if ( $amendment_id ) {
 }
 // Check the ACL
 $haveAccess = acl_check('patients', 'trans');
-$onlyRead = ( $haveAccess ) ? 0 : 1;
-$onlyRead = ( $onlyRead || $amendment_status ) ? 1 : 0;
-$customAttributes = ( $onlyRead ) ? array("disabled" => "true") : null;
+$onlyRead = ($haveAccess) ? 0 : 1;
+$onlyRead = ($onlyRead || $amendment_status) ? 1 : 0;
+$customAttributes = ($onlyRead) ? array("disabled" => "true") : null;
 
 ?>
 
@@ -181,7 +181,7 @@ function formValidation() {
 		<td>
 			<span class="title"><?php echo xlt('Amendments'); ?></span>&nbsp;
 		</td>
-		<?php if ( ! $onlyRead ) { ?>
+		<?php if (! $onlyRead) { ?>
 		<td>
 			<a href=# onclick="formValidation()" class="css_button_small"><span><?php echo xlt('Save');?></span></a>
 		</td>
@@ -197,9 +197,9 @@ function formValidation() {
 		<tr>
 			<td><span class=text ><?php echo xlt('Requested Date'); ?></span></td>
 			<td ><input type='text' size='10' name="amendment_date" id="amendment_date" readonly 
-						value='<?php echo $amendment_date ? htmlspecialchars( oeFormatShortDate($amendment_date), ENT_QUOTES) : oeFormatShortDate(); ?>'
+						value='<?php echo $amendment_date ? htmlspecialchars(oeFormatShortDate($amendment_date), ENT_QUOTES) : oeFormatShortDate(); ?>'
     		/>
-			<?php if ( ! $onlyRead ) { ?>
+			<?php if (! $onlyRead) { ?>
          	<img src='<?php echo $rootdir; ?>/pic/show_calendar.gif' width='24' height='22'
     			id='img_amendment_date' valign="middle" border='0' alt='[?]' style='cursor:pointer;cursor:hand'
     			title='<?php echo xlt('Click here to choose a date'); ?>'>
@@ -219,7 +219,7 @@ function formValidation() {
 		
 		<tr>
 			<td><span class=text ><?php echo xlt('Request Description'); ?></span></td>
-			<td><textarea <?php echo ( $onlyRead ) ? "readonly" : "";  ?> id="desc" name="desc" rows="4" cols="30"><?php 
+			<td><textarea <?php echo ($onlyRead) ? "readonly" : "";  ?> id="desc" name="desc" rows="4" cols="30"><?php 
 			if($amendment_id) { echo text($amendment_desc); }else{ echo ""; } ?></textarea></td>
 		</tr>
 		
@@ -232,12 +232,12 @@ function formValidation() {
 		
 		<tr>
 			<td><span class=text ><?php echo xlt('Comments'); ?></span></td>
-			<td><textarea <?php echo ( $onlyRead ) ? "readonly" : "";  ?> id="note" name="note" rows="4" cols="30"><?php 
+			<td><textarea <?php echo ($onlyRead) ? "readonly" : "";  ?> id="note" name="note" rows="4" cols="30"><?php 
 			if($amendment_id) echo ""; else echo xlt('New amendment request'); ?></textarea></td>
 		</tr>
 	</table>
 	
-	<?php if ( $amendment_id ) { ?>
+	<?php if ($amendment_id) { ?>
 	<hr>
 	
 	<span class="title"><?php echo xlt("History") ; ?></span>
@@ -254,13 +254,13 @@ function formValidation() {
 
 	<?php 
 	 if (sqlNumRows($resultSet)) {
-		while ( $row = sqlFetchArray($resultSet) ) {
+		while ($row = sqlFetchArray($resultSet)) {
 			$created_date = date('Y-m-d', strtotime($row['created_time']));
 			echo "<tr>";
 			$userName = $row['lname'] . ", " . $row['fname'];
 			echo "<td align=left class=text>" . oeFormatShortDate($created_date) . "</td>";
 			echo "<td align=left class=text>" . text($userName) . "</td>";
-			echo "<td align=left class=text>" . ( ( $row['amendment_status'] ) ? generate_display_field(array('data_type'=>'1','list_id'=>'amendment_status'), $row['amendment_status']) : '') . "</td>";
+			echo "<td align=left class=text>" . (($row['amendment_status']) ? generate_display_field(array('data_type'=>'1','list_id'=>'amendment_status'), $row['amendment_status']) : '') . "</td>";
 			echo "<td align=left class=text>" . text($row['amendment_note']) . "</td>";
 			echo "<tr>";
 		}

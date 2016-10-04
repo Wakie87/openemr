@@ -133,7 +133,7 @@ if (!empty($ptrow)) {
 					</span>
 					</a>
 
-					<?php if ($_POST['form_refresh'] || !empty($ptrow) ) { ?>
+					<?php if ($_POST['form_refresh'] || !empty($ptrow)) { ?>
             <a href='#' class='css_button' id='printbutton'>
 						<span>
 							<?php echo xlt('Print'); ?>
@@ -151,7 +151,7 @@ if (!empty($ptrow)) {
 </div> <!-- end of parameters -->
 
 <?php
- if ($_POST['form_refresh'] || !empty($ptrow) ) {
+ if ($_POST['form_refresh'] || !empty($ptrow)) {
 ?>
 <div id="report_results">
 <table>

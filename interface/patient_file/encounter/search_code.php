@@ -70,7 +70,7 @@ if (isset($_POST["mode"]) && $_POST["mode"] == "search" && $_POST["text"] != "")
     " LIMIT " . ($M + 1).
     "";
 
-	if ($res = sqlStatement($sql) ) {
+	if ($res = sqlStatement($sql)) {
 		for($iter=0; $row=sqlFetchArray($res); $iter++)
 		{
 			$result[$iter] = $row;

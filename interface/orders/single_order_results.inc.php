@@ -575,7 +575,7 @@ function educlick(codetype, codevalue) {
 ?>
   </td>
   <td style='border-width:0px;' align='right' valign='top'>
-<?php if ($input_form && !empty($ctx['priors_omitted']) /* empty($_POST['form_showall']) */ ) { ?>
+<?php if ($input_form && !empty($ctx['priors_omitted']) /* empty($_POST['form_showall']) */) { ?>
    <input type='submit' name='form_showall' value='<?php echo xla('Show All Results'); ?>'
     title='<?php echo xla('Include all values reported for each result code'); ?>' />
 <?php } else if ($input_form && !empty($_POST['form_showall'])) { ?>

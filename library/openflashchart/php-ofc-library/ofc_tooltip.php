@@ -9,7 +9,7 @@ class tooltip
 	/**
 	 * @param $shadow as boolean. Enable drop shadow.
 	 */
-	function set_shadow( $shadow )
+	function set_shadow($shadow)
 	{
 		$this->shadow = $shadow;
 	}
@@ -17,7 +17,7 @@ class tooltip
 	/**
 	 * @param $stroke as integer, border width in pixels (e.g. 5 )
 	 */
-	function set_stroke( $stroke )
+	function set_stroke($stroke)
 	{
 		$this->stroke = $stroke;
 	}
@@ -25,7 +25,7 @@ class tooltip
 	/**
 	 * @param $colour as string, HEX colour e.g. '#0000ff'
 	 */
-	function set_colour( $colour )
+	function set_colour($colour)
 	{
 		$this->colour = $colour;
 	}
@@ -33,7 +33,7 @@ class tooltip
 	/**
 	 * @param $bg as string, HEX colour e.g. '#0000ff'
 	 */
-	function set_background_colour( $bg )
+	function set_background_colour($bg)
 	{
 		$this->background = $bg;
 	}
@@ -41,7 +41,7 @@ class tooltip
 	/**
 	 * @param $style as string. A css style.
 	 */
-	function set_title_style( $style )
+	function set_title_style($style)
 	{
 		$this->title = $style;
 	}
@@ -49,7 +49,7 @@ class tooltip
 	/**
 	 * @param $style as string. A css style.
 	 */
-    function set_body_style( $style )
+    function set_body_style($style)
 	{
 		$this->body = $style;
 	}

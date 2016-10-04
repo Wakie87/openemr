@@ -25,14 +25,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		</thead>
 <?php
 
-if ( isset( $_POST ) )
+if (isset($_POST))
 	$postArray = &$_POST ;			// 4.1.0 or later, use $_POST
 else
 	$postArray = &$HTTP_POST_VARS ;	// prior to 4.1.0, use HTTP_POST_VARS
 
-foreach ( $postArray as $sForm => $value )
+foreach ($postArray as $sForm => $value)
 {
-    $postedValue = htmlspecialchars( $value ) ;
+    $postedValue = htmlspecialchars($value) ;
 
 ?>
 		<tr>

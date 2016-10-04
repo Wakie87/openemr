@@ -122,7 +122,7 @@ if ($_POST['bn_save'] || $_POST['bn_xmit']) {
     $prefix = "ans$i" . "_";
 
       sqlBeginTrans();
-      $procedure_order_seq = sqlQuery( "SELECT IFNULL(MAX(procedure_order_seq),0) + 1 AS increment FROM procedure_order_code WHERE procedure_order_id = ? ", array($formid));
+      $procedure_order_seq = sqlQuery("SELECT IFNULL(MAX(procedure_order_seq),0) + 1 AS increment FROM procedure_order_code WHERE procedure_order_id = ? ", array($formid));
       $poseq = sqlInsert("INSERT INTO procedure_order_code SET ".
       "procedure_order_id = ?, " .
       "diagnoses = ?, " .
@@ -159,7 +159,7 @@ if ($_POST['bn_save'] || $_POST['bn_xmit']) {
       foreach ($data as $datum) {
         // Note this will auto-assign the seq value.
         sqlBeginTrans();
-        $answer_seq = sqlQuery( "SELECT IFNULL(MAX(answer_seq),0) + 1 AS increment FROM procedure_answers WHERE procedure_order_id = ? AND procedure_order_seq = ? AND question_code = ? ", array($formid, $poseq, $qcode));
+        $answer_seq = sqlQuery("SELECT IFNULL(MAX(answer_seq),0) + 1 AS increment FROM procedure_answers WHERE procedure_order_id = ? AND procedure_order_seq = ? AND question_code = ? ", array($formid, $poseq, $qcode));
         sqlStatement("INSERT INTO procedure_answers SET ".
           "procedure_order_id = ?, " .
           "procedure_order_seq = ?, " .

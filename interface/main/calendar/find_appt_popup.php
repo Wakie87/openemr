@@ -35,7 +35,7 @@
     <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 <?php
  // check access controls
- if (!acl_check('patients','appt','',array('write','wsome') ))
+ if (!acl_check('patients','appt','',array('write','wsome')))
   die(xlt('Access not allowed'));
 
  // If the caller is updating an existing event, then get its ID so
@@ -82,7 +82,7 @@
 
  $catslots = 1;
  if ($input_catid) {
-  $srow = sqlQuery("SELECT pc_duration FROM openemr_postcalendar_categories WHERE pc_catid = ?", array($input_catid) );
+  $srow = sqlQuery("SELECT pc_duration FROM openemr_postcalendar_categories WHERE pc_catid = ?", array($input_catid));
   if ($srow['pc_duration']) $catslots = ceil($srow['pc_duration'] / $slotsecs);
  }
 
@@ -161,7 +161,7 @@
    array_push($sqlBindArray, $providerid, $eid, $sdate, $edate, $sdate, $edate);
 
   // phyaura whimmel facility filtering
-  if ($_REQUEST['facility'] > 0 ) {
+  if ($_REQUEST['facility'] > 0) {
     $facility = $_REQUEST['facility'];
     $query .= " AND pc_facility = ?";
     array_push($sqlBindArray, $facility);

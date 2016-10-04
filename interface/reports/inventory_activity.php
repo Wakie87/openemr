@@ -171,7 +171,7 @@ function thisLineItem($product_id, $warehouse_id, $patient_id, $encounter_id,
       } // End not csv export
     }
     $secqtys = array(0, 0, 0, 0, 0);
-    if ($product_first ) {
+    if ($product_first) {
       $whleft = $warehouse = $rowwh;
       $last_warehouse_id = $warehouse_id;
     } else {
@@ -239,7 +239,7 @@ function thisLineItem($product_id, $warehouse_id, $patient_id, $encounter_id,
   if ($_POST['form_details'] && $product_id && ($qtys[0] + $qtys[1] + $qtys[2] + $qtys[3] + $qtys[4])) {
     if ($form_action == 'export') {
       if ($product_first) {
-        echo '"'  . esc4Export($product )  . '"';
+        echo '"'  . esc4Export($product)  . '"';
         echo ',"' . esc4Export($warehouse) . '"';
       } else {
         echo '"'  . esc4Export($warehouse) . '"';
@@ -328,29 +328,29 @@ if ($form_action == 'export') {
   header("Content-Description: File Transfer");
   // CSV headers:
   if ($product_first) {
-    echo '"' . esc4export(xl('Product'  )) . '",';
+    echo '"' . esc4export(xl('Product')) . '",';
     echo '"' . esc4export(xl('Warehouse')) . '",';
   } else {
     echo '"' . esc4export(xl('Warehouse')) . '",';
-    echo '"' . esc4export(xl('Product'  )) . '",';
+    echo '"' . esc4export(xl('Product')) . '",';
   }
   if ($_POST['form_details']) {
-    echo '"' . esc4export(xl('Date'         )) . '",';
-    echo '"' . esc4export(xl('Invoice'      )) . '",';
-    echo '"' . esc4export(xl('Sales'        )) . '",';
+    echo '"' . esc4export(xl('Date')) . '",';
+    echo '"' . esc4export(xl('Invoice')) . '",';
+    echo '"' . esc4export(xl('Sales')) . '",';
     echo '"' . esc4export(xl('Distributions')) . '",';
-    echo '"' . esc4export(xl('Purchases'    )) . '",';
-    echo '"' . esc4export(xl('Transfers'    )) . '",';
-    echo '"' . esc4export(xl('Adjustments'  )) . '"' . "\n";
+    echo '"' . esc4export(xl('Purchases')) . '",';
+    echo '"' . esc4export(xl('Transfers')) . '",';
+    echo '"' . esc4export(xl('Adjustments')) . '"' . "\n";
   }
   else {
-    echo '"' . esc4export(xl('Start'        )) . '",';
-    echo '"' . esc4export(xl('Sales'        )) . '",';
+    echo '"' . esc4export(xl('Start')) . '",';
+    echo '"' . esc4export(xl('Sales')) . '",';
     echo '"' . esc4export(xl('Distributions')) . '",';
-    echo '"' . esc4export(xl('Purchases'    )) . '",';
-    echo '"' . esc4export(xl('Transfers'    )) . '",';
-    echo '"' . esc4export(xl('Adjustments'  )) . '",';
-    echo '"' . esc4export(xl('End'          )) . '"' . "\n";
+    echo '"' . esc4export(xl('Purchases')) . '",';
+    echo '"' . esc4export(xl('Transfers')) . '",';
+    echo '"' . esc4export(xl('Adjustments')) . '",';
+    echo '"' . esc4export(xl('End')) . '"' . "\n";
   }
 } // end export
 else {

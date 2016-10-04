@@ -8,7 +8,7 @@ Main Screen
 </TITLE>
 </HEAD>
 <frameset rows="60%,35%" cols="*" name="Main" id="Main">
-<?php if(true /* $_SESSION['userauthorized'] */ ) : ?>
+<?php if(true /* $_SESSION['userauthorized'] */) : ?>
   <frame src="main_info.php" name="Comment" scrolling="auto">
   <frame src="messages/messages.php?form_active=1" name="Authorization" id="Authorization" scrolling="auto">
 <?php else: ?>

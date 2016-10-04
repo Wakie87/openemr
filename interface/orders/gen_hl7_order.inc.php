@@ -93,8 +93,8 @@ function hl7Relation($s) {
   $tmp = strtolower($s);
   if ($tmp == 'self' || $tmp == '') return 'self';
   else if ($tmp == 'spouse') return 'spouse';
-  else if ($tmp == 'child' ) return 'child';
-  else if ($tmp == 'other' ) return 'other';
+  else if ($tmp == 'child') return 'child';
+  else if ($tmp == 'other') return 'other';
   // Should not get here so this will probably get noticed if we do.
   return $s;
 }

@@ -31,7 +31,7 @@ if (isset($mode)) {
 <table border=0 cellpadding=3 cellspacing=0>
 
 <?php
-if ($result = getBillingByEncounter($pid,$encounter,"*") ) {
+if ($result = getBillingByEncounter($pid,$encounter,"*")) {
 	$billing_html = array();
 	foreach ($result as $iter) {
 		if ($iter["code_type"] == "ICD9") {

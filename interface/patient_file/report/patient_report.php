@@ -66,7 +66,7 @@ function show_date_fun(){
 <span class='title'><?php echo xlt('Patient Reports'); ?></span>
 </p>
 
-<?php if ( $GLOBALS['activate_ccr_ccd_report'] ) { // show CCR/CCD reporting options ?>
+<?php if ($GLOBALS['activate_ccr_ccd_report']) { // show CCR/CCD reporting options ?>
 <div id="ccr_report">
 
 <form name='ccr_form' id='ccr_form' method='post' action='../../../ccr/createCCR.php'>
@@ -121,17 +121,17 @@ function show_date_fun(){
 <input type="button" class="generateCCR_download_p" value="<?php echo xl('Download'); ?>" />
 <!-- <input type="button" class="generateCCR_raw" value="<?php xl('Raw Report','e'); ?>" /> -->
 <?php if ($GLOBALS['phimail_enable']==true && $GLOBALS['phimail_ccr_enable']==true) { ?>
-<input type="button" class="viewCCR_send_dialog" value="<?php echo htmlspecialchars( xl('Transmit', ENT_QUOTES)); ?>" />
+<input type="button" class="viewCCR_send_dialog" value="<?php echo htmlspecialchars(xl('Transmit', ENT_QUOTES)); ?>" />
              <br>
              <div id="ccr_send_dialog" style="display:none" >
               <br>
               <table border="0" cellpadding="0" cellspacing="0" >
                <tr>
                 <td>
-                 <span class='bold'><?php echo htmlspecialchars( xl('Enter Recipient\'s Direct Address'), ENT_NOQUOTES);?>: </span>
+                 <span class='bold'><?php echo htmlspecialchars(xl('Enter Recipient\'s Direct Address'), ENT_NOQUOTES);?>: </span>
                 <input type="text" size="64" name="ccr_send_to" id="ccr_send_to" value="">
                 <input type="hidden" name="ccr_sent_by" id="ccr_sent_by" value="user">
-                <input type="button" class="viewCCR_transmit" value="<?php echo htmlspecialchars( xl('Send', ENT_QUOTES)); ?>" />
+                <input type="button" class="viewCCR_transmit" value="<?php echo htmlspecialchars(xl('Send', ENT_QUOTES)); ?>" />
                 <div id="ccr_send_result" style="display:none" >
                  <span class="text" id="ccr_send_message"></span>
                 </div>
@@ -147,20 +147,20 @@ function show_date_fun(){
 <br/>
 <br/>
 <input type="button" class="viewCCD" value="<?php echo xla('Generate Report'); ?>" />
-<input type="button" class="viewCCD_download" value="<?php echo htmlspecialchars( xl('Download', ENT_QUOTES)); ?>" />
+<input type="button" class="viewCCD_download" value="<?php echo htmlspecialchars(xl('Download', ENT_QUOTES)); ?>" />
 <!-- <input type="button" class="viewCCD_raw" value="<?php xl('Raw Report','e'); ?>" /> -->
 <?php if ($GLOBALS['phimail_enable']==true && $GLOBALS['phimail_ccd_enable']==true) { ?>
-<input type="button" class="viewCCD_send_dialog" value="<?php echo htmlspecialchars( xl('Transmit', ENT_QUOTES)); ?>" />
+<input type="button" class="viewCCD_send_dialog" value="<?php echo htmlspecialchars(xl('Transmit', ENT_QUOTES)); ?>" />
              <br>
              <div id="ccd_send_dialog" style="display:none" >
               <br>
               <table border="0" cellpadding="0" cellspacing="0" >
                <tr>
                 <td>
-                 <span class='bold'><?php echo htmlspecialchars( xl('Enter Recipient\'s Direct Address'), ENT_NOQUOTES);?>: </span>
+                 <span class='bold'><?php echo htmlspecialchars(xl('Enter Recipient\'s Direct Address'), ENT_NOQUOTES);?>: </span>
                 <input type="text" size="64" name="ccd_send_to" id="ccd_send_to" value="">
 		<input type="hidden" name="ccd_sent_by" id="ccd_sent_by" value="user">
-                <input type="button" class="viewCCD_transmit" value="<?php echo htmlspecialchars( xl('Send', ENT_QUOTES)); ?>" />
+                <input type="button" class="viewCCD_transmit" value="<?php echo htmlspecialchars(xl('Send', ENT_QUOTES)); ?>" />
                 <div id="ccd_send_result" style="display:none" >
                  <span class="text" id="ccd_send_message"></span>
                 </div>
@@ -501,7 +501,7 @@ $(document).ready(function(){
         function() {
                 if(document.getElementById('show_date').checked == true){
                         if(document.getElementById('Start').value == '' || document.getElementById('End').value == ''){
-                                alert('<?php echo addslashes( xl('Please select a start date and end date')) ?>');
+                                alert('<?php echo addslashes(xl('Please select a start date and end date')) ?>');
                                 return false;
                         }
                 }
@@ -538,7 +538,7 @@ $(document).ready(function(){
         function() {
                 if(document.getElementById('show_date').checked == true){
                         if(document.getElementById('Start').value == '' || document.getElementById('End').value == ''){
-                                alert('<?php echo addslashes( xl('Please select a start date and end date')) ?>');
+                                alert('<?php echo addslashes(xl('Please select a start date and end date')) ?>');
                                 return false;
                         }
                 }

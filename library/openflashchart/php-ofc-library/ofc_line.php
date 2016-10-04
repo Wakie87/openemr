@@ -39,7 +39,7 @@ class line
 	 * 
 	 * @param $style as any class that inherits base_dot
 	 */
-	function set_default_dot_style( $style )
+	function set_default_dot_style($style)
 	{
 		$tmp = 'dot-style';
 		$this->$tmp = $style;
@@ -51,7 +51,7 @@ class line
 	 *  - any class that inherits from dot_base
 	 *  - <b>null</b>
 	 */
-	function set_values( $v )
+	function set_values($v)
 	{
 		$this->values = $v;
 	}
@@ -66,12 +66,12 @@ class line
         $this->values[] = $v;
     }
 	
-	function set_width( $width )
+	function set_width($width)
 	{
 		$this->width = $width;
 	}
 	
-	function set_colour( $colour )
+	function set_colour($colour)
 	{
 		$this->colour = $colour;
 	}
@@ -79,26 +79,26 @@ class line
 	/**
 	 * sytnatical sugar for set_colour
 	 */
-	function colour( $colour )
+	function colour($colour)
 	{
-		$this->set_colour( $colour );
+		$this->set_colour($colour);
 		return $this;
 	}
 	
-	function set_halo_size( $size )
+	function set_halo_size($size)
 	{
 		$tmp = 'halo-size';
 		$this->$tmp = $size;
 	}
 	
-	function set_key( $text, $font_size )
+	function set_key($text, $font_size)
 	{
 		$this->text      = $text;
 		$tmp = 'font-size';
 		$this->$tmp = $font_size;
 	}
 	
-	function set_tooltip( $tip )
+	function set_tooltip($tip)
 	{
 		$this->tip = $tip;
 	}
@@ -109,7 +109,7 @@ class line
 	 * this function. E.g:
 	 * 
 	 */
-	function set_on_click( $text )
+	function set_on_click($text)
 	{
 		$tmp = 'on-click';
 		$this->$tmp = $text;
@@ -120,7 +120,7 @@ class line
 		$this->loop = true;
 	}
 	
-	function line_style( $s )
+	function line_style($s)
 	{
 		$tmp = "line-style";
 		$this->$tmp = $s;

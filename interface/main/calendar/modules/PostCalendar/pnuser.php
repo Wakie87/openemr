@@ -394,7 +394,7 @@ function postcalendar_user_submit($args)
     $event_patient_name  = pnVarCleanFromInput('patient_name');
 
     // event repeating data
-    if( is_array($category) )
+    if(is_array($category))
     {
         //$event_subject        =
         $event_desc         = $category['desc'];
@@ -661,7 +661,7 @@ function postcalendar_user_submit($args)
     //echo "fa: " . $form_action . " double_book: " . pnVarCleanFromInput("double_book") . " update: " . $eventdata['is_update'] . " em: " . $error_msg;
     //event collision check
 
-    if($form_action == "commit" && pnVarCleanFromInput("double_book") != 1 && !$eventdata['is_update'] && empty($error_msg) ) {
+    if($form_action == "commit" && pnVarCleanFromInput("double_book") != 1 && !$eventdata['is_update'] && empty($error_msg)) {
         //check on new shceduling events(in or out of office) to make sure that
         //you don't have more than one set per day
         //event category 1 is in office, event category 2 is out of office
@@ -1165,7 +1165,7 @@ function checkCategoryLimits($eventdata)
                 $event_starttime = date("H:i:00",strtotime($event_starttimeh.":".$event_starttimem.":"."00"));
                 $event_endtime = date("H:i:00",strtotime($event_endtimeh.":".$event_endtimem.":"."00"));
 
-                if( $event_starttime >= $limit['startTime'])
+                if($event_starttime >= $limit['startTime'])
                 {
                     $numToday = count($day);
 

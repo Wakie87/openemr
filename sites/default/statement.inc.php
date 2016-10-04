@@ -358,7 +358,7 @@ if($GLOBALS['show_aging_on_custom_statement']) {
   for ($x = 1; $x <= $num_appts; $x++) {
    $next_appoint_date = oeFormatShortDate($events[$j]['pc_eventDate']);
    $next_appoint_time = substr($events[$j]['pc_startTime'],0,5);
-   if(strlen(umname) != 0 ) {
+   if(strlen(umname) != 0) {
       $next_appoint_provider = $events[$j]['ufname'] . ' ' . $events[$j]['umname'] . ' ' .  $events[$j]['ulname'];
    }
    else

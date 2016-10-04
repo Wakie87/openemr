@@ -95,7 +95,7 @@ function pic_array($pid,$picture_directory) {
                  "join categories on categories.id = categories_to_documents.category_id " .
                  "where categories.name like ? and documents.foreign_id = ?";
     if ($query = sqlStatement($sql_query, array($picture_directory,$pid))) {
-      while( $results = sqlFetchArray($query) ) {
+      while($results = sqlFetchArray($query)) {
             array_push($pics,$results['id']);
         }
       }
@@ -113,7 +113,7 @@ function get_document_by_catg($pid,$doc_catg) {
 	    "AND cd.document_id = d.id " .
 	    "AND c.id = cd.category_id " .
 	    "AND c.name LIKE ? " .
-	    "ORDER BY d.date DESC LIMIT 1", array($pid, $doc_catg) );
+	    "ORDER BY d.date DESC LIMIT 1", array($pid, $doc_catg));
 	    }
 
 	return($result['id']);
@@ -128,7 +128,7 @@ function image_widget($doc_id,$doc_catg)
         $image_width = $GLOBALS['generate_doc_thumb'] == 1 ? '' : 'width=100';
         $extension = substr($image_file, strrpos($image_file,"."));
         $viewable_types = array('.png','.jpg','.jpeg','.png','.bmp','.PNG','.JPG','.JPEG','.PNG','.BMP'); // image ext supported by fancybox viewer
-        if ( in_array($extension,$viewable_types) ) { // extention matches list
+        if (in_array($extension,$viewable_types)) { // extention matches list
                 $to_url = "<td> <a href = $web_root" .
 				"/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id&as_file=false&original_file=true&disable_exit=false&show_original=true" .
 				"/tmp$extension" .  // Force image type URL for fancybo
@@ -144,8 +144,8 @@ function image_widget($doc_id,$doc_catg)
                     "&patient_id=$pid&document_id=$doc_id'" .
                     " onclick='top.restoreSession()' class='css_button_small'>" .
                     "<span>" .
-                    htmlspecialchars( xl("View"), ENT_QUOTES )."</a> &nbsp;" .
-					htmlspecialchars( "$doc_catg - $image_file", ENT_QUOTES ) .
+                    htmlspecialchars(xl("View"), ENT_QUOTES)."</a> &nbsp;" .
+					htmlspecialchars("$doc_catg - $image_file", ENT_QUOTES) .
                     "</span> </td>";
 		}
         echo "<table><tr>";
@@ -442,7 +442,7 @@ function setMyPatient() {
  parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
 <?php } // end setting new pid ?>
  parent.left_nav.syncRadios();
-<?php if ( (isset($_GET['set_pid']) ) && (isset($_GET['set_encounterid'])) && ( intval($_GET['set_encounterid']) > 0 ) ) {
+<?php if ((isset($_GET['set_pid'])) && (isset($_GET['set_encounterid'])) && (intval($_GET['set_encounterid']) > 0)) {
  $encounter = intval($_GET['set_encounterid']);
  $_SESSION['encounter'] = $encounter;
  $query_result = sqlQuery("SELECT `date` FROM `form_encounter` WHERE `encounter` = ?", array($encounter)); ?>
@@ -565,7 +565,7 @@ if ($thisauth): ?>
         endif; // portal_offsite_enable
         if (!($portalUserSetting)): // Show that the patient has not authorized portal access ?>
             <td style='padding-left:1em;'>
-                <?php echo htmlspecialchars( xl('Patient has not authorized the Patient Portal.'), ENT_NOQUOTES);?>
+                <?php echo htmlspecialchars(xl('Patient has not authorized the Patient Portal.'), ENT_NOQUOTES);?>
             </td>
         <?php endif;
         //Patient Portal
@@ -786,13 +786,13 @@ foreach (array('primary','secondary','tertiary') as $instype) {
   $query = "SELECT * FROM insurance_data WHERE " .
     "pid = ? AND type = ? " .
     "ORDER BY date DESC";
-  $res = sqlStatement($query, array($pid, $instype) );
-  while( $row = sqlFetchArray($res) ) {
-    if ($row['provider'] ) $insurance_count++;
+  $res = sqlStatement($query, array($pid, $instype));
+  while($row = sqlFetchArray($res)) {
+    if ($row['provider']) $insurance_count++;
   }
 }
 
-if ( $insurance_count > 0 ) {
+if ($insurance_count > 0) {
   // Insurance expand collapse widget
   $widgetTitle = xl("Insurance");
   $widgetLabel = "insurance";
@@ -807,7 +807,7 @@ if ( $insurance_count > 0 ) {
     $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass,
     $widgetAuth, $fixedWidth);
 
-  if ( $insurance_count > 0 ) {
+  if ($insurance_count > 0) {
 ?>
 
         <ul class="tabNav"><?php
@@ -818,12 +818,12 @@ if ( $insurance_count > 0 ) {
 						$query = "SELECT * FROM insurance_data WHERE " .
 						"pid = ? AND type = ? " .
 						"ORDER BY date DESC";
-						$res = sqlStatement($query, array($pid, $instype) );
+						$res = sqlStatement($query, array($pid, $instype));
 
 						$enddate = 'Present';
 
-						  while( $row = sqlFetchArray($res) ) {
-							if ($row['provider'] ) {
+						  while($row = sqlFetchArray($res)) {
+							if ($row['provider']) {
 
 								$ins_description  = ucfirst($instype);
 	                                                        $ins_description = xl($ins_description);
@@ -839,7 +839,7 @@ if ( $insurance_count > 0 ) {
 					}
 					// Display the eligibility tab
 					echo "<li><a href='#'>" .
-						htmlspecialchars( xl('Eligibility'), ENT_NOQUOTES) . "</a></li>";
+						htmlspecialchars(xl('Eligibility'), ENT_NOQUOTES) . "</a></li>";
 
 					?></ul><?php
 
@@ -854,9 +854,9 @@ if ( $insurance_count > 0 ) {
 						$query = "SELECT * FROM insurance_data WHERE " .
 						"pid = ? AND type = ? " .
 						"ORDER BY date DESC";
-						$res = sqlStatement($query, array($pid, $instype) );
-					  while( $row = sqlFetchArray($res) ) {
-						if ($row['provider'] ) {
+						$res = sqlStatement($query, array($pid, $instype));
+					  while($row = sqlFetchArray($res)) {
+						if ($row['provider']) {
 							?>
 								<div class="tab <?php echo $first ? 'current' : '' ?>">
 								<table border='0' cellpadding='0' width='100%'>
@@ -1005,7 +1005,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
                 </div>
 			</td>
 		</tr>
-                <?php if ( (acl_check('patients', 'med')) && ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_prw']) ) {
+                <?php if ((acl_check('patients', 'med')) && ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_prw'])) {
                 echo "<tr><td width='650px'>";
                 // patient reminders collapse widget
                 $widgetTitle = xl("Patient Reminders");
@@ -1062,7 +1062,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
     $fixedWidth = false;
     expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel , $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass, $widgetAuth, $fixedWidth);
        	$sql = "SELECT * FROM amendments WHERE pid = ? ORDER BY amendment_date DESC";
-  $result = sqlStatement($sql, array($pid) );
+  $result = sqlStatement($sql, array($pid));
 
   if (sqlNumRows($result) == 0) {
     echo " <table><tr>\n";
@@ -1097,7 +1097,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 			"JOIN procedure_order ON  procedure_report.procedure_order_id = procedure_order.procedure_order_id " .
 			"WHERE procedure_order.patient_id = ? " .
 			"ORDER BY procedure_report.date_collected DESC ";
-  $existLabdata = sqlQuery($spruch, array($pid) );
+  $existLabdata = sqlQuery($spruch, array($pid));
   if ($existLabdata) {
     $widgetAuth = true;
   }
@@ -1131,7 +1131,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
   $linkMethod = "html";
   $bodyClass = "notab";
   // check to see if any vitals exist
-  $existVitals = sqlQuery("SELECT * FROM form_vitals WHERE pid=?", array($pid) );
+  $existVitals = sqlQuery("SELECT * FROM form_vitals WHERE pid=?", array($pid));
   if ($existVitals) {
     $widgetAuth = true;
   }
@@ -1209,7 +1209,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 
     // If there is an ID Card or any Photos show the widget
     $photos = pic_array($pid, $GLOBALS['patient_photo_category_name']);
-    if ($photos or $idcard_doc_id )
+    if ($photos or $idcard_doc_id)
     {
         $widgetTitle = xl("ID Card") . '/' . xl("Photos");
         $widgetLabel = "photos";
@@ -1256,7 +1256,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
           if ($myrow2) {
           $parentId = $myrow2['id'];
           $query = "SELECT id, name FROM categories WHERE parent=?";
-          $resNew1 = sqlStatement($query, array($parentId) );
+          $resNew1 = sqlStatement($query, array($parentId));
           while ($myrows3 = sqlFetchArray($resNew1)) {
               $categoryId = $myrows3['id'];
               $nameDoc = $myrows3['name'];
@@ -1267,7 +1267,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
                    "WHERE categories_to_documents.category_id=? " .
                    "AND documents.foreign_id=? " .
                    "ORDER BY documents.date DESC";
-              $resNew2 = sqlStatement($query, array($categoryId, $pid) );
+              $resNew2 = sqlStatement($query, array($categoryId, $pid));
               $limitCounter = 0; // limit to one entry per category
               while (($myrows4 = sqlFetchArray($resNew2)) && ($limitCounter == 0)) {
                   $dateTimeDoc = $myrows4['date'];
@@ -1320,7 +1320,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 
      // Show Clinical Reminders for any user that has rules that are permitted.
      $clin_rem_check = resolve_rules_sql('','0',TRUE,'',$_SESSION['authUser']);
-     if ( (!empty($clin_rem_check)) && ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_crw']) ) {
+     if ((!empty($clin_rem_check)) && ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_crw'])) {
         // clinical summary expand collapse widget
         $widgetTitle = xl("Clinical Reminders");
         $widgetLabel = "clinical_reminders";
@@ -1475,7 +1475,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
             //////
         }
         if ($resNotNull) { //////
-            if ( $count < 1 ) {
+            if ($count < 1) {
                 echo "&nbsp;&nbsp;" . htmlspecialchars(xl('None'),ENT_NOQUOTES);
             } else { //////
               if($extraApptDate) echo "<div style='color:#0000cc;'><b>" . attr($extraApptDate) . " ( + ) </b></div>";
@@ -1539,7 +1539,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
  	$direction = "ASC";
 	if ($GLOBALS['num_past_appointments_to_show'] < 0) {
 	   $direction = "DESC";
-	   ($showpast = -1 * $GLOBALS['num_past_appointments_to_show'] );
+	   ($showpast = -1 * $GLOBALS['num_past_appointments_to_show']);
 	   }
 	   else
 	   {
@@ -1557,7 +1557,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 	  "ORDER BY e.pc_eventDate $direction , e.pc_startTime DESC " .
       "LIMIT " . $showpast;
 	
-     $pres = sqlStatement($query, array($pid) );
+     $pres = sqlStatement($query, array($pid));
 
 	// appointments expand collapse widget
         $widgetTitle = xl("Past Appointments");
@@ -1591,7 +1591,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
             echo htmlspecialchars($row['fname'] . " " . $row['lname'],ENT_NOQUOTES) . "</a><br>\n";
         }
         if (isset($pres) && $res != null) {
-           if ( $count < 1 ) {
+           if ($count < 1) {
                echo "&nbsp;&nbsp;" . htmlspecialchars(xl('None'),ENT_NOQUOTES);
            }
         echo "</div>";
@@ -1631,7 +1631,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 				"FROM forms " .
 				"WHERE pid = ? " .
 				"AND formdir = ? ";
-			$existTracks = sqlQuery($spruch, array($pid, "track_anything") );
+			$existTracks = sqlQuery($spruch, array($pid, "track_anything"));
 
 			$fixedWidth = false;
 			expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,

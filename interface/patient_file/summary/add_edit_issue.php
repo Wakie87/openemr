@@ -60,8 +60,8 @@ $thisenc = 0 + (empty($_REQUEST['thisenc']) ? 0 : $_REQUEST['thisenc']);
 // A nonempty thistype is an issue type to be forced for a new issue.
 $thistype = empty($_REQUEST['thistype']) ? '' : $_REQUEST['thistype'];
 
-if ($issue && !acl_check('patients','med','','write') ) die(xlt("Edit is not authorized!"));
-if ( !acl_check('patients','med','',array('write','addonly') )) die(xlt("Add is not authorized!"));
+if ($issue && !acl_check('patients','med','','write')) die(xlt("Edit is not authorized!"));
+if (!acl_check('patients','med','',array('write','addonly'))) die(xlt("Add is not authorized!"));
 
 $tmp = getPatientData($thispid, "squad");
 if ($tmp['squad'] && ! acl_check('squads', $tmp['squad']))
@@ -288,7 +288,7 @@ if ($_POST['form_save']) {
       sqlStatement('UPDATE prescriptions SET '
         . 'medication = 0 where patient_id = ? '
         . " and upper(trim(drug)) = ? "
-        . ' and medication = 1', array($thispid,strtoupper($_POST['form_title'])) );
+        . ' and medication = 1', array($thispid,strtoupper($_POST['form_title'])));
     }
 
   } else {
@@ -330,8 +330,8 @@ if ($_POST['form_save']) {
   setListTouch($thispid,$text_type);
 
   if ($text_type == 'football_injury') issue_football_injury_save($issue);
-  if ($text_type == 'ippf_gcac'      ) issue_ippf_gcac_save($issue);
-  if ($text_type == 'contraceptive'  ) issue_ippf_con_save($issue);
+  if ($text_type == 'ippf_gcac') issue_ippf_gcac_save($issue);
+  if ($text_type == 'contraceptive') issue_ippf_con_save($issue);
 
   // If requested, link the issue to a specified encounter.
   if ($thisenc) {
@@ -501,7 +501,7 @@ ActiveIssueCodeRecycleFn($thispid, $ISSUE_TYPES);
   }
   if ($ISSUE_TYPES['ippf_gcac'] && !$_POST['form_save']) {
     // Generate more of these for gcac and contraceptive fields.
-    if (empty($issue) || $irow['type'] == 'ippf_gcac'    ) issue_ippf_gcac_newtype();
+    if (empty($issue) || $irow['type'] == 'ippf_gcac') issue_ippf_gcac_newtype();
     if (empty($issue) || $irow['type'] == 'contraceptive') issue_ippf_con_newtype();
   }
 ?>

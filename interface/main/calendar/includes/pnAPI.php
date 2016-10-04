@@ -34,7 +34,7 @@
  */
 
 if (phpversion() >= "4.2.0") {
-	if ( ini_get('register_globals') != 1 ) {
+	if (ini_get('register_globals') != 1) {
 		$supers = array('_REQUEST',
                                 '_ENV',
                                 '_SERVER',
@@ -45,13 +45,13 @@ if (phpversion() >= "4.2.0") {
                                 '_FILES',
                                 '_GLOBALS' );
 
-		foreach( $supers as $__s) {
-			if ( (isset($$__s) == true) && (is_array( $$__s ) == true) ) extract( $$__s, EXTR_OVERWRITE );
+		foreach($supers as $__s) {
+			if ((isset($$__s) == true) && (is_array($$__s) == true)) extract($$__s, EXTR_OVERWRITE);
 		}
 		unset($supers);
 	}
 } else {
-	if ( ini_get('register_globals') != 1 ) {
+	if (ini_get('register_globals') != 1) {
 
 		$supers = array('HTTP_POST_VARS',
                                 'HTTP_GET_VARS',
@@ -62,8 +62,8 @@ if (phpversion() >= "4.2.0") {
                                 'HTTP_ENV_VARS'
                                  );
 
-		foreach( $supers as $__s) {
-			if ( (isset($$__s) == true) && (is_array( $$__s ) == true) ) extract( $$__s, EXTR_OVERWRITE );
+		foreach($supers as $__s) {
+			if ((isset($$__s) == true) && (is_array($$__s) == true)) extract($$__s, EXTR_OVERWRITE);
 		}
 		unset($supers);
 	}
@@ -445,7 +445,7 @@ function pnInit()
 
         $pnAntiCrackerMode = pnConfigGetVar('pnAntiCracker');
 
-        if ( $pnAntiCrackerMode == 1 ) {
+        if ($pnAntiCrackerMode == 1) {
                 pnSecureInput();
         }
     // Banner system
@@ -1097,7 +1097,7 @@ function pnGetBaseURL()
         $server = $HTTP_SERVER_VARS['HTTP_HOST'];
     }
     // IIS sets HTTPS=off
-    if ( (isset($HTTP_SERVER_VARS['HTTPS']) && $HTTP_SERVER_VARS['HTTPS'] != 'off') || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ) {
+    if ((isset($HTTP_SERVER_VARS['HTTPS']) && $HTTP_SERVER_VARS['HTTPS'] != 'off') || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')) {
         $proto = 'https://';
     } else {
         $proto = 'http://';
@@ -1225,7 +1225,7 @@ function pnSecureInput() {
 
 //require('includes/htmlfilter.inc');
 
-if ( phpversion() >= "4.2.0" ) {
+if (phpversion() >= "4.2.0") {
 
 $HTTP_GET_VARS          = $_GET;
 $HTTP_POST_VARS         = $_POST;
@@ -1273,7 +1273,7 @@ if (count($HTTP_GET_VARS) > 0) {
 /*        Lets now sanitize the POST vars
  */
 
-if ( count($HTTP_POST_VARS) > 0) {
+if (count($HTTP_POST_VARS) > 0) {
 
         foreach ($HTTP_POST_VARS as $secvalue) {
         	if (!is_array($secvalue)) {
@@ -1299,7 +1299,7 @@ if ( count($HTTP_POST_VARS) > 0) {
 /*        Lets now sanitize the COOKIE vars
  */
 
-if ( count($HTTP_COOKIE_VARS) > 0) {
+if (count($HTTP_COOKIE_VARS) > 0) {
 
         foreach ($HTTP_COOKIE_VARS as $secvalue) {
 			if (!is_array($secvalue)) {
@@ -1346,10 +1346,10 @@ $curver = str_replace(".","", phpversion());
         }
 }
 
-function pnMailHackAttempt( $detecting_file        =        "(no filename available)",
+function pnMailHackAttempt($detecting_file        =        "(no filename available)",
                             $detecting_line        =        "(no line number available)",
                             $hack_type             =        "(no type given)",
-                            $message               =        "(no message given)" ) {
+                            $message               =        "(no message given)") {
 
 # Backwards compatibility fix with php 4.0.x and 4.1.x or greater Neo
 
@@ -1379,8 +1379,8 @@ if (phpversion() >= "4.2.0") {
 
 }
         $output         =        "Attention site admin of ".pnConfigGetVar('sitename').",\n";
-        $output        .=        "On ".ml_ftime( _DATEBRIEF, ( GetUserTime( time( ) ) ) );
-        $output        .=        " at ". ml_ftime( _TIMEBRIEF, ( GetUserTime( time( ) ) ) );
+        $output        .=        "On ".ml_ftime(_DATEBRIEF, (GetUserTime(time())));
+        $output        .=        " at ". ml_ftime(_TIMEBRIEF, (GetUserTime(time())));
         $output        .=        " the Postnuke code has detected that somebody tried to"
                            ." send information to your site that may have been intended"
                            ." as a hack. Do not panic, it may be harmless: maybe this"
@@ -1397,7 +1397,7 @@ if (phpversion() >= "4.2.0") {
         $output        .=        "Information about this user:\n";
         $output        .=        "=====================================\n";
 
-        if ( !pnUserLoggedIn() ) {
+        if (!pnUserLoggedIn()) {
                 $output        .=  "This person is not logged in.\n";
         } else {
                 $output .=        "Postnuke username:  ".pnUserGetVar('uname') ."\n"
@@ -1408,16 +1408,16 @@ if (phpversion() >= "4.2.0") {
         $output        .=        "IP numbers: [note: when you are dealing with a real cracker "
                            ."these IP numbers might not be from the actual computer he is "
                            ."working on]"
-                           ."\n\t IP according to HTTP_CLIENT_IP: ".getenv( 'HTTP_CLIENT_IP' )
-                           ."\n\t IP according to REMOTE_ADDR: ".getenv( 'REMOTE_ADDR' )
-                           ."\n\t IP according to GetHostByName(\$REMOTE_ADDR): ".GetHostByName( $REMOTE_ADDR )
+                           ."\n\t IP according to HTTP_CLIENT_IP: ".getenv('HTTP_CLIENT_IP')
+                           ."\n\t IP according to REMOTE_ADDR: ".getenv('REMOTE_ADDR')
+                           ."\n\t IP according to GetHostByName(\$REMOTE_ADDR): ".GetHostByName($REMOTE_ADDR)
                            ."\n\n";
 
         $output .=        "\n=====================================\n";
         $output .=        "Information in the \$_REQUEST array\n";
         $output .=        "=====================================\n";
 
-        while ( list ( $key, $value ) = each ( $_rv ) ) {
+        while (list ($key, $value) = each ($_rv)) {
                 $output .= "REQUEST * $key : $value\n";
         }
 
@@ -1427,7 +1427,7 @@ if (phpversion() >= "4.2.0") {
         $output .=        "in the URL string or in a 'GET' type form.\n";
         $output        .=        "=====================================\n";
 
-        while ( list ( $key, $value ) = each ( $_gv ) ) {
+        while (list ($key, $value) = each ($_gv)) {
                 $output .= "GET * $key : $value\n";
         }
 
@@ -1436,7 +1436,7 @@ if (phpversion() >= "4.2.0") {
         $output        .=        "This is about visible and invisible form elements.\n";
         $output        .=        "=====================================\n";
 
-        while ( list ( $key, $value ) = each ( $_pv ) ) {
+        while (list ($key, $value) = each ($_pv)) {
                 $output .= "POST * $key : $value\n";
         }
 
@@ -1448,7 +1448,7 @@ if (phpversion() >= "4.2.0") {
         $output        .=        "HTTP_USER_AGENT: ".$HTTP_USER_AGENT ."\n";
 
         $browser = (array) get_browser();
-        while ( list ( $key, $value ) = each ( $browser ) ) {
+        while (list ($key, $value) = each ($browser)) {
                 $output .= "BROWSER * $key : $value\n";
         }
 
@@ -1456,7 +1456,7 @@ if (phpversion() >= "4.2.0") {
         $output        .=        "Information in the \$_SERVER array\n";
         $output        .=        "=====================================\n";
 
-        while ( list ( $key, $value ) = each ( $_sv ) ) {
+        while (list ($key, $value) = each ($_sv)) {
                 $output .= "SERVER * $key : $value\n";
         }
 
@@ -1464,7 +1464,7 @@ if (phpversion() >= "4.2.0") {
         $output        .=        "Information in the \$_ENV array\n";
         $output        .=        "=====================================\n";
 
-        while ( list ( $key, $value ) = each ( $_ev ) ) {
+        while (list ($key, $value) = each ($_ev)) {
                 $output .= "ENV * $key : $value\n";
         }
 
@@ -1472,7 +1472,7 @@ if (phpversion() >= "4.2.0") {
         $output        .=  "Information in the \$_COOKIE array\n";
         $output        .=        "=====================================\n";
 
-        while ( list ( $key, $value ) = each ( $_cv ) )  {
+        while (list ($key, $value) = each ($_cv))  {
                 $output .= "COOKIE * $key : $value\n";
         }
 
@@ -1480,7 +1480,7 @@ if (phpversion() >= "4.2.0") {
         $output        .=        "Information in the \$_FILES array\n";
         $output        .=        "=====================================\n";
 
-        while ( list ( $key, $value ) = each ( $_fv ) ) {
+        while (list ($key, $value) = each ($_fv)) {
                 $output .= "FILES * $key : $value\n";
         }
 
@@ -1490,7 +1490,7 @@ if (phpversion() >= "4.2.0") {
         $output .=  "  starting with PNSV are PostNukeSessionVariables.\n";
         $output        .=        "=====================================\n";
 
-        while ( list ( $key, $value ) = each ( $_snv ) ) {
+        while (list ($key, $value) = each ($_snv)) {
                 $output .= "SESSION * $key : $value\n";
         }
 
@@ -1500,7 +1500,7 @@ if (phpversion() >= "4.2.0") {
         $headers = "From: $sitename <$adminmail>\n"
                           ."X-Priority: 1 (Highest)\n";
 
-        pnMail($adminmail, 'Attempted hack on your site? (type: '.$hack_type.')', $output, $headers );
+        pnMail($adminmail, 'Attempted hack on your site? (type: '.$hack_type.')', $output, $headers);
 
         return;
 }

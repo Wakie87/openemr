@@ -15,16 +15,16 @@ class RuleCriteriaSex extends RuleCriteria {
     
     var $value;
 
-    function __construct( $value ) {
+    function __construct($value) {
         $this->value = $value;
     }
 
     function getRequirements() {
-        return xl_list_label( $this->value, ENT_NOQUOTES );
+        return xl_list_label($this->value, ENT_NOQUOTES);
     }
 
     function getTitle() {
-        return xl( "Sex" );
+        return xl("Sex");
     }
 
     function getView() {
@@ -32,7 +32,7 @@ class RuleCriteriaSex extends RuleCriteria {
     }
 
     function getOptions() {
-        return getListOptionsArray( 'sex' );
+        return getListOptionsArray('sex');
     }
 
     function getDbView() {

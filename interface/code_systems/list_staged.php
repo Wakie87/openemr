@@ -78,7 +78,7 @@ $current_name = '';
 $current_checksum = '';
 
 // Ordering by the imported_date with tiebreaker being the revision_date
-$sqlReturn = sqlQuery("SELECT DATE_FORMAT(`revision_date`,'%Y-%m-%d') as `revision_date`, `revision_version`, `name`, `file_checksum` FROM `standardized_tables_track` WHERE upper(`name`) = ? ORDER BY `imported_date` DESC, `revision_date` DESC", array($db) );
+$sqlReturn = sqlQuery("SELECT DATE_FORMAT(`revision_date`,'%Y-%m-%d') as `revision_date`, `revision_version`, `name`, `file_checksum` FROM `standardized_tables_track` WHERE upper(`name`) = ? ORDER BY `imported_date` DESC, `revision_date` DESC", array($db));
 if (!empty($sqlReturn)) {
     $installed_flag = 1;
     $current_name = $sqlReturn['name'];
@@ -212,7 +212,7 @@ if (is_dir($mainPATH)) {
                 // (and if a hit, then it is a pass)
                 // (even if two duplicate files that are in different releases, will still work since chooses most recent)
                 $file_checksum = md5(file_get_contents($file));
-    	        $sqlReturn = sqlQuery($qry_str, array($db, basename($file), $file_checksum) );
+    	        $sqlReturn = sqlQuery($qry_str, array($db, basename($file), $file_checksum));
 
 	        if (!empty($sqlReturn)) {
                     $version = $sqlReturn['load_source'];
@@ -261,7 +261,7 @@ if ($supported_file === 1) {
   $success_flag=1;
 
   // Only allow 1 staged revision for the SNOMED and RXNORM imports
-  if ( ($db=="SNOMED" || $db=="RXNORM") && (count($revisions) > 1) ) {
+  if (($db=="SNOMED" || $db=="RXNORM") && (count($revisions) > 1)) {
     ?>
       <div class="error_msg"><?php echo xlt("The number of staged files is incorrect. Only place the file that you wish to install/upgrade to."); ?></div>
       <div class="stg msg"><?php echo xlt("Follow these instructions for installing or upgrading the following database") . ": " . text($db); ?><span class="msg" id="<?php echo attr($db); ?>_instrmsg">?</span></div>
@@ -282,7 +282,7 @@ if ($supported_file === 1) {
       $file_revision_date = $temp_file_revision_date;
     }
     else {
-      if ( ($file_revision_date != $temp_file_revision_date) && ($success_flag === 1) ) {
+      if (($file_revision_date != $temp_file_revision_date) && ($success_flag === 1)) {
         ?>
         <div class="error_msg"><?php echo xlt("The staged files release dates are not all from the same release."); ?></div>
         <div class="stg msg"><?php echo xlt("Follow these instructions for installing or upgrading the following database") . ": " . text($db); ?><span class="msg" id="<?php echo attr($db); ?>_instrmsg">?</span></div>
@@ -296,7 +296,7 @@ if ($supported_file === 1) {
       $file_revision = $temp_file_revision;
     }
     else {
-      if ( ($file_revision != $temp_file_revision) && ($success_flag === 1) ) {
+      if (($file_revision != $temp_file_revision) && ($success_flag === 1)) {
         ?>
         <div class="error_msg"><?php echo xlt("The staged files revisions are not all from the same release."); ?></div>
         <div class="stg msg"><?php echo xlt("Follow these instructions for installing or upgrading the following database") . ": " . text($db); ?><span class="msg" id="<?php echo attr($db); ?>_instrmsg">?</span></div>
@@ -313,13 +313,13 @@ if ($supported_file === 1) {
   // Determine and enforce only a certain number of files to be staged
   if ($success_flag === 1) {
     $number_files = 1;
-    $sql_query_ret = sqlStatement("SELECT * FROM `supported_external_dataloads` WHERE `load_type` = ? AND `load_source` = ? AND `load_release_date` = ?", array($db,$file_revision,$file_revision_date) );
+    $sql_query_ret = sqlStatement("SELECT * FROM `supported_external_dataloads` WHERE `load_type` = ? AND `load_source` = ? AND `load_release_date` = ?", array($db,$file_revision,$file_revision_date));
     $number_files_temp = sqlNumRows($sql_query_ret);
     if ($number_files_temp > 1) {
       // To ensure number_files is set to 1 for imports that are not tracked in the supported_external_dataloads table
       $number_files = $number_files_temp;
     }
-    if ( count($revisions) != $number_files ) {
+    if (count($revisions) != $number_files) {
       ?>
       <div class="error_msg"><?php echo xlt("The number of staged files is incorrect. Only place the files that you wish to install/upgrade to."); ?></div>
       <div class="stg msg"><?php echo xlt("Follow these instructions for installing or upgrading the following database") . ": " . text($db); ?><span class="msg" id="<?php echo attr($db); ?>_instrmsg">?</span></div>
@@ -356,7 +356,7 @@ if ($supported_file === 1) {
             <div class="error_msg"><?php echo xlt("The installed International SNOMED version is not compatible with the staged US Extension SNOMED package."); ?></div>
             <div class="stg msg"><?php echo xlt("Follow these instructions for installing or upgrading the following database") . ": " . text($db); ?><span class="msg" id="<?php echo attr($db); ?>_instrmsg">?</span></div>
             <?php
-        } else if ( ($current_name=="SNOMED" && $current_version=="International:English" && $file_revision=="US Extension") && ((strtotime($current_revision." +6 month") < strtotime($file_revision_date)) || (strtotime($current_revision." -6 month") > strtotime($file_revision_date))) ) {
+        } else if (($current_name=="SNOMED" && $current_version=="International:English" && $file_revision=="US Extension") && ((strtotime($current_revision." +6 month") < strtotime($file_revision_date)) || (strtotime($current_revision." -6 month") > strtotime($file_revision_date)))) {
             // The Staged US Extension SNOMED file is not compatible with the current SNOMED International Package (ie. the International package is outdated)
             ?>
             <div class="error_msg"><?php echo xlt("The installed International SNOMED version is out of date and not compatible with the staged US Extension SNOMED file."); ?></div>
@@ -368,13 +368,13 @@ if ($supported_file === 1) {
             <div class="stg"><?php echo text(basename($file_revision_path)); ?> <?php echo xlt("is an extension of the following database") . ": " . text($db); ?></div>
             <?php
             $action=xl("UPGRADE");
-        } else if ( (strtotime($current_revision) == strtotime($file_revision_date)) ) {
+        } else if ((strtotime($current_revision) == strtotime($file_revision_date))) {
             // Note the exception here when installing US Extension
 	    ?>
 	    <div class="error_msg"><?php echo xlt("The installed version and the staged files are the same."); ?></div>
             <div class="stg msg"><?php echo xlt("Follow these instructions for installing or upgrading the following database") . ": " . text($db); ?><span class="msg" id="<?php echo attr($db); ?>_instrmsg">?</span></div>
 	    <?php
-        } else if ( strtotime($current_revision) > strtotime($file_revision_date) ) {
+        } else if (strtotime($current_revision) > strtotime($file_revision_date)) {
             // Note the exception here when installing US Extension
             ?>
             <div class="error_msg"><?php echo xlt("The installed version is a more recent version than the staged files."); ?></div>

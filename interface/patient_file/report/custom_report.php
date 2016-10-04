@@ -258,7 +258,7 @@ else { // not printable
         $last_key ='';
         //ksort($ar);
         foreach ($ar as $key_search => $val_search) {
-            if ($key_search == 'pdf' || $key_search == '' ) continue;
+            if ($key_search == 'pdf' || $key_search == '') continue;
             if (($auth_notes_a || $auth_notes || $auth_coding_a || $auth_coding || $auth_med || $auth_relaxed)) {
                         preg_match('/^(.*)_(\d+)$/', $key_search, $res_search);
                         $form_id_arr[] = add_escape_custom($res_search[2]);
@@ -434,7 +434,7 @@ foreach ($ar as $key => $val) {
                   }
                   else {
                      if (!empty($row['code_text_short'])) {
-                        $vaccine_display = htmlspecialchars( xl($row['code_text_short']), ENT_NOQUOTES);
+                        $vaccine_display = htmlspecialchars(xl($row['code_text_short']), ENT_NOQUOTES);
                      }
                      else {
                         $vaccine_display = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
@@ -720,8 +720,8 @@ foreach ($ar as $key => $val) {
                 else
                   call_user_func($res[1] . "_report", $pid, $form_encounter, $N, $form_id);
                 
-                $esign = $esignApi->createFormESign( $formId, $res[1], $form_encounter );
-                if ( $esign->isLogViewable("report") ) {
+                $esign = $esignApi->createFormESign($formId, $res[1], $form_encounter);
+                if ($esign->isLogViewable("report")) {
                     $esign->renderLog();
                 }
                 ?>
@@ -796,7 +796,7 @@ else {
 </body>
 <?php if (!$printable) { // Set up translated strings for use by interactive search ?>
 <script type="text/javascript">
-var xl_string = <?php echo json_encode( array(
+var xl_string = <?php echo json_encode(array(
 	'spcl_chars' => xla('Special characters are not allowed').'.',
 	'not_found'  => xla('No results found').'.',
 	'results'    => xla('Showing result'),

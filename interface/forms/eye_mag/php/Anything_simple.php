@@ -402,7 +402,7 @@
                         $reg = Menu_myGetRegistered();
                         if (!empty($reg)) {
                             $StringEcho= '<li class="dropdown">';
-                            if ( $encounterLocked === false || !(isset($encounterLocked))) {
+                            if ($encounterLocked === false || !(isset($encounterLocked))) {
                                 foreach ($reg as $entry) {
                                     $new_category = trim($entry['category']);
                                     $new_nickname = trim($entry['nickname']);

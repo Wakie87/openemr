@@ -59,7 +59,7 @@ function edih_php_inivals() {
  */
 function edih_disp_log() {
 	$lfn = '';
-	if ( isset($_GET['log_select']) ) {
+	if (isset($_GET['log_select'])) {
 		$lfn = filter_input(INPUT_GET, 'log_select', FILTER_SANITIZE_STRING);
 	}
 	$str_html = csv_log_html($lfn);
@@ -69,11 +69,11 @@ function edih_disp_log() {
 function edih_disp_logfiles() {
 	$str_html = '';
 	$lst = true;
-	if ( isset($_GET['loglist']) ) {
+	if (isset($_GET['loglist'])) {
 		// loglist: 'yes'
 		$lval = filter_input(INPUT_GET, 'loglist', FILTER_SANITIZE_STRING);
 		$lst = ($lval == 'yes') ? true : false;
-	} elseif ( isset($_GET['archivelog']) ) {
+	} elseif (isset($_GET['archivelog'])) {
 		// archivelog: 'yes'
 		$lval = filter_input(INPUT_GET, 'archivelog', FILTER_SANITIZE_STRING);
 		$lst = ($lval == 'yes') ? false : true;
@@ -93,12 +93,12 @@ function edih_disp_logfiles() {
  */
 function edih_user_notes() {
 	//
-	if ( isset($_GET['getnotes']) ) {
+	if (isset($_GET['getnotes'])) {
 		$getnt = filter_input(INPUT_GET, 'getnotes', FILTER_SANITIZE_STRING);
 		if ($getnt == 'yes') {
 			$str_html = csv_notes_file();
 		}
-	} elseif ( isset($_POST['notes_hidden']) && isset($_POST['txtnotes']) ) {
+	} elseif (isset($_POST['notes_hidden']) && isset($_POST['txtnotes'])) {
 		$putnt = filter_input(INPUT_POST, 'putnotes', FILTER_SANITIZE_STRING);
 		if ($putnt == 'yes') {
 			$notetext = trim($_POST['txtnotes']);
@@ -261,7 +261,7 @@ function edih_disp_file_process() {
 		csv_edihist_log("edih_disp_file_process $dbg_str");
 	}
 	//
-	if (!isset($_GET['ProcessFiles']) ) {
+	if (!isset($_GET['ProcessFiles'])) {
 		// should only be called with this value existing
 		$str_html = "Error: invalid value for Process New <br />".PHP_EOL;
 		return $str_html;
@@ -304,7 +304,7 @@ function edih_disp_file_process() {
         //
 		$upload_ar = csv_newfile_list($tp);
 		//
-		if ( is_array($upload_ar) && count($upload_ar) ) {
+		if (is_array($upload_ar) && count($upload_ar)) {
 			$dirct = count($upload_ar);
 			if ($htm) {
 				$dtl = ($er) ? "(claims: errors only)" : "(claims: all)";
@@ -346,9 +346,9 @@ function edih_disp_file_process() {
 function edih_disp_file_upload() {
 	// multiple file upload
 	$str_html = '';
-	if ( isset($_FILES) && count($_FILES) ) {
+	if (isset($_FILES) && count($_FILES)) {
 		$f_array = edih_upload_files();
-		if ( is_array($f_array) && count($f_array) ) {
+		if (is_array($f_array) && count($f_array)) {
 			$str_html .= edih_sort_upload($f_array);
 		} else {
 			$str_html .= "no files accepted <br />".PHP_EOL;
@@ -405,7 +405,7 @@ function edih_disp_x12trans() {
 	//					$fn	& $ft $ pid										$trace & $rsptype
 	//
 	$str_htm = '';
-	if ( isset($_GET['gtbl']) ) {
+	if (isset($_GET['gtbl'])) {
 		$qs = filter_input(INPUT_GET, 'gtbl', FILTER_SANITIZE_STRING);
 	}
 	if (!$qs) {
@@ -466,7 +466,7 @@ function edih_disp_x12trans() {
 				// this claim payment
 				$str_htm .= edih_835_html($fn, '', $clm01, $summary);
 			}
-		} elseif ( strpos('|f270|f271|f276|f277|f278', $ft) ) {
+		} elseif (strpos('|f270|f271|f276|f277|f278', $ft)) {
 			if ($fmt == 'seg') {
 				if ($trace && $rsptype) {
 					// 270|276|278|837 claim or request segments
@@ -571,7 +571,7 @@ function edih_disp_x12file() {
 	$str_htm = '';
 	$fn = $ft = $icn = $trace = $rsptype = $format = '';
 	//
-	if ( isset($_POST['x12_html']) ) {
+	if (isset($_POST['x12_html'])) {
 		$htmval = filter_input(INPUT_POST, 'x12_html', FILTER_SANITIZE_STRING);
 		$format = ($htmval == 'html') ? 'htm' : 'seg';
 		$upldir = csv_edih_tmpdir();
@@ -579,14 +579,14 @@ function edih_disp_x12file() {
 		$format = 'seg';
 	}
 	// post request from x12 file tab
-	if ( count($_FILES) && isset($_FILES['fileUplx12']) ) {
+	if (count($_FILES) && isset($_FILES['fileUplx12'])) {
 		$fnupl = htmlentities($_FILES['fileUplx12']['name']);
 		// the upload files validator
 		$f_array = edih_upload_files();
 		//		
-		if ( is_array($f_array) && count($f_array) ) {
+		if (is_array($f_array) && count($f_array)) {
 			// was file rejected?
-			if ( isset($f_array['reject']) ) {
+			if (isset($f_array['reject'])) {
 				$fn = (count($f_array['reject'][0])) ? $f_array['reject'][0]['name'] : '';
 				$cmt = (count($f_array['reject'][0])) ? $f_array['reject'][0]['comment'] : '';
 				//$str_html = edih_html_heading('error');
@@ -617,7 +617,7 @@ function edih_disp_x12file() {
 			csv_edihist_log("edih_disp_x12file: File not accepted $fnupl");
 			return $str_htm;
 		}
-	} elseif ( isset($_GET['gtbl']) && $_GET['gtbl'] == 'file') {
+	} elseif (isset($_GET['gtbl']) && $_GET['gtbl'] == 'file') {
 		// this is a GET request from csv files table
 		// assemble variables
 		$fn = isset($_GET['fname']) ? filter_input(INPUT_GET, 'fname', FILTER_SANITIZE_STRING) : '';
@@ -666,7 +666,7 @@ function edih_disp_x12file() {
 		return $str_htm;
 	}
 	//
-	if ( $format == 'seg' ) {
+	if ($format == 'seg') {
 		if ($ft == 'f835' && $trace) {
 			$str_htm .= edih_display_text($fn, $ft, $trace, true);
 		} elseif ($icn) {
@@ -728,8 +728,8 @@ function edih_disp_csvtable() {
 	// debug
 	csv_edihist_log("edih_disp_csvtable: $csvfile period $prd datestart $dts dateend $dte");
 	//
-	if ( $dts && strpos($dts, '-') != 4 ) {
-		if ( strlen($_GET['csv_date_start']) == 10 && strpos($_GET['csv_date_start'], '/') == 4 ) {
+	if ($dts && strpos($dts, '-') != 4) {
+		if (strlen($_GET['csv_date_start']) == 10 && strpos($_GET['csv_date_start'], '/') == 4) {
 			$dts = str_replace('/', '-', $dts);
 		} else {
 			$str_html = "<p>Date $dts must be in YYYY-MM-DD format, no / or . please</p>".PHP_EOL;
@@ -737,14 +737,14 @@ function edih_disp_csvtable() {
 			return $str_html;
 		}
 	}
-	if ( $dte && strpos($dte, '-') != 4 ) {
-		if ( strlen($_GET['csv_date_end']) == 10 && strpos($_GET['csv_date_end'], '/') == 4 ) {
+	if ($dte && strpos($dte, '-') != 4) {
+		if (strlen($_GET['csv_date_end']) == 10 && strpos($_GET['csv_date_end'], '/') == 4) {
 			$dte = str_replace('/', '-', $dte);
 		} else {
 			$dte = '';
 		}
 	}
-	if ( !$csvfile || $csvfile == NULL || $csvfile === FALSE ) {
+	if (!$csvfile || $csvfile == NULL || $csvfile === FALSE) {
 		// here we have an error and must quit
 		$str_html = "<p>Error in CSV table name </p>".PHP_EOL;
 		return $str_html;
@@ -752,7 +752,7 @@ function edih_disp_csvtable() {
 		$tp_ar = explode('_', $csvfile);
 		$tbl_type = ($tp_ar[0] == 'claims') ? 'claim' : 'file';
 		$f_type = strval($tp_ar[1]);
-		if ( ctype_digit($f_type) ) {
+		if (ctype_digit($f_type)) {
 			$f_type = 'f'.$f_type;
 		}
 	}
@@ -789,7 +789,7 @@ function edih_disp_835_processed($erasavename) {
     //
     if ($hd = opendir($eradir)) {
 		while (false !== ($entry = readdir($hd))) {
-			if (strncmp($entry, $erasavename, $srchlen) === 0 ) {
+			if (strncmp($entry, $erasavename, $srchlen) === 0) {
 				$found = true;
 				break;
 			}
@@ -803,7 +803,7 @@ function edih_disp_835_processed($erasavename) {
 
 function edih_disp_clmhist() {
 	//
-	if ( isset($_GET['hist_enctr']) ) {
+	if (isset($_GET['hist_enctr'])) {
 		$enctr = filter_input(INPUT_GET, 'hist_enctr', FILTER_SANITIZE_STRING);
 		if ($enctr) {
 			$str_html = edih_claim_history($enctr);
@@ -913,7 +913,7 @@ function edih_disp_era_processed() {
     if ($ckno) {
         $srchval = 'ePay - '.$ckno;
         // reference like '%".$srchval."%'"
-        $row = sqlQuery("SELECT reference, pay_total, global_amount FROM ar_session WHERE reference = ?", array($srchval) );
+        $row = sqlQuery("SELECT reference, pay_total, global_amount FROM ar_session WHERE reference = ?", array($srchval));
         if (!empty($row)) {
             $str_html .= "trace {$row['reference']} total \${$row['pay_total']}";
             if ($row['global_amount'] === '0') {

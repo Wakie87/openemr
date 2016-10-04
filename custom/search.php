@@ -32,11 +32,11 @@ require_once("$srcdir/sql.inc");
 	function doSelectorButton() {
 		var selector = document.getElementById('selectorButton');
 		var value;
-		if ( selector.value == "<?php echo htmlspecialchars( xl('Select All'), ENT_QUOTES); ?>" ) {
-			selector.value = "<?php echo htmlspecialchars( xl('Unselect All'), ENT_QUOTES); ?>";
+		if ( selector.value == "<?php echo htmlspecialchars(xl('Select All'), ENT_QUOTES); ?>" ) {
+			selector.value = "<?php echo htmlspecialchars(xl('Unselect All'), ENT_QUOTES); ?>";
 			value = true;
 		} else {
-			selector.value = "<?php echo htmlspecialchars( xl('Select All'), ENT_QUOTES); ?>";
+			selector.value = "<?php echo htmlspecialchars(xl('Select All'), ENT_QUOTES); ?>";
 			value = false;
 		}
 		var checkBoxes = document.getElementsByName( "searchFields" );
@@ -64,7 +64,7 @@ require_once("$srcdir/sql.inc");
 		}
 		if ( opener != null ) {
 			if (fieldString == undefined || (fieldString == '' && ssc.length == '')) {
-				alert("<?php echo htmlspecialchars( xl('You must select some fields to continue.'), ENT_QUOTES); ?>");
+				alert("<?php echo htmlspecialchars(xl('You must select some fields to continue.'), ENT_QUOTES); ?>");
 				return false;
 			}
 			opener.processFilter(fieldString, ssc);
@@ -83,10 +83,10 @@ require_once("$srcdir/sql.inc");
 		  <b><?php echo htmlspecialchars(xl('Select Fields')); ?>:</b>
 		</td>
 	    <td>
-		<input type="button" value="<?php echo htmlspecialchars( xl('Submit'), ENT_QUOTES); ?>" id="submit" onclick="javascript:doSubmit();"></input>
+		<input type="button" value="<?php echo htmlspecialchars(xl('Submit'), ENT_QUOTES); ?>" id="submit" onclick="javascript:doSubmit();"></input>
 	    </td>
 		<td>
-		<input type="button" value="<?php echo htmlspecialchars( xl('Select All'), ENT_QUOTES); ?>" id="selectorButton" onclick="javascript:doSelectorButton();"></input>
+		<input type="button" value="<?php echo htmlspecialchars(xl('Select All'), ENT_QUOTES); ?>" id="selectorButton" onclick="javascript:doSelectorButton();"></input>
 		</td>
 	  </tr>
 	</table>
@@ -94,17 +94,17 @@ require_once("$srcdir/sql.inc");
 	<?php
     function echoFilterItem($iter, $fieldId, $fieldTitle) {
 			if ($iter % 3 == 0) {
-				if ( $iter > 0 ) {
+				if ($iter > 0) {
 					echo "</tr>\n";
 				}
 				echo "<tr>\n";
 			}
 			echo "<td>";
-			echo "<input type='checkbox' value='".htmlspecialchars( ${fieldId}, ENT_QUOTES)."' name='searchFields'/> <b>".htmlspecialchars( $fieldTitle, ENT_NOQUOTES)."</b>";
+			echo "<input type='checkbox' value='".htmlspecialchars(${fieldId}, ENT_QUOTES)."' name='searchFields'/> <b>".htmlspecialchars($fieldTitle, ENT_NOQUOTES)."</b>";
 			echo "</td>\n";
     }
 
-		$layoutCols = sqlStatement( "SELECT field_id, title, description, group_name "
+		$layoutCols = sqlStatement("SELECT field_id, title, description, group_name "
       . "FROM layout_options "
       . "WHERE form_id='DEM' "
       . "AND group_name not like ('%Employer%' ) AND uor != 0 "
@@ -115,7 +115,7 @@ require_once("$srcdir/sql.inc");
 
 		for($iter=0; $row=sqlFetchArray($layoutCols); $iter++) {
 			$label = $row['title'] ? $row['title'] : $row['description'];
-			if ( !$label ) {
+			if (!$label) {
 				$label = $row['field_id'];
 			}
 			echoFilterItem(

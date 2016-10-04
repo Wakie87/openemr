@@ -101,7 +101,7 @@ function doedclick_edit(ppid) {
   ++$encount;
   $bgclass = (($encount & 1) ? "evenrow" : "oddrow");
 
-  if (acl_check('admin', 'practice' )) {
+  if (acl_check('admin', 'practice')) {
    $trTitle = xl('Edit') . ' ' . $row['name'];
    echo " <tr class='detail $bgclass' style='cursor:pointer' " .
         "onclick='doedclick_edit(" . $row['ppid'] . ")' title='" . attr($trTitle) . "'>\n";
@@ -110,8 +110,8 @@ function doedclick_edit(ppid) {
    $trTitle = $displayName . " (" . xl("Not Allowed to Edit") . ")";
    echo " <tr class='detail $bgclass' title='" . attr($trTitle) . "'>\n";
   }
-  echo "  <td>" . text($row['name']    ) . "</td>\n";
-  echo "  <td>" . text($row['npi']     ) . "</td>\n";
+  echo "  <td>" . text($row['name']) . "</td>\n";
+  echo "  <td>" . text($row['npi']) . "</td>\n";
   echo "  <td>" . text($row['protocol']) . "</td>\n";
   echo " </tr>\n";
  }

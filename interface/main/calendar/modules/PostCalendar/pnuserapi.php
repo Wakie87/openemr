@@ -92,7 +92,7 @@ function postcalendar_userapi_buildView($args)
 			}
 		}
 
-		foreach($minute as $m ){
+		foreach($minute as $m){
 			array_push($times, array("hour"=>$blocknum, "minute"=>$m, "mer"=>$mer));
 		}
 	}
@@ -303,7 +303,7 @@ function postcalendar_userapi_buildView($args)
 
                 //==================================
                 //FACILITY FILTERING (CHEMED)
-                if ( $_SESSION['pc_facility'] ) {
+                if ($_SESSION['pc_facility']) {
        		    $provinfo = getProviderInfo('%', true, $_SESSION['pc_facility']);
                 } else {
        		    $provinfo = getProviderInfo();
@@ -999,7 +999,7 @@ function &postcalendar_userapi_pcQueryEvents($args)
 
   //==================================
   //FACILITY FILTERING (lemonsoftware)(CHEMED)
-    if ( $_SESSION['pc_facility'] ) {
+    if ($_SESSION['pc_facility']) {
             $pc_facility = $_SESSION['pc_facility'];
             $sql .= " AND a.pc_facility = $pc_facility "; /*
                       AND u.facility_id = $pc_facility

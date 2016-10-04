@@ -100,7 +100,7 @@ function calcTaxes($row, $amount) {
   foreach ($arates as $value) {
     if (empty($value)) continue;
     $trow = sqlQuery("SELECT option_value FROM list_options WHERE " .
-      "list_id = 'taxrate' AND option_id = ? AND activity = 1 LIMIT 1", array($value) );
+      "list_id = 'taxrate' AND option_id = ? AND activity = 1 LIMIT 1", array($value));
     if (empty($trow['option_value'])) {
       echo "<!-- Missing tax rate '".text($value)."'! -->\n";
       continue;
@@ -124,7 +124,7 @@ $patdata = sqlQuery("SELECT " .
   "FROM patient_data AS p " .
   "LEFT OUTER JOIN insurance_data AS i ON " .
   "i.pid = p.pid AND i.type = 'primary' " .
-  "WHERE p.pid = ? ORDER BY i.date DESC LIMIT 1", array($pid) );
+  "WHERE p.pid = ? ORDER BY i.date DESC LIMIT 1", array($pid));
 
 $alertmsg = ''; // anything here pops up in an alert box
 
@@ -197,7 +197,7 @@ if ($_POST['form_save']) {
 				 array($_SESSION['authId'],$form_source,$amount,$form_pid,$form_method));
 
                  sqlBeginTrans();
-                 $sequence_no = sqlQuery( "SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", array($form_pid, $enc));
+                 $sequence_no = sqlQuery("SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", array($form_pid, $enc));
 				  $insrt_id=sqlInsert("INSERT INTO ar_activity (pid,encounter,sequence_no,code_type,code,modifier,payer_type,post_time,post_user,session_id,pay_amount,account_code)".
 				   " VALUES (?,?,?,?,?,?,0,now(),?,?,?,'PCP')",
 					 array($form_pid,$enc,$sequence_no['increment'],$Codetype,$Code,$Modifier,$_SESSION['authId'],$session_id,$amount));
@@ -283,7 +283,7 @@ if ($_POST['form_save']) {
 								$amount=0;
 						   }
                           sqlBeginTrans();
-                          $sequence_no = sqlQuery( "SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", array($form_pid, $enc));
+                          $sequence_no = sqlQuery("SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", array($form_pid, $enc));
 						  sqlStatement("insert into ar_activity set "    .
 							"pid = ?"       .
 							", encounter = ?"     .
@@ -305,7 +305,7 @@ if ($_POST['form_save']) {
 					 if($amount!=0)//if any excess is there.
 					  {
                           sqlBeginTrans();
-                          $sequence_no = sqlQuery( "SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", array($form_pid, $enc));
+                          $sequence_no = sqlQuery("SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", array($form_pid, $enc));
                           sqlStatement("insert into ar_activity set "    .
 							"pid = ?"       .
 							", encounter = ?"     .
@@ -356,7 +356,7 @@ if ($_POST['form_save'] || $_REQUEST['receipt']) {
     "MAX(user) AS user, " .
     "MAX(encounter) as encounter ".
     "FROM payments WHERE " .
-    "pid = ? AND dtime = ?", array($form_pid,$timestamp) );
+    "pid = ? AND dtime = ?", array($form_pid,$timestamp));
 
   // Create key for deleting, just in case.
 	$ref_id = ($_REQUEST['radio_type_of_payment']=='copay') ? $session_id : $payment_id ;
@@ -366,9 +366,9 @@ if ($_POST['form_save'] || $_REQUEST['receipt']) {
   $tmprow = sqlQuery("
     SELECT facility_id
     FROM form_encounter
-    WHERE encounter = ?", array($payrow['encounter']) );
+    WHERE encounter = ?", array($payrow['encounter']));
   $frow = sqlQuery("SELECT * FROM facility " .
-    " WHERE id = ?", array($tmprow['facility_id']) );
+    " WHERE id = ?", array($tmprow['facility_id']));
 
   // Now proceed with printing the receipt.
 ?>
@@ -610,14 +610,14 @@ function validate()
    	  document.getElementById('form_method').options[document.getElementById('form_method').selectedIndex].value=='bank_draft') &&
 	   document.getElementById('check_number').value=='' ))
    {
-    alert("<?php echo addslashes( xl('Please Fill the Check/Ref Number')) ?>");
+    alert("<?php echo addslashes(xl('Please Fill the Check/Ref Number')) ?>");
 	document.getElementById('check_number').focus();
 	return false;
    }
 
   if(document.getElementById('radio_type_of_payment_self1').checked==false && document.getElementById('radio_type_of_payment_self2').checked==false   && document.getElementById('radio_type_of_payment1').checked==false && document.getElementById('radio_type_of_payment2').checked==false  && document.getElementById('radio_type_of_payment5').checked==false  && document.getElementById('radio_type_of_payment4').checked==false)
    {
-	  alert("<?php echo addslashes( xl('Please Select Type Of Payment.')) ?>");
+	  alert("<?php echo addslashes(xl('Please Select Type Of Payment.')) ?>");
 	  return false;
    }
   if(document.getElementById('radio_type_of_payment_self1').checked==true || document.getElementById('radio_type_of_payment_self2').checked==true || document.getElementById('radio_type_of_payment1').checked==true || document.getElementById('radio_type_of_payment5').checked==true)
@@ -630,7 +630,7 @@ function validate()
 	  {
 	   if(elem.value*1>0)
 	    {//A warning message, if the amount is posted with out encounter.
-		 if(confirm("<?php echo addslashes( xl('Are you sure to post for today?')) ?>"))
+		 if(confirm("<?php echo addslashes(xl('Are you sure to post for today?')) ?>"))
 		  {
 		   ok=1;
 		  }
@@ -656,7 +656,7 @@ function validate()
 	  {
 	   if(f.form_paytotal.value*1!=elem.value*1)//Total CO-PAY is not posted against today
 	    {//A warning message, if the amount is posted against an old encounter.
-		 if(confirm("<?php echo addslashes( xl('You are posting against an old encounter?')) ?>"))
+		 if(confirm("<?php echo addslashes(xl('You are posting against an old encounter?')) ?>"))
 		  {
 		   ok=1;
 		  }
@@ -682,7 +682,7 @@ function validate()
 		{
 		 if (elem.value*1 > 0)
 		  {
-			  alert("<?php echo addslashes( xl('Invoice Balance cannot be posted. No Encounter is created.')) ?>");
+			  alert("<?php echo addslashes(xl('Invoice Balance cannot be posted. No Encounter is created.')) ?>");
 			  return false;
 		 }
 		 break;
@@ -692,7 +692,7 @@ function validate()
   }
  if(ok==-1)
   {
-	 if(confirm("<?php echo addslashes( xl('Would you like to save?')) ?>"))
+	 if(confirm("<?php echo addslashes(xl('Would you like to save?')) ?>"))
 	  {
 	   return true;
 	  }
@@ -974,40 +974,40 @@ function make_insurance()
 <table border='0' id="table_display" cellpadding='0' cellspacing='0' width='635'>
  <tr bgcolor="#cccccc" id="tr_head">
   <td class="dehead" width="70">
-   <?php echo htmlspecialchars( xl('DOS'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars(xl('DOS'), ENT_QUOTES) ?>
   </td>
   <td class="dehead" width="65">
-   <?php echo htmlspecialchars( xl('Encounter'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars(xl('Encounter'), ENT_QUOTES) ?>
   </td>
   <td class="dehead" align="center" width="80" id="td_head_total_charge" >
-   <?php echo htmlspecialchars( xl('Total Charge'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars(xl('Total Charge'), ENT_QUOTES) ?>
   </td>
   <td class="dehead" align="center" width="70" id="td_head_rep_doc" style='display:none'>
-   <?php echo htmlspecialchars( xl('Report/ Form'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars(xl('Report/ Form'), ENT_QUOTES) ?>
   </td>
   <td class="dehead" align="center" width="200" id="td_head_description" style='display:none'>
-   <?php echo htmlspecialchars( xl('Description'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars(xl('Description'), ENT_QUOTES) ?>
   </td>
   <td class="dehead" align="center" width="80" id="td_head_insurance_payment" >
-   <?php echo htmlspecialchars( xl('Insurance Payment'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars(xl('Insurance Payment'), ENT_QUOTES) ?>
   </td>
   <td class="dehead" align="center" width="80" id="td_head_patient_payment" >
-   <?php echo htmlspecialchars( xl('Patient Payment'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars(xl('Patient Payment'), ENT_QUOTES) ?>
   </td>
   <td class="dehead" align="center" width="55" id="td_head_patient_co_pay" >
-   <?php echo htmlspecialchars( xl('Co Pay Paid'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars(xl('Co Pay Paid'), ENT_QUOTES) ?>
   </td>
 	<td class="dehead" align="center" width="55" id="td_head_co_pay" >
-   <?php echo htmlspecialchars( xl('Required Co Pay'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars(xl('Required Co Pay'), ENT_QUOTES) ?>
   </td>
   <td class="dehead" align="center" width="80" id="td_head_insurance_balance" >
-   <?php echo htmlspecialchars( xl('Insurance Balance'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars(xl('Insurance Balance'), ENT_QUOTES) ?>
   </td>
   <td class="dehead" align="center" width="80" id="td_head_patient_balance" >
-   <?php echo htmlspecialchars( xl('Patient Balance'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars(xl('Patient Balance'), ENT_QUOTES) ?>
   </td>
   <td class="dehead" align="center" width="50">
-   <?php echo htmlspecialchars( xl('Paying'), ENT_QUOTES) ?>
+   <?php echo htmlspecialchars(xl('Paying'), ENT_QUOTES) ?>
   </td>
  </tr>
 
@@ -1083,7 +1083,7 @@ function make_insurance()
     $encs[$key]['charges'] += $drow['fee'];
     // Add taxes.
     $trow = sqlQuery("SELECT taxrates FROM drug_templates WHERE drug_id = ? " .
-      "ORDER BY selector LIMIT 1", array($drow['drug_id']) );
+      "ORDER BY selector LIMIT 1", array($drow['drug_id']));
     $encs[$key]['charges'] += calcTaxes($trow, $drow['fee']);
   }
 
@@ -1172,7 +1172,7 @@ function make_insurance()
 	<td class="dehead" id='td_total_7'></td>
   <td class="dehead" id='td_total_8'></td>
   <td class="dehead" align="right">
-   <?php echo htmlspecialchars( xl('Total'), ENT_QUOTES);?>
+   <?php echo htmlspecialchars(xl('Total'), ENT_QUOTES);?>
   </td>
   <td class="dehead" align="right">
    <input type='text' name='form_paytotal'  value=''
@@ -1183,7 +1183,7 @@ function make_insurance()
 </table>
 
 <p>
-<input type='submit' name='form_save' value='<?php echo htmlspecialchars( xl('Generate Invoice'), ENT_QUOTES);?>' /> &nbsp;
+<input type='submit' name='form_save' value='<?php echo htmlspecialchars(xl('Generate Invoice'), ENT_QUOTES);?>' /> &nbsp;
 <input type='button' value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
 
 <input type="hidden" name="hidden_patient_code" id="hidden_patient_code" value="<?php echo attr($pid);?>"/>

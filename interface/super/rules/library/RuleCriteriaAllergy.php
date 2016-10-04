@@ -6,7 +6,7 @@
  // as published by the Free Software Foundation; either version 2
  // of the License, or (at your option) any later version.
 
-require_once( library_src( 'RuleCriteriaSimpleText.php') );
+require_once(library_src('RuleCriteriaSimpleText.php'));
 
 /**
  * Description of RuleCriteriaMedication
@@ -14,7 +14,7 @@ require_once( library_src( 'RuleCriteriaSimpleText.php') );
  * @author aron
  */
 class RuleCriteriaAllergy extends RuleCriteriaSimpleText {
-    function __construct( $title, $value = '') {
+    function __construct($title, $value = '') {
         parent::__construct($title, $value);
     }
 

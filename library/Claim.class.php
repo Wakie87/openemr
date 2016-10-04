@@ -309,7 +309,7 @@ class Claim {
               $ptresp += $value['chg']; // adjustments are negative charges
           }
           
-          $msp = isset( $value['msp'] ) ? $value['msp'] : null; // record the reason for adjustment
+          $msp = isset($value['msp']) ? $value['msp'] : null; // record the reason for adjustment
         }
       if ($ptresp < 0) $ptresp = 0; // we may be insane but try to hide it
 
@@ -711,10 +711,10 @@ class Claim {
   //
   function insuredRelationship($ins=0) {
     $tmp = strtolower($this->payers[$ins]['data']['subscriber_relationship']);
-    if (strcmp($tmp,'self'  ) == 0) return '18';
+    if (strcmp($tmp,'self') == 0) return '18';
     if (strcmp($tmp,'spouse') == 0) return '01';
-    if (strcmp($tmp,'child' ) == 0) return '19';
-    if (strcmp($tmp,'other' ) == 0) return 'G8';
+    if (strcmp($tmp,'child') == 0) return '19';
+    if (strcmp($tmp,'other') == 0) return 'G8';
     return $tmp; // should not happen
   }
 

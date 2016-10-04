@@ -203,7 +203,7 @@ function pnModGetIDFromName($module)
 function pnModGetInfo($modid)
 {
     // a $modid of 0 is associated with core ( pn_blocks.mid, ... ).
-    if ( $modid == 0 ) {
+    if ($modid == 0) {
         return false;
     }
 

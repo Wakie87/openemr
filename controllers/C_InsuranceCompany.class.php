@@ -16,7 +16,7 @@ class C_InsuranceCompany extends Controller {
 		$this->assign("FORM_ACTION", $GLOBALS['webroot']."/controller.php?" . $_SERVER['QUERY_STRING']);
 		$this->assign("CURRENT_ACTION", $GLOBALS['webroot']."/controller.php?" . "practice_settings&insurance_company&");
 		$this->assign("STYLE", $GLOBALS['style']);
-		$this->assign("WEB_ROOT", $GLOBALS['webroot'] );
+		$this->assign("WEB_ROOT", $GLOBALS['webroot']);
 		$this->InsuranceCompany = new InsuranceCompany();
 	}
 
@@ -28,7 +28,7 @@ class C_InsuranceCompany extends Controller {
 		if ($p_obj != null && get_class($p_obj) == "insurancecompany") {
 			$this->icompanies[0] = $p_obj;
 		}
-		elseif (get_class($this->icompanies[0]) != "insurancecompany" ) {
+		elseif (get_class($this->icompanies[0]) != "insurancecompany") {
 			$this->icompanies[0] = new InsuranceCompany($id);
 		}
 

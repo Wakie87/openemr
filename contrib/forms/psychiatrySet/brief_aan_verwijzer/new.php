@@ -18,7 +18,7 @@ $provider_results = sqlQuery("select * from users where username='" . $_SESSION{
 
 ////////////////////////////////////////////////////////////////////
 // Function:	getPatientDateOfLastEncounter
-function getPatientDateOfLastEncounter( $nPid )
+function getPatientDateOfLastEncounter($nPid)
 {
   // get date of last encounter no codes
   $strEventDate = sqlQuery("SELECT MAX(pc_eventDate) AS max 
@@ -28,94 +28,94 @@ function getPatientDateOfLastEncounter( $nPid )
                   AND pc_eventDate >= '2007-01-01'");
   
   // now check if there was a previous encounter
-  if( $strEventDate['max'] != "" )
-    return( $strEventDate['max'] );
+  if($strEventDate['max'] != "")
+    return($strEventDate['max']);
   else
-    return( "00-00-0000" );
+    return("00-00-0000");
 }
 
-$m_strEventDate = getPatientDateOfLastEncounter( $result['pid'] );
+$m_strEventDate = getPatientDateOfLastEncounter($result['pid']);
 
 // get last saved id for intakeverslag
-$vectIntakeverslagQuery = sqlQuery( "SELECT id FROM form_intakeverslag 
+$vectIntakeverslagQuery = sqlQuery("SELECT id FROM form_intakeverslag 
                             WHERE pid = ".$_SESSION["pid"].
                             " AND groupname='".$_SESSION["authProvider"].
                             "' AND user='".$_SESSION["authUser"]."' AND
                             authorized=$userauthorized AND activity=1
                             AND autosave_flag=0 
-                            ORDER by id DESC limit 1" );
+                            ORDER by id DESC limit 1");
 
 // get autosave id for Psychiatrisch Onderzoek
-$vectPO = sqlQuery( "SELECT id FROM form_psychiatrisch_onderzoek 
+$vectPO = sqlQuery("SELECT id FROM form_psychiatrisch_onderzoek 
                             WHERE pid = ".$_SESSION["pid"].
                             " AND groupname='".$_SESSION["authProvider"].
                             "' AND user='".$_SESSION["authUser"]."' AND
                             authorized=$userauthorized AND activity=1
                             AND autosave_flag=0 
-                            ORDER by id DESC limit 1" );
+                            ORDER by id DESC limit 1");
 
 // get autosave id for Psychiatrisch Onderzoek
-$vectAutosaveBAV = sqlQuery( "SELECT id, autosave_flag, autosave_datetime FROM form_brief_aan_verwijzer
+$vectAutosaveBAV = sqlQuery("SELECT id, autosave_flag, autosave_datetime FROM form_brief_aan_verwijzer
                             WHERE pid = ".$_SESSION["pid"].
                             " AND groupname='".$_SESSION["authProvider"].
                             "' AND user='".$_SESSION["authUser"]."' AND
                             authorized=$userauthorized AND activity=1
                             AND autosave_flag=1 
-                            ORDER by id DESC limit 1" );
+                            ORDER by id DESC limit 1");
 
 //fetch data from INTAKE-VERSLAG
-$obj_iv = formFetch( "form_intakeverslag", $vectIntakeverslagQuery['id'] );
+$obj_iv = formFetch("form_intakeverslag", $vectIntakeverslagQuery['id']);
 // fetch data from PSYCHIATRISCH ONDERZOEK
-$obj_po = formFetch( "form_psychiatrisch_onderzoek", $vectPO['id'] );
+$obj_po = formFetch("form_psychiatrisch_onderzoek", $vectPO['id']);
 // fetch data from brief_aan_verwijzer
-$obj_bav = formFetch( "form_brief_aan_verwijzer", $vectAutosaveBAV['id'] );
+$obj_bav = formFetch("form_brief_aan_verwijzer", $vectAutosaveBAV['id']);
 
 /////////////////
 // here we mix the data
 
 // Introductie - local
 // create the inroductie form
-if( $obj_bav['introductie'] != '' )
+if($obj_bav['introductie'] != '')
   $obj['introductie'] = $obj_bav['introductie'];
 else
   $obj['introductie'] = xl("Since","",""," ") . $m_strEventDate . xl("we have seen your above patient for evaluation and treatment at our outpatient psychiatry clinic. Thank you for this referral.",""," ");
 
 // Reden van aanmelding 
-if( $obj_bav['reden_van_aanmelding'] != '' )
+if($obj_bav['reden_van_aanmelding'] != '')
   $obj['reden_van_aanmelding'] = $obj_bav['reden_van_aanmelding'];
-elseif( $obj_iv['reden_van_aanmelding'] != '' )
+elseif($obj_iv['reden_van_aanmelding'] != '')
   $obj['reden_van_aanmelding'] = $obj_iv['reden_van_aanmelding'];
 else
   $obj['reden_van_aanmelding'] = '';
   
 // Anamnese
-if( $obj_bav['anamnese'] != '' )
+if($obj_bav['anamnese'] != '')
   $obj['anamnese'] = $obj_bav['anamnese'];
-elseif( $obj_iv['klachten_probleemgebieden'] != '' )
+elseif($obj_iv['klachten_probleemgebieden'] != '')
   $obj['anamnese'] = $obj_iv['klachten_probleemgebieden'];
 else
   $obj['anamnese'] = '';
 
 // Psychiatrisch onderzoek 
-if( $obj_bav['psychiatrisch_onderzoek'] != '' )
+if($obj_bav['psychiatrisch_onderzoek'] != '')
   $obj['psychiatrisch_onderzoek'] = $obj_bav['psychiatrisch_onderzoek'];
-elseif( $obj_po['psychiatrisch_onderzoek'] != '' )
+elseif($obj_po['psychiatrisch_onderzoek'] != '')
   $obj['psychiatrisch_onderzoek'] = $obj_po['psychiatrisch_onderzoek'];
 else
   $obj['psychiatrisch_onderzoek'] = '';
 
 // Beschrijvend conclusie 
-if( $obj_bav['beschrijvend_conclusie'] != '' )
+if($obj_bav['beschrijvend_conclusie'] != '')
   $obj['beschrijvend_conclusie'] = $obj_bav['beschrijvend_conclusie'];
-elseif( $obj_po['beschrijvende_conclusie'] != '' )
+elseif($obj_po['beschrijvende_conclusie'] != '')
   $obj['beschrijvend_conclusie'] = $obj_po['beschrijvende_conclusie'];
 else
   $obj['beschrijvend_conclusie'] = '';
   
 // Advies/beleid
-if( $obj_bav['advies_beleid'] != '' )
+if($obj_bav['advies_beleid'] != '')
   $obj['advies_beleid'] = $obj_bav['advies_beleid'];
-elseif( $obj_po['behandelvoorstel'] != '' )
+elseif($obj_po['behandelvoorstel'] != '')
   $obj['advies_beleid'] = $obj_po['behandelvoorstel'];
 else
   $obj['advies_beleid'] = '';
@@ -153,7 +153,7 @@ else
 
 <?php
 
-if( $vectAutosaveBAV['id'] )
+if($vectAutosaveBAV['id'])
   $brief_aan_verwijzer_id = $vectAutosaveBAV['id'];
 else
   $brief_aan_verwijzer_id = "0";

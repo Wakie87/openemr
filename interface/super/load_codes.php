@@ -95,8 +95,8 @@ if (!empty($_POST['bn_upload'])) {
 
       if ($code_type == 'RXCUI') {
         $a = explode('|', $line);
-        if (count($a) < 18    ) continue;
-        if ($a[17] != '4096'  ) continue;
+        if (count($a) < 18) continue;
+        if ($a[17] != '4096') continue;
         if ($a[11] != 'RXNORM') continue;
         $code = $a[0];
         if (isset($seen_codes[$code])) continue;

@@ -251,8 +251,8 @@ class Prescription extends ORDataObject {
 	return $_SESSION['encounter'];
     }
 
-    function get_unit_display( $display_form="" ) {
-    	return( $this->unit_array[$this->unit] );
+    function get_unit_display($display_form="") {
+    	return($this->unit_array[$this->unit]);
     }
 
     function get_unit() {
@@ -269,9 +269,9 @@ class Prescription extends ORDataObject {
         return $this->id;
     }
 
-    function get_dosage_display( $display_form="" ) {
-        if( empty($this->form) && empty($this->interval) ) {
-            return( $this->dosage );
+    function get_dosage_display($display_form="") {
+        if(empty($this->form) && empty($this->interval)) {
+            return($this->dosage);
         }
         else {
             return ($this->dosage . " " . xl('in') . " " . $this->form_array[$this->form] . " " . $this->interval_array[$this->interval]);
@@ -633,7 +633,7 @@ class Prescription extends ORDataObject {
                 add_escape_custom($patient_id) .
                 " ORDER BY " . add_escape_custom($order_by);
         $results = sqlQ($sql);
-        while ($row = sqlFetchArray($results) ) {
+        while ($row = sqlFetchArray($results)) {
             $prescriptions[] = new Prescription($row['id']);
         }
         return $prescriptions;

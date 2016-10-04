@@ -26,10 +26,10 @@ require_once($GLOBALS['srcdir'].'/options.inc.php');
  if (acl_check('patients','med')) {
   $tmp = getPatientData($pid, "squad");
   if ($tmp['squad'] && ! acl_check('squads', $tmp['squad']))
-   die(htmlspecialchars( xl('Not authorized'), ENT_NOQUOTES) );
+   die(htmlspecialchars(xl('Not authorized'), ENT_NOQUOTES));
  }
  else {
-  die(htmlspecialchars( xl('Not authorized'), ENT_NOQUOTES) );
+  die(htmlspecialchars(xl('Not authorized'), ENT_NOQUOTES));
  }
 
  // Collect parameter(s)
@@ -64,7 +64,7 @@ function dopclick(id,category) {
     if (category == 0) category = '';
     dlgopen('add_edit_issue.php?issue=' + encodeURIComponent(id) + '&thistype=' + encodeURIComponent(category), '_blank', 550, 400);
     <?php else: ?>
-    alert("<?php echo addslashes( xl('You are not authorized to add/edit issues') ); ?>");
+    alert("<?php echo addslashes(xl('You are not authorized to add/edit issues')); ?>");
     <?php endif; ?>
 }
 
@@ -96,7 +96,7 @@ function newEncounter() {
 
 <br>
 <div style="text-align:center" class="buttons">
-  <a href='javascript:;' class='css_button' id='back'><span><?php echo htmlspecialchars( xl('Back'), ENT_NOQUOTES); ?></span></a>
+  <a href='javascript:;' class='css_button' id='back'><span><?php echo htmlspecialchars(xl('Back'), ENT_NOQUOTES); ?></span></a>
 </div>
 <br>
 <br>
@@ -128,9 +128,9 @@ foreach ($ISSUE_TYPES as $focustype => $focustitles) {
   // Show header
   $disptype = $focustitles[0];
   if(($focustype=='allergy' || $focustype=='medication') && $GLOBALS['erx_enable'])
-  echo "<a href='../../eRx.php?page=medentry' class='css_button_small' onclick='top.restoreSession()' ><span>" . htmlspecialchars( xl('Add'), ENT_NOQUOTES) . "</span></a>\n";
+  echo "<a href='../../eRx.php?page=medentry' class='css_button_small' onclick='top.restoreSession()' ><span>" . htmlspecialchars(xl('Add'), ENT_NOQUOTES) . "</span></a>\n";
   else
-  echo "<a href='javascript:;' class='css_button_small' onclick='dopclick(0,\"" . htmlspecialchars($focustype,ENT_QUOTES)  . "\")'><span>" . htmlspecialchars( xl('Add'), ENT_NOQUOTES) . "</span></a>\n";
+  echo "<a href='javascript:;' class='css_button_small' onclick='dopclick(0,\"" . htmlspecialchars($focustype,ENT_QUOTES)  . "\")'><span>" . htmlspecialchars(xl('Add'), ENT_NOQUOTES) . "</span></a>\n";
   echo "  <span class='title'>" . htmlspecialchars($disptype,ENT_NOQUOTES) . "</span>\n";
   // echo " <table style='margin-bottom:1em;text-align:center'>";
   echo " <table style='margin-bottom:1em;'>";
@@ -157,11 +157,11 @@ foreach ($ISSUE_TYPES as $focustype => $focustitles) {
   if($GLOBALS['erx_enable'] && $GLOBALS['erx_medication_display'] && $focustype=='medication')
    $condition .= "and erx_uploaded != '1' ";
   $pres = sqlStatement("SELECT * FROM lists WHERE pid = ? AND type = ? $condition" .
-   "ORDER BY begdate", array($pid,$focustype) );
+   "ORDER BY begdate", array($pid,$focustype));
 
   // if no issues (will place a 'None' text vs. toggle algorithm here)
   if (sqlNumRows($pres) < 1) {
-    if ( getListTouch($pid,$focustype) ) {
+    if (getListTouch($pid,$focustype)) {
       // Data entry has happened to this type, so can display an explicit None.
       echo "<tr><td class='text'><b>" . xlt("None") . "</b></td></tr>";
     }
@@ -180,7 +180,7 @@ foreach ($ISSUE_TYPES as $focustype => $focustitles) {
     $disptitle = trim($row['title']) ? $row['title'] : "[Missing Title]";
 
     $ierow = sqlQuery("SELECT count(*) AS count FROM issue_encounter WHERE " .
-      "list_id = ?", array($rowid) );
+      "list_id = ?", array($rowid));
 
     // encount is used to toggle the color of the table-row output below
     ++$encount;

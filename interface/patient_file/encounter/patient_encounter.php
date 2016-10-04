@@ -5,7 +5,7 @@
 //we should automatically load the cpt custom codes screen,
 //not just a default. however, if it is not set, we default to
 //the custom icd9 codes
-if (!isset($_GET["codefrom"]) ) {
+if (!isset($_GET["codefrom"])) {
 	$code_page = "superbill";
 } else {
 	$code_page = $_GET["codefrom"];

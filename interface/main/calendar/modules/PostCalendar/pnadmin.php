@@ -1032,7 +1032,7 @@ EOF;
     {
     	if(!is_numeric($new_durationh) || !is_numeric($new_durationm) ||
 	    	!is_numeric($new_event_repeat_freq) || !is_numeric($new_event_repeat_on_freq)
-	    	|| !is_numeric($new_end_date_freq) )
+	    	|| !is_numeric($new_end_date_freq))
 	   	{
 	   		$output->Text(postcalendar_admin_categories($msg,"Hours, Minutes and recurrence values must be numeric!"));
 	   		return $output->GetOutput();
@@ -1166,7 +1166,7 @@ function postcalendar_admin_categoriesUpdate()
             	$recurrspec = serialize(compact('event_repeat_freq', 'event_repeat_freq_type', 'event_repeat_on_num',
                                           'event_repeat_on_day', 'event_repeat_on_freq'));
             	
-            	$dur = ( ($durationh[$i]*(60 * 60)) + ($durationm[$i] * 60));
+            	$dur = (($durationh[$i]*(60 * 60)) + ($durationm[$i] * 60));
             	
             	$update_sql = "UPDATE $pntable[postcalendar_categories]
 		                             SET pc_catname='".pnVarPrepForStore($name[$k])."',

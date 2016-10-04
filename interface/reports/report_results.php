@@ -45,7 +45,7 @@ require_once "$srcdir/report_database.inc";
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 
-<title><?php echo htmlspecialchars( xl('Report Results/History'), ENT_NOQUOTES); ?></title>
+<title><?php echo htmlspecialchars(xl('Report Results/History'), ENT_NOQUOTES); ?></title>
 
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
@@ -91,7 +91,7 @@ require_once "$srcdir/report_database.inc";
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
-<span class='title'><?php echo htmlspecialchars( xl('Report History/Results'), ENT_NOQUOTES); ?></span>
+<span class='title'><?php echo htmlspecialchars(xl('Report History/Results'), ENT_NOQUOTES); ?></span>
 
 <form method='post' name='theform' id='theform' action='report_results.php' onsubmit='return top.restoreSession()'>
 
@@ -106,27 +106,27 @@ require_once "$srcdir/report_database.inc";
 
                    <tr>
                       <td class='label'>
-                         <?php echo htmlspecialchars( xl('Begin Date'), ENT_NOQUOTES); ?>:
+                         <?php echo htmlspecialchars(xl('Begin Date'), ENT_NOQUOTES); ?>:
                       </td>
                       <td>
-                         <input type='text' name='form_begin_date' id='form_begin_date' size='20' value='<?php echo htmlspecialchars( $_POST['form_begin_date'], ENT_QUOTES); ?>'
-                            onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
+                         <input type='text' name='form_begin_date' id='form_begin_date' size='20' value='<?php echo htmlspecialchars($_POST['form_begin_date'], ENT_QUOTES); ?>'
+                            onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars(xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
                            <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
                             id='img_begin_date' border='0' alt='[?]' style='cursor:pointer'
-                            title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>'>
+                            title='<?php echo htmlspecialchars(xl('Click here to choose a date'), ENT_QUOTES); ?>'>
                       </td>
                    </tr>
 
                 <tr>
                         <td class='label'>
-                              <?php echo htmlspecialchars( xl('End Date'), ENT_NOQUOTES); ?>:
+                              <?php echo htmlspecialchars(xl('End Date'), ENT_NOQUOTES); ?>:
                         </td>
                         <td>
-                           <input type='text' name='form_end_date' id='form_end_date' size='20' value='<?php echo htmlspecialchars( $_POST['form_end_date'], ENT_QUOTES); ?>'
-                                onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
+                           <input type='text' name='form_end_date' id='form_end_date' size='20' value='<?php echo htmlspecialchars($_POST['form_end_date'], ENT_QUOTES); ?>'
+                                onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars(xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
                              <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
                                 id='img_end_date' border='0' alt='[?]' style='cursor:pointer'
-                                title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>'>
+                                title='<?php echo htmlspecialchars(xl('Click here to choose a date'), ENT_QUOTES); ?>'>
                         </td>
                 </tr>
 	</table>
@@ -140,12 +140,12 @@ require_once "$srcdir/report_database.inc";
 				<div style='margin-left:15px'>
 					<a id='search_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
 					<span>
-						<?php echo htmlspecialchars( xl('Search'), ENT_NOQUOTES); ?>
+						<?php echo htmlspecialchars(xl('Search'), ENT_NOQUOTES); ?>
 					</span>
 					</a>
                                         <a id='refresh_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
                                         <span>
-                                                <?php echo htmlspecialchars( xl('Refresh'), ENT_NOQUOTES); ?>
+                                                <?php echo htmlspecialchars(xl('Refresh'), ENT_NOQUOTES); ?>
                                         </span>
                                         </a>
 				</div>
@@ -167,15 +167,15 @@ require_once "$srcdir/report_database.inc";
 
  <thead>
   <th align='center'>
-   <?php echo htmlspecialchars( xl('Title'), ENT_NOQUOTES); ?>
+   <?php echo htmlspecialchars(xl('Title'), ENT_NOQUOTES); ?>
   </th>
 
   <th align='center'>
-   <?php echo htmlspecialchars( xl('Date'), ENT_NOQUOTES); ?>
+   <?php echo htmlspecialchars(xl('Date'), ENT_NOQUOTES); ?>
   </th>
 
   <th align='center'>
-   <?php echo htmlspecialchars( xl('Status'), ENT_NOQUOTES); ?>
+   <?php echo htmlspecialchars(xl('Status'), ENT_NOQUOTES); ?>
   </th>
 
  </thead>

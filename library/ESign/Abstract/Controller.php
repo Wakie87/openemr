@@ -40,10 +40,10 @@ abstract class Abstract_Controller implements ViewableIF
     protected $_viewer = null;
     protected $_request = null;
     
-    public function __construct( Request $request )
+    public function __construct(Request $request)
     {
         $this->_request = $request;
-        $this->_method = $this->_request->getParam( 'method' );
+        $this->_method = $this->_request->getParam('method');
         $this->_viewDir = $GLOBALS['srcdir']."/ESign/views";
         $this->_viewScript = 'esign_error.php';
         $this->_view = new Viewer();
@@ -72,7 +72,7 @@ abstract class Abstract_Controller implements ViewableIF
         return $this->_request;
     }
     
-    protected function setViewScript( $viewScript )
+    protected function setViewScript($viewScript)
     {
         $this->_viewScript = $viewScript;
     }
@@ -84,22 +84,22 @@ abstract class Abstract_Controller implements ViewableIF
     
     public function run()
     {
-        if ( method_exists( $this, $this->_method) ) {
+        if (method_exists($this, $this->_method)) {
             $this->{$this->_method}();
         } else {
-            throw new \Exception( "The method ".$this->_method." does not exist and cannot be executed" );
+            throw new \Exception("The method ".$this->_method." does not exist and cannot be executed");
         }
         
     }
     
     public function getHtml()
     {
-        return $this->_view->getHtml( $this );
+        return $this->_view->getHtml($this);
     }
     
     public function render()
     {
-        return $this->_view->render( $this );
+        return $this->_view->render($this);
     }
 
 }
@@ -111,9 +111,9 @@ class Request
         $this->parseParams();
     }
     
-    public function getParam( $key, $default = '' )
+    public function getParam($key, $default = '')
     {
-        if ( isset( $this->_params[$key] ) ) {
+        if (isset($this->_params[$key])) {
             return $this->_params[$key];
         }
     
@@ -122,7 +122,7 @@ class Request
     
     protected function parseParams()
     {
-        foreach ( $_REQUEST as $key => $value ) {
+        foreach ($_REQUEST as $key => $value) {
             $this->_params[$key] = $value;
         }
     }
@@ -133,7 +133,7 @@ class Response
     public $status = null;
     public $message = null;
     
-    public function __construct( $status, $message )
+    public function __construct($status, $message)
     {
         $this->status = $status;
         $this->message = $message;

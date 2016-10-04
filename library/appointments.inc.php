@@ -77,7 +77,7 @@ $REPEAT_ON_DAY = array(
 	'6' => xl('Saturday')
 );
 
-function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param = null, $tracker_board = false, $nextX = 0, $bind_param = null, $query_param = null )
+function fetchEvents($from_date, $to_date, $where_param = null, $orderby_param = null, $tracker_board = false, $nextX = 0, $bind_param = null, $query_param = null)
 {
 	
   $sqlBindArray = array();
@@ -108,10 +108,10 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
 
     }
 
-    if ( $where_param ) $where .= $where_param;
+    if ($where_param) $where .= $where_param;
 	
     $order_by = "e.pc_eventDate, e.pc_startTime";
-    if ( $orderby_param ) {
+    if ($orderby_param) {
        $order_by = $orderby_param;
     }
 
@@ -306,45 +306,45 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
 ////////////////////// End of code inserted by epsdky
 }
 
-function fetchAllEvents( $from_date, $to_date, $provider_id = null, $facility_id = null )
+function fetchAllEvents($from_date, $to_date, $provider_id = null, $facility_id = null)
 {
 	$sqlBindArray = array();
 
 	$where = "";
 
-	if ( $provider_id ) {
+	if ($provider_id) {
 		$where .= " AND e.pc_aid = ?";
 		array_push($sqlBindArray, $provider_id);
 	}
 
-	if ( $facility_id ) {
+	if ($facility_id) {
 		$where .= " AND e.pc_facility = ? AND u.facility_id = ?";
 		array_push($sqlBindArray, $facility_id, $facility_id);
 	}
 
-	$appointments = fetchEvents( $from_date, $to_date, $where, null, false, 0, $sqlBindArray );
+	$appointments = fetchEvents($from_date, $to_date, $where, null, false, 0, $sqlBindArray);
 	return $appointments;
 }
 
-function fetchAppointments( $from_date, $to_date, $patient_id = null, $provider_id = null, $facility_id = null, $pc_appstatus = null, $with_out_provider = null, $with_out_facility = null, $pc_catid = null, $tracker_board = false, $nextX = 0 )
+function fetchAppointments($from_date, $to_date, $patient_id = null, $provider_id = null, $facility_id = null, $pc_appstatus = null, $with_out_provider = null, $with_out_facility = null, $pc_catid = null, $tracker_board = false, $nextX = 0)
 {
 	$sqlBindArray = array();
 
 	$where = "";
 
-	if ( $provider_id ) {
+	if ($provider_id) {
 		$where .= " AND e.pc_aid = ?";
 		array_push($sqlBindArray, $provider_id);
 	}
 
-	if ( $patient_id ) {
+	if ($patient_id) {
 		$where .= " AND e.pc_pid = ?";
 		array_push($sqlBindArray, $patient_id);
 	} else {
 		$where .= " AND e.pc_pid != ''";
 	}
 
-	if ( $facility_id ) {
+	if ($facility_id) {
 		$where .= " AND e.pc_facility = ?";
 		array_push($sqlBindArray, $facility_id);
 	}
@@ -370,7 +370,7 @@ function fetchAppointments( $from_date, $to_date, $patient_id = null, $provider_
 		$where .= " AND e.pc_facility = 0";
 	}
 
-	$appointments = fetchEvents( $from_date, $to_date, $where, '', $tracker_board, $nextX, $sqlBindArray );
+	$appointments = fetchEvents($from_date, $to_date, $where, '', $tracker_board, $nextX, $sqlBindArray);
 	return $appointments;
 }
 
@@ -378,7 +378,7 @@ function fetchNextXAppts($from_date, $patient_id, $nextX = 1) {
 
   $appts = array();
   $nextXAppts = array();
-  $appts = fetchAppointments( $from_date, null, $patient_id, null, null, null, null, null, null, false, $nextX );
+  $appts = fetchAppointments($from_date, null, $patient_id, null, null, null, null, null, null, false, $nextX);
   if($appts) {
     $appts = sortAppointments($appts);
     $nextXAppts = array_slice($appts, 0, $nextX);
@@ -390,28 +390,28 @@ function fetchNextXAppts($from_date, $patient_id, $nextX = 1) {
 // get the event slot size in seconds
 function getSlotSize()
 {
-	if ( isset( $GLOBALS['calendar_interval'] ) ) {
+	if (isset($GLOBALS['calendar_interval'])) {
 		return $GLOBALS['calendar_interval'] * 60;
 	}
 	return 15 * 60;
 }
 
-function getAvailableSlots( $from_date, $to_date, $provider_id = null, $facility_id = null )
+function getAvailableSlots($from_date, $to_date, $provider_id = null, $facility_id = null)
 {
-	$appointments = fetchAllEvents( $from_date, $to_date, $provider_id, $facility_id );
-	$appointments = sortAppointments( $appointments, "date" );
-	$from_datetime = strtotime( $from_date." 00:00:00" );
-	$to_datetime = strtotime( $to_date." 23:59:59" );
+	$appointments = fetchAllEvents($from_date, $to_date, $provider_id, $facility_id);
+	$appointments = sortAppointments($appointments, "date");
+	$from_datetime = strtotime($from_date." 00:00:00");
+	$to_datetime = strtotime($to_date." 23:59:59");
 	$availableSlots = array();
 	$start_time = 0;
 	$date = 0;
-	for ( $i = 0; $i < count( $appointments ); ++$i )
+	for ($i = 0; $i < count($appointments); ++$i)
 	{
-		if ( $appointments[$i]['pc_catid'] == 2 ) { // 2 == In Office
+		if ($appointments[$i]['pc_catid'] == 2) { // 2 == In Office
 			$start_time = $appointments[$i]['pc_startTime'];
 			$date = $appointments[$i]['pc_eventDate'];
 			$provider_id = $appointments[$i]['uprovider_id'];
-		} else if ( $appointments[$i]['pc_catid'] == 3 ) { // 3 == Out Of Office
+		} else if ($appointments[$i]['pc_catid'] == 3) { // 3 == Out Of Office
 			continue;
 		} else {
 			$start_time = $appointments[$i]['pc_endTime'];
@@ -422,31 +422,31 @@ function getAvailableSlots( $from_date, $to_date, $provider_id = null, $facility
 		// find next appointment with the same provider
 		$next_appointment_date = 0;
 		$next_appointment_time = 0;
-		for ( $j = $i+1; $j < count( $appointments ); ++$j ) {
-			if ( $appointments[$j]['uprovider_id'] == $provider_id ) {
+		for ($j = $i+1; $j < count($appointments); ++$j) {
+			if ($appointments[$j]['uprovider_id'] == $provider_id) {
 				$next_appointment_date = $appointments[$j]['pc_eventDate'];
 				$next_appointment_time = $appointments[$j]['pc_startTime'];
 				break;
 			}
 		}
 
-		$same_day = ( strtotime( $next_appointment_date ) == strtotime( $date ) ) ? true : false;
+		$same_day = (strtotime($next_appointment_date) == strtotime($date)) ? true : false;
 
-		if ( $next_appointment_time && $same_day ) {
+		if ($next_appointment_time && $same_day) {
 			// check the start time of the next appointment
 
-			$start_datetime = strtotime( $date." ".$start_time );
-			$next_appointment_datetime = strtotime( $next_appointment_date." ".$next_appointment_time );
+			$start_datetime = strtotime($date." ".$start_time);
+			$next_appointment_datetime = strtotime($next_appointment_date." ".$next_appointment_time);
 			$curr_time = $start_datetime;
-			while ( $curr_time < $next_appointment_datetime - (getSlotSize() / 2) ) {
+			while ($curr_time < $next_appointment_datetime - (getSlotSize() / 2)) {
 				//create a new appointment ever 15 minutes
-				$time = date( "H:i:s", $curr_time );
+				$time = date("H:i:s", $curr_time);
 				$available_slot = createAvailableSlot(
 					$appointments[$i]['pc_eventDate'],
 					$time,
 					$appointments[$i]['ufname'],
 					$appointments[$i]['ulname'],
-					$appointments[$i]['umname'] );
+					$appointments[$i]['umname']);
 				$availableSlots []= $available_slot;
 				$curr_time += getSlotSize(); // add a 15-minute slot
 			}
@@ -456,7 +456,7 @@ function getAvailableSlots( $from_date, $to_date, $provider_id = null, $facility
 	return $availableSlots;
 }
 
-function createAvailableSlot( $event_date, $start_time, $provider_fname, $provider_lname, $provider_mname = "", $cat_name = "Available" )
+function createAvailableSlot($event_date, $start_time, $provider_fname, $provider_lname, $provider_mname = "", $cat_name = "Available")
 {
 	$newSlot = array();
 	$newSlot['ulname'] = $provider_lname;
@@ -469,37 +469,37 @@ function createAvailableSlot( $event_date, $start_time, $provider_fname, $provid
 	return $newSlot;
 }
 
-function getCompareFunction( $code ) {
+function getCompareFunction($code) {
 	global $COMPARE_FUNCTION_HASH;
 	return $COMPARE_FUNCTION_HASH[$code];
 }
 
-function getComparisonOrder( $code ) {
+function getComparisonOrder($code) {
 	global $ORDERHASH;
 	return $ORDERHASH[$code];
 }
 
 
-function sortAppointments( array $appointments, $orderBy = 'date' )
+function sortAppointments(array $appointments, $orderBy = 'date')
 {
 	global $appointment_sort_order;
 	$appointment_sort_order = $orderBy;
-	usort( $appointments, "compareAppointments" );
+	usort($appointments, "compareAppointments");
 	return $appointments;
 }
 
 // cmp_function for usort
 // The comparison function must return an integer less than, equal to,
 // or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
-function compareAppointments( $appointment1, $appointment2 )
+function compareAppointments($appointment1, $appointment2)
 {
 	global $appointment_sort_order;
-	$comparisonOrder = getComparisonOrder( $appointment_sort_order );
-	foreach ( $comparisonOrder as $comparison )
+	$comparisonOrder = getComparisonOrder($appointment_sort_order);
+	foreach ($comparisonOrder as $comparison)
 	{
-		$cmp_function = getCompareFunction( $comparison );
-		$result = $cmp_function( $appointment1, $appointment2 );
-		if ( 0 != $result ) {
+		$cmp_function = getCompareFunction($comparison);
+		$result = $cmp_function($appointment1, $appointment2);
+		if (0 != $result) {
 			return $result;
 		}
 	}
@@ -507,101 +507,101 @@ function compareAppointments( $appointment1, $appointment2 )
 	return 0;
 }
 
-function compareBasic( $e1, $e2 )
+function compareBasic($e1, $e2)
 {
-	if ( $e1 < $e2 ) {
+	if ($e1 < $e2) {
 		return -1;
-	} else if ( $e1 > $e2 ) {
+	} else if ($e1 > $e2) {
 		return 1;
 	}
 	
 	return 0;
 }
 
-function compareAppointmentsByDate( $appointment1, $appointment2 )
+function compareAppointmentsByDate($appointment1, $appointment2)
 {
-	$date1 = strtotime( $appointment1['pc_eventDate'] );
-	$date2 = strtotime( $appointment2['pc_eventDate'] );
+	$date1 = strtotime($appointment1['pc_eventDate']);
+	$date2 = strtotime($appointment2['pc_eventDate']);
 
-	return compareBasic( $date1, $date2 );
+	return compareBasic($date1, $date2);
 }
 
-function compareAppointmentsByTime( $appointment1, $appointment2 )
+function compareAppointmentsByTime($appointment1, $appointment2)
 {
-	$time1 = strtotime( $appointment1['pc_startTime'] );
-	$time2 = strtotime( $appointment2['pc_startTime'] );
+	$time1 = strtotime($appointment1['pc_startTime']);
+	$time2 = strtotime($appointment2['pc_startTime']);
 
-	return compareBasic( $time1, $time2 );
+	return compareBasic($time1, $time2);
 }
 
-function compareAppointmentsByDoctorName( $appointment1, $appointment2 )
+function compareAppointmentsByDoctorName($appointment1, $appointment2)
 {
 	$name1 = $appointment1['ulname'];
 	$name2 = $appointment2['ulname'];
-	$cmp = compareBasic( $name1, $name2 );
-	if ( $cmp == 0 ) {
+	$cmp = compareBasic($name1, $name2);
+	if ($cmp == 0) {
 		$name1 = $appointment1['ufname'];
 		$name2 = $appointment2['ufname'];
-		return compareBasic( $name1, $name2 );
+		return compareBasic($name1, $name2);
 	}
 
 	return $cmp;
 }
 
-function compareAppointmentsByPatientName( $appointment1, $appointment2 )
+function compareAppointmentsByPatientName($appointment1, $appointment2)
 {
 	$name1 = $appointment1['lname'];
 	$name2 = $appointment2['lname'];
-	$cmp = compareBasic( $name1, $name2 );
-	if ( $cmp == 0 ) {
+	$cmp = compareBasic($name1, $name2);
+	if ($cmp == 0) {
 		$name1 = $appointment1['fname'];
 		$name2 = $appointment2['fname'];
-		return compareBasic( $name1, $name2 );
+		return compareBasic($name1, $name2);
 	}
 
 	return $cmp;
 }
 
-function compareAppointmentsByType( $appointment1, $appointment2 )
+function compareAppointmentsByType($appointment1, $appointment2)
 {
 	$type1 = $appointment1['pc_catid'];
 	$type2 = $appointment2['pc_catid'];
-	return compareBasic( $type1, $type2 );
+	return compareBasic($type1, $type2);
 }
 
-function compareAppointmentsByPatientId( $appointment1, $appointment2 )
+function compareAppointmentsByPatientId($appointment1, $appointment2)
 {
 	$id1 = $appointment1['pubpid'];
 	$id2 = $appointment2['pubpid'];
-	return compareBasic( $id1, $id2 );
+	return compareBasic($id1, $id2);
 }
 
-function compareAppointmentsByComment( $appointment1, $appointment2 )
+function compareAppointmentsByComment($appointment1, $appointment2)
 {
 	$comment1 = $appointment1['pc_hometext'];
 	$comment2 = $appointment2['pc_hometext'];
-	return compareBasic( $comment1, $comment2 );
+	return compareBasic($comment1, $comment2);
 }
 
-function compareAppointmentsByStatus( $appointment1, $appointment2 )
+function compareAppointmentsByStatus($appointment1, $appointment2)
 {
 	$status1 = $appointment1['pc_apptstatus'];
 	$status2 = $appointment2['pc_apptstatus'];
-	return compareBasic( $status1, $status2 );
+	return compareBasic($status1, $status2);
 }
 
-function compareAppointmentsByTrackerStatus( $appointment1, $appointment2 )
+function compareAppointmentsByTrackerStatus($appointment1, $appointment2)
 {
 	$trackerstatus1 = $appointment1['status'];
 	$trackerstatus2 = $appointment2['status'];
-	return compareBasic( $trackerstatus1, $trackerstatus2 );
+	return compareBasic($trackerstatus1, $trackerstatus2);
 }
 
-function compareAppointmentsByCompletedDrugScreen( $appointment1, $appointment2 )
+function compareAppointmentsByCompletedDrugScreen($appointment1, $appointment2)
 {
 	$completed1 = $appointment1['drug_screen_completed'];
 	$completed2 = $appointment2['drug_screen_completed'];
-	return compareBasic( $completed1, $completed2 );
+	return compareBasic($completed1, $completed2);
 }
 
 function fetchAppointmentCategories()

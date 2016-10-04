@@ -110,9 +110,9 @@ foreach ($result as $iter) {
     $result_count++;
     
     if (getdate() == strtotime($iter{"date"})) {
-        $date_string = "Today, " . date( "D F dS" ,strtotime($iter{"date"}));
+        $date_string = "Today, " . date("D F dS" ,strtotime($iter{"date"}));
     } else {
-        $date_string = date( "D F dS" ,strtotime($iter{"date"}));
+        $date_string = date("D F dS" ,strtotime($iter{"date"}));
     }
     
     if ($iter{"activity"}) { $checked = "checked"; }

@@ -172,18 +172,18 @@ if ($postid) {
  <table>
   <tr>
    <th><?php echo xlt('Portal ID'); ?></th>
-   <th><?php echo xlt('Name'     ); ?></th>
-   <th><?php echo xlt('Phone'    ); ?></th>
-   <th><?php echo xlt('SS'       ); ?></th>
-   <th><?php echo xlt('DOB'      ); ?></th>
-   <th><?php echo xlt('Address'  ); ?></th>
+   <th><?php echo xlt('Name'); ?></th>
+   <th><?php echo xlt('Phone'); ?></th>
+   <th><?php echo xlt('SS'); ?></th>
+   <th><?php echo xlt('DOB'); ?></th>
+   <th><?php echo xlt('Address'); ?></th>
   </tr>
   <tr>
    <th style='font-weight:normal'><?php echo text($result['post']['user']); ?></th>
    <th style='font-weight:normal'><?php echo text("$lname, $fname"); ?></th>
    <th style='font-weight:normal'><?php echo text($phone); ?></th>
-   <th style='font-weight:normal'><?php echo text($ssn  ); ?></th>
-   <th style='font-weight:normal'><?php echo text($dob  ); ?></th>
+   <th style='font-weight:normal'><?php echo text($ssn); ?></th>
+   <th style='font-weight:normal'><?php echo text($dob); ?></th>
    <th style='font-weight:normal'><?php echo text($result['fields']['street'] . ' ' . $zip); ?></th>
   </tr>
 
@@ -212,10 +212,10 @@ if ($postid) {
       echo " style='color:red' title='" . xla('Portal ID does not match request from portal!') . "'";
     }
     echo ">" . text($row['cmsportal_login']) . "</td>\n";
-    echo "   <td>" . text($row['lname'] . ", " . $row['fname']      ) . "</td>\n";
-    echo "   <td>" . text($phone                                    ) . "</td>\n";
-    echo "   <td>" . text($row['ss']                                ) . "</td>\n";
-    echo "   <td>" . text($row['DOB']                               ) . "</td>\n";
+    echo "   <td>" . text($row['lname'] . ", " . $row['fname']) . "</td>\n";
+    echo "   <td>" . text($phone) . "</td>\n";
+    echo "   <td>" . text($row['ss']) . "</td>\n";
+    echo "   <td>" . text($row['DOB']) . "</td>\n";
     echo "   <td>" . text($row['street'] . ' ' . $row['postal_code']) . "</td>\n";
     echo "  </tr>\n";
   }

@@ -17,8 +17,8 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // 
 
-require_once( "CdrHelper.class.php");
-require_once( $GLOBALS['fileroot'] . "/library/clinical_rules.php" );
+require_once("CdrHelper.class.php");
+require_once($GLOBALS['fileroot'] . "/library/clinical_rules.php");
 
 /**
  * class CdrAlertManager
@@ -39,7 +39,7 @@ class CdrAlertManager{
         	
         	    $rules = resolve_rules_sql('', 0, TRUE);
         	    
-        	    foreach( $rules as $rowRule ) {
+        	    foreach($rules as $rowRule) {
 		              $rule_id = $rowRule['id'];
 		              $cdra[] = new CdrResults($rule_id, $rowRule['active_alert_flag'], $rowRule['passive_alert_flag'], $rowRule['patient_reminder_flag'], $rowRule['access_control']);
         	    }

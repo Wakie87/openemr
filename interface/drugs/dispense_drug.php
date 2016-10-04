@@ -42,10 +42,10 @@
 
  if (!acl_check('admin', 'drugs')) die(xl('Not authorized'));
 
- if (!$drug_id        ) $drug_id = 0;
+ if (!$drug_id) $drug_id = 0;
  if (!$prescription_id) $prescription_id = 0;
- if (!$quantity       ) $quantity = 0;
- if (!$fee            ) $fee = 0.00;
+ if (!$quantity) $quantity = 0;
+ if (!$fee) $fee = 0.00;
 
  $inventory_id = 0;
  $bad_lot_list = '';
@@ -139,7 +139,7 @@
   "d.drug_id = i.drug_id AND " .
   "r.id = s.prescription_id AND " .
   "p.pid = s.pid AND " .
-  "u.id = r.provider_id", array($sale_id) );
+  "u.id = r.provider_id", array($sale_id));
 
  $dconfig = $GLOBALS['oer_config']['druglabels'];
 

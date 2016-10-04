@@ -109,7 +109,7 @@ function delete_drug_sales($patient_id, $encounter_id=0) {
     row_delete("drug_sales", "encounter = '" . add_escape_custom($encounter_id) . "'");
   }
   else {
-    row_delete("drug_sales", "pid = '" . add_escape_custom($patient_id ) . "'");
+    row_delete("drug_sales", "pid = '" . add_escape_custom($patient_id) . "'");
   }
 }
 
@@ -329,7 +329,7 @@ function popup_close() {
     if (!acl_check('acct','disc')) die("Not authorized!");
     list($patient_id, $encounter_id) = explode(".", $billing);
       sqlStatement("DELETE FROM ar_activity WHERE " .
-        "pid = ? AND encounter = ? ", array($patient_id, $encounter_id) );
+        "pid = ? AND encounter = ? ", array($patient_id, $encounter_id));
       sqlStatement("DELETE ar_session FROM ar_session LEFT JOIN " .
         "ar_activity ON ar_session.session_id = ar_activity.session_id " .
         "WHERE ar_activity.session_id IS NULL");

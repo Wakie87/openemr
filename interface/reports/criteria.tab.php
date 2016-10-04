@@ -80,10 +80,10 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
         <table width="560" border="0" cellspacing="0" cellpadding="0" >
           <tr>
             <td><fieldset style="border-color:#000000; border-width:1px;padding-left:5px;padding-right:0px;padding-top:0px;padding-bottom:0px;" >
-                <legend class='text'><b><?php echo htmlspecialchars( xl('Choose Criteria'), ENT_QUOTES) ?></b></legend>
+                <legend class='text'><b><?php echo htmlspecialchars(xl('Choose Criteria'), ENT_QUOTES) ?></b></legend>
                 <table width="290" border="0" cellspacing="0" cellpadding="0">
                   <tr>
-                    <td class='text'><?php echo htmlspecialchars( xl('Criteria'), ENT_QUOTES) ?></td>
+                    <td class='text'><?php echo htmlspecialchars(xl('Criteria'), ENT_QUOTES) ?></td>
                     <td ></td>
                   </tr>
                   <tr>
@@ -129,20 +129,20 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
                                   </tr>
                                   <tr>
                                     <td class='text' align="right" style="padding-right:5px;padding-bottom:2px;padding-top:2px">
-                                        <?php echo htmlspecialchars( xl('From'), ENT_QUOTES).':' ?><input type='text' size='7' 
+                                        <?php echo htmlspecialchars(xl('From'), ENT_QUOTES).':' ?><input type='text' size='7' 
                                         name='master_from_date_<?php echo $DateNamePart;?>' 
                                         id='master_from_date_<?php echo $DateNamePart;?>' class="text " readonly=""  
                                         value="<?php echo attr($_REQUEST["master_from_date_$DateNamePart"]) ?>"
                                         onChange="SetDateCriteriaCustom('date_master_criteria_<?php echo $DateNamePart;?>');
                                         appendOptionDateCriteria('<?php echo attr($ThisPageSearchCriteriaDisplay[$ThisPageSearchCriteriaIndex]);?>',
                                         '<?php echo $ThisPageSearchCriteriaKey[$ThisPageSearchCriteriaIndex];?>',
-                                        '<?php echo htmlspecialchars( xl('Custom'), ENT_QUOTES); ?>',
-                                        '<?php echo htmlspecialchars( xl('Custom'), ENT_QUOTES); ?>',
+                                        '<?php echo htmlspecialchars(xl('Custom'), ENT_QUOTES); ?>',
+                                        '<?php echo htmlspecialchars(xl('Custom'), ENT_QUOTES); ?>',
                                         ' = ','master_from_date_<?php echo $DateNamePart;?>','master_to_date_<?php echo $DateNamePart;?>',
                                         '<?php echo $ThisPageSearchCriteriaDataType[$ThisPageSearchCriteriaIndex] ?>')" />&nbsp;
                                         <img src="<?php echo $web_root ?>/interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg" 
                                         align="texttop"    id='img_master_fromdate_<?php echo $DateNamePart;?>' border='0' alt='[?]' style='cursor:pointer'
-                                        title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
+                                        title='<?php echo htmlspecialchars(xl('Click here to choose a date'), ENT_QUOTES); ?>' />
                                        <script>
                                         Calendar.setup({inputField:"master_from_date_<?php echo $DateNamePart;?>", ifFormat:"%Y-%m-%d", button:"img_master_fromdate_<?php echo $DateNamePart;?>"});
                                        </script>                            
@@ -150,20 +150,20 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
                                   </tr>
                                   <tr>
                                     <td class='text' align="right" style="padding-right:5px">
-                                        <?php echo htmlspecialchars( xl('To'), ENT_QUOTES).':' ?><input type='text' size='7' 
+                                        <?php echo htmlspecialchars(xl('To'), ENT_QUOTES).':' ?><input type='text' size='7' 
                                         name='master_to_date_<?php echo $DateNamePart;?>' 
                                         id='master_to_date_<?php echo $DateNamePart;?>' class="text " readonly=""
                                         value="<?php echo attr($_REQUEST["master_to_date_$DateNamePart"]) ?>"
                                         onChange="SetDateCriteriaCustom('date_master_criteria_<?php echo $DateNamePart;?>');
                                         appendOptionDateCriteria('<?php echo attr($ThisPageSearchCriteriaDisplay[$ThisPageSearchCriteriaIndex]);?>',
                                         '<?php echo $ThisPageSearchCriteriaKey[$ThisPageSearchCriteriaIndex];?>',
-                                        '<?php echo htmlspecialchars( xl('Custom'), ENT_QUOTES); ?>',
-                                        '<?php echo htmlspecialchars( xl('Custom'), ENT_QUOTES); ?>',
+                                        '<?php echo htmlspecialchars(xl('Custom'), ENT_QUOTES); ?>',
+                                        '<?php echo htmlspecialchars(xl('Custom'), ENT_QUOTES); ?>',
                                         ' = ','master_from_date_<?php echo $DateNamePart;?>','master_to_date_<?php echo $DateNamePart;?>',
                                         '<?php echo $ThisPageSearchCriteriaDataType[$ThisPageSearchCriteriaIndex] ?>')" />&nbsp;
                                         <img src="<?php echo $web_root ?>/interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg" 
                                         align="texttop"    id='img_master_todate_<?php echo $DateNamePart;?>' border='0' alt='[?]' style='cursor:pointer'
-                                        title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
+                                        title='<?php echo htmlspecialchars(xl('Click here to choose a date'), ENT_QUOTES); ?>' />
                                        <script>
                                         Calendar.setup({inputField:"master_to_date_<?php echo $DateNamePart;?>", ifFormat:"%Y-%m-%d", button:"img_master_todate_<?php echo $DateNamePart;?>"});
                                        </script>                            
@@ -323,11 +323,11 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
                 </fieldset>
             </td>
             <td valign="top"><fieldset style="border-color:#000000; border-width:1px;padding-left:5px;padding-right:0px;padding-top:0px;padding-bottom:0px;" >
-                <legend class='text'><b><?php echo htmlspecialchars( xl('Current Criteria'), ENT_QUOTES) ?></b></legend>
+                <legend class='text'><b><?php echo htmlspecialchars(xl('Current Criteria'), ENT_QUOTES) ?></b></legend>
                 <table width="260" border="0" cellspacing="0" cellpadding="0">
                   <tr>
-                    <td width="117" class='text'><?php echo htmlspecialchars( xl('Criteria'), ENT_QUOTES) ?></td>
-                    <td width="118" class='text'><?php echo htmlspecialchars( xl('Set To'), ENT_QUOTES) ?></td>
+                    <td width="117" class='text'><?php echo htmlspecialchars(xl('Criteria'), ENT_QUOTES) ?></td>
+                    <td width="118" class='text'><?php echo htmlspecialchars(xl('Set To'), ENT_QUOTES) ?></td>
                     <td width="25" class='text'></td>
                   </tr>
                   <tr>

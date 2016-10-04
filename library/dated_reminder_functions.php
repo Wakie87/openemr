@@ -364,7 +364,7 @@ function logRemindersArray(){
           $pRow = sqlFetchArray($pSQL);
            
           $prSQL = sqlStatement("SELECT u.fname pfname, u.mname pmname, u.lname plname FROM `users` u WHERE u.id = ?",array($drRow['dr_processed_by']));
-          $prRow = sqlFetchArray($prSQL );
+          $prRow = sqlFetchArray($prSQL);
           
 // --------- fill the $reminders array 
       		$reminders[$i]['messageID'] = $drRow['dr_id'];

@@ -78,7 +78,7 @@ function addNewDocument($name,$type,$tmp_name,$error,$size,$owner='',$patient_id
  * @return int/boolean              category id (returns false if the category title does not exist)
  */
 function document_category_to_id($category_title) {
-  $ret = sqlQuery("SELECT `id` FROM `categories` WHERE `name`=?", array($category_title) );
+  $ret = sqlQuery("SELECT `id` FROM `categories` WHERE `name`=?", array($category_title));
   if ($ret['id']) {
     return $ret['id'];
   }

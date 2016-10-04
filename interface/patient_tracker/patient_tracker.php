@@ -71,7 +71,7 @@ $datetime = date("Y-m-d H:i:s");
 
 # go get the information and process it
 $appointments = fetch_Patient_Tracker_Events($from_date, $to_date, $provider, $facility, $form_apptstatus, $form_apptcat);
-$appointments = sortAppointments( $appointments, 'time' );
+$appointments = sortAppointments($appointments, 'time');
 
 //grouping of the count of every status
 $appointments_status = getApptStatus($appointments);
@@ -91,7 +91,7 @@ $appointments_status = getApptStatus($appointments);
 // xl('Coding done')
 // xl('Canceled < 24h')
 $lres = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1", array('apptstat'));
-while ( $lrow = sqlFetchArray ( $lres ) ) {
+while ($lrow = sqlFetchArray ($lres)) {
     // if exists, remove the legend character
     if($lrow['title'][1] == ' '){
         $splitTitle = explode(' ', $lrow['title']);
@@ -107,7 +107,7 @@ while ( $lrow = sqlFetchArray ( $lres ) ) {
 $chk_prov = array();  // list of providers with appointments
 
 // Scan appointments for additional info
-foreach ( $appointments as $apt ) {
+foreach ($appointments as $apt) {
   $chk_prov[$apt['uprovider_id']] = $apt['ulname'] . ', ' . $apt['ufname'] . ' ' . $apt['umname'];
 }
 ?>
@@ -254,7 +254,7 @@ function openNewTopWindow(newpid,newencounterid) {
                     <div style='margin-left: 15px'>
                         <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
                             <span> <?php echo xlt('Submit'); ?> </span> </a>
-                        <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
+                        <?php if ($_POST['form_refresh'] || $_POST['form_orderby']) { ?>
                             <a href='#' class='css_button' id='printbutton'>
                                 <span> <?php echo xlt('Print'); ?> </span> </a>
                         <?php } ?>
@@ -369,7 +369,7 @@ function openNewTopWindow(newpid,newencounterid) {
  </tr>
 
 <?php
-	foreach ( $appointments as $appointment ) {
+	foreach ($appointments as $appointment) {
 
                 # Collect appt date and set up squashed date for use below
                 $date_appt = $appointment['pc_eventDate'];
@@ -377,12 +377,12 @@ function openNewTopWindow(newpid,newencounterid) {
 
                 # Collect variables and do some processing
                 $docname  = $chk_prov[$appointment['uprovider_id']];
-                if (strlen($docname)<= 3 ) continue;
+                if (strlen($docname)<= 3) continue;
                 $ptname = $appointment['lname'] . ', ' . $appointment['fname'] . ' ' . $appointment['mname'];
                 $appt_enc = $appointment['encounter'];
                 $appt_eid = (!empty($appointment['eid'])) ? $appointment['eid'] : $appointment['pc_eid'];
                 $appt_pid = (!empty($appointment['pid'])) ? $appointment['pid'] : $appointment['pc_pid'];
-                if ($appt_pid ==0 ) continue; // skip when $appt_pid = 0, since this means it is not a patient specific appt slot
+                if ($appt_pid ==0) continue; // skip when $appt_pid = 0, since this means it is not a patient specific appt slot
                 $status = (!empty($appointment['status'])) ? $appointment['status'] : $appointment['pc_apptstatus'];
                 $appt_room = (!empty($appointment['room'])) ? $appointment['room'] : $appointment['pc_room'];
                 $appt_time = (!empty($appointment['appttime'])) ? $appointment['appttime'] : $appointment['pc_startTime'];
@@ -397,11 +397,11 @@ function openNewTopWindow(newpid,newencounterid) {
                 $bgcolor = $colorevents['color'];
                 $statalert = $colorevents['time_alert'];
                 # process the time to allow items with a check out status to be displayed
-                if ( is_checkout($status) && ($GLOBALS['checkout_roll_off'] > 0) ) {
+                if (is_checkout($status) && ($GLOBALS['checkout_roll_off'] > 0)) {
                         $to_time = strtotime($newend);
                         $from_time = strtotime($datetime);
                         $display_check_out = round(abs($from_time - $to_time) / 60,0);
-                        if ( $display_check_out >= $GLOBALS['checkout_roll_off'] ) continue;
+                        if ($display_check_out >= $GLOBALS['checkout_roll_off']) continue;
                 }
 ?>
         <tr bgcolor='<?php echo $bgcolor ?>'>
@@ -535,16 +535,16 @@ function openNewTopWindow(newpid,newencounterid) {
 
 <?php
 //saving the filter for auto refresh
-if(!is_null($_POST['form_provider']) ){
+if(!is_null($_POST['form_provider'])){
     echo "<input type='hidden' name='form_provider' value='" . attr($_POST['form_provider']) . "'>";
 }
-if(!is_null($_POST['form_facility']) ){
+if(!is_null($_POST['form_facility'])){
     echo "<input type='hidden' name='form_facility' value='" . attr($_POST['form_facility']) . "'>";
 }
-if(!is_null($_POST['form_apptstatus']) ){
+if(!is_null($_POST['form_apptstatus'])){
     echo "<input type='hidden' name='form_apptstatus' value='" . attr($_POST['form_apptstatus']) . "'>";
 }
-if(!is_null($_POST['form_apptcat']) ){
+if(!is_null($_POST['form_apptcat'])){
     echo "<input type='hidden' name='form_apptcat' value='" . attr($_POST['form_apptcat']) . "'>";
 }
 ?>

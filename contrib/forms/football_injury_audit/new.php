@@ -289,13 +289,13 @@ function docoding() {
   <td nowrap>
    <table width='100%'>
     <tr>
-     <?php echo cbcell('form_mech_tackling' , 'Tackling' , 'fimech_tackling' ) ?>
-     <?php echo cbcell('form_mech_tackled'  , 'Tackled'  , 'fimech_tackled'  ) ?>
+     <?php echo cbcell('form_mech_tackling' , 'Tackling' , 'fimech_tackling') ?>
+     <?php echo cbcell('form_mech_tackled'  , 'Tackled'  , 'fimech_tackled') ?>
      <?php echo cbcell('form_mech_collision', 'Collision', 'fimech_collision') ?>
-     <?php echo cbcell('form_mech_kicked'   , 'Kicked'   , 'fimech_kicked'   ) ?>
+     <?php echo cbcell('form_mech_kicked'   , 'Kicked'   , 'fimech_kicked') ?>
     </tr>
     <tr>
-     <?php echo cbcell('form_mech_elbow' , 'Use of Elbow' , 'fimech_elbow' ) ?>
+     <?php echo cbcell('form_mech_elbow' , 'Use of Elbow' , 'fimech_elbow') ?>
      <td colspan='3' nowrap>
       Other:
       <input type='text' name='form_mech_othercon' size='10'
@@ -312,14 +312,14 @@ function docoding() {
   <td nowrap>
    <table width='100%'>
     <tr>
-     <?php echo cbcell('form_mech_nofoul' , 'No Foul'      , 'fimech_nofoul' ) ?>
+     <?php echo cbcell('form_mech_nofoul' , 'No Foul'      , 'fimech_nofoul') ?>
      <?php echo cbcell('form_mech_oppfoul', 'Opponent Foul', 'fimech_oppfoul') ?>
      <?php echo cbcell('form_mech_ownfoul', 'Own Foul'     , 'fimech_ownfoul') ?>
      <td width='25%'>&nbsp;</td>
     </tr>
     <tr>
-     <?php echo cbcell('form_mech_yellow' , 'Yellow Card'  , 'fimech_yellow' ) ?>
-     <?php echo cbcell('form_mech_red'    , 'Red Card'     , 'fimech_red'    ) ?>
+     <?php echo cbcell('form_mech_yellow' , 'Yellow Card'  , 'fimech_yellow') ?>
+     <?php echo cbcell('form_mech_red'    , 'Red Card'     , 'fimech_red') ?>
      <td width='25%'>&nbsp;</td>
      <td width='25%'>&nbsp;</td>
     </tr>
@@ -332,25 +332,25 @@ function docoding() {
   <td nowrap>
    <table width='100%'>
     <tr>
-     <?php echo cbcell('form_mech_passing'  , 'Passing'  , 'fimech_passing'  ) ?>
-     <?php echo cbcell('form_mech_shooting' , 'Shooting' , 'fimech_shooting' ) ?>
-     <?php echo cbcell('form_mech_running'  , 'Running'  , 'fimech_running'  ) ?>
+     <?php echo cbcell('form_mech_passing'  , 'Passing'  , 'fimech_passing') ?>
+     <?php echo cbcell('form_mech_shooting' , 'Shooting' , 'fimech_shooting') ?>
+     <?php echo cbcell('form_mech_running'  , 'Running'  , 'fimech_running') ?>
      <?php echo cbcell('form_mech_dribbling', 'Dribbling', 'fimech_dribbling') ?>
     </tr>
     <tr>
-     <?php echo cbcell('form_mech_heading'  , 'Heading'  , 'fimech_heading'  ) ?>
-     <?php echo cbcell('form_mech_jumping'  , 'Jumping'  , 'fimech_jumping'  ) ?>
-     <?php echo cbcell('form_mech_landing'  , 'Landing'  , 'fimech_landing'  ) ?>
-     <?php echo cbcell('form_mech_fall'     , 'Fall'     , 'fimech_fall'     ) ?>
+     <?php echo cbcell('form_mech_heading'  , 'Heading'  , 'fimech_heading') ?>
+     <?php echo cbcell('form_mech_jumping'  , 'Jumping'  , 'fimech_jumping') ?>
+     <?php echo cbcell('form_mech_landing'  , 'Landing'  , 'fimech_landing') ?>
+     <?php echo cbcell('form_mech_fall'     , 'Fall'     , 'fimech_fall') ?>
     </tr>
     <tr>
      <?php echo cbcell('form_mech_stretching', 'Stretching'      , 'fimech_stretching') ?>
-     <?php echo cbcell('form_mech_turning'   , 'Twisting/Turning', 'fimech_turning'   ) ?>
-     <?php echo cbcell('form_mech_throwing'  , 'Throwing'        , 'fimech_throwing'  ) ?>
-     <?php echo cbcell('form_mech_diving'    , 'Diving'          , 'fimech_diving'    ) ?>
+     <?php echo cbcell('form_mech_turning'   , 'Twisting/Turning', 'fimech_turning') ?>
+     <?php echo cbcell('form_mech_throwing'  , 'Throwing'        , 'fimech_throwing') ?>
+     <?php echo cbcell('form_mech_diving'    , 'Diving'          , 'fimech_diving') ?>
     </tr>
     <tr>
-     <?php echo cbcell('form_mech_overuse', 'Overuse', 'fimech_overuse' ) ?>
+     <?php echo cbcell('form_mech_overuse', 'Overuse', 'fimech_overuse') ?>
      <td colspan='3' nowrap>
       Other:
       <input type='text' name='form_mech_othernon' size='10'

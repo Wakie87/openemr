@@ -114,9 +114,9 @@ $fake_register_globals=false;
     </table>
 
     <?php
-    if ($has_note < 1 ) { ?>
+    if ($has_note < 1) { ?>
         <span class='text'>
-            <?php echo htmlspecialchars(xl( "There are no notes on file for this patient."),ENT_NOQUOTES);
+            <?php echo htmlspecialchars(xl("There are no notes on file for this patient."),ENT_NOQUOTES);
                   echo " ";
 	          echo "<a href='pnotes_full.php' onclick='top.restoreSession()'>";
 	          echo htmlspecialchars(xl("To add notes, please click here"),ENT_NOQUOTES);
@@ -187,9 +187,9 @@ $fake_register_globals=false;
     } ?>
     </table>
     <?php
-    if ($has_sent_note < 1 ) { ?>
+    if ($has_sent_note < 1) { ?>
         <span class='text'>
-            <?php echo htmlspecialchars(xl( "There are no notes on file for this patient."),ENT_NOQUOTES);
+            <?php echo htmlspecialchars(xl("There are no notes on file for this patient."),ENT_NOQUOTES);
                   echo " ";
 	          echo "<a href='pnotes_full.php' onclick='top.restoreSession()'>";
 	          echo htmlspecialchars(xl("To add notes, please click here"),ENT_NOQUOTES);

@@ -155,10 +155,10 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 
   if ($_POST['form_details']) {
     if ($_POST['form_csvexport']) {
-      echo '"' . display_desc($category ) . '",';
-      echo '"' . display_desc($product  ) . '",';
+      echo '"' . display_desc($category) . '",';
+      echo '"' . display_desc($product) . '",';
       echo '"' . oeFormatShortDate(display_desc($transdate)) . '",';
-      if($GLOBALS['sales_report_invoice'] == 1 || $GLOBALS['sales_report_invoice'] == 2 ) {
+      if($GLOBALS['sales_report_invoice'] == 1 || $GLOBALS['sales_report_invoice'] == 2) {
        echo '"' . $pat_name . '",';
       }
       if($GLOBALS['sales_report_invoice'] == 0 || $GLOBALS['sales_report_invoice'] == 2) {
@@ -168,7 +168,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
         echo '"' . $patient_id . '",';
       }
      // echo '"' . display_desc($invnumber) . '",';
-      echo '"' . display_desc($qty      ) . '",';
+      echo '"' . display_desc($qty) . '",';
       echo '"'; bucks($rowamount); echo '"' . "\n";
     }
     else {
@@ -188,7 +188,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
   <td>
    &nbsp;
   </td>
-   <?php } if($GLOBALS['sales_report_invoice'] == 1 || $GLOBALS['sales_report_invoice'] == 2 ) { ?>
+   <?php } if($GLOBALS['sales_report_invoice'] == 1 || $GLOBALS['sales_report_invoice'] == 2) { ?>
   <td>
    <?php echo text($pat_name); ?>
   </td>
@@ -198,7 +198,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
    <a href='../patient_file/pos_checkout.php?ptid=<?php echo attr($patient_id); ?>&enc=<?php echo attr($encounter_id); ?>'>
    <?php echo text($invnumber); ?></a>
    <?php }
-   if($GLOBALS['sales_report_invoice'] == 1 ) {
+   if($GLOBALS['sales_report_invoice'] == 1) {
      echo text($patient_id);
     }
     ?>
@@ -246,7 +246,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
       echo '"Category",';
       echo '"Item",';
       echo '"Date",';
-      if($GLOBALS['sales_report_invoice'] == 1 || $GLOBALS['sales_report_invoice'] == 2 ) {
+      if($GLOBALS['sales_report_invoice'] == 1 || $GLOBALS['sales_report_invoice'] == 2) {
        echo '"Name",';
       }
       if($GLOBALS['sales_report_invoice'] == 0 || $GLOBALS['sales_report_invoice'] == 2) {
@@ -464,7 +464,7 @@ $(document).ready(function() {
   <th>
    <?php 
    if ($form_details) echo xlt('Invoice');  }
-    if($GLOBALS['sales_report_invoice'] == 1 || $GLOBALS['sales_report_invoice'] == 2 ) {
+    if($GLOBALS['sales_report_invoice'] == 1 || $GLOBALS['sales_report_invoice'] == 2) {
      if ($form_details) echo xlt('Name');
     } ?>
   </th>
@@ -653,7 +653,7 @@ $(document).ready(function() {
 </div> <!-- report results -->
 <?php } else { ?>
 <div class='text'>
- 	<?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>
+ 	<?php echo xlt('Please input search criteria above, and click Submit to view results.'); ?>
 </div>
 <?php } ?>
 

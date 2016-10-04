@@ -115,7 +115,7 @@ class FeeSheet {
       "FROM form_encounter AS fe " .
       "LEFT JOIN openemr_postcalendar_categories AS opc ON opc.pc_catid = fe.pc_catid " .
       "LEFT JOIN facility AS fac ON fac.id = fe.facility_id " .
-      "WHERE fe.pid = ? AND fe.encounter = ? LIMIT 1", array($this->pid, $this->encounter) );
+      "WHERE fe.pid = ? AND fe.encounter = ? LIMIT 1", array($this->pid, $this->encounter));
     $this->visit_date    = substr($visit_row['date'], 0, 10);
     $this->provider_id   = $visit_row['provider_id'];
     if (empty($this->provider_id)) $this->provider_id = findProvider();
@@ -169,7 +169,7 @@ class FeeSheet {
     }
     if (!$providerid) {
       $find_provider = sqlQuery("SELECT providerID FROM patient_data " .
-        "WHERE pid = ?", array($this->pid) );
+        "WHERE pid = ?", array($this->pid));
       $providerid = $find_provider['providerID'];
     }
     return intval($providerid);
@@ -435,7 +435,7 @@ class FeeSheet {
     $pricelevel   = isset($args['pricelevel']) ? $args['pricelevel'] : $this->patient_pricelevel;
     $warehouse_id = isset($args['warehouse_id']) ? $args['warehouse_id'] : '';
 
-    $drow = sqlQuery("SELECT name, related_code FROM drugs WHERE drug_id = ?", array($drug_id) );
+    $drow = sqlQuery("SELECT name, related_code FROM drugs WHERE drug_id = ?", array($drug_id));
     $code_text = $drow['name'];
 
     // If no warehouse ID passed, use the logged-in user's default.

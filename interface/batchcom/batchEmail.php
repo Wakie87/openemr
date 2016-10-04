@@ -33,8 +33,8 @@ while ($row=sqlFetchArray($res)) {
 	
 	$email_subject=$_POST['email_subject'];
     $email_body=$_POST['email_body'];
-    $email_subject=preg_replace('/\*{3}NAME\*{3}/', $pt_name, $email_subject );
-    $email_body=   preg_replace('/\*{3}NAME\*{3}/', $pt_name, $email_body );
+    $email_subject=preg_replace('/\*{3}NAME\*{3}/', $pt_name, $email_subject);
+    $email_body=   preg_replace('/\*{3}NAME\*{3}/', $pt_name, $email_body);
 
     $headers = "MIME-Version: 1.0\r\n";
 	$headers .= "To: $pt_name<".$pt_email.">\r\n";
@@ -42,7 +42,7 @@ while ($row=sqlFetchArray($res)) {
     $headers .= "Reply-to: <".$email_sender.">\r\n";
     $headers .= "X-Priority: 3\r\n";
     $headers .= "X-Mailer: PHP mailer\r\n";
-    if ( mail($pt_email,$email_subject,$email_body,$headers)) {
+    if (mail($pt_email,$email_subject,$email_body,$headers)) {
 
         echo ("<br>" . xl('Email sent to') . ": " . text($pt_name) . " , " . text($pt_email) . "<br>");
 
