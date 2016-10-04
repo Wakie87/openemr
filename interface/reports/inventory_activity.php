@@ -477,7 +477,7 @@ $query = "SELECT drug_id, name FROM drugs ORDER BY name, drug_id";
 $pres = sqlStatement($query);
 echo "      <select name='form_product'>\n";
 echo "       <option value=''>-- " . htmlspecialchars(xl('All Products')) . " --\n";
-while ($prow = sqlFetchArray($pres)) {
+foreach ($pres as $prow) {
   $drug_id = $prow['drug_id'];
   echo "       <option value='$drug_id'";
   if ($drug_id == $form_product) echo " selected";
@@ -612,7 +612,7 @@ if ($form_action) { // if submit or export
   }
 
   $res = sqlStatement($query);
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
 
     // If new lot and it was destroyed during the reporting period,
     // generate a pseudo-adjustment for that.

@@ -221,7 +221,7 @@ function collectReportDatabase($report_id) {
   
   // Convert data into an array
   $final_array = array();
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $final_array = array_merge($final_array,array($row['field_id']=>$row['field_value']));
   }
 
@@ -246,7 +246,7 @@ function getStatusReportDatabase($report_id) {
 
   // Place into an array for quick processing
   $final_array = array();
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $final_array = array_merge($final_array,array($row['field_id']=>$row['field_value']));
   }
 

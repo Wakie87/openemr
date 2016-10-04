@@ -183,7 +183,7 @@ require_once "$srcdir/report_database.inc";
 <?php
 
  $res = listingReportDatabase($_POST['form_begin_date'],$_POST['form_end_date']);
- while ($row = sqlFetchArray($res)) {
+ foreach ($res as $row) {
 
   // Figure out the title and link
   if ($row['type'] == "cqm") {

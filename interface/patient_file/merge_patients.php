@@ -119,7 +119,7 @@ if (!empty($_POST['form_submit'])) {
 
   // Change normal documents first as that could fail if CouchDB connection fails.
   $dres = sqlStatement("SELECT * FROM `documents` WHERE `foreign_id` = '$source_pid'");
-  while ($drow = sqlFetchArray($dres)) {
+  foreach ($dres as $drow) {
     $d = new Document($drow['id']);
     echo "<br />" . xlt('Changing patient ID for document') . ' ' . text($d->get_url_file());
     if ($PRODUCTION) {
@@ -160,7 +160,7 @@ if (!empty($_POST['form_submit'])) {
   }
 
   $tres = sqlStatement("SHOW TABLES");
-  while ($trow = sqlFetchArray($tres)) {
+  foreach ($tres as $trow) {
     $tblname = array_shift($trow);
     if ($tblname == 'patient_data' || $tblname == 'history_data' || $tblname == 'insurance_data') {
       deleteRows($tblname, 'pid', $source_pid);

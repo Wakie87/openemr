@@ -178,7 +178,7 @@ class BillingExport {
     $ires = sqlStatement($query);
 
     $prev_type = '?';
-    while ($irow = sqlFetchArray($ires)) {
+    foreach ($ires as $irow) {
       if (strcmp($irow['type'], $prev_type) == 0) continue;
       $prev_type = $irow['type'];
 
@@ -215,7 +215,7 @@ class BillingExport {
       "ORDER BY id";
     $bres = sqlStatement($query);
 
-    while ($brow = sqlFetchArray($bres)) {
+    foreach ($bres as $brow) {
       fwrite($this->tmpfh, 'PR' .
         ',"' . $this->fixCPT($brow['code'], $brow['modifier']) . '"' .
         ',"' . $this->fixJust($brow['justify'])                . '"' .

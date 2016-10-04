@@ -238,7 +238,7 @@ $res = sqlStatement($query);
 				 echo "   <select name='form_provider'>\n";
 				 echo "    <option value=''>-- " . xlt('All') . " --\n";
 
-				 while ($urow = sqlFetchArray($ures)) {
+				 foreach ($ures as $urow) {
 				  $provid = $urow['id'];
 				  echo "    <option value='" . attr($provid) . "'";
 				  if ($provid == $_POST['form_provider']) echo " selected";
@@ -374,7 +374,7 @@ $res = sqlStatement($query);
 if ($res) {
   $lastdocname = "";
   $doc_encounters = 0;
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $patient_id = $row['pid'];
 
     $docname = '';

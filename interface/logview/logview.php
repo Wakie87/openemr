@@ -156,7 +156,7 @@ $sortby = formData('sortby','G') ;
 <?php
 echo "<select name='form_user'>\n";
 echo " <option value=''>" . xl('All') . "</option>\n";
-while ($urow = sqlFetchArray($ures)) {
+foreach ($ures as $urow) {
   if (!trim($urow['username'])) continue;
   echo " <option value='" . $urow['username'] . "'";
   if ($urow['username'] == $form_user) echo " selected";

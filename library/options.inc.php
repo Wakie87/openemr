@@ -403,7 +403,7 @@ function generate_form_field($frow, $currvalue) {
     echo "<select name='form_$field_id_esc' id='form_$field_id_esc' title='$description' $lbfonchange $disabled>";
     echo "<option value=''>" . xlt($empty_title) . "</option>";
     $got_selected = false;
-    while ($urow = sqlFetchArray($ures)) {
+    foreach ($ures as $urow) {
       $uname = text($urow['fname'] . ' ' . $urow['lname']);
       $optionId = attr($urow['id']);
       echo "<option value='$optionId'";
@@ -433,7 +433,7 @@ function generate_form_field($frow, $currvalue) {
     echo " $lbfonchange $disabled>";
     echo "<option value=''>" . xlt('Unassigned') . "</option>";
     $got_selected = false;
-    while ($urow = sqlFetchArray($ures)) {
+    foreach ($ures as $urow) {
       $uname = text($urow['fname'] . ' ' . $urow['lname']);
       $optionId = attr($urow['id']);
       echo "<option value='$optionId'";
@@ -460,7 +460,7 @@ function generate_form_field($frow, $currvalue) {
     echo "<option value='0'></option>";
     $pres = get_pharmacies();
     $got_selected = false;
-    while ($prow = sqlFetchArray($pres)) {
+    foreach ($pres as $prow) {
       $key = $prow['id'];
       $optionValue = htmlspecialchars($key, ENT_QUOTES);
       $optionLabel = htmlspecialchars($prow['name'] . ' ' . $prow['area_code'] . '-' .
@@ -532,7 +532,7 @@ function generate_form_field($frow, $currvalue) {
     echo "<select name='form_$field_id_esc' id='form_$field_id_esc' title='$description'";
     echo " $lbfonchange $disabled>";
     echo "<option value=''>" . htmlspecialchars(xl('Unassigned'), ENT_NOQUOTES) . "</option>";
-    while ($urow = sqlFetchArray($ures)) {
+    foreach ($ures as $urow) {
       $uname = $urow['organization'];
       if (empty($uname) || substr($uname, 0, 1) == '(') {
         $uname = $urow['lname'];
@@ -670,7 +670,7 @@ function generate_form_field($frow, $currvalue) {
       " $lbfonchange $disabled>";
     echo "<option value=''>" . xlt($empty_title) . "</option>";
     $got_selected = false;
-    while ($crow = sqlFetchArray($cres)) {
+    foreach ($cres as $crow) {
       $catid = $crow['pc_catid'];
       if (($catid < 9 && $catid != 5) || $catid == 11) continue;
       echo "<option value='" . attr($catid) . "'";
@@ -740,7 +740,7 @@ function generate_form_field($frow, $currvalue) {
     $lres = sqlStatement("SELECT * FROM list_options " .
       "WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
     echo "<table cellpadding='0' cellspacing='0'>";
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       $option_id_esc = htmlspecialchars($option_id, ENT_QUOTES);
       $maxlength = $frow['max_length'];
@@ -788,7 +788,7 @@ function generate_form_field($frow, $currvalue) {
       "<td class='bold'>" .
       htmlspecialchars(xl('Abn'), ENT_NOQUOTES) . "&nbsp;</td><td class='bold'>" .
       htmlspecialchars(xl('Date/Notes'), ENT_NOQUOTES) . "</td></tr>";
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       $option_id_esc = htmlspecialchars($option_id, ENT_QUOTES);
       $restype = substr($avalue[$option_id], 0, 1);
@@ -828,7 +828,7 @@ function generate_form_field($frow, $currvalue) {
     // echo "<!-- $query -->\n"; // debugging
     $lres = sqlStatement($query, array($GLOBALS['pid']));
     $count = 0;
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       if ($count++) echo "<br />";
       echo htmlspecialchars($lrow['title'], ENT_NOQUOTES);
       if ($lrow['comments']) echo ' (' . htmlspecialchars($lrow['comments'], ENT_NOQUOTES) . ')';
@@ -852,7 +852,7 @@ function generate_form_field($frow, $currvalue) {
     $lres = sqlStatement("SELECT * FROM list_options " .
       "WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
     echo "<table cellpadding='0' cellspacing='0'>";
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       $option_id_esc = htmlspecialchars($option_id, ENT_QUOTES);
       $restype = substr($avalue[$option_id], 0, 1);
@@ -1259,7 +1259,7 @@ function generate_print_field($frow, $currvalue) {
     $tmp = '';
     if ($currvalue) {
       $pres = get_pharmacies();
-      while ($prow = sqlFetchArray($pres)) {
+      foreach ($pres as $prow) {
         $key = $prow['id'];
         if ($currvalue == $key) {
           $tmp = $prow['name'] . ' ' . $prow['area_code'] . '-' .
@@ -1422,7 +1422,7 @@ function generate_print_field($frow, $currvalue) {
     $lres = sqlStatement("SELECT * FROM list_options " .
       "WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
     echo "<table cellpadding='0' cellspacing='0'>";
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       $fldlength = empty($fld_length) ?  20 : $fld_length;
       echo "<tr><td>" . htmlspecialchars(xl_list_label($lrow['title']), ENT_NOQUOTES) . "&nbsp;</td>";
@@ -1457,7 +1457,7 @@ function generate_print_field($frow, $currvalue) {
       "<td class='bold'>" .
       htmlspecialchars(xl('Abn'), ENT_NOQUOTES) . "&nbsp;</td><td class='bold'>" .
       htmlspecialchars(xl('Date/Notes'), ENT_NOQUOTES) . "</td></tr>";
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       $restype = substr($avalue[$option_id], 0, 1);
       $resnote = substr($avalue[$option_id], 2);
@@ -1486,7 +1486,7 @@ function generate_print_field($frow, $currvalue) {
       "ORDER BY begdate";
     $lres = sqlStatement($query, array($GLOBALS['pid']));
     $count = 0;
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       if ($count++) echo "<br />";
       echo htmlspecialchars($lrow['title'], ENT_QUOTES);
       if ($lrow['comments']) echo htmlspecialchars(' (' . $lrow['comments'] . ')', ENT_QUOTES);
@@ -1506,7 +1506,7 @@ function generate_print_field($frow, $currvalue) {
     $lres = sqlStatement("SELECT * FROM list_options " .
       "WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
     echo "<table cellpadding='0' cellspacing='0'>";
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       $restype = substr($avalue[$option_id], 0, 1);
       $resnote = substr($avalue[$option_id], 2);
@@ -1777,7 +1777,7 @@ function generate_display_field($frow, $currvalue) {
   // pharmacy list
   else if ($data_type == 12) {
     $pres = get_pharmacies();
-    while ($prow = sqlFetchArray($pres)) {
+    foreach ($pres as $prow) {
       $key = $prow['id'];
       if ($currvalue == $key) {
         $s .= htmlspecialchars($prow['name'] . ' ' . $prow['area_code'] . '-' .
@@ -1851,7 +1851,7 @@ function generate_display_field($frow, $currvalue) {
     $lres = sqlStatement("SELECT * FROM list_options " .
       "WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
     $count = 0;
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       if (in_array($option_id, $avalue)) {
         if ($count++) $s .= "<br />";
@@ -1875,7 +1875,7 @@ function generate_display_field($frow, $currvalue) {
     $lres = sqlStatement("SELECT * FROM list_options " .
       "WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
     $s .= "<table cellpadding='0' cellspacing='0'>";
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       if (empty($avalue[$option_id])) continue;
 	
@@ -1899,7 +1899,7 @@ function generate_display_field($frow, $currvalue) {
     $lres = sqlStatement("SELECT * FROM list_options " .
       "WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
     $s .= "<table cellpadding='0' cellspacing='0'>";
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       $restype = substr($avalue[$option_id], 0, 1);
       $resnote = substr($avalue[$option_id], 2);
@@ -1926,7 +1926,7 @@ function generate_display_field($frow, $currvalue) {
     // echo "<!-- $query -->\n"; // debugging
     $lres = sqlStatement($query, array($GLOBALS['pid']));
     $count = 0;
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       if ($count++) $s .= "<br />";
       $s .= htmlspecialchars($lrow['title'],ENT_NOQUOTES);
       if ($lrow['comments']) $s .= ' (' . htmlspecialchars($lrow['comments'],ENT_NOQUOTES) . ')';
@@ -1945,7 +1945,7 @@ function generate_display_field($frow, $currvalue) {
     $lres = sqlStatement("SELECT * FROM list_options " .
       "WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
     $s .= "<table cellpadding='0' cellspacing='0'>";
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       $restype = substr($avalue[$option_id], 0, 1);
       $resnote = substr($avalue[$option_id], 2);
@@ -2126,7 +2126,7 @@ function generate_plaintext_field($frow, $currvalue) {
   // pharmacy list
   else if ($data_type == 12) {
     $pres = get_pharmacies();
-    while ($prow = sqlFetchArray($pres)) {
+    foreach ($pres as $prow) {
       $key = $prow['id'];
       if ($currvalue == $key) {
         $s .= $prow['name'] . ' ' . $prow['area_code'] . '-' .
@@ -2178,7 +2178,7 @@ function generate_plaintext_field($frow, $currvalue) {
     $lres = sqlStatement("SELECT * FROM list_options " .
       "WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
     $count = 0;
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       if (in_array($option_id, $avalue)) {
         if ($count++) $s .= "; ";
@@ -2198,7 +2198,7 @@ function generate_plaintext_field($frow, $currvalue) {
     }
     $lres = sqlStatement("SELECT * FROM list_options " .
       "WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       if (empty($avalue[$option_id])) continue;
       if ($s !== '') $s .= '; ';
@@ -2219,7 +2219,7 @@ function generate_plaintext_field($frow, $currvalue) {
     }
     $lres = sqlStatement("SELECT * FROM list_options " .
       "WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       $restype = substr($avalue[$option_id], 0, 1);
       $resnote = substr($avalue[$option_id], 2);
@@ -2238,7 +2238,7 @@ function generate_plaintext_field($frow, $currvalue) {
       "ORDER BY begdate";
     $lres = sqlStatement($query, array($GLOBALS['pid']));
     $count = 0;
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       if ($count++) $s .= "; ";
       $s .= $lrow['title'];
       if ($lrow['comments']) $s .= ' (' . $lrow['comments'] . ')';
@@ -2256,7 +2256,7 @@ function generate_plaintext_field($frow, $currvalue) {
     }
     $lres = sqlStatement("SELECT * FROM list_options " .
       "WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $option_id = $lrow['option_id'];
       $restype = substr($avalue[$option_id], 0, 1);
       $resnote = substr($avalue[$option_id], 2);
@@ -2367,7 +2367,7 @@ function display_layout_rows($formtype, $result1, $result2='') {
     "WHERE form_id = ? AND uor > 0 " .
     "ORDER BY group_name, seq", array($formtype));
 
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $this_group = $frow['group_name'];
     $titlecols  = $frow['titlecols'];
     $datacols   = $frow['datacols'];
@@ -2466,7 +2466,7 @@ function display_layout_tabs($formtype, $result1, $result2='') {
     "ORDER BY group_name, seq", array($formtype));
 
   $first = true;
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
 	  $this_group = $frow['group_name'];
       $group_name = substr($this_group, 1);
 	  if ($group_name === 'Employer' && $GLOBALS['omit_employers']) continue;
@@ -2488,7 +2488,7 @@ function display_layout_tabs_data($formtype, $result1, $result2='') {
     "ORDER BY group_name, seq", array($formtype));
 
 	$first = true;
-	while ($frow = sqlFetchArray($fres)) {
+	foreach ($fres as $frow) {
 		$this_group = isset($frow['group_name']) ? $frow['group_name'] : "" ;
 		$titlecols  = isset($frow['titlecols']) ? $frow['titlecols'] : "";
 		$datacols   = isset($frow['datacols']) ? $frow['datacols'] : "";
@@ -2624,7 +2624,7 @@ function display_layout_tabs_data_editable($formtype, $result1, $result2='') {
     "ORDER BY group_name, seq", array($formtype));
 
 	$first = true;
-	while ($frow = sqlFetchArray($fres)) {
+	foreach ($fres as $frow) {
 		$this_group = $frow['group_name'];
 		$group_name = substr($this_group, 1);
 	        $group_name_esc = htmlspecialchars($group_name, ENT_QUOTES);
@@ -2839,7 +2839,7 @@ function generate_layout_validation($form_id) {
     "WHERE form_id = ? AND uor > 0 AND field_id != '' " .
     "ORDER BY group_name, seq", array($form_id));
 
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $data_type = $frow['data_type'];
     $field_id  = $frow['field_id'];
     $fldtitle  = $frow['title'];
@@ -2956,7 +2956,7 @@ function dropdown_facility($selected = '', $name = 'form_facility', $allow_unspe
     echo "    <option value=\"$option_value\" $option_selected_attr>$option_content</option>\n";
     }
   
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $facility_id = $frow['id'];
     $option_value = htmlspecialchars($facility_id, ENT_QUOTES);
     $option_selected_attr = '';

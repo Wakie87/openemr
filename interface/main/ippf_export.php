@@ -150,7 +150,7 @@ function exportEncounter($pid, $encounter, $date) {
     "b.activity = 1 AND " .
     "c.code_type = '12' AND c.code = b.code AND c.modifier = b.modifier ";
   $bres = sqlStatement($query);
-  while ($brow = sqlFetchArray($bres)) {
+  foreach ($bres as $brow) {
     if (!empty($brow['related_code'])) {
       $relcodes = explode(';', $brow['related_code']);
       foreach ($relcodes as $codestring) {
@@ -174,7 +174,7 @@ function exportEncounter($pid, $encounter, $date) {
     "pid = '$pid' AND encounter = '$encounter' " .
     "ORDER BY drug_id, sale_id";
   $pres = sqlStatement($query);
-  while ($prow = sqlFetchArray($pres)) {
+  foreach ($pres as $prow) {
     OpenTag('IMS_eMRUpload_Service');
     Add('IppfServiceProductId', $prow['drug_id']);
     Add('Type'                , '1'); // 0=service, 1=product, 2=diagnosis, 3=referral
@@ -189,7 +189,7 @@ function exportEncounter($pid, $encounter, $date) {
     "pid = '$pid' AND encounter = '$encounter' AND " .
     "code_type = 'ICD9' AND activity = 1 ORDER BY code, id";
   $dres = sqlStatement($query);
-  while ($drow = sqlFetchArray($dres)) {
+  foreach ($dres as $drow) {
     OpenTag('IMS_eMRUpload_Service');
     Add('IppfServiceProductId', $drow['code']);
     Add('Type'                , '2'); // 0=service, 1=product, 2=diagnosis, 3=referral
@@ -206,7 +206,7 @@ function exportEncounter($pid, $encounter, $date) {
     "refer_related_code != '' " .
     "ORDER BY id";
   $tres = sqlStatement($query);
-  while ($trow = sqlFetchArray($tres)) {
+  foreach ($tres as $trow) {
     $relcodes = explode(';', $trow['refer_related_code']);
     foreach ($relcodes as $codestring) {
       if ($codestring === '') continue;
@@ -253,7 +253,7 @@ function endClient($pid, &$encarray) {
     "WHERE l.pid = '$pid' " .
     "ORDER BY l.begdate");
 
-  while ($irow = sqlFetchArray($ires)) {
+  foreach ($ires as $irow) {
     OpenTag('IMS_eMRUpload_Issue');
     Add('IssueType'     , substr($irow['type'], 0, 15)); // per email 2009-03-20
     Add('emrIssueId'    , $irow['id']);
@@ -301,7 +301,7 @@ function endClient($pid, &$encarray) {
       "deleted = 0 " .
       "ORDER BY id");
     // For each GCAC form in this encounter...
-    while ($frow = sqlFetchArray($fres)) {
+    foreach ($fres as $frow) {
       $form_id = $frow['form_id'];
       OpenTag('IMS_eMRUpload_Issue');
       Add('IssueType'     , 'ippf_gcac');
@@ -419,7 +419,7 @@ if (!empty($form_submit)) {
     "ORDER BY fe.pid";
   $res = sqlStatement($query);
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
 
     /*****************************************************************
     if ($row['facility_id'] != $last_facility) {

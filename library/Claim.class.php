@@ -69,7 +69,7 @@ class Claim {
       "ORDER BY type ASC, date DESC";
     $dres = sqlStatement($query);
     $prevtype = '';
-    while ($drow = sqlFetchArray($dres)) {
+    foreach ($dres as $drow) {
       if (strcmp($prevtype, $drow['type']) == 0) continue;
       $prevtype = $drow['type'];
       // Very important to look at entries with a missing provider because
@@ -143,7 +143,7 @@ class Claim {
       "b.encounter = '{$this->encounter_id}' AND b.pid = '{$this->pid}' AND " .
       "b.activity = '1' ORDER BY b.date, b.id";
     $res = sqlStatement($sql);
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       // Save all diagnosis codes.
       if ($row['ct_diag'] == '1') {
         $this->diags[$row['code']] = $row['code'];

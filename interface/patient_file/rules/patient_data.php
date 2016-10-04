@@ -206,7 +206,7 @@ if (sqlNumRows($res) >= 1) { //display table ?>
       <th><?php echo xlt('Results/Details'); ?></th>
     </tr>
     <?php
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       if (isset($entryID) && ($entryID == $row['id'])) {
         echo "<tr class='text' style='background-color:LightGrey'>";
       }

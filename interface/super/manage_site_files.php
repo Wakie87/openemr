@@ -34,7 +34,7 @@ $my_files = array(
 // Append LBF plugin filenames to the array.
 $lres = sqlStatement('SELECT * FROM list_options ' .
   "WHERE list_id = 'lbfnames' AND activity = 1 ORDER BY seq, title");
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
   $option_id = $lrow['option_id']; // should start with LBF
   $title = $lrow['title'];
   $my_files[] = "LBF/$option_id.plugin.php";

@@ -123,7 +123,7 @@ $lres = sqlStatement("SELECT field_id, title, data_type, list_id, description " 
   "FROM layout_options WHERE " .
   "form_id = 'DEM' AND uor > 0 AND field_id NOT LIKE 'em%' " .
   "ORDER BY group_name, seq, title");
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
   $fid = $lrow['field_id'];
   if ($fid == 'fname' || $fid == 'mname' || $fid == 'lname') continue;
   $arr_show[$fid] = $lrow;
@@ -835,7 +835,7 @@ function process_visit($row) {
     // We think this case goes away, but not sure yet.
     /*****************************************************************
     $dres = LBFgcac_query($row['pid'], $row['encounter'], 'contrameth');
-    while ($drow = sqlFetchArray($dres)) {
+    foreach ($dres as $drow) {
       $a = explode('|', $drow['field_value']);
       foreach ($a as $methid) {
         if (empty($methid)) continue;
@@ -855,7 +855,7 @@ function process_visit($row) {
   //
   else if ($form_by === '11') {
     $dres = LBFgcac_query($row['pid'], $row['encounter'], 'complications');
-    while ($drow = sqlFetchArray($dres)) {
+    foreach ($dres as $drow) {
       $a = explode('|', $drow['field_value']);
       foreach ($a as $complid) {
         if (empty($complid)) continue;
@@ -1137,7 +1137,7 @@ function uses_description($form_by) {
  $fres = sqlStatement($query);
  echo "      <select name='form_facility'>\n";
  echo "       <option value=''>-- All Facilities --\n";
- while ($frow = sqlFetchArray($fres)) {
+ foreach ($fres as $frow) {
   $facid = $frow['id'];
   echo "       <option value='$facid'";
   if ($facid == $_POST['form_facility']) echo " selected";
@@ -1234,7 +1234,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
       $query .= " ORDER BY ds.pid, ds.encounter, ds.drug_id";
       $res = sqlStatement($query);
 
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         $desired = false;
         $prodcode = '';
         if ($row['cyp_factor'] > 0) {
@@ -1259,7 +1259,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
             "b.activity = 1 AND b.code_type = 'MA' " .
             "ORDER BY b.code";
           $bres = sqlStatement($query);
-          while ($brow = sqlFetchArray($bres)) {
+          foreach ($bres as $brow) {
             $tmp = getRelatedContraceptiveCode($brow);
             if (!empty($tmp)) {
               $prodcode = $tmp;
@@ -1298,7 +1298,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
         "$datefld >= '$from_date' AND $datefld <= '$to_date' AND $exttest " .
         "ORDER BY t.pid, t.id";
       $res = sqlStatement($query);
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         process_referral($row);
       }
     }
@@ -1321,7 +1321,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
         "l.activity = 1 AND l.type = 'ippf_gcac' " .
         "ORDER BY l.pid, l.id";
       $res = sqlStatement($query);
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         process_issue($row);
       }
     }
@@ -1332,7 +1332,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
     /*****************************************************************
     if ($form_by === '104' || $form_by === '105') {
       $query = "SELECT " .
-        "d.name, d.related_code, ds.pid, ds.quantity, " . 
+        "d.name, d.related_code, ds.pid, ds.quantity, " .
         "pd.regdate, pd.referral_source, " .
         "pd.sex, pd.DOB, pd.lname, pd.fname, pd.mname, " .
         "pd.contrastart$pd_fields " .
@@ -1343,7 +1343,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
         "ds.sale_date >= '$from_date' AND ds.sale_date <= '$to_date' " .
         "ORDER BY ds.pid, ds.sale_id";
       $res = sqlStatement($query);
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         $key = "(Unspecified)";
         if (!empty($row['related_code'])) {
           $relcodes = explode(';', $row['related_code']);
@@ -1397,7 +1397,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
 
       $prev_encounter = 0;
 
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         if ($row['encounter'] != $prev_encounter) {
           $prev_encounter = $row['encounter'];
           process_visit($row);

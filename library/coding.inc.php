@@ -17,55 +17,55 @@ if (empty($FEE_SHEET_COLUMNS)) $FEE_SHEET_COLUMNS = 2;
 // then if no error, redirect to patient_encounter.php.
 //
 if ($_POST['bn_save']) {
-	$provid = $_POST['ProviderID'];
-	if (! $provid) $provid = $_SESSION["authUserID"];
-	$bill = $_POST['bill'];
-	for ($lino = 1; $bill["$lino"]['code_type']; ++$lino) {
-		$iter = $bill["$lino"];
+    $provid = $_POST['ProviderID'];
+    if (! $provid) $provid = $_SESSION["authUserID"];
+    $bill = $_POST['bill'];
+    for ($lino = 1; $bill["$lino"]['code_type']; ++$lino) {
+        $iter = $bill["$lino"];
 
-		// Skip disabled (billed) line items.
-		if ($iter['billed']) continue;
+        // Skip disabled (billed) line items.
+        if ($iter['billed']) continue;
 
-		$id        = $iter['id'];
-		$code_type = $iter['code_type'];
-		$code      = $iter['code'];
-		$modifier  = trim($iter['mod']);
-		$fee       = trim($iter['fee']);
-		$auth      = $iter['auth'] ? "1" : "0";
-		$del       = $iter['del'];
+        $id        = $iter['id'];
+        $code_type = $iter['code_type'];
+        $code      = $iter['code'];
+        $modifier  = trim($iter['mod']);
+        $fee       = trim($iter['fee']);
+        $auth      = $iter['auth'] ? "1" : "0";
+        $del       = $iter['del'];
 
-		// If the item is already in the database...
-		if ($id) {
-			if ($del) {
-				deleteBilling($id);
-			}
-			else {
-				// authorizeBilling($id, $auth);
-				sqlQuery("update billing set fee = '$fee', modifier = '$modifier', " .
-					"authorized = $auth, provider_id = '$provid' where " .
-					"id = '$id' and billed = 0 and activity = 1");
-			}
-		}
+        // If the item is already in the database...
+        if ($id) {
+            if ($del) {
+                deleteBilling($id);
+            }
+            else {
+                // authorizeBilling($id, $auth);
+                sqlQuery("update billing set fee = '$fee', modifier = '$modifier', " .
+                    "authorized = $auth, provider_id = '$provid' where " .
+                    "id = '$id' and billed = 0 and activity = 1");
+            }
+        }
 
-		// Otherwise it's a new item...
-		else if (! $del) {
-			$query = "select code_text from codes where code_type = '" .
-				$code_types[$code_type]['id'] . "' and " .
-				"code = '$code' and ";
-			if ($modifier) {
-				$query .= "modifier = '$modifier'";
-			} else {
-				$query .= "(modifier is null or modifier = '')";
-			}
-			$result = sqlQuery($query);
-			$code_text = $result['code_text'];
-			addBilling($encounter, $code_type, $code, $code_text, $pid, $auth,
-				$provid, $modifier, "", $fee);
-		}
-	}
+        // Otherwise it's a new item...
+        else if (! $del) {
+            $query = "select code_text from codes where code_type = '" .
+                $code_types[$code_type]['id'] . "' and " .
+                "code = '$code' and ";
+            if ($modifier) {
+                $query .= "modifier = '$modifier'";
+            } else {
+                $query .= "(modifier is null or modifier = '')";
+            }
+            $result = sqlQuery($query);
+            $code_text = $result['code_text'];
+            addBilling($encounter, $code_type, $code, $code_text, $pid, $auth,
+                $provid, $modifier, "", $fee);
+        }
+    }
 
-	terminate_coding();
-	exit;
+    terminate_coding();
+    exit;
 }
 ?>
 
@@ -113,7 +113,7 @@ function endFSCategory() {
 // Create all the drop-lists of preselected service codes.
 $res = sqlStatement("SELECT * FROM fee_sheet_options " .
   "ORDER BY fs_category, fs_option");
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $fs_category = $row['fs_category'];
   $fs_option   = $row['fs_option'];
   $fs_codes    = $row['fs_codes'];
@@ -142,23 +142,23 @@ echo "  <td colspan='$FEE_SHEET_COLUMNS' align='center' nowrap>\n";
 //
 $numrows = 0;
 if ($_POST['bn_search'] && $_POST['search_term']) {
-	$query = "select code, modifier, code_text from codes where " .
-		"(code_text like '%" . $_POST['search_term'] . "%' or " .
-		"code like '%" . $_POST['search_term'] . "%') and " .
-		"code_type = '" . $code_types[$search_type]['id'] . "' " .
-		"order by code";
-	$res = sqlStatement($query);
-	$numrows = sqlNumRows($res); // FIXME - not portable!
+    $query = "select code, modifier, code_text from codes where " .
+        "(code_text like '%" . $_POST['search_term'] . "%' or " .
+        "code like '%" . $_POST['search_term'] . "%') and " .
+        "code_type = '" . $code_types[$search_type]['id'] . "' " .
+        "order by code";
+    $res = sqlStatement($query);
+    $numrows = sqlNumRows($res); // FIXME - not portable!
 }
 
 echo "   <select name='Search Results' style='width:98%' " .
-	"onchange='codeselect(this)'";
+    "onchange='codeselect(this)'";
 if (! $numrows) echo ' disabled';
 echo ">\n";
 echo "    <option value=''> Search Results ($numrows items)\n";
 
 if ($numrows) {
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $code = $row['code'];
     if ($row['modifier']) $code .= ":" . $row['modifier'];
     echo "    <option value='$search_type|$code|'>$code " .
@@ -180,11 +180,11 @@ echo " </tr>\n";
    Search&nbsp;
 <?php
 
-	foreach ($code_types as $key => $value) {
-		echo "   <input type='radio' name='search_type' value='$key'";
-		if ($key == $default_search_type) echo " checked";
-		echo " />$key&nbsp;\n";
-	}
+    foreach ($code_types as $key => $value) {
+        echo "   <input type='radio' name='search_type' value='$key'";
+        if ($key == $default_search_type) echo " checked";
+        echo " />$key&nbsp;\n";
+    }
 ?>
    for&nbsp;
   </td>
@@ -219,70 +219,70 @@ echo " </tr>\n";
 // This writes a billing line item to the output page.
 //
 function echoLine($lino, $codetype, $code, $modifier, $auth = TRUE, $del = FALSE,
-	$fee = NULL, $id = NULL, $billed = FALSE, $code_text = NULL)
+    $fee = NULL, $id = NULL, $billed = FALSE, $code_text = NULL)
 {
-	global $code_types;
-	if (! $code_text) {
-		$query = "select fee, code_text from codes where code_type = '" .
-			$code_types[$codetype]['id'] . "' and " .
-			"code = '$code' and ";
-		if ($modifier) {
-			$query .= "modifier = '$modifier'";
-		} else {
-			$query .= "(modifier is null or modifier = '')";
-		}
-		$result = sqlQuery($query);
-		$code_text = $result['code_text'];
-		if (!isset($fee)) $fee = $result['fee'];
-	}
-	$strike1 = ($id && $del) ? "<strike>" : "";
-	$strike2 = ($id && $del) ? "</strike>" : "";
-	echo " <tr>\n";
-	echo "  <td class='billcell'>$strike1$codetype$strike2";
-	if ($id) {
-		echo "<input type='hidden' name='bill[$lino][id]' value='$id'>";
-	}
-	echo "<input type='hidden' name='bill[$lino][code_type]' value='$codetype'>";
-	echo "<input type='hidden' name='bill[$lino][code]' value='$code'>";
-	echo "<input type='hidden' name='bill[$lino][billed]' value='$billed'>";
-	echo "</td>\n";
-	echo "  <td class='billcell'>$strike1$code$strike2</td>\n";
-	if ($billed) {
-		if (modifiers_are_used()) {
-			echo "  <td class='billcell'>$strike1$modifier$strike2" .
-				"<input type='hidden' name='bill[$lino][mod]' value='$modifier'></td>\n";
-		}
-		if (fees_are_used()) {
-			echo "  <td class='billcell' align='right'>$fee</td>\n";
-		}
-		echo "  <td class='billcell' align='center'><input type='checkbox'" .
-			($auth ? " checked" : "") . " disabled /></td>\n";
-		echo "  <td class='billcell' align='center'><input type='checkbox'" .
-			" disabled /></td>\n";
-	} else {
-		if (modifiers_are_used()) {
-			if ($code_types[$codetype]['mod'] || $modifier) {
-				echo "  <td class='billcell'><input type='text' name='bill[$lino][mod]' " .
-					"value='$modifier' size='" . $code_types[$codetype]['mod'] . "'></td>\n";
-			} else {
-				echo "  <td class='billcell'>&nbsp;</td>\n";
-			}
-		}
-		if (fees_are_used()) {
-			if ($code_types[$codetype]['fee'] || $fee != 0) {
-				echo "  <td class='billcell' align='right'><input type='text' name='bill[$lino][fee]' " .
-					"value='$fee' size='6' style='text-align:right'></td>\n";
-			} else {
-				echo "  <td class='billcell'>&nbsp;</td>\n";
-			}
-		}
-		echo "  <td class='billcell' align='center'><input type='checkbox' name='bill[$lino][auth]' " .
-			"value='1'" . ($auth ? " checked" : "") . " /></td>\n";
-		echo "  <td class='billcell' align='center'><input type='checkbox' name='bill[$lino][del]' " .
-			"value='1'" . ($del ? " checked" : "") . " /></td>\n";
-	}
-	echo "  <td class='billcell'>$strike1" . ucfirst(strtolower($code_text)) . "$strike2</td>\n";
-	echo " </tr>\n";
+    global $code_types;
+    if (! $code_text) {
+        $query = "select fee, code_text from codes where code_type = '" .
+            $code_types[$codetype]['id'] . "' and " .
+            "code = '$code' and ";
+        if ($modifier) {
+            $query .= "modifier = '$modifier'";
+        } else {
+            $query .= "(modifier is null or modifier = '')";
+        }
+        $result = sqlQuery($query);
+        $code_text = $result['code_text'];
+        if (!isset($fee)) $fee = $result['fee'];
+    }
+    $strike1 = ($id && $del) ? "<strike>" : "";
+    $strike2 = ($id && $del) ? "</strike>" : "";
+    echo " <tr>\n";
+    echo "  <td class='billcell'>$strike1$codetype$strike2";
+    if ($id) {
+        echo "<input type='hidden' name='bill[$lino][id]' value='$id'>";
+    }
+    echo "<input type='hidden' name='bill[$lino][code_type]' value='$codetype'>";
+    echo "<input type='hidden' name='bill[$lino][code]' value='$code'>";
+    echo "<input type='hidden' name='bill[$lino][billed]' value='$billed'>";
+    echo "</td>\n";
+    echo "  <td class='billcell'>$strike1$code$strike2</td>\n";
+    if ($billed) {
+        if (modifiers_are_used()) {
+            echo "  <td class='billcell'>$strike1$modifier$strike2" .
+                "<input type='hidden' name='bill[$lino][mod]' value='$modifier'></td>\n";
+        }
+        if (fees_are_used()) {
+            echo "  <td class='billcell' align='right'>$fee</td>\n";
+        }
+        echo "  <td class='billcell' align='center'><input type='checkbox'" .
+            ($auth ? " checked" : "") . " disabled /></td>\n";
+        echo "  <td class='billcell' align='center'><input type='checkbox'" .
+            " disabled /></td>\n";
+    } else {
+        if (modifiers_are_used()) {
+            if ($code_types[$codetype]['mod'] || $modifier) {
+                echo "  <td class='billcell'><input type='text' name='bill[$lino][mod]' " .
+                    "value='$modifier' size='" . $code_types[$codetype]['mod'] . "'></td>\n";
+            } else {
+                echo "  <td class='billcell'>&nbsp;</td>\n";
+            }
+        }
+        if (fees_are_used()) {
+            if ($code_types[$codetype]['fee'] || $fee != 0) {
+                echo "  <td class='billcell' align='right'><input type='text' name='bill[$lino][fee]' " .
+                    "value='$fee' size='6' style='text-align:right'></td>\n";
+            } else {
+                echo "  <td class='billcell'>&nbsp;</td>\n";
+            }
+        }
+        echo "  <td class='billcell' align='center'><input type='checkbox' name='bill[$lino][auth]' " .
+            "value='1'" . ($auth ? " checked" : "") . " /></td>\n";
+        echo "  <td class='billcell' align='center'><input type='checkbox' name='bill[$lino][del]' " .
+            "value='1'" . ($del ? " checked" : "") . " /></td>\n";
+    }
+    echo "  <td class='billcell'>$strike1" . ucfirst(strtolower($code_text)) . "$strike2</td>\n";
+    echo " </tr>\n";
 }
 
 // Generate lines for items already in the database.
@@ -290,14 +290,14 @@ function echoLine($lino, $codetype, $code, $modifier, $auth = TRUE, $del = FALSE
 $lino = 0;
 $encounter_provid = -1;
 if ($result = getBillingByEncounter($pid, $encounter, "*")) {
-	foreach ($result as $iter) {
-		++$lino;
-		$del = $_POST['bill']["$lino"]['del']; // preserve Delete if checked
-		// list($code, $modifier) = explode("-", $iter["code"]);
-		echoLine($lino, $iter["code_type"], trim($iter["code"]), trim($iter["modifier"]),
-			$iter["authorized"], $del, $iter["fee"], $iter["id"], $iter["billed"], $iter["code_text"]);
-		if ($encounter_provid < 0 && ! $del) $encounter_provid = $iter["provider_id"];
-	}
+    foreach ($result as $iter) {
+        ++$lino;
+        $del = $_POST['bill']["$lino"]['del']; // preserve Delete if checked
+        // list($code, $modifier) = explode("-", $iter["code"]);
+        echoLine($lino, $iter["code_type"], trim($iter["code"]), trim($iter["modifier"]),
+            $iter["authorized"], $del, $iter["fee"], $iter["id"], $iter["billed"], $iter["code_text"]);
+        if ($encounter_provid < 0 && ! $del) $encounter_provid = $iter["provider_id"];
+    }
 }
 
 // If there were no billing items then the default provider is the logged-in user.
@@ -308,12 +308,12 @@ if ($encounter_provid < 0) $encounter_provid = $_SESSION["authUserID"];
 // whose Delete checkbox is checked.
 //
 if ($_POST['bill']) {
-	foreach ($_POST['bill'] as $key => $iter) {
-		if ($iter["id"])  continue; // skip if it came from the database
-		if ($iter["del"]) continue; // skip if Delete was checked
-		echoLine(++$lino, $iter["code_type"], $iter["code"], trim($iter["mod"]),
-			$iter["auth"], $iter["del"], $iter["fee"]);
-	}
+    foreach ($_POST['bill'] as $key => $iter) {
+        if ($iter["id"])  continue; // skip if it came from the database
+        if ($iter["del"]) continue; // skip if Delete was checked
+        echoLine(++$lino, $iter["code_type"], $iter["code"], trim($iter["mod"]),
+            $iter["auth"], $iter["del"], $iter["fee"]);
+    }
 }
 
 // If new billing code(s) were <select>ed, add their line(s) here.
@@ -378,17 +378,17 @@ if ($_POST['newcodes']) {
 // who do not appear in the calendar.
 //
 $query = "SELECT id, lname, fname FROM users WHERE " .
-	"authorized = 1 OR info LIKE '%provider%' ORDER BY lname, fname";
+    "authorized = 1 OR info LIKE '%provider%' ORDER BY lname, fname";
 $res = sqlStatement($query);
 
 echo "   <select name='ProviderID'>\n";
 echo "    <option value=''>-- Please Select --\n";
 
-while ($row = sqlFetchArray($res)) {
-	$provid = $row['id'];
-	echo "    <option value='$provid'";
-	if ($provid == $encounter_provid) echo " selected";
-	echo ">" . $row['lname'] . ", " . $row['fname'] . "\n";
+foreach ($res as $row) {
+    $provid = $row['id'];
+    echo "    <option value='$provid'";
+    if ($provid == $encounter_provid) echo " selected";
+    echo ">" . $row['lname'] . ", " . $row['fname'] . "\n";
 }
 
 echo "   </select>\n";

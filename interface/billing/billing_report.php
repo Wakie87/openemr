@@ -838,7 +838,7 @@ if(is_array($ret))
         $default_x12_partner = $iter['ic_x12id'];
         $prevtype = '';
 
-        while ($row = sqlFetchArray($result)) {
+        foreach ($result as $row) {
           if (strcmp($row['type'], $prevtype) == 0) continue;
           $prevtype = $row['type'];
           if (strlen($row['provider']) > 0) {
@@ -883,7 +883,7 @@ if(is_array($ret))
 
         $lastcrow = false;
 
-        while ($crow = sqlFetchArray($cres)) {
+        foreach ($cres as $crow) {
           $query = "SELECT id.type, ic.name " .
             "FROM insurance_data AS id, insurance_companies AS ic WHERE " .
             "id.pid = ? AND " .
@@ -966,7 +966,7 @@ if(is_array($ret))
           }
 
           $lastcrow = $crow;
-        } // end while ($crow = sqlFetchArray($cres))
+        } // end foreach ($cres as $crow)
 
         if ($lastcrow && $lastcrow['status'] == 4) {
           $lhtml .= "<br>\n&nbsp;" . xlt("This claim has been closed.");

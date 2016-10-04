@@ -34,7 +34,7 @@ if ($_GET['set_pid'] && $form_review) {
   require_once("$srcdir/pid.inc");
   require_once("$srcdir/patient.inc");
   setpid($_GET['set_pid']);
-  
+
   $result = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
   ?>
   <script language='JavaScript'>
@@ -84,7 +84,7 @@ if ($_POST['form_submit'] && !empty($_POST['form_line'])) {
       // Set the review status to reviewed.
       if ($form_review)
         $sets .= ", review_status = 'reviewed'";
-    
+
       if ($report_id) { // Report already exists.
         sqlStatement("UPDATE procedure_report SET $sets "  .
           "WHERE procedure_report_id = '$report_id'");
@@ -373,7 +373,7 @@ if ($form_batch) {
   <td><?php xl('?','e'); ?></td>
  </tr>
 
-<?php 
+<?php
 $selects =
   "po.procedure_order_id, po.date_ordered, pc.procedure_order_seq, " .
   "pt1.procedure_type_id AS order_type_id, pc.procedure_name, " .
@@ -426,7 +426,7 @@ $extra_html = '';
 $lastrcn = '';
 $facilities = array();
 
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $order_type_id  = empty($row['order_type_id'      ]) ? 0 : ($row['order_type_id' ] + 0);
   $order_id       = empty($row['procedure_order_id' ]) ? 0 : ($row['procedure_order_id' ] + 0);
   $order_seq      = empty($row['procedure_order_seq']) ? 0 : ($row['procedure_order_seq'] + 0);
@@ -477,7 +477,7 @@ while ($row = sqlFetchArray($res)) {
     "ORDER BY seq, name, procedure_type_id, result_code";
 
   $rres = sqlStatement($query);
-  while ($rrow = sqlFetchArray($rres)) {
+  foreach ($rres as $rrow) {
     $restyp_code      = empty($rrow['procedure_code'  ]) ? '' : $rrow['procedure_code'];
     $restyp_type      = empty($rrow['procedure_type'  ]) ? '' : $rrow['procedure_type'];
     $restyp_name      = empty($rrow['name'            ]) ? '' : $rrow['name'];

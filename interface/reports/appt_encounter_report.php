@@ -218,7 +218,7 @@ $(document).ready(function() {
 				 $fres = sqlStatement($query);
 				 echo "   <select name='form_facility'>\n";
 				 echo "    <option value=''>-- " . xl('All Facilities', 'e') . " --\n";
-				 while ($frow = sqlFetchArray($fres)) {
+				 foreach ($fres as $frow) {
 				  $facid = $frow['id'];
 				  echo "    <option value='$facid'";
 				  if ($facid == $form_facility) echo " selected";
@@ -314,7 +314,7 @@ $(document).ready(function() {
  if ($res) {
   $docrow = array('docname' => '', 'charges' => 0, 'copays' => 0, 'encounters' => 0);
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
    $patient_id = $row['pid'];
    $encounter  = $row['encounter'];
    $docname    = $row['docname'] ? $row['docname'] : xl('Unknown');
@@ -336,7 +336,7 @@ $(document).ready(function() {
     "pid = '$patient_id' AND encounter = '$encounter' AND activity = 1";
    $bres = sqlStatement($query);
    //
-   while ($brow = sqlFetchArray($bres)) {
+   foreach ($bres as $brow) {
     $code_type = $brow['code_type'];
     if ($code_types[$code_type]['fee'] && !$brow['billed'])
       $billed = "";

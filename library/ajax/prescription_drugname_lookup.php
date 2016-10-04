@@ -5,7 +5,7 @@
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-// 
+//
 // This file use is used specifically to look up drug names when
 // writing a prescription. See the file:
 //    templates/prescriptions/general_edit.html
@@ -27,7 +27,7 @@ $sql = "select drug_id, name from drugs where ".
             " limit ".$limit;
 $rez = sqlStatement($sql);
 
-while ($row = sqlFetchArray($rez)) {
+foreach ($rez as $row) {
     echo $row['name']."|".$row['drug_id']."\n";
 }
 

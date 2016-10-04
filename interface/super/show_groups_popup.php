@@ -50,7 +50,7 @@ li {
 <?php
 $res = sqlStatement("SELECT distinct(group_name) FROM layout_options WHERE " .
                     "form_id = '".$_GET['layout_id']."' ORDER BY group_name");
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
     $gname = preg_replace("/^\d+/", "", $row['group_name']);
     $xlgname = "";
     if ($GLOBALS['translate_layout'] && $_SESSION['language_choice'] > 1) {

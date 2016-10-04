@@ -214,7 +214,7 @@ class newpatienttoapprove {
             case 'P3':
 						$query="SELECT * FROM audit_details WHERE audit_master_id = ? AND table_name = 'patient_data'";
 						$query_res = sqlStatement($query,array($auditmasterid));
-						while($result = sqlFetchArray($query_res)){
+						foreach ($query_res as $result){
 						  if($result['field_name'] == 'DOB'){
 								$dob_res = sqlQuery("SELECT DATE_FORMAT(?,'%Y-%m-%d') as DOB_YMD",array($result['field_value']));
 								$res['DOB_YMD'] = $dob_res['DOB_YMD'];
@@ -228,7 +228,7 @@ class newpatienttoapprove {
             case 'P4':
 						$query="SELECT * FROM audit_details WHERE audit_master_id = ? AND table_name = 'employer_data'";
 						$query_res = sqlStatement($query,array($auditmasterid));
-						while($result = sqlFetchArray($query_res)){
+						foreach ($query_res as $result){
 						  $res[$result['field_name']] = $result['field_value'];
 						}
             return array($res,'result');
@@ -239,7 +239,7 @@ class newpatienttoapprove {
 						$query="SELECT * FROM audit_details WHERE audit_master_id = ? AND table_name = 'insurance_data' AND entry_identification = ?";
 						array_unshift($data[1],$auditmasterid);
 						$query_res = sqlStatement($query,$data[1]);
-						while($result = sqlFetchArray($query_res)){
+						foreach ($query_res as $result){
 						  $res[$result['field_name']] = $result['field_value'];
 						}
             return array($res,'result');
@@ -545,7 +545,7 @@ class newpatienttoapprove {
             //Patient details .
 						$query="SELECT * FROM audit_details WHERE audit_master_id = ? AND table_name = 'patient_data'";
 						$query_res = sqlStatement($query,array($auditmasterid));
-						while($result = sqlFetchArray($query_res)){
+						foreach ($query_res as $result){
 						  $res[$result['field_name']] = $result['field_value'];
 						}
             return array($res,'result');

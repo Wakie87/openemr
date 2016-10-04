@@ -86,7 +86,7 @@ require_once (dirname(__FILE__) . "/../formdata.inc.php");
 //   in the forms and output.
 function load_drug_attributes($id) {
     $res = sqlStatement("SELECT * FROM list_options WHERE list_id = '$id' AND activity = 1 ORDER BY seq");
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
 	if ($row['title'] == '') {
 	 $arr[$row['option_id']] = ' ';
 	}
@@ -633,7 +633,7 @@ class Prescription extends ORDataObject {
                 add_escape_custom($patient_id) .
                 " ORDER BY " . add_escape_custom($order_by);
         $results = sqlQ($sql);
-        while ($row = sqlFetchArray($results)) {
+        foreach ($results as $row) {
             $prescriptions[] = new Prescription($row['id']);
         }
         return $prescriptions;

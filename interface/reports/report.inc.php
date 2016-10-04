@@ -62,7 +62,7 @@ function BuildArrayForReport($Query)
  {
   $array_data=array();
   $res = sqlStatement($Query);
-  while($row=sqlFetchArray($res))
+  foreach ($res as $row)
    {
     $array_data[$row['id']]=htmlspecialchars($row['name'],ENT_QUOTES);
    }

@@ -114,7 +114,7 @@ function loadPayerInfo($pid, $date='') {
     "pid = ? AND date <= ? ORDER BY type ASC, date DESC",
     array($pid, $date));
   $prevtype = ''; // type is primary, secondary or tertiary
-  while ($drow = sqlFetchArray($dres)) {
+  foreach ($dres as $drow) {
     if (strcmp($prevtype, $drow['type']) == 0) continue;
     $prevtype = $drow['type'];
     // Very important to check for a missing provider because

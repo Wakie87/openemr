@@ -814,7 +814,7 @@ function PatientFreeformAllergy($doc,$r,$pid)
     LEFT JOIN list_options AS lo ON l.outcome = lo.option_id AND lo.list_id = 'outcome' AND lo.activity = 1
 	WHERE `type`='allergy' AND pid=? AND erx_source='0' and erx_uploaded='0' AND (enddate is null or enddate = '' or enddate = '0000-00-00')",array($pid));
 	$allergyId=array();
-    while($row=sqlFetchArray($res))
+    foreach ($res as $row)
     {
         $val=array();
         $val['id']=$row['id'];

@@ -98,7 +98,7 @@ else if($Source=='item_show'){
         echo "<table width='100%'>";
         echo "<tr class='text'><th colspan=2  style='background-color:#ffffff'>".htmlspecialchars(xl('Preview of')," ".$selcat['cl_list_item_long']."(".$selcont['cl_list_item_long'].")",ENT_QUOTES)."</th></tr>";
         $i=0;
-        while($row=sqlFetchArray($res)){
+        foreach ($res as $row){
             $i++;
             $class = ($class=='reportTableOddRow') ? 'reportTableEvenRow' : 'reportTableOddRow';
             echo "<tr class='text'><td style='background-color:#ffffff'>".$i."</td><td style='background-color:#ffffff'>".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."</td></tr>";
@@ -138,7 +138,7 @@ else if($Source=='delete_category'){
     $res = sqlStatement("SELECT * FROM template_users AS tu LEFT OUTER JOIN users AS u ON tu.tu_user_id=u.id WHERE tu_template_id=? AND tu.tu_user_id!=?",array($templateid,$_SESSION['authId']));
     $users ='';
     $i=0;
-    while($row=sqlFetchArray($res)){
+    foreach ($res as $row){
         $i++;
         $users .= $i.")".$row['fname']." ".$row['lname']."\n";
     }
@@ -149,7 +149,7 @@ else if($Source=='delete_full_category'){
     sqlStatement("UPDATE customlists SET cl_deleted=? WHERE cl_list_slno=?",array(1,$templateid));
     sqlStatement("DELETE template_users WHERE tu_template_id=?",array($templateid));
     $res = sqlStatement("SELECT * FROM customlists AS cl WHERE cl_list_id=?",array($templateid));
-    while($row=sqlFetchArray($res)){
+    foreach ($res as $row){
         sqlStatement("UPDATE customlists SET cl_deleted=1 WHERE cl_list_slno=?",array($row['cl_list_slno']));
         sqlStatement("DELETE template_users WHERE tu_template_id=?",array($row['cl_list_slno']));
     }
@@ -171,7 +171,7 @@ if($Source!="add_template"){
                         WHERE cl_list_type=4 AND cl_list_id=? AND cl_deleted=0 AND tu.tu_user_id=? ORDER BY tu.tu_template_order",
                         array($templateid,$_SESSION['authId']));
     $i=0;
-    while($row = sqlFetchArray($res)){
+    foreach ($res as $row){
         $i++;
         echo "<li id='clorder_".htmlspecialchars($row['cl_list_slno'],ENT_QUOTES)."' style='cursor:pointer'><span>";
         if(acl_check('nationnotes', 'nn_configure')){

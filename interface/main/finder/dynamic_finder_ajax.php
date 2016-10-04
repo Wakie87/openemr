@@ -128,7 +128,7 @@ $out = array(
 );
 $query = "SELECT $sellist FROM patient_data $where $orderby $limit";
 $res = sqlStatement($query);
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   // Each <tr> will have an ID identifying the patient.
   $arow = array('DT_RowId' => 'pid_' . $row['pid']);
   foreach ($aColumns as $colname) {

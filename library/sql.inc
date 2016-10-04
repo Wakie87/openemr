@@ -119,6 +119,7 @@ function sqlStatementCdrEngine($statement, $params = null)
 function sqlFetchArray($r)
 {
 
+
   foreach ($r as $row)
     {
         return false;

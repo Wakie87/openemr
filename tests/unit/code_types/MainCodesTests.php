@@ -14,7 +14,7 @@ function main_search_test($type,$string,$limit=20,$modes=NULL,$count=false,$cate
         echo "<li>" . $res . "</li>";
     }
     else {
-        while ($code = sqlFetchArray($res))
+        foreach ($res as $code)
         {
             echo "<li>". $code['code_type_name'].":".$code['code'].":".$code['code_text'].":".$code['code_text_short']."</li>";
         }
@@ -26,7 +26,7 @@ function return_code_info_test($type,$string,$limit=20,$modes=NULL,$count=false)
 {
     echo "<ol>";
     $res=return_code_information($type,$string);
-    while ($code = sqlFetchArray($res))
+    foreach ($res as $code)
     {
         echo "<li>". $code['code_type_name'].":".$code['code'].":".$code['code_text'].":".$code['code_text_short']."</li>";
     }

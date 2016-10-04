@@ -127,7 +127,7 @@ if (empty($SBCODES)) {
     // Create entries based on the fee_sheet_options table.
     $res = sqlStatement("SELECT * FROM fee_sheet_options " .
             "ORDER BY fs_category, fs_option");
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
         $fs_category = $row['fs_category'];
         $fs_option = $row['fs_option'];
         $fs_codes = $row['fs_codes'];
@@ -141,12 +141,12 @@ if (empty($SBCODES)) {
     // Create entries based on categories defined within the codes.
     $pres = sqlStatement("SELECT option_id, title FROM list_options " .
             "WHERE list_id = 'superbill' AND activity = 1 ORDER BY seq");
-    while ($prow = sqlFetchArray($pres)) {
+    foreach ($pres as $prow) {
         $SBCODES[] = '*G|' . xl_list_label($prow['title']);
         $res = sqlStatement("SELECT code_type, code, code_text FROM codes " .
                 "WHERE superbill = '" . $prow['option_id'] . "' AND active = 1 " .
                 "ORDER BY code_text");
-        while ($row = sqlFetchArray($res)) {
+        foreach ($res as $row) {
             $SBCODES[] = $row['code'] . '|' . $row['code_text'];
         }
     }
@@ -159,7 +159,7 @@ if (empty($SBCODES)) {
                 "FROM drug_templates AS dt, drugs AS d WHERE " .
                 "d.drug_id = dt.drug_id AND d.active = 1 " .
                 "ORDER BY d.name, dt.selector, dt.drug_id");
-        while ($trow = sqlFetchArray($tres)) {
+        foreach ($tres as $trow) {
             $tmp = $trow['selector'];
             if ($trow['name'] !== $trow['selector'])
                 $tmp .= ' ' . $trow['name'];

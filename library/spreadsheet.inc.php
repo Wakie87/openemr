@@ -560,7 +560,7 @@ $num_virtual_cols = $num_used_cols ? $num_used_cols + 5 : 10;
    <select name='form_template' onchange='newTemplate(this)'<?php if ($formid) echo ' disabled'; ?>>
     <option value='0'>-- Select --</option>
 <?php
- while ($trow = sqlFetchArray($tres)) {
+ foreach ($tres as $trow) {
   echo "    <option value='" . $trow['id'] . "'";
   if ($tempid && $tempid == $trow['id'] ||
       $formid && $template_name == $trow['value'])

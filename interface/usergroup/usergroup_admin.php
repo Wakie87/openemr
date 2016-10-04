@@ -217,7 +217,7 @@ if (isset($_POST["mode"])) {
 
     $res = sqlStatement("select distinct username from users where username != ''");
     $doit = true;
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       if ($doit == true && $row['username'] == trim(formData('rumple'))) {
         $doit = false;
       }

@@ -190,7 +190,7 @@ require_once("$srcdir/formatting.inc.php");
   // echo "<!-- $query -->\n"; // debugging
   $res = sqlStatement($query);
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     // Make the timestamp URL-friendly.
     $timestamp = preg_replace('/[^0-9]/', '', $row['dtime']);
 ?>

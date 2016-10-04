@@ -159,7 +159,7 @@ if (isset($_GET['formseq'])) echo '&formseq=' . $_GET['formseq'];
 
   $res = sqlStatement($query, array($labid, $search_term, $search_term));
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $itertypeid = $row['procedure_type_id'];
     $itercode = $row['procedure_code'];
     $itertext = trim($row['name']);

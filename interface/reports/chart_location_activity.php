@@ -171,7 +171,7 @@ if (!empty($ptrow)) {
     "ORDER BY ct.ct_when DESC";
   $res = sqlStatement($query,array($curr_pid));
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
 ?>
  <tr>
   <td>

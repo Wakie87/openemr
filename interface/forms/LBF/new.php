@@ -126,7 +126,7 @@ if ($_POST['bn_save']) {
     "WHERE form_id = ? AND uor > 0 AND field_id != '' AND " .
     "edit_options != 'H' AND edit_options NOT LIKE '%0%' " .
     "ORDER BY group_name, seq", array($formname));
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $field_id  = $frow['field_id'];
     $data_type = $frow['data_type'];
     // If the field was not in the web form, skip it.
@@ -442,7 +442,7 @@ function validate(f) {
 
   $condition_str = '';
 
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $this_group = $frow['group_name'];
     $titlecols  = $frow['titlecols'];
     $datacols   = $frow['datacols'];

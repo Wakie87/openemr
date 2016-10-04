@@ -449,7 +449,7 @@ function educlick(codetype, codevalue) {
   <td><?php echo xlt('Note'); ?></td>
  </tr>
 
-<?php 
+<?php
   $query = "SELECT " .
     "po.lab_id, po.date_ordered, pc.procedure_order_seq, pc.procedure_code, " .
     "pc.procedure_name, " .
@@ -477,7 +477,7 @@ function educlick(codetype, codevalue) {
     'seen_report_ids' => array(),
   );
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $report_id = empty($row['procedure_report_id']) ? 0 : ($row['procedure_report_id'] + 0);
 
     $query = "SELECT " .
@@ -496,7 +496,7 @@ function educlick(codetype, codevalue) {
         // First pass creates a $rrowsets[$key] for each unique result code in *this* report, with
         // the value being an array of the corresponding result rows. This caters to multiple
         // occurrences of the same result code in the same report.
-        while ($rrow = sqlFetchArray($rres)) {
+        foreach ($rres as $rrow) {
           $result_code = empty($rrow['result_code']) ? '' : $rrow['result_code'];
           $key = sprintf('%05d/', $row['procedure_order_seq']) . $result_code;
           if (!isset($rrowsets[$key])) $rrowsets[$key] = array();
@@ -527,7 +527,7 @@ function educlick(codetype, codevalue) {
     else {
       // We are showing all results for all reports.
       if (sqlNumRows($rres)) {
-        while ($rrow = sqlFetchArray($rres)) {
+        foreach ($rres as $rrow) {
           generate_result_row($ctx, $row, $rrow, false);
         }
       }
@@ -584,7 +584,7 @@ function educlick(codetype, codevalue) {
 <?php } ?>
 <?php if (empty($GLOBALS['PATIENT_REPORT_ACTIVE'])) { ?>
    &nbsp;
-   <input type='button' value='<?php echo xla('Related Patient Notes'); ?>' 
+   <input type='button' value='<?php echo xla('Related Patient Notes'); ?>'
     onclick='showpnotes(<?php echo $orderid; ?>)' />
 <?php } ?>
 <?php if ($input_form && $ctx['sign_list']) { ?>

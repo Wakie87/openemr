@@ -155,7 +155,7 @@ $(document).ready(function(){
                                 <?php
                                 $res=sqlStatement("SELECT * FROM template_users AS tu LEFT OUTER JOIN customlists AS cl ON cl.cl_list_slno=tu.tu_template_id
                                                     WHERE tu.tu_user_id=? AND cl.cl_list_type=6 AND cl.cl_deleted=0 ORDER BY cl.cl_order",array($_SESSION['authId']));
-                                while($row=sqlFetchArray($res)){
+                                foreach ($res as $row){
                                 ?>
                                     <a href="#" onclick="top.restoreSession();CKEDITOR.instances.textarea1.insertText('<?php echo $row['cl_list_item_short'];?>');" class="css_button" title="<?php echo htmlspecialchars(xl($row['cl_list_item_long']),ENT_QUOTES);?>"><span><?php echo ucfirst(htmlspecialchars(xl($row['cl_list_item_long']),ENT_QUOTES));?></span></a>
                                 <?php 
@@ -202,7 +202,7 @@ $(document).ready(function(){
                                     <li><a class="collapsed"><?php echo htmlspecialchars(xl($issTypeDesc[0]),ENT_QUOTES);?></a>
                                         <ul>
                                     		<?php
-	                                    		while ($row = sqlFetchArray($res)) {
+	                                    		foreach ($res as $row) {
 													listitemCode((strlen($row['title'])>20) ? (substr($row['title'], 0, 18).'..') : $row['title'], ($row['title'].$row['codes']));
 												}
 											?>

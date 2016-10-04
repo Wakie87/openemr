@@ -53,7 +53,7 @@ abstract class DbRow_Signable implements SignableIF
         $statement .= "ORDER BY E.datetime ASC";
         $result = sqlStatement($statement, array( $this->_tableId, $this->_tableName ));
         
-        while ($row = sqlFetchArray($result)) {
+        foreach ($result as $row) {
             $signature = new Signature($row['id'], $row['tid'], $row['table'], $row['is_lock'],
                 $row['uid'], $row['fname'], $row['lname'], $row['datetime'], $row['hash'], $row['amendment'], $row['signature_hash']);
             $this->_signatures[]= $signature;

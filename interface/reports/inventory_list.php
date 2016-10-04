@@ -168,7 +168,7 @@ table.mymaintable td, table.mymaintable th {
  <tbody>
 <?php 
 $encount = 0;
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $on_hand = 0 + $row['on_hand'];
   $drug_id = 0 + $row['drug_id'];
   $warnings = '';
@@ -228,7 +228,7 @@ while ($row = sqlFetchArray($res)) {
     ") ORDER BY lot_number");
 
   // Generate warnings associated with individual lots.
-  while ($irow = sqlFetchArray($ires)) {
+  foreach ($ires as $irow) {
     $lotno = $irow['lot_number'];
     if ($irow['on_hand'] < $min_sale) {
       addWarning(htmlspecialchars(xl('Lot') . " '$lotno' " . xl('quantity seems unusable')));

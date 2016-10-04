@@ -359,7 +359,7 @@ function searchme() {
 <?php
 $lres = getLayoutRes();
 
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
   $field_id  = $lrow['field_id'];
   if (strpos($field_id, 'em_') === 0) continue;
   $data_type = $lrow['data_type'];
@@ -440,7 +440,7 @@ $item_count    = 0;
 $display_style = 'block';
 $group_seq     = 0; // this gives the DIV blocks unique IDs
 
-while ($frow = sqlFetchArray($fres)) {
+foreach ($fres as $frow) {
   $this_group = $frow['group_name'];
   $titlecols  = $frow['titlecols'];
   $datacols   = $frow['datacols'];
@@ -862,7 +862,7 @@ enable_modals();
 // Set onclick/onfocus handlers for toggling background color.
 <?php
 $lres = getLayoutRes();
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
   $field_id  = $lrow['field_id'];
   if (strpos($field_id, 'em_') === 0) continue;
   switch(getSearchClass($lrow['data_type'])) {

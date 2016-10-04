@@ -447,7 +447,7 @@ $lino = 0;
 $extra_html = '';
 $num_checkboxes = 0;
 
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $patient_id       = empty($row['patient_id'         ]) ? 0 : ($row['patient_id'         ] + 0);
   $order_id         = empty($row['procedure_order_id' ]) ? 0 : ($row['procedure_order_id' ] + 0);
   $order_seq        = empty($row['procedure_order_seq']) ? 0 : ($row['procedure_order_seq'] + 0);

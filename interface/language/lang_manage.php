@@ -21,13 +21,13 @@ if ($_POST['check'] || $_POST['synchronize']){
   $sql = "SELECT lang_description FROM lang_languages";
   $res = SqlStatement($sql);
   $row_main = array();
-  while ($row=SqlFetchArray($res)){
+  foreach ($res as $row){
     $row_main[] = $row['lang_description'];
   }
   $sql = "SELECT lang_description FROM lang_custom";
   $res = SqlStatement($sql);
   $row_custom = array();
-  while ($row=SqlFetchArray($res)){
+  foreach ($res as $row){
     $row_custom[] = $row['lang_description'];
   }
   $custom_languages = array_diff(array_unique($row_custom),array_unique($row_main));
@@ -52,13 +52,13 @@ if ($_POST['check'] || $_POST['synchronize']){
   $sql = "SELECT constant_name FROM lang_constants";
   $res = SqlStatement($sql);
   $row_main = array();
-  while ($row=SqlFetchArray($res)){
+  foreach ($res as $row){
     $row_main[] = $row['constant_name'];
   }
   $sql = "SELECT constant_name FROM lang_custom";
   $res = SqlStatement($sql);
   $row_custom = array();
-  while ($row=SqlFetchArray($res)){
+  foreach ($res as $row){
     $row_custom[] = $row['constant_name'];
   }
   $custom_constants = array_diff(array_unique($row_custom),array_unique($row_main));
@@ -79,7 +79,7 @@ if ($_POST['check'] || $_POST['synchronize']){
   //
   $sql = "SELECT lang_description, lang_code, constant_name, definition FROM lang_custom WHERE lang_description != '' AND constant_name != ''";
   $res = SqlStatement($sql);
-  while ($row=SqlFetchArray($res)){
+  foreach ($res as $row){
       
     // collect language id
     $sql = "SELECT lang_id FROM lang_languages WHERE lang_description=? ".$case_sensitive_collation." LIMIT 1";

@@ -46,7 +46,7 @@ li {
 <?php
 $res = sqlStatement("SELECT * FROM list_options WHERE " .
     "list_id = 'lists' AND activity = 1 ORDER BY title");
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
     echo "<li id='".$row['option_id']."' class='oneresult'>" . xl($row['title']) . "</li>";
 }
 ?>

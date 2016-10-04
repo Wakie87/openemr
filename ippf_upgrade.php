@@ -101,7 +101,7 @@ if (!empty($_POST['form_submit'])) {
   if (!preg_match('/SET utf8/', $value)) {
     echo "<br />Converting database to UTF-8 encoding...";
     $tres = sqlStatement("SHOW TABLES");
-    while ($trow = sqlFetchArray($tres)) {
+    foreach ($tres as $trow) {
       $value = array_shift($trow);
       $query = "ALTER TABLE $value CONVERT TO CHARACTER SET utf8";
       if ($verbose) echo "<br />$query\n";
@@ -121,7 +121,7 @@ if (!empty($_POST['form_submit'])) {
     "JOIN lists_ippf_gcac AS g ON l.type = 'ippf_gcac' AND g.id = l.id " .
     "ORDER BY l.pid, l.begdate");
 
-  while ($irow = sqlFetchArray($ires)) {
+  foreach ($ires as $irow) {
     $patient_id = $irow['pid'];
     $list_id = $irow['id'];
     $first = true;

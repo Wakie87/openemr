@@ -156,7 +156,7 @@ if ($form_key) {
   </tr>
 
 <?php
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     if ($row['closeness'] == 0) continue;
 
     $phone = $row['phone_biz'];

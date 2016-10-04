@@ -143,7 +143,7 @@ $res = sqlStatement($query,$sqlBindArray);
 
 <?php
  $encount = 0;
- while ($row = sqlFetchArray($res)) {
+ foreach ($res as $row) {
   ++$encount;
   //$bgcolor = "#" . (($encount & 1) ? "ddddff" : "ffdddd");
   $bgclass = (($encount & 1) ? "evenrow" : "oddrow");

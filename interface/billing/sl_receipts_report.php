@@ -180,7 +180,7 @@ function sel_diagnosis() {
 					$res = sqlStatement($query);
 					echo "   &nbsp;<select name='form_doctor'>\n";
 					echo "    <option value=''>-- " . xlt('All Providers') . " --\n";
-					while ($row = sqlFetchArray($res)) {
+					foreach ($res as $row) {
 						$provid = $row['id'];
                         echo "    <option value='". attr($provid) ."'";
 						if ($provid == $_POST['form_doctor']) echo " selected";
@@ -378,7 +378,7 @@ function sel_diagnosis() {
         /************************************************************/
         //
         $res = sqlStatement($query,$sqlBindArray);
-        while ($row = sqlFetchArray($res)) {
+        foreach ($res as $row) {
           $trans_id = $row['trans_id'];
           $thedate = substr($row['date'], 0, 10);
           $patient_id = $row['pid'];
@@ -474,7 +474,7 @@ function sel_diagnosis() {
       /**************************************************************/
       //
       $res = sqlStatement($query,$sqlBindArray);
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         $trans_id = $row['trans_id'];
         $patient_id = $row['pid'];
         $encounter_id = $row['encounter'];

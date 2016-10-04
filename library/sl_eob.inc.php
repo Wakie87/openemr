@@ -43,7 +43,7 @@
         "lname LIKE '" . addslashes($out['patient_lname']) . "' AND " .
         "fname LIKE '" . addslashes($out['patient_fname']) . "' " .
         "ORDER BY pid DESC");
-      while ($prow = sqlFetchArray($pres)) {
+      foreach ($pres as $prow) {
         if (strpos($invnumber, $prow['pid']) === 0) {
           $pid = $prow['pid'];
           $encounter = substr($invnumber, strlen($pid));

@@ -71,7 +71,7 @@ echo '{ "error":"", "options": [';
 echo '{"id":"","title":"' . xl('Unassigned') . '"}';
 $comma = ",";
 $lres = sqlStatement("SELECT * FROM list_options WHERE list_id = '$list_id' AND activity = 1 ORDER BY seq");
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
     echo $comma;
     echo '{"id":"'.$lrow['option_id'].'",';
     

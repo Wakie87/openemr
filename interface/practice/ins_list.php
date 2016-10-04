@@ -101,7 +101,7 @@ td { font-size:10pt; }
  </tr>
 
 <?php 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
    $anchor = "<a href=\"\" onclick=\"return setins(" .
     $row['id'] . ",'" . addslashes($row['name']) . "')\">";
    $phone = '&nbsp';

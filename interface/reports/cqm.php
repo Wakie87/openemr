@@ -497,7 +497,7 @@ else {
                                  if ($provider == 'collate_inner') echo " selected";
                                  echo ">-- " . htmlspecialchars(xl('All (Collated Format B)'), ENT_NOQUOTES) . " --\n";
 
-				 while ($urow = sqlFetchArray($ures)) {
+				 foreach ($ures as $urow) {
 				  $provid = $urow['id'];
 				  echo "    <option value='".htmlspecialchars($provid, ENT_QUOTES)."'";
 				  if ($provid == $provider) echo " selected";

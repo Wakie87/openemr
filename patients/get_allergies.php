@@ -25,7 +25,7 @@
                 </tr>
             <?php
             $even=false;
-            while ($row = sqlFetchArray($res)) {
+            foreach ($res as $row) {
                 if ($even) {
                     $class="class1_even";
                     $even=false;

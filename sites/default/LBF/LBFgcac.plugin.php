@@ -113,7 +113,7 @@ function set_main_compl_list() {
 ";
   // We use the checkbox object values as a scratch area to note which
   // complications were already selected from other forms.
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $a = explode('|', $row['field_value']);
     foreach ($a as $complid) {
       if (empty($complid)) continue;
@@ -258,7 +258,7 @@ function LBFgcac_default_in_ab_proc() {
   // If none, query services from recent visits to see if an IPPF code
   // matches that of a procedure type in the list.
   $res = sqlStatement(_LBFgcac_query_recent_services());
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     if (empty($row['related_code'])) continue;
     $relcodes = explode(';', $row['related_code']);
     foreach ($relcodes as $codestring) {
@@ -267,7 +267,7 @@ function LBFgcac_default_in_ab_proc() {
       if ($codetype !== 'IPPF') continue;
       $lres = sqlStatement("SELECT option_id, mapping FROM list_options " .
         "WHERE list_id = 'in_ab_proc' AND activity = 1");
-      while ($lrow = sqlFetchArray($lres)) {
+      foreach ($lres as $lrow) {
         $maparr = explode(':', $lrow['mapping']);
         if (empty($maparr[1])) continue;
         if (preg_match('/^' . $maparr[1] . '/', $code)) {

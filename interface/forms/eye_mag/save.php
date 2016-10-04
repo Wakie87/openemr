@@ -436,7 +436,7 @@ if ($_REQUEST["mode"] == "new")             {
         $fres = sqlStatement("SELECT * FROM layout_options " .
           "WHERE form_id = 'HIS' AND uor > 0 AND field_id != '' " .
           "ORDER BY group_name, seq");
-        while ($frow = sqlFetchArray($fres)) {
+        foreach ($fres as $frow) {
           $field_id  = $frow['field_id'];
           $newdata[$field_id] = get_layout_form_value($frow);
         }
@@ -445,7 +445,7 @@ if ($_REQUEST["mode"] == "new")             {
           // have to match input with list_option for marital to not break openEMR
           $query="select * from list_options where list_id='marital'";
           $fres = sqlStatement($query);
-          while ($frow = sqlFetchArray($fres)) {
+          foreach ($fres as $frow) {
             if (($_REQUEST['marital_status'] == $frow['option_id'])||($_REQUEST['marital_status'] == $frow['title'])) {
               $status = $frow['option_id'];
               $query = "UPDATE patient_data set status=? where pid=?";
@@ -666,7 +666,7 @@ if ($_REQUEST["mode"] == "new")             {
   $_POST['IOPTIME'] = date('H:i:s',strtotime($_POST['IOPTIME']));
   
   if (sqlNumRows($result) > 0) {
-    while ($row = sqlFetchArray($result)) {
+    foreach ($result as $row) {
       //exclude critical columns/fields and those needing special processing from update
       if ($row['Field'] == 'id' or
          $row['Field'] == 'date' or
@@ -937,7 +937,7 @@ function row_delete($table, $where) {
     $query = "SELECT * FROM $table WHERE $where";
     $tres = sqlStatement($query);
     $count = 0;
-    while ($trow = sqlFetchArray($tres)) {
+    foreach ($tres as $trow) {
      $logstring = "";
      foreach ($trow as $key => $value) {
       if (! $value || $value == '0000-00-00 00:00:00') continue;

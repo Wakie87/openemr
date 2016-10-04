@@ -27,7 +27,7 @@ $searchcolor = empty($GLOBALS['layout_search_color']) ?
 <html>
 <head>
 <?php html_header_show();?>
-<script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>    
+<script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
 <style>
@@ -43,11 +43,11 @@ form {
  font-weight: bold;
  padding: 3px;
 }
-#searchResultsHeader { 
+#searchResultsHeader {
  width: 100%;
  background-color: lightgrey;
 }
-#searchResultsHeader table { 
+#searchResultsHeader table {
  width: 96%;  /* not 100% because the 'searchResults' table has a scrollbar */
  border-collapse: collapse;
 }
@@ -89,7 +89,7 @@ form {
  color: red;
  font-weight: bold;
 }
-.highlight { 
+.highlight {
  background-color: #336699;
  color: white;
 }
@@ -162,7 +162,7 @@ $sql = "SELECT *, ( $relevance ) AS relevance, " .
 $sqlBindArray = array_merge($sqlBindArray, $sqlBindArraySpecial);
 $rez = sqlStatement($sql, $sqlBindArray);
 $result = array();
-while ($row = sqlFetchArray($rez)) $result[] = $row;
+foreach ($rez as $row) $result[] = $row;
 _set_patient_inc_count($MAXSHOW, count($result), $where, $sqlBindArraySpecial);
 ?>
 
@@ -215,7 +215,7 @@ $tres = sqlStatement("SELECT field_id, title FROM layout_options " .
   "field_id NOT LIKE '_name' " .
   "ORDER BY group_name, seq, title LIMIT 9");
 
-while ($trow = sqlFetchArray($tres)) {
+foreach ($tres as $trow) {
   $extracols[$trow['field_id']] = $trow['title'];
   echo "<th class='srMisc'>" . htmlspecialchars(xl_layout_label($trow['title']), ENT_NOQUOTES) . "</th>\n";
 }
@@ -274,7 +274,7 @@ $(document).ready(function() {
 });
 
 var SelectPatient = function (eObj) {
-<?php 
+<?php
 // The layout loads just the demographics frame here, which in turn
 // will set the pid and load all the other frames.
   $newPage = "../patient_file/summary/demographics.php?set_pid=";

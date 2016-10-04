@@ -85,7 +85,7 @@ $query = "SELECT ct.ct_when, " .
 $res = sqlStatement($query);
 
 $data_ctr = 0;
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
 
 if ($data_ctr == 0) { ?>
 <table>

@@ -304,7 +304,7 @@ if ($form_step == 101) {
   echo "<select multiple name='form_sel_lists[]' size='15'>";
   $lres = sqlStatement("SELECT option_id, title FROM list_options WHERE " .
     "list_id = 'lists' AND activity = 1 ORDER BY title, seq");
-  while ($lrow = sqlFetchArray($lres)) {
+  foreach ($lres as $lrow) {
     echo "<option value='" . attr($lrow['option_id']) . "'";
     echo ">" . text(xl_list_label($lrow['title'])) . "</option>\n";
   }
@@ -316,7 +316,7 @@ if ($form_step == 101) {
   echo "<select multiple name='form_sel_layouts[]' size='15'>";
   $lres = sqlStatement("SELECT option_id, title FROM list_options WHERE " .
     "list_id = 'lbfnames' AND activity = 1 ORDER BY title, seq");
-  while ($lrow = sqlFetchArray($lres)) {
+  foreach ($lres as $lrow) {
     echo "<option value='" . attr($lrow['option_id']) . "'";
     echo ">" . text(xl_layout_label($lrow['title'])) . "</option>\n";
   }

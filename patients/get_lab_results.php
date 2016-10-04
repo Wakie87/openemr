@@ -52,7 +52,7 @@
   		<?php
   		$even=false;
 
-  		while ($row = sqlFetchArray($res)) {
+  		foreach ($res as $row) {
         $order_type_id  = empty($row['order_type_id'      ]) ? 0 : ($row['order_type_id' ] + 0);
         $report_id      = empty($row['procedure_report_id']) ? 0 : ($row['procedure_report_id'] + 0);
 
@@ -84,7 +84,7 @@
           "ORDER BY seq, name, procedure_type_id, result_code";
 
         $rres = sqlStatement($query);
-        while ($rrow = sqlFetchArray($rres)) {
+        foreach ($rres as $rrow) {
 
   			if ($even) {
   				$class="class1_even";

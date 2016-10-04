@@ -47,7 +47,7 @@ class Form_LBF_Signable extends Form_Signable implements SignableIF
         $data = array();
         if ($row) {
             $fres = sqlStatement("SELECT field_id, field_value FROM lbf_data WHERE form_id = ?", array( $row['form_id'] ));
-            while ($frow = sqlFetchArray($fres)) {
+            foreach ($fres as $frow) {
                 $data[$frow['field_id']] = $frow['field_value'];
             }
         }

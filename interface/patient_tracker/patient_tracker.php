@@ -215,7 +215,7 @@ function openNewTopWindow(newpid,newencounterid) {
                     echo "   <select name='form_provider'>\n";
                     echo "    <option value='ALL'>-- " . xlt('All') . " --\n";
 
-                    while ($urow = sqlFetchArray($ures)) {
+                    foreach ($ures as $urow) {
                         $provid = $urow['id'];
                         echo "    <option value='" . attr($provid) . "'";
                         if (isset($_POST['form_provider']) && $provid == $_POST['form_provider']){

@@ -32,7 +32,7 @@ function showExamLine($line_id, $description, &$linedbrow, $sysnamedisp) {
  echo "  <td><select name='form_obs[$line_id][diagnosis]' onchange='seldiag(this, \"$line_id\")' style='width:100%'>\n";
  echo "   <option value=''></option>\n";
  $diagnosis = $linedbrow['diagnosis'];
- while ($drow = sqlFetchArray($dres)) {
+ foreach ($dres as $drow) {
   $sel = '';
   $diag = $drow['diagnosis'];
   if ($diagnosis && $diag == $diagnosis) {
@@ -118,7 +118,7 @@ if ($_POST['bn_save']) {
 $rows = array();
 if ($formid) {
  $res = sqlStatement("SELECT * FROM form_physical_exam WHERE forms_id = '$formid'");
- while ($row = sqlFetchArray($res)) {
+ foreach ($res as $row) {
   $rows[$row['line_id']] = $row;
  }
 }

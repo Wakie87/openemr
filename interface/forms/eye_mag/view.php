@@ -3308,7 +3308,7 @@ if ($refresh and $refresh != 'fullscreen') {
                                     // Create drop-lists based on the fee_sheet_options table.
                                     $res = sqlStatement("SELECT * FROM fee_sheet_options " .
                                       "ORDER BY fs_category, fs_option");
-                                    while ($row = sqlFetchArray($res)) {
+                                    foreach ($res as $row) {
                                       $fs_category = $row['fs_category'];
                                       $fs_option   = $row['fs_option'];
                                       $fs_codes    = $row['fs_codes'];
@@ -3324,13 +3324,13 @@ if ($refresh and $refresh != 'fullscreen') {
                                     // Create drop-lists based on categories defined within the codes.
                                     $pres = sqlStatement("SELECT option_id, title FROM list_options " .
                                       "WHERE list_id = 'superbill' ORDER BY seq");
-                                    while ($prow = sqlFetchArray($pres)) {
+                                    foreach ($pres as $prow) {
                                       global $code_types;
                                        echo "    <option value=''> " . text($prow['title']) . "\n";
                                       $res = sqlStatement("SELECT code_type, code, code_text,modifier FROM codes " .
                                         "WHERE superbill = ? AND active = 1 " .
                                         "ORDER BY code_text", array($prow['option_id']));
-                                      while ($row = sqlFetchArray($res)) {
+                                      foreach ($res as $row) {
                                         $ctkey = alphaCodeType($row['code_type']);
                                         if ($code_types[$ctkey]['nofs']) continue;
                                         $code_text = (strlen($row['code_text']) > 15) ? substr($row['code_text'],0,13).'...' : $row['code_text'];

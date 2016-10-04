@@ -827,7 +827,7 @@ else {
     "ORDER BY IF(LENGTH(ld.definition),ld.definition,lo.title), lo.seq");
 }
 
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $key = $row['option_id'];
   echo "<option value='$key'";
   if ($key == $list_id) echo " selected";
@@ -975,7 +975,7 @@ if ($list_id) {
   if ($list_id == 'feesheet') {
     $res = sqlStatement("SELECT * FROM fee_sheet_options " .
       "ORDER BY fs_category, fs_option");
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       writeFSLine($row['fs_category'], $row['fs_option'], $row['fs_codes']);
     }
     for ($i = 0; $i < 3; ++$i) {
@@ -985,7 +985,7 @@ if ($list_id) {
   else if ($list_id == 'code_types') {
     $res = sqlStatement("SELECT * FROM code_types " .
       "ORDER BY ct_seq, ct_key");
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       writeCTLine($row);
     }
     for ($i = 0; $i < 3; ++$i) {
@@ -995,7 +995,7 @@ if ($list_id) {
   else if ($list_id == 'issue_types') {
     $res = sqlStatement("SELECT * FROM issue_types " .
       "ORDER BY category, ordering ASC");
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       writeITLine($row);
     }
     for ($i = 0; $i < 3; ++$i) {
@@ -1005,7 +1005,7 @@ if ($list_id) {
   else {
     $res = sqlStatement("SELECT * FROM list_options WHERE " .
       "list_id = '$list_id' ORDER BY seq,title");
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       writeOptionLine($row['option_id'], $row['title'], $row['seq'],
         $row['is_default'], $row['option_value'], $row['mapping'],
         $row['notes'],$row['codes'],$row['toggle_setting_1'],$row['toggle_setting_2'],

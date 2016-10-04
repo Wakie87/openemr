@@ -138,7 +138,7 @@ $s = str_replace("{pt_age}"          , $patient_age           , $s);
 
 $fres = sqlStatement("SELECT * FROM layout_options " .
   "WHERE form_id = 'LBTref' ORDER BY group_name, seq");
-while ($frow = sqlFetchArray($fres)) {
+foreach ($fres as $frow) {
   $data_type = $frow['data_type'];
   $field_id  = $frow['field_id'];
   $currvalue = '';

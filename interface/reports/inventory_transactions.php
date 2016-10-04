@@ -396,7 +396,7 @@ if ($form_action) { // if submit or export
   $query .= "ORDER BY s.sale_date, s.sale_id";
   //
   $res = sqlStatement($query, array($from_date, $to_date));
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     thisLineItem($row);
   }
 

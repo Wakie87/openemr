@@ -200,7 +200,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
   $prev_pid = 0;
   $patcount = 0;
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $patient_id = $row['pid'];
     $encounter_date = $row['date'];
     $irow = sqlQuery("SELECT insurance_companies.name " .

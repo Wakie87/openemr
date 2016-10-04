@@ -137,7 +137,7 @@ $ignoreAuth = 1;
   $res = sqlStatement($query);
 //  print_r($res);
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
    $thistime = strtotime($row['pc_eventDate'] . " 00:00:00");
    if ($row['pc_recurrtype']) {
 

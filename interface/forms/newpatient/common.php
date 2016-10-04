@@ -192,7 +192,7 @@ function cancelClicked() {
 <?php
  $cres = sqlStatement("SELECT pc_catid, pc_catname " .
   "FROM openemr_postcalendar_categories where pc_active = 1 ORDER BY pc_seq ");
- while ($crow = sqlFetchArray($cres)) {
+ foreach ($cres as $crow) {
   $catid = $crow['pc_catid'];
   if ($catid < 9 && $catid != 5) continue;
   echo "       <option value='" . attr($catid) . "'";
@@ -359,7 +359,7 @@ if ($fres) {
    <select multiple name='issues[]' size='8' style='width:100%'
     title='<?php echo xla('Hold down [Ctrl] for multiple selections or to unselect'); ?>'>
 <?php
-while ($irow = sqlFetchArray($ires)) {
+foreach ($ires as $irow) {
   $list_id = $irow['id'];
   $tcode = $irow['type'];
   if ($ISSUE_TYPES[$tcode]) $tcode = $ISSUE_TYPES[$tcode][2];

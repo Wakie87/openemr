@@ -425,7 +425,7 @@ if ($_POST['form_refresh']) {
       $query .= " ORDER BY fe.date, b.pid, b.encounter, fe.id";
       //
       $res = sqlStatement($query);
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         $rowmethod = $form_report_by == 1 ? 'Patient' : 'Co-Pay';
         thisLineItem($row['pid'], $row['encounter'], $row['code_text'],
           substr($row['date'], 0, 10), $rowmethod, 0 - $row['fee'], 0, 0, $row['invoice_refno']);
@@ -468,7 +468,7 @@ if ($_POST['form_refresh']) {
     }
     //
     $res = sqlStatement($query);
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       if ($form_use_edate) {
         $thedate = substr($row['date'], 0, 10);
       } else if (!empty($row['deposit_date'])) {

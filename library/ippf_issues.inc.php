@@ -53,7 +53,7 @@ function issue_ippf_gcac_save($issue) {
   $fres = sqlStatement("SELECT * FROM layout_options " .
     "WHERE form_id = 'GCA' AND uor > 0 AND field_id != '' AND edit_options != 'H' " .
     "ORDER BY group_name, seq");
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $field_id  = $frow['field_id'];
     $value = get_layout_form_value($frow);
     $sets .= ", $field_id = '$value'";
@@ -83,7 +83,7 @@ function issue_ippf_gcac_form($issue, $thispid) {
   $item_count = 0;
   $display_style = 'block';
 
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $this_group = $frow['group_name'];
     $titlecols  = $frow['titlecols'];
     $datacols   = $frow['datacols'];
@@ -169,7 +169,7 @@ function issue_ippf_con_save($issue) {
   $fres = sqlStatement("SELECT * FROM layout_options " .
     "WHERE form_id = 'CON' AND uor > 0 AND field_id != '' AND edit_options != 'H' " .
     "ORDER BY group_name, seq");
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $field_id  = $frow['field_id'];
     $value = get_layout_form_value($frow);
     $sets .= ", $field_id = '$value'";
@@ -199,7 +199,7 @@ function issue_ippf_con_form($issue, $thispid) {
   $item_count = 0;
   $display_style = 'block';
 
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $this_group = $frow['group_name'];
     $titlecols  = $frow['titlecols'];
     $datacols   = $frow['datacols'];
@@ -287,7 +287,7 @@ function issue_ippf_srh_save($issue) {
   $fres = sqlStatement("SELECT * FROM layout_options " .
     "WHERE form_id = 'SRH' AND uor > 0 AND field_id != '' AND edit_options != 'H' " .
     "ORDER BY group_name, seq");
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $field_id  = $frow['field_id'];
     $value = get_layout_form_value($frow);
     $sets .= ", $field_id = '$value'";
@@ -317,7 +317,7 @@ function issue_ippf_srh_form($issue, $thispid) {
   $item_count = 0;
   $display_style = 'block';
 
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $this_group = $frow['group_name'];
     $titlecols  = $frow['titlecols'];
     $datacols   = $frow['datacols'];

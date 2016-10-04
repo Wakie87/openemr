@@ -132,7 +132,7 @@ function generate_receipt($patient_id, $encounter=0) {
     $trans_id = $ferow['id'];
     $encounter = $ferow['encounter'];
     $svcdate = substr($ferow['date'], 0, 10);
-    
+
     if ($GLOBALS['receipts_by_provider']){
       if (isset($ferow['provider_id'])) {
         $encprovider = $ferow['provider_id'];
@@ -140,7 +140,7 @@ function generate_receipt($patient_id, $encounter=0) {
         $encprovider = $patdata['providerID'];
       } else { $encprovider = -1; }
     }
-    
+
     if ($encprovider){
       $providerrow = sqlQuery("SELECT fname, mname, lname, title, street, streetb, " .
         "city, state, zip, phone, fax FROM users WHERE id = ?", array($encprovider));
@@ -188,7 +188,7 @@ function generate_receipt($patient_id, $encounter=0) {
 </head>
 <body class="body_top">
 <center>
-<?php 
+<?php
   if ($GLOBALS['receipts_by_provider'] && !empty($providerrow)) { printProviderHeader($providerrow); }
   else { printFacilityHeader($frow); }
 ?>
@@ -368,7 +368,7 @@ function write_form_line($code_type, $code, $id, $date, $description,
 $taxes = array();
 $pres = sqlStatement("SELECT option_id, title, option_value " .
   "FROM list_options WHERE list_id = 'taxrate' AND activity = 1 ORDER BY seq, title, option_id");
-while ($prow = sqlFetchArray($pres)) {
+foreach ($pres as $prow) {
   $taxes[$prow['option_id']] = array($prow['title'], $prow['option_value'], 0);
 }
 
@@ -608,7 +608,7 @@ if (sqlNumRows($bres) == 0 && sqlNumRows($dres) == 0) {
 $arr_users = array();
 $ures = sqlStatement("SELECT id, username FROM users WHERE " .
   "( authorized = 1 OR info LIKE '%provider%' ) AND username != ''");
-while ($urow = sqlFetchArray($ures)) {
+foreach ($ures as $urow) {
   $arr_users[$urow['id']] = '1';
 }
 
@@ -752,7 +752,7 @@ $gcac_service_provided = false;
 // Process billing table items.
 // Items that are not allowed to have a fee are skipped.
 //
-while ($brow = sqlFetchArray($bres)) {
+foreach ($bres as $brow) {
   // Skip all but the most recent encounter.
   if ($inv_encounter && $brow['encounter'] != $inv_encounter) continue;
 
@@ -813,7 +813,7 @@ if ($totalCopay < 0) {
 
 // Process drug sales / products.
 //
-while ($drow = sqlFetchArray($dres)) {
+foreach ($dres as $drow) {
   if ($inv_encounter && $drow['encounter'] && $drow['encounter'] != $inv_encounter) continue;
 
   $thisdate = $drow['sale_date'];
@@ -975,7 +975,7 @@ else if (!empty($GLOBALS['gbl_mask_invoice_number'])) {
 <script language='JavaScript'>
  Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
  computeTotals();
- 
+
 <?php
 if ($gcac_related_visit && !$gcac_service_provided) {
   // Skip this warning if the GCAC visit form is not allowed.

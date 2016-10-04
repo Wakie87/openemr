@@ -239,7 +239,7 @@
 
   $last_patient_id      = 0;
   $last_prescription_id = 0;
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
    // If a facility is specified, ignore rows that do not match.
    if ($form_facility !== '') {
      if ($form_facility) {

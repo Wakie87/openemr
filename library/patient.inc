@@ -332,14 +332,13 @@ function getCalendarProviderInfo($providerID = "%", $providers_only = true) {
         $command = "like";
     }
     $query = "select distinct id, username, lname, fname, authorized, info, facility " .
-        "from users where active = 1 and username != '' and id $command '" .
-        add_escape_custom($providerID) . "' " . $param1;
+        "from users where active = 1 and username != '' and id $command  ?" . $param1;
 
-    $rez = sqlStatement($query);
+    $rez = sqlStatement($query, array($providerID));
     for($iter=0; $row=sqlFetchArray($rez); $iter++)
         $returnval[$iter]=$row;
 
-    return $returnval;
+    return $rez;
 }
 
 function getProviderName($providerID) {

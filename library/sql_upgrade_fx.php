@@ -208,7 +208,7 @@ function clickOptionsMigrate() {
 */
 function CreateOccupationList() {
    $res = sqlStatement("SELECT DISTINCT occupation FROM patient_data WHERE occupation <> ''");
-   while($row = sqlFetchArray($res)) {
+   foreach ($res as $row) {
     $records[] = $row['occupation'];
    }
    sqlStatement("INSERT INTO list_options (list_id, option_id, title) VALUES('lists', 'Occupation', 'Occupation')");
@@ -226,7 +226,7 @@ function CreateOccupationList() {
 */
 function CreateReactionList() {
    $res = sqlStatement("SELECT DISTINCT reaction FROM lists WHERE reaction <> ''");
-   while($row = sqlFetchArray($res)) {
+   foreach ($res as $row) {
     $records[] = $row['reaction'];
    }
    sqlStatement("INSERT INTO list_options (list_id, option_id, title) VALUES('lists', 'reaction', 'Reaction')");
@@ -245,7 +245,7 @@ function CreateReactionList() {
 */
 function CreateImmunizationManufacturerList() {
   $res = sqlStatement("SELECT DISTINCT manufacturer FROM immunizations WHERE manufacturer <> ''");
-  while($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $records[] = $row['manufacturer'];
   }
   sqlStatement("INSERT INTO list_options (list_id, option_id, title) VALUES ('lists','Immunization_Manufacturer','Immunization Manufacturer')");
@@ -280,7 +280,7 @@ function getTablesList($arg = array()) {
     $res = sqlStatement($sql, $binds);
 
     $records = array();
-    while($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
         $records[ $row['table_name'] ] = $row['table_name'];
     }
     return $records;

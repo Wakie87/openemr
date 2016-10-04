@@ -43,7 +43,7 @@ if (!$thisauth) {
 </script>
 
 <table id="patient_stats_issues">
-	
+
 <?php
 $numcols = '1';
 $erx_upload_complete = 0;
@@ -80,7 +80,7 @@ foreach ($ISSUE_TYPES as $key => $arr) {
 		expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel , $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass, $widgetAuth, $fixedWidth);
 	    }
 	    ?>
-	    
+
 	    <?php
 	    $res=sqlStatement("select * from prescriptions where patient_id=? and active='1'",array($pid));
 	    ?>
@@ -94,7 +94,7 @@ foreach ($ISSUE_TYPES as $key => $arr) {
 		</tr>
 		<?php
 	    }
-	    while($row_currentMed=sqlFetchArray($res))
+	    foreach ($res as $row_currentMed)
 	    {
 		$runit=generate_display_field(array('data_type'=>'1','list_id'=>'drug_units'),htmlspecialchars($row_currentMed['unit'],ENT_NOQUOTES));
 		$rin=generate_display_field(array('data_type'=>'1','list_id'=>'drug_form'),htmlspecialchars($row_currentMed['form'],ENT_NOQUOTES));
@@ -121,7 +121,7 @@ foreach ($ISSUE_TYPES as $key => $arr) {
     if (sqlNumRows($pres) > 0 || $arr[4] == 1) {
 	$old_key=$key;
 	if ($_POST['embeddedScreen']) {
-	    
+
 	    if($GLOBALS['erx_enable'] && $key == "medication"){
 		$query_uploaded = "SELECT * FROM lists WHERE pid = ? AND type = 'medication' AND ";
 		$query_uploaded .= "(enddate is null or enddate = '' or enddate = '0000-00-00') ";
@@ -133,7 +133,7 @@ foreach ($ISSUE_TYPES as $key => $arr) {
 		    continue;
 		}
 	    }
-	    
+
 	    echo "<tr><td>";
             // Issues expand collapse widget
             $widgetTitle = $arr[0];
@@ -176,8 +176,8 @@ foreach ($ISSUE_TYPES as $key => $arr) {
             echo "  <tr><td colspan='$numcols' class='text'>&nbsp;&nbsp;" . htmlspecialchars(xl('Nothing Recorded'), ENT_NOQUOTES) . "</td></tr>\n";
           }
 	}
-        	    
-        while ($row = sqlFetchArray($pres)) {
+
+       foreach ($pres as $row) {
             // output each issue for the $ISSUE_TYPE
             if (!$row['enddate'] && !$row['returndate'])
                 $rowclass="noend_noreturn";
@@ -206,12 +206,12 @@ foreach ($ISSUE_TYPES as $key => $arr) {
 	if ($_POST['embeddedScreen']) {
 	    echo "</div></td></tr>";
         }
-	
+
     }
 }
 ?>
 </table> <!-- end patient_stats_issues -->
-	
+
 <table id="patient_stats_spreadsheets">
 <?php
 
@@ -234,7 +234,7 @@ foreach (array('treatment_protocols','injury_log') as $formname) {
             echo "  </td>\n";
             echo " </tr>\n";
         }
-        while ($row = sqlFetchArray($dres)) {
+        foreach ($dres as $row) {
             list($completed, $start_date, $template_name) = explode('|', $row['value'], 3);
             echo " <tr>\n";
             echo "  <td colspan='$numcols'>&nbsp;&nbsp;";
@@ -295,8 +295,8 @@ else { ?>
     echo "  <td colspan='$numcols' class='text'>&nbsp;&nbsp;" . htmlspecialchars(xl('None'), ENT_NOQUOTES) . "</td>\n";
     echo " </tr></table>\n";
   }
-    
-  while ($row=sqlFetchArray($result)){
+
+  foreach ($result as $row){
     echo "&nbsp;&nbsp;";
     echo "<a class='link'";
     echo "' href='javascript:;' onclick='javascript:load_location(\"immunizations.php?mode=edit&id=".htmlspecialchars($row['id'],ENT_QUOTES) . "\")'>" .
@@ -360,7 +360,7 @@ if(sqlNumRows($res)==0)
     </tr>
     <?php
 }
-while($row_currentMed=sqlFetchArray($res))
+foreach ($res as $row_currentMed)
 {
     $runit=generate_display_field(array('data_type'=>'1','list_id'=>'drug_units'),$row_currentMed['unit']);
     $rin=generate_display_field(array('data_type'=>'1','list_id'=>'drug_form'),$row_currentMed['form']);
@@ -406,7 +406,7 @@ else { ?>
     <span class='text'><b><?php echo htmlspecialchars(xl('Prescriptions'),ENT_NOQUOTES); ?></b></span>
     </td></tr>
     </tr><td>
-<?php } ?>	
+<?php } ?>
 
 <?php
 $cwd= getcwd();
@@ -415,11 +415,11 @@ require_once("library/classes/Controller.class.php");
 $c = new Controller();
 echo $c->act(array("prescription" => "", "fragment" => "", "patient_id" => $pid));
 ?>
-	
+
 <?php if ($_POST['embeddedScreen']) {
     echo "</div>";
 } ?>
-	
+
 </td></tr>
 
 <?php }
@@ -442,7 +442,7 @@ if($erx_upload_complete == 1){
     $query_uploaded_old .= "ORDER BY begdate";
     $res_uploaded_old = sqlStatement($query_uploaded_old, array($pid));
     echo "<table>";
-    while ($row = sqlFetchArray($res_uploaded_old)) {
+    foreach ($res_uploaded_old as $row) {
 	// output each issue for the $ISSUE_TYPE
 	if (!$row['enddate'] && !$row['returndate'])
 	    $rowclass="noend_noreturn";

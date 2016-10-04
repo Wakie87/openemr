@@ -10,7 +10,7 @@ function search_test($type,$string,$mode='default',$return_only_one=false)
 {
     echo "<ol>";
     $res=code_set_search($type,$string,false,true,$return_only_one,0,10,array(),null,$mode);
-    while ($code = sqlFetchArray($res))
+    foreach ($res as $code)
     {
         echo "<li>". $code['code_type_name'].":".$code['code'].":".$code['code_text'].":".$code['code_text_short']."</li>";
     }

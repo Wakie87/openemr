@@ -281,7 +281,7 @@ $i = 0;
 $optfrom = '';
 $optto = '';
 $ulist = "var ulist = new Array();\n";
-while ($urow = sqlFetchArray($ures)) {
+foreach ($ures as $urow) {
   $uname = $urow['lname'];
   if ($urow['fname']) $uname .= ", " . $urow['fname'];
   $tmp1 = " <option value='" . $urow['id'] . "'";

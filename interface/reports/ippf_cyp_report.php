@@ -177,7 +177,7 @@ else { // not export
   $fres = sqlStatement($query);
   echo "   <select name='form_facility'>\n";
   echo "    <option value=''>-- All Facilities --\n";
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $facid = $frow['id'];
     echo "    <option value='$facid'";
     if ($facid == $form_facility) echo " selected";
@@ -270,7 +270,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
   $query .= " ORDER BY b.code, fe.date, fe.id";
   //
   $res = sqlStatement($query);
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     thisLineItem($row['pid'], $row['encounter'],
       $row['code'] . ' ' . $row['code_text'],
       substr($row['date'], 0, 10), $row['units'], $row['cyp_factor'],
@@ -292,7 +292,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
   $query .= " ORDER BY d.name, fe.date, fe.id";
   //
   $res = sqlStatement($query);
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     thisLineItem($row['pid'], $row['encounter'], $row['name'],
       substr($row['date'], 0, 10), $row['quantity'], $row['cyp_factor'],
       $row['invoice_refno']);

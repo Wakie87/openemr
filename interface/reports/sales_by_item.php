@@ -379,7 +379,7 @@ $(document).ready(function() {
                     $res = sqlStatement($query);
                     echo "   &nbsp;<select name='form_provider'>\n";
                     echo "    <option value=''>-- " . xlt('All Providers') . " --\n";
-                    while ($row = sqlFetchArray($res)) {
+                    foreach ($res as $row) {
                         $provid = $row['id'];
                         echo "    <option value='". attr($provid) ."'";
                         if ($provid == $_REQUEST['form_provider']) echo " selected";
@@ -527,7 +527,7 @@ $(document).ready(function() {
       $query .= " ORDER BY lo.title, b.code, fe.date, fe.id";
       //
       $res = sqlStatement($query,$sqlBindArray);
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         thisLineItem($row['pid'], $row['encounter'],
           $row['title'], $row['code'] . ' ' . $row['code_text'],
           substr($row['date'], 0, 10), $row['units'], $row['fee'], $row['invoice_refno']);
@@ -555,7 +555,7 @@ $(document).ready(function() {
       $query .= " ORDER BY d.name, fe.date, fe.id";
       //
       $res = sqlStatement($query,$sqlBindArray);
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         thisLineItem($row['pid'], $row['encounter'], xl('Products'), $row['name'],
           substr($row['date'], 0, 10), $row['quantity'], $row['fee'], $row['invoice_refno']);
       }

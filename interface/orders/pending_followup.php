@@ -108,7 +108,7 @@ else { // not export
   $fres = sqlStatement($query);
   echo "   <select name='form_facility'>\n";
   echo "    <option value=''>-- All Facilities --\n";
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $facid = $frow['id'];
     echo "    <option value='$facid'";
     if ($facid == $form_facility) echo " selected";
@@ -190,7 +190,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
     "po.date_ordered, po.procedure_order_id";
 
   $res = sqlStatement($query);
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $patient_id = $row['patient_id'];
     $date_ordered = $row['date_ordered'];
 

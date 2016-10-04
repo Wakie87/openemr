@@ -168,7 +168,7 @@ $(document).ready(function() {
 <?php 
  $lastid = "";
  $encount = 0;
- while ($row = sqlFetchArray($res)) {
+ foreach ($res as $row) {
   if ($lastid != $row['drug_id']) {
    ++$encount;
    $bgcolor = "#" . (($encount & 1) ? "ddddff" : "ffdddd");

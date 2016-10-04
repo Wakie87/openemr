@@ -159,7 +159,7 @@ function DOBandEncounter()
 	 }
 
     // Manage tracker status.
-    // And auto-create a new encounter if appropriate.	 
+    // And auto-create a new encounter if appropriate.
     if (!empty($_POST['form_pid'])) {
      if ($GLOBALS['auto_create_new_encounters'] && $event_date == date('Y-m-d') && (is_checkin($_POST['form_apptstatus']) == '1') && !is_tracker_encounter_exist($event_date,$appttime,$_POST['form_pid'],$_GET['eid']))
      {
@@ -376,7 +376,7 @@ if ($_POST['form_action'] == "save") {
 
             // obtain current list of providers regarding the multiple key
             $up = sqlStatement("SELECT pc_aid FROM openemr_postcalendar_events WHERE pc_multiple=?", array($row['pc_multiple']));
-            while ($current = sqlFetchArray($up)) { $providers_current[] = $current['pc_aid']; }
+            foreach ($up as $current) { $providers_current[] = $current['pc_aid']; }
 
             // get the new list of providers from the submitted form
             $providers_new = $_POST['form_provider'];
@@ -660,7 +660,7 @@ if ($_POST['form_action'] == "save") {
             // obtain current list of providers regarding the multiple key
             $providers_current = array();
             $up = sqlStatement("SELECT pc_aid FROM openemr_postcalendar_events WHERE pc_multiple=?", array($row['pc_multiple']));
-            while ($current = sqlFetchArray($up)) { $providers_current[] = $current['pc_aid']; }
+            foreach ($up as $current) { $providers_current[] = $current['pc_aid']; }
 
             // establish a WHERE clause
             if ($row['pc_multiple']) { $whereClause = "pc_multiple = '{$row['pc_multiple']}'"; }
@@ -836,22 +836,22 @@ if ($_POST['form_action'] == "save") {
         $pref_facility = sqlFetchArray(sqlStatement("SELECT facility_id, facility FROM users WHERE id = $userid"));
         *************************************************************/
         if ($_SESSION['pc_facility']) {
-	        $pref_facility = sqlFetchArray(sqlStatement("
+	        $pref_facility = sqlStatement("
 		        SELECT f.id as facility_id,
 		        f.name as facility
 		        FROM facility f
 		        WHERE f.id = ?
 	          ",
 		        array($_SESSION['pc_facility'])
-	          ));
+	          );
         } else {
-          $pref_facility = sqlFetchArray(sqlStatement("
-            SELECT u.facility_id, 
-	          f.name as facility 
+          $pref_facility = sqlStatement("
+            SELECT u.facility_id,
+	          f.name as facility
             FROM users u
             LEFT JOIN facility f on (u.facility_id = f.id)
             WHERE u.id = ?
-            ", array($userid)));
+            ", array($userid));
         }
         /************************************************************/
         $e2f = $pref_facility['facility_id'];
@@ -925,7 +925,7 @@ td { font-size:0.8em; }
  if ($eid) {
   $thisduration = $row['pc_alldayevent'] ? 1440 : round($row['pc_duration'] / 60);
  }
- while ($crow = sqlFetchArray($cres)) {
+ foreach ($cres as $crow) {
   $duration = round($crow['pc_duration'] / 60);
   if ($crow['pc_end_all_day']) $duration = 1440;
 
@@ -1282,7 +1282,7 @@ $classpati='';
             <?php echo xlt('Time'); ?>
         </td>
         <td width='1%' nowrap id='tdallday3'>
-            <span>   
+            <span>
                 <input type='text' size='2' name='form_hour' value='<?php echo attr($starttimeh) ?>'
                  title='<?php echo xla('Event start time'); ?>' /> :
                 <input type='text' size='2' name='form_minute' value='<?php echo attr($starttimem) ?>'
@@ -1330,7 +1330,7 @@ $classpati='';
       $facils = getUserFacilities($_SESSION['authId']);
       $qsql = sqlStatement("SELECT id, name FROM facility WHERE service_location != 0");
       /**************************************************************/
-      while ($facrow = sqlFetchArray($qsql)) {
+      foreach ($qsql as $facrow) {
         /*************************************************************
         $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
         echo "<option value={$facrow['id']} $selected>{$facrow['name']}</option>";
@@ -1404,7 +1404,7 @@ if  ($GLOBALS['select_multi_providers']) {
         if ($multiple_value) {
             // find all the providers around multiple key
             $qall = sqlStatement ("SELECT pc_aid AS providers FROM openemr_postcalendar_events WHERE pc_multiple = ?", array($multiple_value));
-            while ($r = sqlFetchArray($qall)) {
+            foreach ($qall as $r) {
                 $providers_array[] = $r['providers'];
             }
         } else {
@@ -1416,7 +1416,7 @@ if  ($GLOBALS['select_multi_providers']) {
     // build the selection tool
     echo "<select name='form_provider[]' style='width:100%' multiple='multiple' size='5' >";
 
-    while ($urow = sqlFetchArray($ures)) {
+    foreach ($ures as $urow) {
         echo "    <option value='" . attr($urow['id']) . "'";
 
         if ($userid) {
@@ -1431,7 +1431,7 @@ if  ($GLOBALS['select_multi_providers']) {
     echo '</select>';
 
 // =======================================
-// single provider 
+// single provider
 // =======================================
 } else {
 
@@ -1463,7 +1463,7 @@ if  ($GLOBALS['select_multi_providers']) {
     }
 
     echo "<select name='form_provider' style='width:100%' />";
-    while ($urow = sqlFetchArray($ures)) {
+    foreach ($ures as $urow) {
         echo "    <option value='" . $urow['id'] . "'";
         if ($urow['id'] == $defaultProvider) echo " selected";
         echo ">" . $urow['lname'];
@@ -1479,14 +1479,14 @@ if  ($GLOBALS['select_multi_providers']) {
       if (count($_SESSION['pc_username']) >= 1) {
         // get the numeric ID of the first provider in the array
         $pc_username = $_SESSION['pc_username'];
-        $firstProvider = sqlFetchArray(sqlStatement("select id from users where username=?", array($pc_username[0])));
+        $firstProvider = sqlStatement("select id from users where username=?", array($pc_username[0]));
         $defaultProvider = $firstProvider['id'];
       }
       // if we clicked on a provider's schedule to add the event, use THAT.
       if ($userid) $defaultProvider = $userid;
     }
     echo "<select name='form_provider' style='width:100%' />";
-    while ($urow = sqlFetchArray($ures)) {
+    foreach ($ures as $urow) {
       echo "    <option value='" . attr($urow['id']) . "'";
       if ($urow['id'] == $defaultProvider) echo " selected";
       echo ">" . text($urow['lname']);

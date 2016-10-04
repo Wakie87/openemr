@@ -36,14 +36,14 @@ if ($GLOBALS['ippf_specific']) {
 // Include Layout Based Transaction Forms.
 $lres = sqlStatement("SELECT * FROM list_options " .
   "WHERE list_id = 'transactions' AND activity = 1 ORDER BY seq, title");
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
   $layouts[$lrow['option_id']] = xl_list_label($lrow['title']);
 }
 
 // Include Layout Based Encounter Forms.
 $lres = sqlStatement("SELECT * FROM list_options " .
   "WHERE list_id = 'lbfnames' AND activity = 1 ORDER BY seq, title");
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
   $layouts[$lrow['option_id']] = xl_list_label($lrow['title']);
 }
 
@@ -51,7 +51,7 @@ while ($lrow = sqlFetchArray($lres)) {
 $validations = array();
 $lres = sqlStatement("SELECT * FROM list_options " .
     "WHERE list_id = 'LBF_Validations' AND activity = 1 ORDER BY seq, title");
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
     $validations[$lrow['option_id']] = xl_list_label($lrow['title']);
 }
 // array of the data_types of the fields
@@ -309,7 +309,7 @@ else if ($_POST['formaction'] == "deletegroup" && $layout_id) {
     $res = sqlStatement("SELECT field_id FROM layout_options WHERE " .
       "form_id = '" . $_POST['layout_id'] . "' ".
       "AND group_name = '" . $_POST['deletegroupname'] . "'");
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       addOrDeleteColumn($layout_id, $row['field_id'], FALSE);
     }
     // Delete an entire group from the form
@@ -390,7 +390,7 @@ function genFieldOptionList($current='') {
   if ($layout_id) {
     $query = "SELECT field_id FROM layout_options WHERE form_id = ? ORDER BY group_name, seq";
     $res = sqlStatement($query, array($layout_id));
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       $field_id = $row['field_id'];
       $option_list .= "<option value='" . attr($field_id) . "'";
       if ($field_id == $current) $option_list .= " selected";
@@ -538,7 +538,7 @@ function writeFieldLine($linedata) {
     
       echo "<select name='fld[$fld_line_no][contextName]' id='fld[$fld_line_no][contextName]' ".$disp.">";
         $res = sqlStatement("SELECT * FROM customlists WHERE cl_list_type=2 AND cl_deleted=0");
-        while($row = sqlFetchArray($res)){
+        foreach ($res as $row){
           $sel = '';
           if ($linedata['list_id'] == $row['cl_list_item_long'])
           $sel = 'selected';
@@ -1045,7 +1045,7 @@ foreach ($layouts as $key => $value) {
 <?php 
 $prevgroup = "!@#asdf1234"; // an unlikely group name
 $firstgroup = true; // flag indicates it's the first group to be displayed
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   if ($row['group_name'] != $prevgroup) {
     if ($firstgroup == false) { echo "</tbody></table></div>\n"; }
     echo "<div id='".$row['group_name']."' class='group'>";
@@ -1191,7 +1191,7 @@ foreach ($datatypes as $key=>$value) {
     <select name='gcontextName' id='gcontextName' style='display:none'>
         <?php
         $res = sqlStatement("SELECT * FROM customlists WHERE cl_list_type=2 AND cl_deleted=0");
-        while($row = sqlFetchArray($res)){
+        foreach ($res as $row){
           echo "<option value='".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."'>".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."</option>";
         }
         ?>
@@ -1274,7 +1274,7 @@ foreach ($datatypes as $key=>$value) {
        <select name='contextName' id='contextName' style='display:none'>
         <?php
         $res = sqlStatement("SELECT * FROM customlists WHERE cl_list_type=2 AND cl_deleted=0");
-        while($row = sqlFetchArray($res)){
+        foreach ($res as $row){
           echo "<option value='".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."'>".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."</option>";
         }
         ?>

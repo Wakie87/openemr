@@ -73,7 +73,7 @@ $lres = sqlStatement("SELECT field_id, title, data_type, list_id, description " 
   "FROM layout_options WHERE " .
   "form_id = 'DEM' AND uor > 0 AND field_id NOT LIKE 'em%' " .
   "ORDER BY group_name, seq, title");
-while ($lrow = sqlFetchArray($lres)) {
+foreach ($lres as $lrow) {
   $fid = $lrow['field_id'];
   if ($fid == 'fname' || $fid == 'mname' || $fid == 'lname') continue;
   $arr_show[$fid] = $lrow;
@@ -440,7 +440,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
 
     $res = sqlStatement($query, $sqlBindArray);
 
-    while ($row = sqlFetchArray($res)) {
+    foreach ($res as $row) {
       process_result_code($row);
     }
 

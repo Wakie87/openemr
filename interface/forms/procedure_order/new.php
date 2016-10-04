@@ -410,7 +410,7 @@ generate_form_field(array('data_type'=>10,'field_id'=>'provider_id'),
  <?php
   $ppres = sqlStatement("SELECT ppid, name FROM procedure_providers " .
     "ORDER BY name, ppid");
-  while ($pprow = sqlFetchArray($ppres)) {
+  foreach ($ppres as $pprow) {
     echo "<option value='" . attr($pprow['ppid']) . "'";
     if ($pprow['ppid'] == $row['lab_id']) echo " selected";
     echo ">" . text($pprow['name']) . "</option>";
@@ -524,7 +524,7 @@ generate_form_field(array('data_type'=>1,'field_id'=>'order_status',
       "WHERE pc.procedure_order_id = ? " .
       "ORDER BY pc.procedure_order_seq",
       array($row['lab_id'], $formid));
-    while ($oprow = sqlFetchArray($opres)) {
+    foreach ($opres as $oprow) {
       $oparr[] = $oprow;
     }
   }
@@ -539,7 +539,7 @@ generate_form_field(array('data_type'=>1,'field_id'=>'order_status',
 ?>
  <tr>
  <!--<td width='1%' valign='top'><b><?php echo xl('Procedure') . ' ' . ($i + 1); ?>:</b></td>-->
- <?php if(empty($formid) || empty($oprow['procedure_order_title'])) {?> 
+ <?php if(empty($formid) || empty($oprow['procedure_order_title'])) {?>
         <td width='1%' valign='top'><input type='hidden' name='form_proc_order_title[<?php echo $i; ?>]' value='Procedure'><b><?php echo xlt('Procedure');?></b></td>
     <?php } else {?>
      <td width='1%' valign='top'>
@@ -583,8 +583,8 @@ if ($qoe_init_javascript)
 <select name="procedure_type_names" id="procedure_type_names">
 	<?php foreach($procedure_order_type as $ordered_types){?>
 	<option value="<?php echo attr($ordered_types['option_id']); ?>" ><?php echo text(xl_list_label($ordered_types['title'])) ; ?></option>
-	<?php } ?>    
-</select> 
+	<?php } ?>
+</select>
 <input type='button' value='<?php echo xla('Add Procedure'); ?>' onclick="addProcLine()" />
 &nbsp;
 <input type='submit' name='bn_save' value='<?php echo xla('Save'); ?>' onclick='transmitting = false;' />

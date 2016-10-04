@@ -9,7 +9,7 @@
  *  key - The identifier. (Do NOT create element with token 'prescription_erx' since this is reserved by NewCropRx Module that leverages lists_touch table to support MU calculations)
  *  0   - The plural title.
  *  1   - The singular title.
- *  2   - The abbreviated title (one letter abbreviation). 
+ *  2   - The abbreviated title (one letter abbreviation).
  *  3   - Style ('0 - Normal; 1 - Simplified: only title, start date, comments and an Active checkbox;no diagnosis, occurrence, end date, referred-by or sports fields.; 2 - Football Injury; 3 and 4 are IPPF specific)
  *  4   - Force show this issue category in the patient summary screen even if empty (setting to 1 will force it to show and setting it to 0 will turn this off).
  *
@@ -46,7 +46,7 @@ $ISSUE_TYPE_CATEGORIES = array(
 );
 // Second, collect the non hard-coded options and add to the array
 $res = sqlStatement("SELECT DISTINCT `category` FROM `issue_types`");
-while($row = sqlFetchArray($res)){
+foreach ($res as $row){
   if ( ($row['category'] == "default") || ($row['category'] == "ippf_specific") ) continue;
   $ISSUE_TYPE_CATEGORIES[$row['category']] = $row['category'];
 }
@@ -74,7 +74,7 @@ function collect_issue_type_category() {
 
 // Build the $ISSUE_TYPES array (see script header for description)
 $res = sqlStatement("SELECT * FROM `issue_types` WHERE active=1 AND `category`=? ORDER BY `ordering` ASC", array( collect_issue_type_category() ));
-while($row = sqlFetchArray($res)){
+foreach ($res as $row){
   $ISSUE_TYPES[$row['type']] = array(xl($row['plural']),xl($row['singular']),xl($row['abbreviation']),$row['style'],$row['force_show']);
 }
 
@@ -97,7 +97,7 @@ function getListByType ($pid, $type, $cols = "*", $active = "all", $limit = "all
 		$sql = "select $cols from lists where pid='$pid' and type='$type' and activity='$active' order by date DESC";
 	if ($limit != "all")
 		$sql .= " limit $offset,$limit";
-	
+
 
 	$res = sqlStatement($sql);
 	for($iter =0;$row = sqlFetchArray($res);$iter++)

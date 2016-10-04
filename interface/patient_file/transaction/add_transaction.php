@@ -51,7 +51,7 @@ if ($mode) {
     "WHERE form_id = ? AND uor > 0 AND field_id != '' " .
     "ORDER BY group_name, seq", array($form_id));
 
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $data_type = $frow['data_type'];
     $field_id  = $frow['field_id'];
     $value = get_layout_form_value($frow);
@@ -353,7 +353,7 @@ $fres = sqlStatement("SELECT * FROM layout_options " .
   "ORDER BY group_name, seq", array($form_id));
 $last_group = '';
 
-while ($frow = sqlFetchArray($fres)) {
+foreach ($fres as $frow) {
   $this_group = $frow['group_name'];
   // Handle a data category (group) change.
   if (strcmp($this_group, $last_group) != 0) {
@@ -387,7 +387,7 @@ $item_count = 0;
 $display_style = 'block';
 $condition_str = '';
 
-while ($frow = sqlFetchArray($fres)) {
+foreach ($fres as $frow) {
   $this_group = $frow['group_name'];
   $titlecols  = $frow['titlecols'];
   $datacols   = $frow['datacols'];

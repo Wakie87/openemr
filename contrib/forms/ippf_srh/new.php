@@ -57,7 +57,7 @@ if ($_POST['bn_save']) {
     "WHERE form_id = 'SRH' AND uor > 0 AND field_id != '' AND " .
     "edit_options != 'H' " .
     "ORDER BY group_name, seq");
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $field_id  = $frow['field_id'];
     $value = get_layout_form_value($frow);
     if ($sets) $sets .= ", ";
@@ -157,7 +157,7 @@ function divclick(cb, divid) {
   $item_count = 0;
   $display_style = 'block';
 
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $this_group = $frow['group_name'];
     $titlecols  = $frow['titlecols'];
     $datacols   = $frow['datacols'];

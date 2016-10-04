@@ -498,7 +498,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     else if ($fldtype == 'lang') {
       $res = sqlStatement("SELECT * FROM lang_languages ORDER BY lang_description");
       echo "  <select name='form_$i' id='form_$i'>\n";
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         echo "   <option value='" . attr($row['lang_description']) . "'";
         if ($row['lang_description'] == $fldvalue) echo " selected";
         echo ">";
@@ -524,7 +524,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     else if ($fldtype == 'm_lang') {
       $res = sqlStatement("SELECT * FROM lang_languages  ORDER BY lang_description");
       echo "  <select multiple name='form_{$i}[]' id='form_{$i}[]' size='3'>\n";
-      while ($row = sqlFetchArray($res)) {
+      foreach ($res as $row) {
         echo "   <option value='" . attr($row['lang_description']) . "'";
         foreach ($glarr as $glrow) {
           if ($glrow['gl_value'] == $row['lang_description']) {

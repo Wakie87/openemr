@@ -30,7 +30,7 @@ echo ("<th align='Center' width='15%'>".xl('Work') ."</th>");
 echo ("<th align='Center' width='15%'>".xl('Contact') ."</th>");
 echo ("<th align='Center' width='15%'>".xl('Cell') ."</th></thead>\n");
 
-while ($row=sqlFetchArray($res)) {
+foreach ($res as $row) {
 
     echo ("<tr><td width='22%'>${row['title']} ");
     echo ("${row['fname']} ");

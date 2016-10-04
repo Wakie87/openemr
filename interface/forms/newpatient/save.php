@@ -129,7 +129,7 @@ if ($mode == 'new' && $GLOBALS['default_new_encounter_form'] == 'football_injury
   if (sqlNumRows($lres) > 0) {
     $nexturl = "patient_file/encounter/load_form.php?formname=" .
       $GLOBALS['default_new_encounter_form'];
-    while ($lrow = sqlFetchArray($lres)) {
+    foreach ($lres as $lrow) {
       $frow = sqlQuery("SELECT count(*) AS count " .
          "FROM issue_encounter, forms WHERE " .
          "issue_encounter.list_id = ? AND " .

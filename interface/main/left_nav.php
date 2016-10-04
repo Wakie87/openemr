@@ -8,7 +8,7 @@ use ESign\Api;
  * of the License, or (at your option) any later version.
  */
 
- // This provides the left navigation frame. 
+ // This provides the left navigation frame.
  // Following are notes as to what else was changed for this feature:
  //
  // * interface/main/main_screen.php: the top-level frameset.
@@ -92,7 +92,7 @@ use ESign\Api;
  require_once($GLOBALS['fileroot']."/library/lists.inc");
  require_once $GLOBALS['srcdir'].'/ESign/Api.php';
  require_once $GLOBALS['srcdir'].'/user.inc';
- 
+
  // Fetch user preferences saved from prior session
  $uspfx = substr(__FILE__, strlen($GLOBALS['fileroot']."/")) . '.';
  $cb_top_chk = prevSetting($uspfx, 'cb_top', 'frame0_chk', 'checked');
@@ -228,7 +228,7 @@ use ESign\Api;
  function genMiscLink2($frame, $name, $level, $title, $url, $mono=false,$mouseovertext="") {
   global $disallowed;
   if (empty($disallowed[$name])) {
-	 
+
    $id = $name . $level;
    echo "<li><a href='' id='$id' title='$mouseovertext' onclick=\"";
    if ($mono) {
@@ -397,34 +397,34 @@ function genFindBlock() {
 <script language='JavaScript'>
  // User settings
  var usrval = jQuery.parseJSON('<?php echo $usrval ?>');
- 
+
  // tajemo work by CB 2012/01/31 12:32:57 PM dated reminders counter
- function getReminderCount(){ 
+ function getReminderCount(){
    top.restoreSession();
    // Send the skip_timeout_reset parameter to not count this as a manual entry in the
    //  timing out mechanism in OpenEMR.
    $.post("<?php echo $GLOBALS['webroot']; ?>/library/ajax/dated_reminders_counter.php",
-     { skip_timeout_reset: "1" }, 
+     { skip_timeout_reset: "1" },
      function(data) {
        $("#reminderCountSpan").html(data);
-    // run updater every 60 seconds 
-     var repeater = setTimeout("getReminderCount()", 60000); 
+    // run updater every 60 seconds
+     var repeater = setTimeout("getReminderCount()", 60000);
    });
    //piggy-back on this repeater to run other background-services
    //this is a silent task manager that returns no output
    $.post("<?php echo $GLOBALS['webroot']; ?>/library/ajax/execute_background_services.php",
       { skip_timeout_reset: "1", ajax: "1" });
- }   
- 
+ }
+
  $(document).ready(function (){
    getReminderCount();//
    parent.loadedFrameCount += 1;
    for (var i = 0, len = usrval.length; i < len; i++) {
        if (usrval[i] != "checked") toggleFrame(i+1);
    }
- }) 
+ })
  // end of tajemo work dated reminders counter
- 
+
  // Master values for current pid and encounter.
  var active_pid = 0;
  var active_encounter = 0;
@@ -489,7 +489,7 @@ function genFindBlock() {
   if (frame == 'RTop') topName = fname; else botName = fname;
   return false;
  }
- 
+
  function loadFrame3(fname, frame, url) {
   var f = document.forms[0];
   top.restoreSession();
@@ -602,7 +602,7 @@ function clearactive() {
 		top.frames['RBot'].location='messages/messages.php?form_active=1';
 	  }
 	});
-    
+
 	$(parent.Title.document.getElementById('clear_active')).hide();
 }
  // Reference to the search.php window.
@@ -681,10 +681,10 @@ function clearactive() {
    loadFrame('ens1','RBot', '<?php echo $primary_docs['ens'][2]; ?>');
   }
  }
- 
+
   //
   // Commented out this code block are part of the removal of the athletic team code TLH
-  // 
+  //
   // Clear and reload issue-related menu items for active_pid.
   // Currently this only applies to athletic teams, but might be implemented
   // in the general menu at some future time.
@@ -716,28 +716,28 @@ function clearactive() {
   // }
  //?>
   //} // end function reloadIssues
- 
+
   // This is referenced in left_nav_issues_ajax.php and is called when [Add]
   // is clicked for an issue menu item to add a new encounter for the issue.
   // So far this only applies to the Athletic Team version of the menu.
   //
   //function addEncNotes(issue) {
- 
+
    // top.restoreSession();
    // $.getScript('../../library/ajax/left_nav_encounter_ajax.php?createvisit=1&issue=' + issue);
- 
+
    // The above AJAX call was to create the encounter right away, but we later
    // (2012-07-03) decided it's better to present the New Encounter form instead.
    // Note the issue ID is passed so it will be pre-selected in that form.
    //loadFrame2('nen1','RBot','forms/newpatient/new.php?autoloaded=1&calenc=&issue=' + issue);
- 
+
    //return false;
   //}
   //
   // Commented out the above code block are part of the removal of the athletic team code TLH
-  // 
-  
-  
+  //
+
+
  // Call this to announce that the patient has changed.  You must call this
  // if you change the session PID, so that the navigation frame will show the
  // correct patient and so that the other frame will be reloaded if it contains
@@ -826,10 +826,10 @@ function isEncounterLocked( encounterId ) {
         },
         dataType: 'json',
         async:false
-	});	    
+	});
 	return encounter_locked;
 	<?php } else { ?>
-	// If encounter locking isn't enabled, just tell the left_nav that the encounter 
+	// If encounter locking isn't enabled, just tell the left_nav that the encounter
     // isn't locked.
 	return false;
 	<?php } ?>
@@ -1045,7 +1045,7 @@ $(document).ready(function(){
 
   <?php if (!$GLOBALS['disable_calendar'] && !$GLOBALS['ippf_specific']) genTreeLink('RTop','cal',xl('Calendar')); ?>
   <?php if (!$GLOBALS['disable_pat_trkr'] && !$GLOBALS['disable_calendar']) genTreeLink('RTop','pfb',xl('Flow Board')); ?>
-  <?php genTreeLink('RBot','msg',xl('Messages')); ?> 
+  <?php genTreeLink('RBot','msg',xl('Messages')); ?>
   <?php if($GLOBALS['portal_offsite_enable'] && $GLOBALS['portal_offsite_address'] && acl_check('patientportal','portal'))  genTreeLink('RTop','app',xl('Portal Activity')); ?>
   <?php
     if ($GLOBALS['gbl_portal_cms_enable'] && acl_check('patientportal','portal')) {
@@ -1084,7 +1084,7 @@ $(document).ready(function(){
 $lres = sqlStatement("SELECT * FROM list_options " .
   "WHERE list_id = 'lbfnames' AND activity = 1 ORDER BY seq, title");
 if (sqlNumRows($lres)) {
-  while ($lrow = sqlFetchArray($lres)) {
+  foreach ($lres as $lrow) {
     $option_id = $lrow['option_id']; // should start with LBF
     $title = $lrow['title'];
     genMiscLink('RBot','cod','2',xl_form_title($title),
@@ -1125,7 +1125,7 @@ if (!empty($reg)) {
       <?php genMiscLink('RBot','cod','2',xl('Fee Sheet'),'patient_file/encounter/load_form.php?formname=fee_sheet'); ?>
       <?php if ($GLOBALS['use_charges_panel']) genTreeLink('RBot','cod',xl('Charges')); ?>
       <?php genMiscLink('RBot','pay','1',xl('Payment'),'patient_file/front_payment.php'); ?>
-      <?php genMiscLink('RBot','bil','1',xl('Checkout'),'patient_file/pos_checkout.php?framed=1'); ?> 
+      <?php genMiscLink('RBot','bil','1',xl('Checkout'),'patient_file/pos_checkout.php?framed=1'); ?>
       <?php if (! $GLOBALS['simplified_demographics']) genTreeLink('RTop','bil',xl('Billing')); ?>
 	  <?php genTreeLink('RTop','npa',xl('Batch Payments'),false,2);?>
 	  <?php genMiscLink('RTop','eob','0',xl('Posting'), 'billing/sl_eob_search.php'); ?>
@@ -1138,11 +1138,11 @@ if (!empty($reg)) {
     <ul>
 	<?php genMiscLink('RTop','adm','0',xl('Manage Modules'),'modules/zend_modules/public/Installer'); ?>
 	 <?php //genTreeLink('RTop','ort',xl('Settings')); ?>
-      
-	<?php 
+
+	<?php
 		$module_query = sqlStatement("select mod_directory,mod_name,mod_nick_name,mod_relative_link,type from modules where mod_active = 1 AND sql_run= 1 order by mod_ui_order asc");
 		if (sqlNumRows($module_query)) {
-		  while ($modulerow = sqlFetchArray($module_query)) {
+		  foreach ($module_query as $modulerow) {
 				$acl_section = strtolower($modulerow['mod_directory']);
 				$disallowed[$acl_section] = zh_acl_check($_SESSION['authUserID'],$acl_section) ?  "" : "1";
 				$modulePath = "";
@@ -1155,7 +1155,7 @@ if (!empty($reg)) {
 					$added		= "index";
 		  			$modulePath = $GLOBALS['zendModDir'];
 		  		}
-		  			
+
 		 		$relative_link ="modules/".$modulePath."/".$modulerow['mod_relative_link'].$added;
                                 $mod_nick_name = $modulerow['mod_nick_name'] ? $modulerow['mod_nick_name'] : $modulerow['mod_name'];
 			?>
@@ -1254,14 +1254,14 @@ if (!empty($reg)) {
   <?php } ?>
   <li><a class="collapsed" id="repimg" ><span><?php xl('Reports','e') ?></span></a>
     <ul>
-				<?php 
+				<?php
 				$module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh LEFT OUTER JOIN modules_settings AS ms ON
-                                    obj_name=enabled_hooks AND ms.mod_id=msh.mod_id LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id 
+                                    obj_name=enabled_hooks AND ms.mod_id=msh.mod_id LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id
                                     WHERE fld_type=3 AND mod_active=1 AND sql_run=1 AND attached_to='reports' ORDER BY mod_id");
 				if (sqlNumRows($module_query)) {
 					$jid = 0;
 					$modid = '';
-					while ($modulerow = sqlFetchArray($module_query)) {
+					foreach ($module_query as $modulerow) {
 						$modulePath = "";
 						$added 		= "";
 							if($modulerow['type'] == 0) {
@@ -1272,10 +1272,10 @@ if (!empty($reg)) {
 								$added		= "index";
 								$modulePath = $GLOBALS['zendModDir'];
 							}
-								
+
 						$relative_link ="modules/".$modulePath."/".$modulerow['mod_relative_link'].$modulerow['path'];
 						$mod_nick_name = $modulerow['menu_name'] ? $modulerow['menu_name'] : 'NoName';
-						
+
 						if($jid==0 || ($modid!=$modulerow['mod_id'])){
 							if($modid!='')
 							echo "</ul>";
@@ -1314,7 +1314,7 @@ if (!empty($reg)) {
         <ul>
           <?php  genMiscLink('RTop','rep','0',xl('Daily Report'),'reports/daily_summary_report.php'); ?>
           <?php if (!$GLOBALS['disable_calendar']) genMiscLink('RTop','rep','0',xl('Appointments'),'reports/appointments_report.php'); ?>
-          <?php if (!$GLOBALS['disable_pat_trkr'] && !$GLOBALS['disable_calendar']) genMiscLink('RTop','rep','0',xl('Patient Flow Board'),'reports/patient_flow_board_report.php'); ?>          
+          <?php if (!$GLOBALS['disable_pat_trkr'] && !$GLOBALS['disable_calendar']) genMiscLink('RTop','rep','0',xl('Patient Flow Board'),'reports/patient_flow_board_report.php'); ?>
           <?php  genMiscLink('RTop','rep','0',xl('Encounters'),'reports/encounters_report.php'); ?>
           <?php if (!$GLOBALS['disable_calendar']) genMiscLink('RTop','rep','0',xl('Appt-Enc'),'reports/appt_encounter_report.php'); ?>
 <?php if (empty($GLOBALS['code_types']['IPPF'])) { ?>
@@ -1322,7 +1322,7 @@ if (!empty($reg)) {
 <?php } ?>
 	  <?php  genMiscLink('RTop','rep','0',xl('Eligibility'),'reports/edi_270.php'); ?>
 	  <?php  genMiscLink('RTop','rep','0',xl('Eligibility Response'),'reports/edi_271.php'); ?>
-	  
+
 
           <?php if (!$GLOBALS['disable_chart_tracker']) genMiscLink('RTop','rep','0',xl('Chart Activity'),'reports/chart_location_activity.php'); ?>
           <?php if (!$GLOBALS['disable_chart_tracker']) genMiscLink('RTop','rep','0',xl('Charts Out'),'reports/charts_checked_out.php'); ?>
@@ -1387,7 +1387,7 @@ if (!empty($reg)) {
 <?php
   $lres = sqlStatement("SELECT * FROM list_options " .
   "WHERE list_id = 'lbfnames' AND activity = 1 ORDER BY seq, title");
-  while ($lrow = sqlFetchArray($lres)) {
+  foreach ($lres as $lrow) {
     $option_id = $lrow['option_id']; // should start with LBF
     $title = $lrow['title'];
     genPopLink($title, "../forms/LBF/printable.php?formname=$option_id");
@@ -1409,7 +1409,7 @@ if (!empty($reg)) {
   </li>
   <li><a class="collapsed" id="misimg" ><span><?php xl('Miscellaneous','e') ?></span></a>
     <ul>
-      <?php genTreeLink('RTop','ped',xl('Patient Education')); ?> 
+      <?php genTreeLink('RTop','ped',xl('Patient Education')); ?>
       <?php genTreeLink('RBot','aun',xl('Authorizations')); ?>
       <?php genTreeLink('RTop','fax',xl('Fax/Scan')); ?>
       <?php genTreeLink('RTop','adb',xl('Addr Book')); ?>
@@ -1457,7 +1457,7 @@ function save_setting (cb_frames) {
     for (var i = 0, len = cb_frames.length; i < len; i++) {
 	    try {
 	        var fref = '<?php echo $uspfx ?>frame' + i + '_chk';
-	        var ureq = $.post( "<?php echo $GLOBALS['webroot'] ?>/library/ajax/user_settings.php", 
+	        var ureq = $.post( "<?php echo $GLOBALS['webroot'] ?>/library/ajax/user_settings.php",
                     { lab: fref, val: cb_frames[i] })
 	        .done(function(data) {
 	            // alert( "Data Loaded: " + data );
@@ -1468,7 +1468,7 @@ function save_setting (cb_frames) {
 	        .always(function() {
 	            // alert( "finished" );
 	        });
-	
+
 	    } catch (err) {
 	        alert (err.message);
 	    }

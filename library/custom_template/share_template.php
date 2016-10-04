@@ -92,7 +92,7 @@ $list_id = $_REQUEST['list_id'];
                             $res = sqlStatement($query);
                             $sel_query = "SELECT tu_user_id FROM template_users WHERE tu_template_id=?";
                             $row_sel =sqlQuery($sel_query,array($list_id));
-                           while ($row = sqlFetchArray($res)) {
+                           foreach ($res as $row) {
                             foreach($row_sel as $key=>$value){
                                 if($value==$row['id']){
                                     $sel="selected";

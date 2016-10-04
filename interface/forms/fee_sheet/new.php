@@ -712,7 +712,7 @@ $last_category = '';
 // Create drop-lists based on the fee_sheet_options table.
 $res = sqlStatement("SELECT * FROM fee_sheet_options " .
   "ORDER BY fs_category, fs_option");
-while ($row = sqlFetchArray($res)) {
+foreach ($res as $row) {
   $fs_category = $row['fs_category'];
   $fs_option   = $row['fs_option'];
   $fs_codes    = $row['fs_codes'];
@@ -732,7 +732,7 @@ endFSCategory();
 // Create drop-lists based on categories defined within the codes.
 $pres = sqlStatement("SELECT option_id, title FROM list_options " .
   "WHERE list_id = 'superbill' AND activity = 1 ORDER BY seq");
-while ($prow = sqlFetchArray($pres)) {
+foreach ($pres as $prow) {
   global $code_types;
   ++$i;
   echo ($i <= 1) ? " <tr>\n" : "";
@@ -742,7 +742,7 @@ while ($prow = sqlFetchArray($pres)) {
   $res = sqlStatement("SELECT code_type, code, code_text,modifier FROM codes " .
     "WHERE superbill = ? AND active = 1 " .
     "ORDER BY code_text", array($prow['option_id']));
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $ctkey = $fs->alphaCodeType($row['code_type']);
     if ($code_types[$ctkey]['nofs']) continue;
     echo "    <option value='" . attr($ctkey) . "|" .
@@ -767,7 +767,7 @@ if ($GLOBALS['sell_non_drug_products']) {
     "FROM drug_templates AS dt, drugs AS d WHERE " .
     "d.drug_id = dt.drug_id AND d.active = 1 AND d.consumable = 0 " .
     "ORDER BY d.name, dt.selector, dt.drug_id");
-  while ($trow = sqlFetchArray($tres)) {
+  foreach ($tres as $trow) {
     echo "    <option value='PROD|" . attr($trow['drug_id']) . '|' . attr($trow['selector']) . "'>";
     echo text($trow['name']);
     if ($trow['name'] !== $trow['selector']) echo ' / ' . text($trow['selector']);
@@ -808,7 +808,7 @@ echo ">\n";
 echo "    <option value=''> " . xlt("Search Results") . " ($numrows " . xlt("items") . ")\n";
 
 if ($numrows) {
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
     $code = $row['code'];
     if ($row['modifier']) $code .= ":" . $row['modifier'];
     echo "    <option value='" . attr($search_type) . "|" . attr($code) . "|'>" . text($code) . " " .

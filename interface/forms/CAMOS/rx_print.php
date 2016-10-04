@@ -489,7 +489,7 @@ else {
 $results = array();
 echo "<div id='checkboxes'>\n";
 $count = 0;
-while ($result = sqlFetchArray($query)) {
+foreach ($query as $result) {
   $checked = '';
   if ($result['category'] == 'prescriptions' && $count < 4) {
     $count++;

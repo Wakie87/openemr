@@ -1040,7 +1040,7 @@ function poll_hl7_results(&$info) {
 
   $ppres = sqlStatement("SELECT * FROM procedure_providers ORDER BY name");
 
-  while ($pprow = sqlFetchArray($ppres)) {
+  foreach ($ppres as $pprow) {
     $ppid        = $pprow['ppid'];
     $protocol    = $pprow['protocol'];
     $remote_host = $pprow['remote_host'];

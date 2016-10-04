@@ -320,7 +320,7 @@ onsubmit='return top.restoreSession()'>
  $cres = sqlStatement($query1);
  echo "   <select multiple='multiple' size='3' name='form_code[]'>\n";
  //echo "    <option value=''>-- " . xl('All Codes') . " --\n";
- while ($crow = sqlFetchArray($cres)) {
+ foreach ($cres as $crow) {
   $codeid = $crow['id'];
   echo "    <option value='$codeid'";
   if (in_array($codeid, $form_code)) echo " selected";
@@ -419,7 +419,7 @@ onsubmit='return top.restoreSession()'>
   $res = sqlStatement($query);
 
 
-  while ($row = sqlFetchArray($res)) {
+  foreach ($res as $row) {
 ?>
  <tr>
   <td>

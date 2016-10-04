@@ -700,7 +700,7 @@ td { font-size:0.8em; }
  if ($eid) {
   $thisduration = $row['pc_alldayevent'] ? 1440 : round($row['pc_duration'] / 60);
  }
- while ($crow = sqlFetchArray($cres)) {
+ foreach ($cres as $crow) {
   $duration = round($crow['pc_duration'] / 60);
   if ($crow['pc_end_all_day']) $duration = 1440;
   echo " durations[" . $crow['pc_catid'] . "] = $duration\n";
@@ -1005,7 +1005,7 @@ td { font-size:0.8em; }
         // present a list of providers to choose from
         // default to the currently logged-in user
         echo "<select name='form_provider' onchange='change_provider();' style='width:100%' />";
-        while ($urow = sqlFetchArray($ures)) {
+        foreach ($ures as $urow) {
             echo "    <option value='" . $urow['id'] . "'";
 //            if ($urow['id'] == $_SESSION['authUserID']) echo " selected"; 
             if (($urow['id'] == $_GET['userid'])||($urow['id']== $userid)) echo " selected";

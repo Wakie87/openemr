@@ -21,7 +21,7 @@
  */
 
 include_once("$srcdir/registry.inc");
-    
+
 $menu_update_map=array();
 $menu_update_map["Visit Forms"]="update_visit_forms";
 $menu_update_map["Modules"]="update_modules_menu";
@@ -30,7 +30,7 @@ function update_modules_menu(&$menu_list)
 {
     $module_query = sqlStatement("select mod_directory,mod_name,mod_nick_name,mod_relative_link,type from modules where mod_active = 1 AND sql_run= 1 order by mod_ui_order asc");
     if (sqlNumRows($module_query)) {
-      while ($modulerow = sqlFetchArray($module_query)) {
+      foreach ($module_query as $modulerow) {
                     $acl_section = strtolower($modulerow['mod_directory']);
                     if (!zh_acl_check($_SESSION['authUserID'],$acl_section)) continue;
                     $modulePath = "";
@@ -62,7 +62,7 @@ function update_visit_forms(&$menu_list)
 $lres = sqlStatement("SELECT * FROM list_options " .
   "WHERE list_id = 'lbfnames' AND activity = 1 ORDER BY seq, title");
 if (sqlNumRows($lres)) {
-  while ($lrow = sqlFetchArray($lres)) {
+  foreach ($lres as $lrow) {
     $option_id = $lrow['option_id']; // should start with LBF
     $title = $lrow['title'];
     $formURL=$baseURL . urlencode($option_id);
@@ -83,7 +83,7 @@ if (sqlNumRows($lres)) {
         if ($option_id == 'fee_sheet') continue;
         if ($option_id == 'newpatient') continue;
         if (empty($title)) $title = $entry['name'];
-        
+
         $formURL=$baseURL . urlencode($option_id);
         $formEntry=new stdClass();
         $formEntry->label=xl_form_title($title);
@@ -108,7 +108,7 @@ function menu_update_entries(&$menu_list)
                 $menu_update_map[$entry->label]($entry);
             }
         }
-        // Translate the labels 
+        // Translate the labels
         $entry->label=xlt($entry->label);
         // Recursive update of children
         if(isset($entry->children))
@@ -124,7 +124,7 @@ function menu_apply_restrictions(&$menu_list_src,&$menu_list_updated)
     {
         $srcEntry=$menu_list_src[$idx];
         $includeEntry=true;
-        
+
         // If the entry has an ACL Requirement, then test
         if(isset($srcEntry->acl_req))
         {
@@ -134,7 +134,7 @@ function menu_apply_restrictions(&$menu_list_src,&$menu_list_updated)
             }
         }
 
-        // If the entry has a global setting requirement, check 
+        // If the entry has a global setting requirement, check
         if(isset($srcEntry->global_req))
         {
             if(is_array($srcEntry->global_req))
@@ -147,7 +147,7 @@ function menu_apply_restrictions(&$menu_list_src,&$menu_list_updated)
                     {
                         $noneSet=false;
                     }
-                    
+
                 }
                 if($noneSet)
                 {
@@ -156,7 +156,7 @@ function menu_apply_restrictions(&$menu_list_src,&$menu_list_updated)
             }
             else
             {
-                // ! at the start of the string means test the negation 
+                // ! at the start of the string means test the negation
                 if(substr($srcEntry->global_req,0,1)==='!')
                 {
                     $globalSetting=substr($srcEntry->global_req,1);
@@ -183,7 +183,7 @@ function menu_apply_restrictions(&$menu_list_src,&$menu_list_updated)
             menu_apply_restrictions($srcEntry->children,$checked_children);
             $srcEntry->children=$checked_children;
         }
-        
+
         if(!isset($srcEntry->url))
         {
             // If this is a header only entry, and there are no child elements, then don't include it in the list.

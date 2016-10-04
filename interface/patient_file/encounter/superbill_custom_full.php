@@ -116,7 +116,7 @@ if (isset($mode)) {
   else if ($mode == "edit") { // someone clicked [Edit]
     $sql = "SELECT * FROM codes WHERE id = ?";
     $results = sqlStatement($sql, array($code_id));
-    while ($row = sqlFetchArray($results)) {
+    foreach ($results as $row) {
       $code         = $row['code'];
       $code_text    = $row['code_text'];
       $code_type    = $row['code_type'];
@@ -138,7 +138,7 @@ if (isset($mode)) {
     $code_external = $_POST['code_external'];
     $code_id = $_POST['code_id'];
     $results = return_code_information($code_type_name_external,$code_external,false); // only will return one item
-    while ($row = sqlFetchArray($results)) {
+    foreach ($results as $row) {
       $code         = $row['code'];
       $code_text    = $row['code_text'];
       $code_type    = $code_types[$code_type_name_external]['id'];
@@ -476,7 +476,7 @@ for ($i = 0; $prow = sqlFetchArray($pres); ++$i) {
 $taxline = '';
 $pres = sqlStatement("SELECT option_id, title FROM list_options " .
   "WHERE list_id = 'taxrate' AND activity = 1 ORDER BY seq");
-while ($prow = sqlFetchArray($pres)) {
+foreach ($pres as $prow) {
   if ($taxline) $taxline .= "&nbsp;&nbsp;";
   $taxline .= "<input type='checkbox' name='taxrate[" . attr($prow['option_id']) . "]' value='1'";
   if (strpos(":$taxrates", $prow['option_id']) !== false) $taxline .= " checked";
@@ -571,7 +571,7 @@ foreach ($code_types as $key => $value) {
 <?php
 $pres = sqlStatement("SELECT title FROM list_options " .
   "WHERE list_id = 'pricelevel' AND activity = 1 ORDER BY seq, title");
-while ($prow = sqlFetchArray($pres)) {
+foreach ($pres as $prow) {
   echo "  <td class='bold' align='right' nowrap>" . text(xl_list_label($prow['title'])) . "</td>\n";
 }
 ?>
@@ -632,7 +632,7 @@ if (!empty($all)) {
       "FROM list_options AS lo LEFT OUTER JOIN prices AS p ON " .
       "p.pr_id = ? AND p.pr_selector = '' AND p.pr_level = lo.option_id " .
       "WHERE lo.list_id = 'pricelevel' AND lo.activity = 1 ORDER BY lo.seq", array($iter['id']));
-    while ($prow = sqlFetchArray($pres)) {
+    foreach ($pres as $prow) {
       echo "<td class='text' align='right'>" . text(bucks($prow['pr_price'])) . "</td>\n";
     }
 

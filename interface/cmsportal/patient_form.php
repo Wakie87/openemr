@@ -41,7 +41,7 @@ if ($_POST['bn_save']) {
   $fres = sqlStatement("SELECT * FROM layout_options WHERE " .
     "form_id = 'DEM' AND field_id != '' AND (uor > 0 OR field_id = 'cmsportal_login') " .
     "ORDER BY group_name, seq");
-  while ($frow = sqlFetchArray($fres)) {
+  foreach ($fres as $frow) {
     $data_type = $frow['data_type'];
     $field_id  = $frow['field_id'];
     $table = 'patient_data';

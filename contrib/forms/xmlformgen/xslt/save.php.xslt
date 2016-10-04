@@ -83,7 +83,7 @@ foreach($field_names as $key=>$val)
         if (isset($_POST['form_'.$key]) && $_POST['form_'.$key] != 'none' ) /* if the form submitted some entries selected in that field */
         {
             $lres=sqlStatement("select * from list_options where list_id = '".$lists[$key]."' ORDER BY seq, title");
-            while ($lrow = sqlFetchArray($lres))
+            foreach ($lres as $lrow)
             {
                 if (is_array($_POST['form_'.$key]))
                     {
@@ -103,7 +103,7 @@ foreach($field_names as $key=>$val)
         if (isset($_POST['check_'.$key]) && $_POST['check_'.$key] != 'none' ) /* if the form submitted some entries selected in that field */
         {
             $lres=sqlStatement("select * from list_options where list_id = '".$lists[$key]."' ORDER BY seq, title");
-            while ($lrow = sqlFetchArray($lres))
+            foreach ($lres as $lrow)
             {
                 if (is_array($_POST['check_'.$key]))
                 {
@@ -123,7 +123,7 @@ foreach($field_names as $key=>$val)
         if (isset($_POST['form_'.$key]) && $_POST['form_'.$key] != 'none' ) /* if the form submitted some entries selected in that field */
         {
             $lres=sqlStatement("select * from list_options where list_id = '".$lists[$key]."' ORDER BY seq, title");
-            while ($lrow = sqlFetchArray($lres))
+            foreach ($lres as $lrow)
             {
                 if ($_POST['form_'.$key] == $lrow[option_id])
                 {
