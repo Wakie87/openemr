@@ -142,7 +142,7 @@ $lores = sqlStatement("SELECT * FROM layout_options " .
   "WHERE form_id = ? AND uor > 0 ORDER BY group_name, seq",
   array('HIS'));
 
-while ($lorow = sqlFetchArray($lores)) {
+foreach ($lores as $lorow) {
   $data_type  = $lorow['data_type'];
   $field_id   = $lorow['field_id'];
   // Check for field name match in portal results, case insensitive.

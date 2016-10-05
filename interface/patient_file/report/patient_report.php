@@ -284,7 +284,7 @@ foreach ($pres as $prow) {
     echo "     <td>&nbsp;</td>\n";
     echo "     <td>";
     echo "<input type='checkbox' name='issue_$rowid' id='issue_$rowid' class='issuecheckbox' value='/";
-    while ($ierow = sqlFetchArray($ieres)) {
+    foreach ($ieres as $ierow) {
         echo $ierow['encounter'] . "/";
     }
     echo "' />$disptitle</td>\n";
@@ -329,10 +329,10 @@ $res = sqlStatement("SELECT forms.encounter, forms.form_id, forms.form_name, " .
 $res2 = sqlStatement("SELECT name FROM registry ORDER BY priority");
 $html_strings = array();
 $registry_form_name = array();
-while($result2 = sqlFetchArray($res2)) {
+foreach ($res2 as $result2) {
     array_push($registry_form_name,trim($result2['name']));
 }
-while($result = sqlFetchArray($res)) {
+foreach ($res as $result) {
     if ($result{"form_name"} == "New Patient Encounter") {
         if ($isfirst == 0) {
             foreach($registry_form_name as $var) {
@@ -436,7 +436,7 @@ foreach ($res as $row) {
   $opres = sqlStatement("SELECT procedure_code, procedure_name FROM procedure_order_code " .
     "WHERE procedure_order_id = ? ORDER BY procedure_order_seq",
     array($poid));
-  while($oprow = sqlFetchArray($opres)) {
+  foreach ($opres as $oprow) {
     $tmp = $oprow['procedure_name'];
     if (empty($tmp)) $tmp = $oprow['procedure_code'];
     echo text($tmp) . "<br />";

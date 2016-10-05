@@ -10,7 +10,7 @@
 
 // This report lists non reported patient diagnoses for a given date range.
 // Ensoftek: Jul-2015: Modified HL7 generation to 2.5.1 spec and MU2 compliant.
-// This implementation is only for the A01 profile which will suffice for MU2 certification.                   
+// This implementation is only for the A01 profile which will suffice for MU2 certification.
 
 
 require_once("../globals.php");
@@ -21,8 +21,8 @@ require_once("../../custom/code_types.inc.php");
 // Ensoftek: Jul-2015: Get the facility of the logged in user.
 function getLoggedInUserFacility(){
 	$sql = "SELECT f.name, f.facility_npi FROM users AS u LEFT JOIN facility AS f ON u.facility_id = f.id WHERE u.id=?";
-	$res = sqlStatement($sql, array($_SESSION['authUserID']));
-	 while ($arow = sqlFetchArray($res)) {
+	$ares = sqlStatement($sql, array($_SESSION['authUserID']));
+	 foreach ($ares as $arow) {
 		return $arow;
 	}
     return null;
@@ -145,7 +145,7 @@ if ($_POST['form_get_hl7']==='true') {
 
   $res = sqlStatement($query);
 
-  while ($r = sqlFetchArray($res)) {
+  foreach ($res as $r) {
     // MSH
     $content .= "MSH|^~\&|".strtoupper($openemr_name).
 		"|" . $facility_info['name'] . "^" . $facility_info['facility_npi'] . "^NPI" .
@@ -153,7 +153,7 @@ if ($_POST['form_get_hl7']==='true') {
 		"ADT^A01^ADT_A01" . // Hard-code to A01: Patient visits provider/facility
 		"|$nowdate|P^T|2.5.1|||||||||PH_SS-NoAck^SS Sender^2.16.840.1.114222.4.10.3^ISO" . // No acknowlegement
 		"$D";
-	  	  
+
 	// EVN
     $content .= "EVN|" .
         "|" . // 1.B Event Type Code
@@ -161,7 +161,7 @@ if ($_POST['form_get_hl7']==='true') {
         "||||" .
 		"|" . $facility_info['name'] . "^" . $facility_info['facility_npi'] . "^NPI" .
         "$D" ;
-		
+
     if ($r['sex']==='Male') $r['sex'] = 'M';
     if ($r['sex']==='Female') $r['sex'] = 'F';
     if ($r['status']==='married') $r['status'] = 'M';
@@ -170,7 +170,7 @@ if ($_POST['form_get_hl7']==='true') {
     if ($r['status']==='widowed') $r['status'] = 'W';
     if ($r['status']==='separated') $r['status'] = 'A';
     if ($r['status']==='domestic partner') $r['status'] = 'P';
-	
+
 	// PID
     $content .= "PID|" .
         "1|" . // 1. Set id
@@ -183,7 +183,7 @@ if ($_POST['form_get_hl7']==='true') {
         $r['sex'] . // 8. Sex
 		"|||^^^||||||||||||||||||||||||||||" .
         "$D" ;
-		
+
     $content .= "PV1|" .
         "1|" . // 1. Set ID
         "|||||||||||||||||" .
@@ -192,7 +192,7 @@ if ($_POST['form_get_hl7']==='true') {
 		"|||||||||||||||||||||||||" .
 		$r['begin_date'] .
         "$D" ;
-		
+
 	// OBX: Records chief complaint in LOINC code
     $content .= "OBX|" .
         "1|" . // 1. Set ID
@@ -201,7 +201,7 @@ if ($_POST['form_get_hl7']==='true') {
 		"||||||" .
 		"F" .
         "$D" ;
-		
+
 	// DG1
 	$r['diagnosis'] = mapCodeType($r['diagnosis']);  // Only ICD9, ICD10 and SNOMED
 	$r['code'] = str_replace(".", "", $r['code']); // strip periods code
@@ -212,8 +212,8 @@ if ($_POST['form_get_hl7']==='true') {
 		$r['code'] . "^" . $r['code_text'] . "^" . $r['diagnosis'] .
 		"|||W" .
         "$D" ;
-		
-        
+
+
         // mark if issues generated/sent
         $query_insert = "insert into syndromic_surveillance(lists_id,submission_date,filename) " .
          "values (" . $r['issueid'] . ",'" . $now1 . "','" . $filename . "')";
@@ -337,10 +337,10 @@ onsubmit='return top.restoreSession()'>
           <td>
             <input type='text' name='form_from_date' id="form_from_date"
             size='10' value='<?php echo $form_from_date ?>'
-            onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' 
+            onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
             title='yyyy-mm-dd'>
-            <img src='../pic/show_calendar.gif' align='absbottom' 
-            width='24' height='22' id='img_from_date' border='0' 
+            <img src='../pic/show_calendar.gif' align='absbottom'
+            width='24' height='22' id='img_from_date' border='0'
             alt='[?]' style='cursor:pointer'
             title='<?php xl('Click here to choose a date','e'); ?>'>
           </td>
@@ -348,12 +348,12 @@ onsubmit='return top.restoreSession()'>
             <?php xl('To','e'); ?>:
           </td>
           <td>
-            <input type='text' name='form_to_date' id="form_to_date" 
+            <input type='text' name='form_to_date' id="form_to_date"
             size='10' value='<?php echo $form_to_date ?>'
-            onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' 
+            onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
             title='yyyy-mm-dd'>
-            <img src='../pic/show_calendar.gif' align='absbottom' 
-            width='24' height='22' id='img_to_date' border='0' 
+            <img src='../pic/show_calendar.gif' align='absbottom'
+            width='24' height='22' id='img_to_date' border='0'
             alt='[?]' style='cursor:pointer'
             title='<?php xl('Click here to choose a date','e'); ?>'>
           </td>
@@ -366,10 +366,10 @@ onsubmit='return top.restoreSession()'>
       <tr>
         <td>
           <div style='margin-left:15px'>
-            <a href='#' class='css_button' 
+            <a href='#' class='css_button'
             onclick='
-            $("#form_refresh").attr("value","true"); 
-            $("#form_get_hl7").attr("value","false"); 
+            $("#form_refresh").attr("value","true");
+            $("#form_get_hl7").attr("value","false");
             $("#theform").submit();
             '>
             <span>
@@ -384,7 +384,7 @@ onsubmit='return top.restoreSession()'>
               </a>
               <a href='#' class='css_button' onclick=
               "if(confirm('<?php xl('This step will generate a file which you have to save for future use. The file cannot be generated again. Do you want to proceed?','e'); ?>')) {
-                     $('#form_get_hl7').attr('value','true'); 
+                     $('#form_get_hl7').attr('value','true');
                      $('#theform').submit();
               }">
                 <span>

@@ -912,7 +912,7 @@ function aes256Decrypt($sValue){
 function logCommentEncryptData($log_id){
 	$encryptRow = array();
 	$logRes = sqlStatement("SELECT * FROM log_comment_encrypt WHERE log_id=?", array($log_id));
-	while($logRow = sqlFetchArray($logRes)){
+	foreach ($logRes as $logRow){
 		$encryptRow['encrypt'] = $logRow['encrypt'];
 		$encryptRow['checksum'] = $logRow['checksum'];
 	}

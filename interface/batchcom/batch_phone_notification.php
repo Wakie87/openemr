@@ -166,7 +166,7 @@ function cron_getPhoneAlertpatientData($type, $trigger_hours)
 	$db_patient = (sqlStatement($query, array($check_date)));
 	$patient_array = array();
 	$cnt=0;
-	while ($prow = sqlFetchArray($db_patient))
+	foreach ($db_patient as $prow)
 	{
 		$patient_array[$cnt] = $prow;
 		$cnt++;
@@ -232,7 +232,7 @@ function cron_getFacilitiesMap()
 	//get facilities from the database
 	$query = "select fac.id, fac.name, fac.phone from facility as fac";
 	$db_res = (sqlStatement($query));
-	while ($prow = sqlFetchArray($db_res))
+	foreach ($db_res as $prow)
 	{
 		$facility_msg_map[$prow['id']] = $message_map[$prow['name']];
 		$facility_phone_map[$prow['id']] = $prow['phone'];

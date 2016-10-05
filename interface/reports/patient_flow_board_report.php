@@ -233,7 +233,7 @@ if ($form_patient == '') $form_pid = '';
                                         <?php
                                             $categories=fetchAppointmentCategories();
                                             echo "<option value='ALL'>".xlt("All")."</option>";
-                                            while($cat=sqlFetchArray($categories))
+                                            foreach ($categories as $cat)
                                             {
                                                 echo "<option value='".attr($cat['id'])."'";
                                                 if($cat['id']==$_POST['form_apptcat'])

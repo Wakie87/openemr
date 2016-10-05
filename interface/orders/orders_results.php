@@ -445,7 +445,7 @@ foreach ($res as $row) {
     if ($review_status == "received") continue;
   }
 
-  $query_test=sqlFetchArray(sqlStatement("select deleted from forms where form_id=? and formdir='procedure_order'",array($order_id)));
+  $query_test=sqlStatement("select deleted from forms where form_id=? and formdir='procedure_order'",array($order_id));
   // skip the procedure that has been deleted from the encounter form
   if($query_test['deleted']==1) continue;
 

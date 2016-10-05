@@ -599,7 +599,7 @@ if ($_POST['form_search'] || $_POST['form_print']) {
 <?php
   $orow = -1;
 
-    while ($row = sqlFetchArray($t_res)) {
+    foreach ($t_res as $row) {
       $balance = sprintf("%.2f", $row['charges'] + $row['copays'] - $row['payments'] - $row['adjustments']);
 
       if ($_POST['form_category'] != 'All' && $eracount == 0 && $balance == 0) continue;

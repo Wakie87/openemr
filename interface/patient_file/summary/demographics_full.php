@@ -823,7 +823,7 @@ $use_validate_js=$GLOBALS['new_validate'];
 				"WHERE form_id = 'DEM' AND uor > 0 AND field_id != '' AND " .
 				"edit_options LIKE '%D%' " .
 				"ORDER BY group_name, seq");
-			while ($mfrow = sqlFetchArray($mfres)) {
+			foreach ($mfres as $mfrow) {
 				$field_id  = $mfrow['field_id'];
 				if (strpos($field_id, 'em_') === 0) continue;
 				if (!empty($mflist)) $mflist .= ",";

@@ -57,7 +57,7 @@ if (!$result) //If there are no disclosures recorded
 	echo $result;
 	echo "<ul>";
 	$result=sqlStatement($spell, array($pid, 'track_anything'));
-	while($myrow = sqlFetchArray($result)){
+	foreach ($result as $myrow){
 		$formname = $myrow['form_name'];
 		$thedate = $myrow['maxdate'];
 		$formid = $myrow['form_id'];

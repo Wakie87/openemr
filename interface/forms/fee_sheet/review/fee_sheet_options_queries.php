@@ -1,7 +1,7 @@
 <?php
 /**
  * Utility functions for retrieving fee sheet options.
- * 
+ *
  * Copyright (C) 2013 Kevin Yeh <kevin.y@integralemr.com> and OEMR <www.oemr.org>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ class fee_sheet_option
 }
 /**
  * get a list of fee sheet options
- * 
+ *
  * @param string $pricelevel which pricing level to retrieve
  * @return an array containing the options
  */
@@ -57,7 +57,7 @@ function load_fee_sheet_options($pricelevel)
 {
     $clFSO_code_type='substring_index(fso.fs_codes,"|",1)';
     $clFSO_code='replace(substring_index(fso.fs_codes,"|",-2),"|","")';
-    
+
     $sql= "SELECT codes.code,code_types.ct_key as code_type,codes.code_text,pr_price,fso.fs_category"
         . " FROM fee_sheet_options as fso, code_types "
         . " ,codes LEFT JOIN prices ON (codes.id=prices.pr_id AND prices.pr_level=?)"
@@ -65,16 +65,16 @@ function load_fee_sheet_options($pricelevel)
         . " AND code_types.ct_key=".$clFSO_code_type
         . " AND codes.code_type=code_types.ct_id"
         . " ORDER BY fso.fs_category,fso.fs_option";
-    
+
     $results=sqlStatement($sql,array($pricelevel));
 
     $retval=array();
-    while($res=sqlFetchArray($results))
+    foreach ($results as $res)
     {
         $fso=new fee_sheet_option($res['code'],$res['code_type'],$res['code_text'],$res['pr_price'],$res['fs_category']);
         $retval[]=$fso;
     }
-    
+
     return $retval;
 }
 ?>

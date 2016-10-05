@@ -105,7 +105,7 @@ td { font-size:10pt; }
    '&form_cms_id=' + doescape(f.form_cms_id.value);
 
     top.restoreSession();
-    $("#form_list").load( search_list ).show();	
+    $("#form_list").load( search_list ).show();
 
   return false;
  }
@@ -343,7 +343,7 @@ td { font-size:10pt; }
    <select name='form_partner' title='Default X12 Partner'>
     <option value=""><?php xl('None','e','-- ',' --'); ?></option>
 <?php
- while ($xrow = sqlFetchArray($xres)) {
+ foreach ($xres as $xrow) {
   echo "   <option value='" . $xrow['id'] . "'";
   // if ($xrow['id'] == $row['x12_default_partner_id']) echo " selected";
   echo ">" . $xrow['name'] . "</option>\n";

@@ -41,7 +41,7 @@ function invalue($name) {
 ?>
 <html>
 <head>
-<script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>    
+<script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 <title><?php echo $ppid ? xlt('Edit') : xlt('Add New') ?> <?php echo xlt('Procedure Provider'); ?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 <script type="text/javascript" src="<?php echo $GLOBALS['assets_static_relative']; ?>/jquery-min-1-3-2/index.js"></script>
@@ -122,7 +122,7 @@ if ($ppid) {
 
 $lab_org_query = "SELECT id, organization FROM users WHERE abook_type = 'ord_lab'";
 $org_res = sqlStatement($lab_org_query);
-while ($org_row = sqlFetchArray($org_res)) {
+foreach ($org_res as $org_row) {
     $lab_org_name = $org_row['organization'];
     $selected = '';
     if ($ppid) {
@@ -142,7 +142,7 @@ while ($org_row = sqlFetchArray($org_res)) {
  <tr>
   <td nowrap><b><?php echo xlt('Name'); ?>:</b></td>
   <td>
-	<select name='form_name' id='form_name' class='inputtext' style='width:150px'> 
+	<select name='form_name' id='form_name' class='inputtext' style='width:150px'>
           <?php echo $optionsStr; ?>
     </select>
   </td>

@@ -179,7 +179,7 @@ class Claim {
       "date(post_time) as date FROM ar_activity where pid ='{$this->pid}' and encounter ='{$this->encounter_id}' ".
       "and payer_type=0 and account_code='PCP'");
       //new fees screen copay gives account_code='PCP'
-    while($rowMoneyGot = sqlFetchArray($resMoneyGot)){
+    foreach ($resMoneyGot as $rowMoneyGot){
       $PatientPay=$rowMoneyGot['PatientPay']*-1;
       $this->copay -= $PatientPay;
     }

@@ -233,7 +233,7 @@ returns all facilities or just the id for the first one
 function getFacilities($first = '') {
     $r = sqlStatement("SELECT * FROM facility ORDER BY id");
     $ret = array();
-    while ( $row = sqlFetchArray($r) ) {
+    foreach ($r as $row) {
        $ret[] = $row;
 }
 
@@ -256,7 +256,7 @@ returns all service_location facilities or just the id for the first one
 function getServiceFacilities($first = '') {
     $r = sqlStatement("SELECT * FROM facility WHERE service_location != 0 ORDER BY id");
     $ret = array();
-    while ( $row = sqlFetchArray($r) ) {
+    foreach ($r as $row) {
        $ret[] = $row;
 }
 
@@ -1496,7 +1496,7 @@ function dropdown_countries($selected = 0, $name = 'country_code') {
     $r = sqlStatement("SELECT * FROM geo_country_reference ORDER BY countries_name");
 
     $string = "<select name='$name' id='$name'>";
-    while ( $row = sqlFetchArray($r) ) {
+    foreach ($r as $row) {
         $sufix = ( $selected == $row['countries_id']) ? 'selected="selected"' : '';
         $string .= "<option value='{$row['countries_id']}' $sufix>{$row['countries_name']}</option>";
     }
@@ -1699,7 +1699,7 @@ function get_patient_balance($pid, $with_insurance=false) {
     $feres = sqlStatement("SELECT date, encounter, last_level_billed, " .
       "last_level_closed, stmt_count " .
       "FROM form_encounter WHERE pid = ?", array($pid));
-    while ($ferow = sqlFetchArray($feres)) {
+    foreach ($feres as $ferow) {
       $encounter = $ferow['encounter'];
       $dos = substr($ferow['date'], 0, 10);
       $insarr = getEffectiveInsurances($pid, $dos);

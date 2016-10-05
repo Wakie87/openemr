@@ -6,7 +6,7 @@
  * Copyright (C) 2005 Rod Roark <rod@sunsetsystems.com>
  * Copyright (C) 2015 Roberto Vasquez <robertogagliotta@gmail.com>
  * Copyright (C) 2015 Brady Miller <brady@sparmy.com>
- * 
+ *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -286,7 +286,7 @@ function doclick(pfx, id) {
  echo "<input type='hidden' name='form_pid' value='" . attr($pid) . "' />\n";
  // pelist looks like /problem,encounter/problem,encounter/[...].
  echo "<input type='hidden' name='form_pelist' value='/";
- while ($row = sqlFetchArray($peres)) {
+ foreach ($peres as $row) {
   // echo $row['list_id'] . "," . $row['encounter'] . "," .
   //  ($row['resolved'] ? "Y" : "N") . "/";
   echo text($row['list_id']) . "," . text($row['encounter']) . "/";
@@ -317,7 +317,7 @@ function doclick(pfx, id) {
      <td><?php echo xlt('Description'); ?></td>
     </tr>
 <?php
- while ($row = sqlFetchArray($pres)) {
+ foreach ($pres as $row) {
   $rowid = $row['id'];
   echo "    <tr class='detail' id='p_" . attr($rowid) . "' onclick='doclick(\"p\", " . attr(addslashes($rowid)) . ")'>\n";
   echo "     <td valign='top'>" . text($ISSUE_TYPES[($row['type'])][1]) . "</td>\n";
@@ -342,7 +342,7 @@ function doclick(pfx, id) {
      <td><?php echo xlt('Presenting Complaint'); ?></td>
     </tr>
 <?php
- while ($row = sqlFetchArray($eres)) {
+ foreach ($eres as $row) {
   $rowid = $row['encounter'];
   echo "    <tr class='detail' id='e_" . attr($rowid) . "' onclick='doclick(\"e\", " . attr(addslashes($rowid)) . ")'>\n";
   echo "     <td valign='top'>" . text(substr($row['date'], 0, 10)) . "</td>\n";

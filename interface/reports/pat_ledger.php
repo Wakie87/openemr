@@ -60,7 +60,7 @@ function GetAllUnapplied($pat='',$from_dt='',$to_dt='') {
       "AND ar_session.patient_id=?";
   $result = sqlStatement($sql, array($from_dt, $to_dt, $pat));
   $iter = 0;
-  while($row = sqlFetchArray($result)) {
+  foreach ($result as $row) {
     $all[$iter] = $row;
     $iter++;
   }
@@ -107,7 +107,7 @@ function GetAllCredits($enc = '', $pat='') {
     "ORDER BY sequence_no";
     $result = sqlStatement($sql, array($enc, $pat));
     $iter = 0;
-    while($row = sqlFetchArray($result)) {
+    foreach ($result as $row) {
       $all[$iter] = $row;
       $iter++;
     }
@@ -445,7 +445,7 @@ function sel_patient() {
                     <?php if($type_form == '1') { ?>
                     <a href="../patient_file/summary/demographics.php" class="css_button" onclick="top.restoreSession()">
                          <span><?php echo xlt('Back To Patient');?></span></a>
-                    <?php } ?>    
+                    <?php } ?>
 					</div>
 					<?php } ?>
 				</div>
@@ -485,7 +485,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
     $query .= "AND c.ct_proc = '1' ";
     $query .= "AND activity > 0 ORDER BY fe.date, fe.id ";
     $res = sqlStatement($query,$sqlBindArray);
- 
+
     if ($_REQUEST['form_csvexport']) {
       // CSV headers:
       if (true) {
@@ -524,14 +524,14 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
     <td class="title" ><?php echo xlt('Patient Ledger'); ?></td>
   </tr>
 	<tr>
-		<?php 
+		<?php
 			$title = xl('All Providers');
 			if($form_provider) { $title = xl('For Provider') . ': '.User_Id_Look($form_provider); }
 		?>
     <td class="title" ><?php echo text($title); ?></td>
 	</tr>
 	<tr>
-		<?php 
+		<?php
 			$title = xl('For Dates') . ': '.$form_from_date.' - '.$form_to_date;
 		?>
     <td class="title" ><?php echo text($title); ?></td>
@@ -589,7 +589,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
     $prev_encounter_id = -1;
     $hdr_printed = false;
     $prev_row = array();
-    while ($erow = sqlFetchArray($res)) {
+    foreach ($res as $erow) {
       $print = '';
       $csv = '';
             if($erow['encounter'] != $prev_encounter_id) {
@@ -658,7 +658,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
             }
             if($hdr_printed) PrintEncFooter();
         }
-    // This is the end of the encounter/charge loop - 
+    // This is the end of the encounter/charge loop -
         $uac = GetAllUnapplied($form_pid,$from_date,$to_date);
         if(count($uac) > 0) {
             if($orow) {
@@ -699,7 +699,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
   <tr>
     <td class="title" ><?php echo xlt('Next Appointment Date') . ': ' . text($next_appoint_date) . ' ' . xlt('Time') . ' ' . text($next_appoint_time) . ' ' . xlt('Provider') . ' ' . text($next_appoint_provider); ?></td>
   </tr>
-  
+
     <?php
                    }
           } // end ($GLOBALS['print_next_appointment_on_ledger'] == 1)
@@ -714,7 +714,7 @@ if (! $_REQUEST['form_csvexport']) {
     echo '<script>document.getElementById("report_results").style.display="none";</script>';
     echo '<script>document.getElementById("controls").style.display="none";</script>';
   }
-		
+
 if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
 <div class='text'>
     <?php echo xlt('Please input search criteria above, and click Submit to view results.'); ?>

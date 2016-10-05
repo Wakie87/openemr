@@ -282,7 +282,7 @@ function endClient($pid, &$encarray) {
     $ieres = sqlStatement("SELECT encounter FROM issue_encounter " .
       "WHERE pid = '$pid' AND list_id = '" . $irow['id'] . "' " .
       "ORDER BY encounter");
-    while ($ierow = sqlFetchArray($ieres)) {
+    foreach ($ieres as $ierow) {
       OpenTag('IMS_eMRUpload_VisitIssue');
       Add('emrIssueId', $irow['id']);
       Add('emrVisitId', $ierow['encounter']);
@@ -313,7 +313,7 @@ function endClient($pid, &$encarray) {
       $gres = sqlStatement("SELECT field_id, field_value FROM lbf_data WHERE " .
         "form_id = '$form_id' ORDER BY field_id");
       // For each data item in the form...
-      while ($grow = sqlFetchArray($gres)) {
+      foreach ($gres as $grow) {
         $key = $grow['field_id'];
         $value = $grow['field_value'];
         if (empty($value)) continue;
@@ -550,7 +550,7 @@ if (!empty($form_submit)) {
 
     $eres = sqlStatement($query);
     $encarray = array();
-    while ($erow = sqlFetchArray($eres)) {
+    foreach ($eres as $erow) {
       exportEncounter($last_pid, $erow['encounter'], $erow['date']);
       $encarray[] = $erow;
     }

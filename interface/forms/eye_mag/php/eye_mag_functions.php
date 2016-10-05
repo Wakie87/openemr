@@ -78,7 +78,7 @@ function priors_select($zone,$orig_id,$id_to_show,$pid,$type='text') {
         $priors = array();
         if ($counter < 2) return;
         $i="0";
-        while ($prior= sqlFetchArray($result))   {
+        foreach ($result as $prior)   {
             $dated = new DateTime($prior['encounter_date']);
             $dated = $dated->format('Y-m-d');
             $oeexam_date = oeFormatShortDate($dated);
@@ -196,7 +196,7 @@ function display_PRIOR_section($zone,$orig_id,$id_to_show,$pid,$report = '0') {
                 ORDER BY ZONE_ORDER,ordering";
 
     $result = sqlStatement($query,array($_SESSION['authUserID']));
-    while ($prefs= sqlFetchArray($result))   {
+    foreach ($result as $prefs)   {
         ${$prefs['LOCATION']} = $prefs['GOVALUE'];
     }
     
@@ -1529,7 +1529,7 @@ function build_PMSFH($pid) {
         $pres = sqlStatement("SELECT * FROM lists WHERE pid = ? AND type = ? " .
             $subtype." ".$order, array($pid,$focusISSUE));
         $row_counter='0';
-        while ($row = sqlFetchArray($pres)) {
+        foreach ($pres as $row) {
             $rowid = $row['id'];
             $disptitle = text(trim($row['title'])) ? text($row['title']) : "[".xlt("Missing Title")."]";
             //  I don't like this [Missing Title] business.  It is from the original "issue" code.
@@ -1614,7 +1614,7 @@ function build_PMSFH($pid) {
     $group_fields_query = sqlStatement("SELECT * FROM layout_options " .
     "WHERE form_id = 'HIS' AND group_name = '4Lifestyle' AND uor > 0 " .
     "ORDER BY seq");
-    while ($group_fields = sqlFetchArray($group_fields_query)) {
+    foreach ($group_fields_query as $group_fields) {
         $titlecols  = $group_fields['titlecols'];
         $datacols   = $group_fields['datacols'];
         $data_type  = $group_fields['data_type'];
@@ -1708,7 +1708,7 @@ function build_PMSFH($pid) {
     $group_fields_query = sqlStatement("SELECT * FROM layout_options " .
     "WHERE form_id = 'HIS' AND group_name = '3Relatives' AND uor > 0 " .
     "ORDER BY seq");
-    while ($group_fields = sqlFetchArray($group_fields_query)) {
+    foreach ($group_fields_query as $group_fields) {
         $titlecols  = $group_fields['titlecols'];
         $datacols   = $group_fields['datacols'];
         $data_type  = $group_fields['data_type'];
@@ -1781,7 +1781,7 @@ function build_PMSFH($pid) {
     $query="SELECT $given from ". $ROS_table ." where id=? and pid=?";
 
     $ROS = sqlStatement($query,array($form_id,$pid));
-    while ($row = sqlFetchArray($ROS)) {
+    foreach ($ROS as $row) {
         foreach (explode(',',$given) as $item) {
             $PMSFH['ROS'][$item]['display']= $row[$item];
         }
@@ -2477,7 +2477,7 @@ function display_QP($zone,$providerID){
         $result = sqlStatement($query,array("Eye_QP_".$zone."_defaults"));
         $SQL_INSERT = "INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `mapping`, `notes`, `codes`, `activity`, `subtype`) VALUES (?,?,?,?,?,?,?,?,?)";
     }
-    while ($QP= sqlFetchArray($result))   {
+    foreach ($result as $QP)   {
         if ($SQL_INSERT) sqlStatement($SQL_INSERT, array("Eye_QP_".$zone."_".$providerID,$QP['option_id'],$QP['title'],$QP['seq'],$QP['mapping'],$QP['notes'],$QP['codes'],$QP['activity'],$QP['subtype']));
         $here[$QP['title']][$QP['subtype']]['notes']    = $QP['notes'];     //the text to fill into form
         $here[$QP['title']][$QP['subtype']]['codes']    = $QP['codes'];     //the code if attached.
@@ -3001,7 +3001,7 @@ function copy_forward($zone,$copy_from,$copy_to,$pid) {
         $count_rx='0';
         $query = "select * from form_eye_mag_wearing where PID=? and ENCOUNTER=? and FORM_ID >'0' ORDER BY RX_NUMBER";
         $wear = sqlStatement($query,array($pid,$_SESSION['encounter']));
-        while ($wearing = sqlFetchArray($wear))   {
+        foreach ($wear as $wearing)   {
             ${"display_W_$count_rx"}        = '';
                   ${"ODSPH_$count_rx"}            = $wearing['ODSPH'];
                   ${"ODCYL_$count_rx"}            = $wearing['ODCYL'];
@@ -3088,7 +3088,7 @@ function build_IMPPLAN_items($pid,$form_id) {
  */
 function document_engine($pid) {
     $sql1 =  sqlStatement("Select * from categories");
-    while ($row1 = sqlFetchArray($sql1)) {
+    while ($sql1 as $row1) {
         $categories[] = $row1;
         $my_name[$row1['id']] = $row1['name'];
         $children_names[$row1['parent']][]=$row1['name'];
@@ -3108,7 +3108,7 @@ function document_engine($pid) {
                 where documents.foreign_id=? and documents.id=categories_to_documents.document_id and
                 categories_to_documents.category_id=categories.id ORDER BY categories.name";
     $sql2 =  sqlStatement($query,array($pid));
-    while ($row2 = sqlFetchArray($sql2)) {
+    foreach ($sql2 as $row2) {
         //the document may not be created on the same day as the encounter, use encounter date first
         //get encounter date from encounter id
         if ($row2['encounter_id']) {
@@ -3764,13 +3764,13 @@ function start_your_engines($FIELDS) {//pass an assoc array of fields with terms
     if (!$PMFSH) $PMSFH = build_PMSFH($pid);
     $query = "select * from list_options where list_id ='Eye_Coding_Fields' Order by seq";
     $result = sqlStatement($query);
-    while ($fielding =sqlFetchArray($result)) {//build the list of clinical fields to search through
+    foreach ($result as $fielding) {//build the list of clinical fields to search through
         $fields[$fielding['title']] =$fielding['notes'];
      }
     //get the clinical terms to search for (title) and what field/where to look for it (notes)
     $query = "SELECT * FROM list_options WHERE list_id = 'Eye_Coding_Terms' order by seq";
     $result = sqlStatement($query);
-    while ($term_sheet =sqlFetchArray($result)) {
+    foreach ($result as $term_sheet) {
         if ($term_sheet['title'] > '') {
             $newdata =  array (
               'term'        => $term_sheet['title'], //the term =/- possible option_values eg. CSME:DM|IOL|RVO
@@ -4253,7 +4253,7 @@ function display_GlaucomaFlowSheet($pid,$bywhat='byday') {
             } else if (!$ODIOPTARGETS[$j]) {  //get this from the provider's default list_option
                 $query = "SELECT *  FROM `list_options` WHERE `list_id` LIKE 'Eye_defaults_".$providerID."' and (option_id = 'ODIOPTARGET' OR  option_id = 'OSIOPTARGET')";
                 $results = sqlQuery($query);
-                while ($default_TARGETS = sqlFetchArray($result)) {
+                foreach ($result as $default_TARGETS) {
                     if ($default_TARGETS['option_id']=='ODIOPTARGET') {
                         $ODIOPTARGETS[$i] = $default_TARGETS["title"];
                     }
@@ -4270,7 +4270,7 @@ function display_GlaucomaFlowSheet($pid,$bywhat='byday') {
                 if (!$OSIOPTARGETS[$i]) {
                     $query = "SELECT *  FROM `list_options` WHERE `list_id` LIKE 'Eye_defaults_".$providerID."' and (option_id = 'ODIOPTARGET' OR  option_id = 'OSIOPTARGET')";
                     $results = sqlQuery($query);
-                    while ($default_TARGETS = sqlFetchArray($result)) {
+                    foreach ($result as $default_TARGETS) {
                         if ($default_TARGETS['option_id']=='OSIOPTARGET') {
                             $OSIOPTARGETS[$i] = $default_TARGETS["title"];
                         }
@@ -4317,7 +4317,7 @@ function display_GlaucomaFlowSheet($pid,$bywhat='byday') {
         } else {
             $query = "SELECT *  FROM `list_options` WHERE `list_id` LIKE 'Eye_defaults_".$providerID."' and (option_id = 'ODIOPTARGET' OR  option_id = 'OSIOPTARGET')";
             $results = sqlQuery($query);
-            while ($default_TARGETS = sqlFetchArray($result)) {
+            foreach ($result as $default_TARGETS) {
                 if ($default_TARGETS['option_id']=='ODIOPTARGET') {
                     $ODIOPTARGETS[$i] = $default_TARGETS["title"];
                 }
@@ -4332,7 +4332,7 @@ function display_GlaucomaFlowSheet($pid,$bywhat='byday') {
         } else if (!$OSIOPTARGETS[$i] > ''){
             $query = "SELECT *  FROM `list_options` WHERE `list_id` LIKE 'Eye_defaults_".$providerID."' and (option_id = 'ODIOPTARGET' OR  option_id = 'OSIOPTARGET')";
             $results = sqlQuery($query);
-            while ($default_TARGETS = sqlFetchArray($result)) {
+            foreach ($result as $default_TARGETS) {
                 if ($default_TARGETS['option_id']=='OSIOPTARGET') {
                     $OSIOPTARGETS[$i] = $default_TARGETS["title"];
                 }
@@ -5066,7 +5066,7 @@ function generate_lens_treatments($W,$LTs_present) {
     $counter=0;
     $TXs_arr = explode("|",$LTs_present);
     $tabindex=$W."0144";
-    while ($row = sqlFetchArray($TXs_data)) {
+    foreach ($TXs_data as $row) {
         $checked ='';
         $ID=$row['option_id'];
         if (in_array($ID,$TXs_arr)) {

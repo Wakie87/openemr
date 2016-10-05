@@ -219,7 +219,7 @@ $lores = sqlStatement("SELECT * FROM layout_options " .
 // Will be used to indicate if this user does not yet have a portal login.
 $portal_registration_needed = false;
 
-while ($lorow = sqlFetchArray($lores)) {
+foreach ($lores as $lorow) {
   $data_type  = $lorow['data_type'];
   $field_id   = $lorow['field_id'];
   // We deal with this one at the end.

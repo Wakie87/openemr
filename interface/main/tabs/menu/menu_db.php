@@ -49,7 +49,7 @@ function load_menu($menu_set)
     $retval=array();
     $entries=array();
     $parent_not_found=array();
-    while($row=  sqlFetchArray($res))
+    foreach ($res as $row)
     {
         $entries[$row['entry_id']]=menu_entry_to_object($row);
         if(empty($row['parent']))

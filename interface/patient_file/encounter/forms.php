@@ -241,7 +241,7 @@ jQuery(document).ready( function($) {
       array($pid));
     echo "  // Ask about attaching orphaned orders to this encounter.\n";
     echo "  var attachid = '';\n";
-    while ($arow = sqlFetchArray($ares)) {
+    foreach ($ares as $arow) {
       $orderid   = $arow['procedure_order_id'];
       $orderdate = $arow['date_ordered'];
       echo "  if (confirm('" . xls('There is a lab order') . " $orderid " .

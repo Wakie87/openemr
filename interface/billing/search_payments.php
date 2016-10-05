@@ -51,7 +51,7 @@ if (isset($_POST["mode"]))
 	$ResultSearch = sqlStatement("SELECT distinct encounter,pid from ar_activity where  session_id ='$DeletePaymentId'");
 	if(sqlNumRows($ResultSearch)>0)
 	 {
-	  while ($RowSearch = sqlFetchArray($ResultSearch))
+	  foreach ($ResultSearch as $RowSearch)
 	   {
 	    $Encounter=$RowSearch['encounter'];
 		$PId=$RowSearch['pid'];
@@ -175,13 +175,13 @@ if (isset($_POST["mode"]))
 				where ar_session.session_id=ar_activity.session_id group by ar_activity.session_id,ar_session.session_id
 				having pay_total-global_amount-sum_pay_amount=0 or pay_total=0";
 			$rs= sqlStatement("$QsString");
-			while($rowrs=sqlFetchArray($rs))
+			foreach ($rs as $rowrs)
 			 {
 			  $StringSessionId.=$rowrs['session_id'].',';
 			 }
 		 	$QsString="select ar_session.session_id from ar_session	where  pay_total=0";
 			$rs= sqlStatement("$QsString");
-			while($rowrs=sqlFetchArray($rs))
+			foreach ($rs as $rowrs)
 			 {
 			  $StringSessionId.=$rowrs['session_id'].',';
 			 }
@@ -539,7 +539,7 @@ document.onclick=HideTheAjaxDivs;
 							  </tr>
 							  <?php
 								$CountIndex=0;
-								while ($RowSearch = sqlFetchArray($ResultSearch))
+								foreach ($ResultSearch as $RowSearch)
 								 {
 									 $Payer='';
 									 if($RowSearch['payer_id']*1 > 0)
@@ -627,7 +627,7 @@ document.onclick=HideTheAjaxDivs;
 							    <td align="right" class="<?php echo $StringClass; ?> right" ><a href="edit_payment.php?payment_id=<?php echo htmlspecialchars($RowSearch['session_id']); ?>"  class='iframe medium_modal' ><?php echo htmlspecialchars(number_format($UndistributedAmount,2)); ?></a></td>
 							  </tr>
 								<?php
-								 }//while ($RowSearch = sqlFetchArray($ResultSearch))
+								 }//while ($RowSearch = $ResultSearch)
 							}//if(sqlNumRows($ResultSearch)>0)
 						   else
 							{

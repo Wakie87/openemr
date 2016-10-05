@@ -175,7 +175,7 @@ if ($_POST['form_submit']) {
 
   $lores = sqlStatement("SELECT option_id, title FROM list_options WHERE " .
     "list_id = 'contrameth' AND activity = 1 ORDER BY title");
-  while ($lorow = sqlFetchArray($lores)) {
+  foreach ($lores as $lorow) {
     $areport[$lorow['option_id']] = array($lorow['title'],
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   }

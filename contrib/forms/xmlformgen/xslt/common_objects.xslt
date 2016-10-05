@@ -58,7 +58,7 @@ if ($_GET['id']=='')
 
 $current_level= '';
 
-while ($signature_field = sqlFetchArray($signature_fields)) {
+foreach ($signature_fields as $signature_field) {
  $current_signature_field=$signature_field['fieldname'];
  $current_signature_comparison_operator=$signature_field['relationship'];
  $current_signature_comparison_value=$signature_field['constant'];

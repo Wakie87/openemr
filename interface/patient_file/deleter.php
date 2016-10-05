@@ -189,8 +189,8 @@ function popup_close() {
 	  	window.close();
 	 }
 	 else {
-	  	parent.$.fn.fancybox.close(); 
-	 }	  
+	  	parent.$.fn.fancybox.close();
+	 }
 }
 </script>
 </head>
@@ -271,7 +271,7 @@ function popup_close() {
     $timestamp = decorateString('....-..-.. ..:..:..', $timestamp);
     $payres = sqlStatement("SELECT * FROM payments WHERE " .
       "pid = ? AND dtime = ?", array($patient_id, $timestamp));
-    while ($payrow = sqlFetchArray($payres)) {
+    foreach ($payres as $payrow) {
       if ($payrow['encounter']) {
         $ref_id = -1;
         // The session ID passed in is useless. Look for the most recent
@@ -287,7 +287,7 @@ function popup_close() {
           "payer_type = 0 AND " .
           "adj_amount = 0.00 " .
           "GROUP BY session_id ORDER BY session_id DESC", array($patient_id, $payrow['encounter']));
-        while ($serow = sqlFetchArray($seres)) {
+        foreach ($seres as $serow) {
           if (sprintf("%01.2f", $serow['adj_amount']) != 0.00) continue;
           if (sprintf("%01.2f", $serow['pay_amount'] - $tpmt) == 0.00) {
             $ref_id = $serow['session_id'];

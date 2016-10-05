@@ -5,29 +5,29 @@
  * (TLH) Added payor,provider,fixed cvs download to included selected fields
  * (TLH) Added ability to download selected invoices only or all for patient
  *
- * Copyright (C) 2015 Terry Hill <terry@lillysystems.com> 
+ * Copyright (C) 2015 Terry Hill <terry@lillysystems.com>
  * Copyright (C) 2006-2016 Rod Roark <rod@sunsetsystems.com>
  *
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
- * 
- * @package OpenEMR 
- * @author Rod Roark <rod@sunsetsystems.com> 
- * @author Terry Hill <terry@lilysystems.com> 
- * @link http://www.open-emr.org 
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
+ * @package OpenEMR
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @author Terry Hill <terry@lilysystems.com>
+ * @link http://www.open-emr.org
  */
- 
+
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
- 
+
 require_once("../globals.php");
 require_once("../../library/patient.inc");
 require_once("../../library/invoice_summary.inc.php");
@@ -441,7 +441,7 @@ function checkAll(checked) {
                         <td>
                         <?php dropdown_facility($form_facility, 'form_facility', false); ?>
                         </td>
-                        
+
                         <td class='label'>
                         <?php echo xlt('Payor'); ?>:
 						</td>
@@ -457,7 +457,7 @@ function checkAll(checked) {
                                  if ($iid == $_POST['form_payer_id']) $ins_co_name = $iname;
                                }
                                echo "   </select>\n";
-                        ?>            
+                        ?>
 						</td>
 					</tr>
 
@@ -476,7 +476,7 @@ function checkAll(checked) {
 						?>
 						   </select>
 						</td>
-                        
+
                         <td class='label'>
 						   <?php echo xlt('Provider') ?>:
 						</td>
@@ -565,7 +565,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
   $where = "";
   $sqlArray = array();
     if ($_POST['form_export'] || $_POST['form_csvexport']) {
-       
+
       $where = "( 1 = 2";
       foreach ($_POST['form_cb'] as $key => $value) {
          list($key_newval['pid'], $key_newval['encounter']) = explode(".", $key);
@@ -606,7 +606,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
       $where .= "f.provider_id = ? ";
       array_push($sqlArray, $form_provider);
     }
-    
+
     if (! $where) {
       $where = "1 = 1";
     }
@@ -634,10 +634,10 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
       "LEFT OUTER JOIN users AS w ON w.id = f.provider_id " .
       "WHERE $where " .
       "ORDER BY f.pid, f.encounter";
- 
+
     $eres = sqlStatement($query, $sqlArray);
-    
-    while ($erow = sqlFetchArray($eres)) {
+
+    foreach ($eres as $erow) {
       $patient_id = $erow['pid'];
       $encounter_id = $erow['encounter'];
       $pt_balance = $erow['charges'] + $erow['sales'] + $erow['copays'] - $erow['payments'] - $erow['adjustments'];

@@ -59,7 +59,7 @@ foreach ($parameters['otherid'] as $otherID) {
     // update all the forms* tables
     $sqlstmt = "show tables like 'form%'";
     $qResults = sqlStatement($sqlstmt);
-    while ($row = sqlFetchArray($qResults)) {
+    foreach ($qResults as $row) {
         UpdateTable($row['Tables_in_'.$sqlconf["dbase"].' (form%)'], "pid", $otherPID, $masterPID);
     }
     

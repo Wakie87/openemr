@@ -44,12 +44,7 @@ function getFormByEncounter($pid,$encounter, $cols="form_id, form_name", $name="
   $sql .= "ORDER BY FIND_IN_SET(formdir,'vitals') DESC, date DESC";
 
 	$res = sqlStatement($sql,$arraySqlBind);
-
-	for($iter=0; $row=sqlFetchArray($res); $iter++)
-	{
-		$all[$iter] = $row;
-	}
-	return $all;
+	return $res;
 }
 
 function addForm($encounter, $form_name, $form_id, $formdir, $pid,
@@ -160,7 +155,7 @@ function getDocumentsByEncounter($patientID = null,$encounterID = null) {
 			categories AS c WHERE d.foreign_id = ? AND d.encounter_id=? AND cd.document_id = d.id AND c.id = cd.category_id ORDER BY d.docdate DESC, d.id DESC";
 		$res = sqlStatement($sql,array($currentPatient,$currentEncounter));
 	
-		while ( $row = sqlFetchArray($res) ) {
+		foreach ($res as $row) {
 			$allDocuments[] = $row;
 		}
 	}

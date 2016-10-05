@@ -1,5 +1,5 @@
 <?php
-// +-----------------------------------------------------------------------------+ 
+// +-----------------------------------------------------------------------------+
 // Copyright (C) 2011 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 //
 //
@@ -19,7 +19,7 @@
 // openemr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 // Author:   Eldho Chacko <eldho@zhservices.com>
 //           Jacob T Paul <jacob@zhservices.com>
 //
@@ -34,9 +34,9 @@ $fake_register_globals=false;
 //
 
 require_once("server_mail.php");
-          
+
 class UserAudit extends UserMail{
-       
+
 //to generate random password
 
     public function generatePassword($length = 20){
@@ -80,17 +80,17 @@ class UserAudit extends UserMail{
                 sqlStatement($qry,array($pid));
             $qry = "DELETE from openemr_postcalendar_events WHERE  pc_pid=? ";// appointments approved, but patient denied case.
                 sqlStatement($qry,array($pid));
-             $qry = "select * from documents_legal_master,documents_legal_detail   where dld_pid=? 
-                and dlm_document_id=dld_master_docid and  dlm_subcategory   not in (SELECT dlc_id FROM `documents_legal_categories` 
+             $qry = "select * from documents_legal_master,documents_legal_detail   where dld_pid=?
+                and dlm_document_id=dld_master_docid and  dlm_subcategory   not in (SELECT dlc_id FROM `documents_legal_categories`
                 where dlc_category_name='Layout Signed' and dlc_category_type=2)";
              $result=sqlStatement($qry,array($pid));
-             while($row_sql=sqlFetchArray($result))
+             foreach ($result as $row_sql)
               {
                @unlink('../documents/'.$row_sql['dld_filepath'].$row_sql['dld_filename']);
               }
             $qry = "DELETE  from documents_legal_detail WHERE dld_pid=?";
                 sqlStatement($qry,array($pid));
-                $qry = "DELETE from audit_details WHERE audit_master_id in 
+                $qry = "DELETE from audit_details WHERE audit_master_id in
                                 (select id from audit_master WHERE pid=? )";//type and approval_status=1 is not called purposefully,so as to delete the appointments also
                 sqlStatement($qry,array($pid));
             $qry = "DELETE from audit_master WHERE pid=?";//type and approval_status=1 is not called purposefully,so as to delete the appointments also
@@ -101,7 +101,7 @@ class UserAudit extends UserMail{
         throw new SoapFault("Server", "credentials failed");
     }
        }
-       
+
 
 //update the audit master_table  with the status ie denied,approved etc.
 
@@ -121,10 +121,10 @@ class UserAudit extends UserMail{
           throw new SoapFault("Server", "credentials failed");
           }
        }
-    
 
 
-// Will update the corresponding tables with the audited and approved data. 
+
+// Will update the corresponding tables with the audited and approved data.
 //Appointments and Demos are updated from the audit_details table to the actual transaction tables
   public function update_audited_data($var)
        {
@@ -147,13 +147,13 @@ class UserAudit extends UserMail{
                 $cnt++;
              }
              if($cnt>0){
-                while($rowfield = sqlFetchArray($resfield)){
+                foreach ($resfield as $rowfield){
                     if($rowfield['field_name'] == 'pid')
                     continue;
                   if($table=='patient_data'){
                     $newdata['patient_data'][$rowfield['field_name']]=$rowfield['field_value'];
                   }
-                
+
                   if($table=='employer_data'){
                     $newdata['employer_data'][$rowfield['field_name']]=$rowfield['field_value'];
                   }
@@ -167,15 +167,15 @@ class UserAudit extends UserMail{
                         $newdata[$rowfield['entry_identification']][$rowfield['field_name']]=$rowfield['field_value'];
                     }
                   }
-                  
+
                   if($table=='openemr_postcalendar_events'){
                     $newdata['openemr_postcalendar_events'][$rowfield['field_name']]=$rowfield['field_value'];
                   }
-                  
+
                   if($table=='ar_session'){
                     $newdata['ar_session'][$rowfield['field_name']]=$rowfield['field_value'];
                   }
-                  
+
                   if($table=='documents_legal_master'){
                     $newdata['documents_legal_master'][$rowfield['field_name']]=$rowfield['field_value'];
                   }
@@ -183,7 +183,7 @@ class UserAudit extends UserMail{
                   if($table=='documents_legal_detail'){
                     $newdata['documents_legal_detail'][$rowfield['field_name']]=$rowfield['field_value'];
                   }
-                    
+
                     if($table=='patient_access_offsite'){
                     $newdata['patient_access_offsite'][$rowfield['field_name']]=$rowfield['field_value'];
                         if($rowfield['field_name'] == 'portal_pwd'){
@@ -354,7 +354,7 @@ class UserAudit extends UserMail{
         throw new SoapFault("Server", "credentials failed");
     }
     }
-    
+
 
 //Data from portal is inserted through this function. It will wait for audit and approval
 //according to the facility settings. audit_details is the child table of Audit_master
@@ -372,7 +372,7 @@ class UserAudit extends UserMail{
              $table_name_array=$var['table_name_array'];
              $field_name_value_array=$var['field_name_value_array'];
              $entry_identification_array=$var['entry_identification_array'];
-             
+
              if($audit_master_id_to_delete){
              $qry = "DELETE from audit_master WHERE id=?";
              sqlStatement($qry,array($audit_master_id_to_delete));
@@ -419,7 +419,7 @@ class UserAudit extends UserMail{
              throw new SoapFault("Server", "credentials failed");
           }
     }
-    
+
 
 //Data from portal is inserted through this function. It will wait for audit and approval
 //according to the facility settings. This is the master table entry.

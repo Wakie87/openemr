@@ -43,7 +43,7 @@ else {
 
 function convertToDataArray($data_array) {
 	$current = 0;
-	while ($row = sqlFetchArray($data_array)) {
+	foreach ($data_array as $row) {
 		//admin date
 		$temp_date = new DateTime($row['administered_date']);
 		$data[$current][xl('Date') . "\n" . xl('Admin')] = $temp_date->format('Y-m-d H:i'); //->format('%Y-%m-%d %H:%i');

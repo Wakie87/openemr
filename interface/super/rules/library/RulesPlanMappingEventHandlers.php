@@ -36,7 +36,7 @@ function getNonCQMPlans() {
                 "WHERE (clin_rules.cqm_flag = 0 or clin_rules.cqm_flag is NULL) and clin_plans.pid = 0 and list_options.list_id = ?;";
     $result = sqlStatement($sql_st, array('clinical_plans'));
 
-    while($row = sqlFetchArray($result)) {
+    foreach($result as $row) {
         $plan_id = $row['plan_id'];
         $plan_pid = $row['pid'];
         $plan_title = $row['title'];
@@ -56,7 +56,7 @@ function getRulesInPlan($plan_id) {
                 "WHERE cpr.plan_id = ?;";
     $result = sqlStatement($sql_st, array($plan_id));
     
-    while($row = sqlFetchArray($result)) {
+    foreach($result as $row) {
         $rules[$row['rule_option_id']] = $row['rule_title'];
     }
     
@@ -78,7 +78,7 @@ function getRulesNotInPlan($plan_id) {
                     "); ";
     $result = sqlStatement($sql_st, array($plan_id));
     
-    while($row = sqlFetchArray($result)) {
+    foreach($result as $row) {
         $rules[$row['rule_option_id']] = $row['rule_title'];
     }
     

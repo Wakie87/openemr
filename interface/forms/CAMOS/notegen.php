@@ -42,13 +42,13 @@ if (!$_POST['submit_pdf'] && !$_POST['submit_html'] && !($_GET['pid'] && $_GET['
 <body>
 <script language='JavaScript'> var mypcc = '1'; </script>
 
-<form method=post name=choose_patients> 
+<form method=post name=choose_patients>
 
 <table>
 <tr><td>
 <span class='text'><?php xl('Start (yyyy-mm-dd): ','e') ?></span>
 </td><td>
-<input type='text' size='10' name='start' id='start' value='<?php echo $_POST['end'] ? $_POST['end'] : date('Y-m-d') ?>' 
+<input type='text' size='10' name='start' id='start' value='<?php echo $_POST['end'] ? $_POST['end'] : date('Y-m-d') ?>'
 onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
 title='<?php xl('yyyy-mm-dd last date of this event','e'); ?>' />
 <img src='<?php echo $depth ?>interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -62,7 +62,7 @@ Calendar.setup({inputField:'start', ifFormat:'%Y-%m-%d', button:'img_start'});
 <tr><td>
 <span class='text'><?php xl('End (yyyy-mm-dd): ','e') ?></span>
 </td><td>
-<input type='text' size='10' name='end' id='end' value ='<?php echo $_POST['end'] ? $_POST['end'] : date('Y-m-d') ?>' 
+<input type='text' size='10' name='end' id='end' value ='<?php echo $_POST['end'] ? $_POST['end'] : date('Y-m-d') ?>'
 onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
 title='<?php xl('yyyy-mm-dd last date of this event','e'); ?>' />
 <img src='<?php echo $depth ?>interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
@@ -74,10 +74,10 @@ Calendar.setup({inputField:'end', ifFormat:'%Y-%m-%d', button:'img_end'});
 </td></tr>
 <tr><td></td><td></td></tr>
 <tr><td><?php xl('Last Name','e'); ?>: </td><td>
-<input type='text' name='lname'/> 
+<input type='text' name='lname'/>
 </td></tr>
 <tr><td><?php xl('First Name','e'); ?>: </td><td>
-<input type='text' name='fname'/> 
+<input type='text' name='fname'/>
 </td></tr>
 <tr><td>
 <input type='submit' name='submit_pdf' value='<?php xl('Print (PDF)','e'); ?>'>
@@ -106,29 +106,29 @@ if ($_POST['submit_pdf'] || $_POST['submit_html'] || ($_GET['pid'] && $_GET['enc
 	 font-size: 8pt;
 	 background: white;
 	 color: black;
-	}	
+	}
 	.paddingdiv {
 	 width: 524pt;
 	 padding: 0pt;
 	}
 	.navigate {
 	 margin-top: 2.5em;
-	}	
+	}
 	@media print {
 	 .navigate {
 	  display: none;
-	 }	
+	 }
 	}
 	div.page {
 	 page-break-after: always;
 	 padding: 0pt;
-	 margin-top: 50pt;	 
-	}	
+	 margin-top: 50pt;
+	}
 	span.heading {
 	 font-weight: bold;
 	 font-size: 130%;
-	}	
-	</style>	
+	}
+	</style>
 	<title><?php xl('Patient Notes','e'); ?></title>
 	</head>
         <body>
@@ -139,15 +139,15 @@ if ($_POST['submit_pdf'] || $_POST['submit_html'] || ($_GET['pid'] && $_GET['enc
 			preg_match('/(\d+)_(\d+)/', $note_id, $matches); //the unique note id contains the pid and encounter
 			$pid = $matches[1];
 			$enc = $matches[2];
-		    
+
 			//new page code here
 			print "<DIV class='page'>";
-		    
+
 			print xl("Date").": ".$notecontents['date'] . "<br/>";
 			print xl("Name").": ".$notecontents['name'] . "<br/>";
 		        print xl("DOB").": ".$notecontents['dob'] . "<br/>";
                         print xl("Claim")."# ".$notecontents['pubpid'] . "<br/>";
-		    
+
 			print "<br/>";
 			print xl("Chief Complaint").": ".$notecontents['reason'] . "<br/>";
 			if ($notecontents['vitals']) {
@@ -365,7 +365,7 @@ function getFormData($start_date,$end_date,$lname,$fname) { //dates in sql forma
 		$date_clause .
 		$name_clause .
 		"order by date,pid");
-	while ($results1 = sqlFetchArray($query1)) {
+	foreach ($query1 as $results1) {
 		if (!$dates[$results1['datekey']]) {
 			$dates[$results1['datekey']] = array();
 		}
@@ -386,7 +386,7 @@ function getFormData($start_date,$end_date,$lname,$fname) { //dates in sql forma
 		// get icd9 codes for this encounter
 		$query2 = sqlStatement("select * from billing where encounter = ".
 			$results1['enc']." and pid = ".$results1['pid']." and code_type like 'ICD9' and activity=1");
-                while ($results2 = sqlFetchArray($query2)) {
+                foreach ($query2 as $results2) {
 			array_push($dates[$results1['datekey']][$results1['pid'].'_'.$results1['enc']]['billing'],
 				$results2['code'].' '.$results2['code_text']);
 		}
@@ -416,7 +416,7 @@ function getFormData($start_date,$end_date,$lname,$fname) { //dates in sql forma
 						'content' => $results2['content'],
 						'date' => $results2['date']);
 					array_push($dates[$results1['datekey']][$results1['pid'].'_'.$results1['enc']]['calories'],$values);
-					
+
 				}
 				else {
 					if (!$dates[$results1['datekey']][$results1['pid'].'_'.$results1['enc']]['other'][$results2['category']]) {

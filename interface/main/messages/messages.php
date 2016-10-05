@@ -296,7 +296,7 @@ if ($noteid) {
     echo " <tr>\n";
     echo "  <td class='text'><b>";
     echo xlt('Linked document') . ":</b>\n";
-    while ($gprow = sqlFetchArray($tmp)) {
+    foreach ($tmp as $gprow) {
       $d = new Document($gprow['id1']);
       echo "   <a href='";
       echo $GLOBALS['webroot'] . "/controller.php?document&retrieve";
@@ -317,7 +317,7 @@ if ($noteid) {
     echo " <tr>\n";
     echo "  <td class='text'><b>";
     echo xlt('Linked procedure order') . ":</b>\n";
-    while ($gprow = sqlFetchArray($tmp)) {
+    foreach ($tmp as $gprow) {
       echo "   <a href='";
       echo $GLOBALS['webroot'] . "/interface/orders/single_order_results.php?orderid=";
       echo $gprow['id1'];
@@ -515,7 +515,7 @@ else {
         // Display the Messages table body.
         $count = 0;
         $result = getPnotesByUser($active,$show_all,$_SESSION['authUser'],false,$sortby,$sortorder,$begin,$listnumber);
-        while ($myrow = sqlFetchArray($result)) {
+        foreach ($result as $myrow) {
             $name = $myrow['user'];
             $name = $myrow['users_lname'];
             if ($myrow['users_fname']) {

@@ -252,7 +252,7 @@ else {
         "LIMIT " . add_escape_custom($begin) . ", " .
         add_escape_custom($listnumber);
       $result = sqlStatement($sql,$sqlBindArray);
-      while ($myrow = sqlFetchArray($result)) { ?>
+      foreach ($result as $myrow) { ?>
         <tr>
           <td><?php echo generate_display_field(array('data_type'=>'1','list_id'=>'rule_action_category'),$myrow['category']) . " : " .
                 generate_display_field(array('data_type'=>'1','list_id'=>'rule_action'),$myrow['item']); ?></td>

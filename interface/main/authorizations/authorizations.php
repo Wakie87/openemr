@@ -209,15 +209,15 @@ if ($authorize) {
     /****
     //Michael A Rowley MD 20041012.
     // added below 4 lines to add provider to authorizations for ez reference.
-    $providerID = sqlFetchArray(sqlStatement(
-      "select providerID from patient_data where pid=?", array($ppid) ));
+    $providerID = sqlStatement(
+      "select providerID from patient_data where pid=?", array($ppid));
     $userID=$providerID{"providerID"};
-    $providerName = sqlFetchArray(sqlStatement(
-      "select lname from users where id=?", array($userID) ));
+    $providerName = sqlStatement(
+      "select lname from users where id=?", array($userID));
     ****/
     // Don't use sqlQuery because there might be no match.
-    $providerName = sqlFetchArray(sqlStatement(
-      "select lname from users where id = ?", array($name['providerID'])));
+    $providerName = sqlStatement(
+      "select lname from users where id = ?", array($name['providerID']));
       
     echo "<td valign=top><span class=bold>".htmlspecialchars(xl('Provider'),ENT_NOQUOTES).":</span><span class=text><br>" .
       htmlspecialchars($providerName{"lname"},ENT_NOQUOTES) . "</td>\n";

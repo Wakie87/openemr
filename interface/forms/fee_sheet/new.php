@@ -965,7 +965,7 @@ if ($billresult) {
 $resMoneyGot = sqlStatement("SELECT pay_amount as PatientPay,session_id as id,date(post_time) as date ".
   "FROM ar_activity where pid =? and encounter =? and payer_type=0 and account_code='PCP'",
   array($fs->pid, $fs->encounter)); //new fees screen copay gives account_code='PCP'
-while($rowMoneyGot = sqlFetchArray($resMoneyGot)){
+foreach ($resMoneyGot as $rowMoneyGot){
   $PatientPay=$rowMoneyGot['PatientPay']*-1;
   $id=$rowMoneyGot['id'];
   $fs->addServiceLineItem(array(
@@ -1026,7 +1026,7 @@ $query = "SELECT ds.*, di.warehouse_id FROM drug_sales AS ds, drug_inventory AS 
   "ORDER BY sale_id";
 $sres = sqlStatement($query, array($fs->pid, $fs->encounter));
 // $prod_lino = 0;
-while ($srow = sqlFetchArray($sres)) {
+foreach ($sres as $srow) {
   // ++$prod_lino;
   $prod_lino = count($fs->productitems);
   $pline = $_POST['prod']["$prod_lino"];
@@ -1205,7 +1205,7 @@ if (true) {
   echo "   <select name='pricelevel'";
   if ($isBilled) echo " disabled";
   echo ">\n";
-  while ($plrow = sqlFetchArray($plres)) {
+  foreach ($plres as $plrow) {
     $key = $plrow['option_id'];
     $val = $plrow['title'];
     echo "    <option value='" . attr($key) . "'";

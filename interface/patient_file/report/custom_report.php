@@ -270,7 +270,7 @@ else { // not printable
           $query = "SELECT DISTINCT(form_name),formdir FROM forms WHERE form_id IN ( '".implode("','",$form_id_arr)."') AND formdir IN ( '".implode("','",$form_dir_arr)."')";
           $arr = sqlStatement($query);
           echo "<select multiple size='4' style='width:300px;' id='forms_to_search' onchange='clear_last_visit();remove_mark_all();find_all();' >";
-          while($res_forms_ids = sqlFetchArray($arr)){
+          foreach ($arr as $res_forms_ids){
             echo "<option value='".attr($res_forms_ids['formdir'])."' selected>".text($res_forms_ids['form_name'])."</option>";
           }
           echo "</select>";
@@ -290,7 +290,7 @@ else { // not printable
 
 // include ALL form's report.php files
 $inclookupres = sqlStatement("select distinct formdir from forms where pid = '$pid' AND deleted=0");
-while($result = sqlFetchArray($inclookupres)) {
+foreach ($inclookupres as $result) {
   // include_once("{$GLOBALS['incdir']}/forms/" . $result{"formdir"} . "/report.php");
   $formdir = $result['formdir'];
   if (substr($formdir,0,3) == 'LBF')
@@ -740,7 +740,7 @@ foreach ($ar as $key => $val) {
                       "ct.ct_diag = 0 " .
                       "ORDER BY b.date",
                       array($pid, $form_encounter));
-                    while ($brow=sqlFetchArray($bres)) {
+                    foreach ($bres as $brow) {
                         echo "<span class='bold'>&nbsp;".xl('Procedure').": </span><span class='text'>" .
                             $brow['code'] . " " . $brow['code_text'] . "</span><br>\n";
                     }

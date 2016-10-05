@@ -314,7 +314,7 @@ function gen_hl7_order($orderid, &$out) {
     $d0;
 
   $setid = 0;
-  while ($pcrow = sqlFetchArray($pcres)) {
+  foreach ($pcres as $pcrow) {
     // Observation Request.
     $out .= "OBR" .
       $d1 . ++$setid .                              // Set ID
@@ -368,7 +368,7 @@ function gen_hl7_order($orderid, &$out) {
       "ORDER BY q.seq, a.answer_seq",
       array($porow['ppid'], $pcrow['procedure_code'], $orderid, $pcrow['procedure_order_seq']));
     $setid2 = 0;
-    while ($qrow = sqlFetchArray($qres)) {
+    foreach ($qres as $qrow) {
       // Formatting of these answer values may be lab-specific and we'll figure
       // out how to deal with that as more labs are supported.
       $answer = trim($qrow['answer']);

@@ -80,7 +80,7 @@ function printAmendment($amendmentID,$lastAmendment) {
 	
 	$query = "SELECT u.fname,u.lname,ah.* FROM amendments_history ah INNER JOIN users u ON ah.created_by = u.id WHERE ah.amendment_id = ?";
 	$resultSet = sqlStatement($query,array($amendmentID));
-	while($row = sqlFetchArray($resultSet)) {
+	foreach ($resultSet as $row) {
 		echo "<tr class=text>";
 		$created_date = date('Y-m-d', strtotime($row['created_time']));
 		echo "<td>" . oeFormatShortDate($created_date) . "</td>";

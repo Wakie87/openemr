@@ -46,7 +46,7 @@ function checkCreateCDB(){
   $globalsres = sqlStatement("SELECT gl_name, gl_index, gl_value FROM globals WHERE gl_name IN
   ('couchdb_host','couchdb_user','couchdb_pass','couchdb_port','couchdb_dbase','document_storage_method')");
     $options = array();
-    while($globalsrow = sqlFetchArray($globalsres)){
+    foreach ($globalsres as $globalsrow){
       $GLOBALS[$globalsrow['gl_name']] = $globalsrow['gl_value'];
     }
     $directory_created = false;
@@ -99,7 +99,7 @@ function checkBackgroundServices(){
   //load up any necessary globals
   $bgservices = sqlStatement("SELECT gl_name, gl_index, gl_value FROM globals WHERE gl_name IN
   ('phimail_enable','phimail_interval')");
-    while($globalsrow = sqlFetchArray($bgservices)){
+    foreach ($bgservices as $globalsrow){
       $GLOBALS[$globalsrow['gl_name']] = $globalsrow['gl_value'];
     }
 
@@ -412,7 +412,8 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     $glres = sqlStatement("SELECT gl_index, gl_value FROM globals WHERE " .
       "gl_name = ? ORDER BY gl_index", array($fldid));
     $glarr = array();
-    while ($glrow = sqlFetchArray($glres)) $glarr[] = $glrow;
+    foreach ($glres as $glrow)
+      $glarr[] = $glrow;
 
     // $fldvalue is meaningful only for the single-value cases.
     $fldvalue = count($glarr) ? $glarr[0]['gl_value'] : $flddef;

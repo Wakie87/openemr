@@ -65,7 +65,7 @@ function getListOptions($list_id , $fieldnames=array('option_id', 'title', 'seq'
 {
 	$output =  array();
 	$query = sqlStatement("SELECT ".implode(',',$fieldnames)." FROM list_options where list_id = ? AND activity = 1 order by seq", array($list_id));
-	while($ll = sqlFetchArray($query)) {
+	foreach ($query as $ll) {
 		foreach($fieldnames as $val)
 		  $output[$ll['option_id']][$val] = $ll[$val];
 	}
@@ -141,7 +141,7 @@ if ($_POST['bn_save'] || $_POST['bn_xmit']) {
       "WHERE t.procedure_type_id = ? " .
       "ORDER BY q.seq, q.question_text", array($ptid));
 
-    while ($qrow = sqlFetchArray($qres)) {
+    foreach ($qres as $qrow) {
       $options = trim($qrow['options']);
       $qcode = trim($qrow['question_code']);
       $fldtype = $qrow['fldtype'];

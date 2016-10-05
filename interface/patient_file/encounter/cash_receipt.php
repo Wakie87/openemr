@@ -87,7 +87,7 @@ $encounter . "' and pid='$pid'"))
  //print "Provider: " . $provider  . "</br>";
 
  $inclookupres = sqlStatement("select distinct formdir from forms where pid='$pid'");
- while($result = sqlFetchArray($inclookupres)) {
+ foreach ($inclookupres as $result) {
   include_once("{$GLOBALS['incdir']}/forms/" . $result{"formdir"} . "/report.php");
  }
 
@@ -310,7 +310,7 @@ $encounter . "' and pid='$pid'"))
       "encounter = '$form_encounter' AND activity = 1 AND " .
       "(code_type = 'CPT4' OR code_type = 'OPCS') " .
       "ORDER BY date");
-     while ($brow=sqlFetchArray($bres)) {
+     foreach ($bres as $brow) {
       echo "<span class='bold'>&nbsp;Procedure: </span><span class='text'>" .
         $brow['code'] . " " . $brow['code_text'] . "</span><br>\n";
      }

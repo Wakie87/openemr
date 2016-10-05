@@ -183,7 +183,7 @@ require_once("../globals.php");
 
  </tr>
 <?php
- } // $row = sqlFetchArray($res) while
+ } // foreach ($res as $row)
 ?>
 </tbody>
 </table>

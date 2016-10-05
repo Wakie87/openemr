@@ -337,7 +337,7 @@ function set_related(codetype, code, selector, codedesc) {
    if (s.indexOf(codetype + ':') == 0 || s.indexOf(';' + codetype + ':') > 0) {
     return '<?php echo xl('A code of this type is already selected. Erase the field first if you need to replace it.') ?>';
    }
-  }     
+  }
   if (s.length > 0) {
    s  += ';';
    sd += ';';
@@ -556,7 +556,7 @@ function validate(f) {
         // For some readings like vitals there may be multiple forms per encounter.
         // We sort these sensibly, however only the encounter date is shown here;
         // at some point we may wish to show also the data entry date/time.
-        while ($hrow = sqlFetchArray($hres)) {
+        foreach ($hres as $hrow) {
           echo "<td colspan='" . attr($CPR) . "' align='right' class='bold'>&nbsp;" .
             text(oeFormatShortDate(substr($hrow['date'], 0, 10))) . "</td>\n";
           $historical_ids[$hrow['form_id']] = '';
@@ -580,7 +580,7 @@ function validate(f) {
 
     // First item is on the "left-border"
     $leftborder = true;
-    
+
     // Handle starting of a new label cell.
     if ($titlecols > 0) {
       end_cell();

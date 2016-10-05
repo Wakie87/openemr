@@ -326,7 +326,7 @@ class C_Document extends Controller {
 		$result_docs = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe " .
 			"LEFT JOIN openemr_postcalendar_categories ON fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? ORDER BY fe.date desc",array($patient_id));
 		if (sqlNumRows($result_docs) > 0)
-		while($row_result_docs = sqlFetchArray($result_docs)) {
+		foreach ($result_docs as $row_result_docs) {
 		 	$sel_enc = ($row_result_docs['encounter'] == $d->get_encounter_id()) ? ' selected' : '';
 			$encOptions .= "<option value='" . attr($row_result_docs['encounter']) . "' $sel_enc>". oeFormatShortDate(date('Y-m-d', strtotime($row_result_docs['date']))) . "-" . text($row_result_docs['pc_catname'])."</option>";
 		}
@@ -350,7 +350,7 @@ class C_Document extends Controller {
 		$imgOrders  = sqlStatement("select procedure_name,po.procedure_order_id,procedure_code from procedure_order po inner join procedure_order_code poc on poc.procedure_order_id = po.procedure_order_id where po.patient_id = ?  and poc.procedure_order_title = 'imaging'",array($patient_id));
 		$mapping    = $this->get_mapped_procedure($d->get_id());
 		if(sqlNumRows($imgOrders) > 0){
-			 while($row = sqlFetchArray($imgOrders)) {
+			 foreach ($imgOrders as $row) {
 			 	$sel_proc = '';
 			 	if((isset($mapping['procedure_code']) && $mapping['procedure_code'] == $row['procedure_code']) && (isset($mapping['procedure_code']) && $mapping['procedure_order_id'] == $row['procedure_order_id']))
 					$sel_proc = 'selected';

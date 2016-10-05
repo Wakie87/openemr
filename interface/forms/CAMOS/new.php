@@ -103,7 +103,7 @@ elseif ($_POST['hidden_mode'] == 'delete') {
     if ($_POST['hidden_selection'] == 'change_category') {
       $to_delete_id = $_POST['hidden_category'];
       $statement1 = sqlStatement("select id from ".mitigateSqlTableUpperCase("form_CAMOS_subcategory")." where category_id = ?", array($to_delete_id));
-      while ($result1 = sqlFetchArray($statement1)) {
+      foreach ($statement1 as $result1) {
         $query = "DELETE FROM ".mitigateSqlTableUpperCase("form_CAMOS_item")." WHERE subcategory_id = ?";
         sqlInsert($query, array($result1['id']));
       }
@@ -526,19 +526,19 @@ if (1) { //we are hiding the clone buttons and still need 'search others' so thi
 		if (preg_match('/^(export)(.*)/',$clone_search,$matches)) {
 			$query1 = "select id, category from ".mitigateSqlTableUpperCase("form_CAMOS_category");
 			$statement1 = sqlStatement($query1);
-		        while ($result1 = sqlFetchArray($statement1)) {
+		        foreach ($statement1 as $result1) {
 				$tmp = $result1['category'];
 				$tmp = "/*import::category::$tmp*/"."\n";
 				$clone_data_array[$tmp] = $tmp;
 				$query2 = "select id,subcategory from ".mitigateSqlTableUpperCase("form_CAMOS_subcategory")." where category_id= ?";
 				$statement2 = sqlStatement($query2, $result1['id']);
-				while ($result2 = sqlFetchArray($statement2)) {
+				foreach ($statement2 as $result2) {
 					$tmp = $result2['subcategory'];
 					$tmp = "/*import::subcategory::$tmp*/"."\n";
 					$clone_data_array[$tmp] = $tmp;
 					$query3 = "select item, content from ".mitigateSqlTableUpperCase("form_CAMOS_item")." where subcategory_id=".$result2['id'];
 					$statement3 = sqlStatement($query3);
-					while ($result3 = sqlFetchArray($statement3)) {
+					foreach ($statement3 as $result3) {
 						$tmp = $result3['item'];
 						$tmp = "/*import::item::$tmp*/"."\n";
 						$clone_data_array[$tmp] = $tmp;

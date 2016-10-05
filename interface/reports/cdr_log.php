@@ -262,7 +262,7 @@ require_once "$srcdir/clinical_rules.php";
   </tr>
 
  <?php
- } // $row = sqlFetchArray($res) while
+ } // foreach ($res as $row)
  ?>
  </tbody>
  </table>

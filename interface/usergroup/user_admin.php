@@ -18,7 +18,7 @@ if ($_GET["mode"] == "update") {
   if ($_GET["username"]) {
     // $tqvar = addslashes(trim($_GET["username"]));
     $tqvar = trim(formData('username','G'));
-    $user_data = sqlFetchArray(sqlStatement("select * from users where id={$_GET["id"]}"));
+    $user_data = sqlStatement("select * from users where id={$_GET["id"]}");
     sqlStatement("update users set username='$tqvar' where id={$_GET["id"]}");
     sqlStatement("update groups set user='$tqvar' where user='". $user_data["username"]  ."'");
     //echo "query was: " ."update groups set user='$tqvar' where user='". $user_data["username"]  ."'" ;
@@ -123,7 +123,7 @@ if ($_GET["mode"] == "update") {
 
   if (isset($phpgacl_location) && acl_check('admin', 'acl')) {
     // Set the access control group of user
-    $user_data = sqlFetchArray(sqlStatement("select username from users where id={$_GET["id"]}"));
+    $user_data = sqlStatement("select username from users where id={$_GET["id"]}");
     set_user_aro($_GET['access_group'], $user_data["username"],
       formData('fname','G'), formData('mname','G'), formData('lname','G'));
   }
@@ -420,7 +420,7 @@ foreach($result as $iter2) {
     $ufid[] = $uf['id'];
   $fres = sqlStatement("select * from facility where service_location != 0 order by name");
   if ($fres) {
-    while($frow = sqlFetchArray($fres)):
+    foreach ($fres as $frow):
 ?>
    <option <?php echo in_array($frow['id'], $ufid) || $frow['id'] == $iter['facility_id'] ? "selected" : null ?>
       value="<?php echo $frow['id'] ?>"><?php echo htmlspecialchars($frow['name']) ?></option>

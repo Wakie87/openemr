@@ -173,7 +173,7 @@ foreach ($ISSUE_TYPES as $focustype => $focustitles) {
   }
 
   // display issues
-  while ($row = sqlFetchArray($pres)) {
+  foreach ($pres as $row) {
 
     $rowid = $row['id'];
 

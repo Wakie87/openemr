@@ -833,7 +833,7 @@ if ($_POST['form_action'] == "save") {
     //Set default facility for a new event based on the given 'userid'
     if ($userid) {
         /*************************************************************
-        $pref_facility = sqlFetchArray(sqlStatement("SELECT facility_id, facility FROM users WHERE id = $userid"));
+        $pref_facility = sqlStatement("SELECT facility_id, facility FROM users WHERE id = $userid");
         *************************************************************/
         if ($_SESSION['pc_facility']) {
 	        $pref_facility = sqlStatement("
@@ -1456,7 +1456,7 @@ if  ($GLOBALS['select_multi_providers']) {
         if (count($_SESSION['pc_username']) >= 1) {
           // get the numeric ID of the first provider in the array
           $pc_username = $_SESSION['pc_username'];
-          $firstProvider = sqlFetchArray(sqlStatement("select id from users where username='".$pc_username[0]."'"));
+          $firstProvider = sqlStatement("select id from users where username='".$pc_username[0]."'");
           $defaultProvider = $firstProvider['id'];
         }
       }

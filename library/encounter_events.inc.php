@@ -1,5 +1,5 @@
 	<?php
-// +-----------------------------------------------------------------------------+ 
+// +-----------------------------------------------------------------------------+
 // Copyright (C) 2010 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 //
 //
@@ -19,9 +19,9 @@
 // openemr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 // Author:   Eldho Chacko <eldho@zhservices.com>
-//           Paul Simon K <paul@zhservices.com> 
+//           Paul Simon K <paul@zhservices.com>
 //
 // +------------------------------------------------------------------------------+
 
@@ -65,7 +65,7 @@ function calendar_arrived($form_pid) {
 	 }
 	else//repeating appointment set
 	 {
-		while($row_event=sqlFetchArray($result_event))
+		foreach($result_event as $row_event)
 		 {
 			$pc_eid = $row_event['pc_eid'];
 			$pc_eventDate = $row_event['pc_eventDate'];

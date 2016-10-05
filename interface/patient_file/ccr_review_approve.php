@@ -138,7 +138,7 @@ function submit_form(val){
 							$query_pd = sqlStatement("SELECT ad.id as adid, table_name, field_name, field_value FROM audit_master am JOIN audit_details ad ON ad.audit_master_id = am.id
 								WHERE am.id = ? AND ad.table_name = 'patient_data' ORDER BY ad.id",array($_REQUEST['amid']));
 							$i = 0;
-							while($res_pd = sqlFetchArray($query_pd)){
+							foreach ($query_pd as $res_pd){
 								if($res_pd['field_name'] != 'lname' && $res_pd['field_name'] != 'fname' && $res_pd['field_name'] != 'DOB'){
 									$i++;
 									$query_oldpd = sqlQuery("SELECT ".$res_pd['field_name']." AS val FROM patient_data WHERE pid = ?",array($_REQUEST['pid']));
@@ -191,7 +191,7 @@ function submit_form(val){
 						<?php
 							$query_existing_prob = sqlStatement("SELECT * FROM lists WHERE pid = ? AND TYPE = 'medical_problem'",array($_REQUEST['pid']));
 							$result = array();
-							while($res_existing_prob = sqlFetchArray($query_existing_prob)){
+							foreach ($query_existing_prob as $res_existing_prob){
 								array_push($result,$res_existing_prob);
 							}
 							$aud_res = createAuditArray($_REQUEST['amid'],'lists1');
@@ -266,7 +266,7 @@ function submit_form(val){
 						<?php
 							$query_existing_alerts = sqlStatement("SELECT * FROM lists WHERE pid = ? AND TYPE = 'allergy'",array($_REQUEST['pid']));
 							$result = array();
-							while($res_existing_alerts = sqlFetchArray($query_existing_alerts)){
+							foreach ($query_existing_alerts as $res_existing_alerts){
 								array_push($result,$res_existing_alerts);
 							}
 							$aud_res = createAuditArray($_REQUEST['amid'],'lists2');
@@ -317,7 +317,7 @@ function submit_form(val){
 						<?php
 							$query_existing_medications = sqlStatement("SELECT * FROM prescriptions WHERE patient_id = ?",array($_REQUEST['pid']));
 							$result = array();
-							while($res_existing_medications = sqlFetchArray($query_existing_medications)){
+							foreach ($query_existing_medications as $res_existing_medications){
 								array_push($result,$res_existing_medications);
 							}
 							$aud_res = createAuditArray($_REQUEST['amid'],'prescriptions');
@@ -372,7 +372,7 @@ function submit_form(val){
 						<?php
 							$query_existing_immunizations = sqlStatement("SELECT * FROM immunizations WHERE patient_id = ? AND added_erroneously = 0",array($_REQUEST['pid']));
 							$result = array();
-							while($res_existing_immunizations = sqlFetchArray($query_existing_immunizations)){
+							foreach ($query_existing_immunizations as $res_existing_immunizations){
 								array_push($result,$res_existing_immunizations);
 							}
 							$aud_res = createAuditArray($_REQUEST['amid'],'immunizations');
@@ -413,7 +413,7 @@ function submit_form(val){
 								ON poc.procedure_order_id = po.procedure_order_id LEFT JOIN procedure_report AS pr ON pr.procedure_order_id = po.procedure_order_id
 								LEFT JOIN procedure_result AS prs ON prs.procedure_report_id = pr.procedure_report_id WHERE patient_id = ?",array($_REQUEST['pid']));
 							$result = array();
-							while($res_existing_lab_results = sqlFetchArray($query_existing_lab_results)){
+							foreach ($query_existing_lab_results as $res_existing_lab_results){
 								array_push($result,$res_existing_lab_results);
 							}
 							$aud_res = createAuditArray($_REQUEST['amid'],'procedure_result,procedure_type');

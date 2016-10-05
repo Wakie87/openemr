@@ -548,7 +548,7 @@ class eRxXMLBuilder {
 
 		$elements = array();
 
-		while($healthplan = sqlFetchArray($healthplans)) {
+		foreach ($healthplans as $healthplan) {
 			$element = $this->getDocument()->createElement('PatientFreeformHealthplans');
 			$element->appendChild($this->createElementText('healthplanName', $this->trimData($this->stripSpecialCharacter($healthplan['name'], 35))));
 
@@ -564,7 +564,7 @@ class eRxXMLBuilder {
 
 		$elements = array();
 
-		while($allergy = sqlFetchArray($allergyData)) {
+		foreach ($allergyData as $allergy) {
 			$element = $this->getDocument()->createElement('PatientFreeformAllergy');
 			$element->setAttribute('ID', $allergy['id']);
 
@@ -644,7 +644,7 @@ class eRxXMLBuilder {
 
 		$elements = array();
 
-		while($medication = sqlFetchArray($medications)) {
+		foreach ($medications as $medication) {
 			$elements[] = $this->getOutsidePrescription(array(
 				'externalId'		=> $medication['id'],
 				'date'				=> $medication['begdate'],
@@ -681,7 +681,7 @@ class eRxXMLBuilder {
 
 			$prescriptionIds = array();
 
-			while($selectPrescriptionId = sqlFetchArray($selectPrescriptionIds)) {
+			foreach ($selectPrescriptionIds as $selectPrescriptionId) {
 				$prescriptionIds[] = $selectPrescriptionId['id'];
 			}
 

@@ -112,7 +112,7 @@ function execute_background_service_calls() {
   else
     $services = sqlStatementNoLog($sql.' ORDER BY sort_order');
 
-  while($service = sqlFetchArray($services)){
+  foreach ($services as $service){
     $service_name = $service['name'];
     if(!$service['active'] || $service['running'] == 1) continue;
     $interval=(int)$service['execute_interval'];

@@ -58,9 +58,9 @@ function createCCR($action,$raw="no",$requested_by=""){
   $patientID = getUuid();
   $sourceID = getUuid();
   $oemrID = getUuid();
-  
+
   $result = getActorData();
-  while($res = sqlFetchArray($result[2])){
+  foreach($result[2] as $res){
     ${"labID{$res['id']}"} = getUuid();
   }
 
@@ -76,7 +76,7 @@ function createCCR($action,$raw="no",$requested_by=""){
 	   require_once("createCCRHeader.php");
 	   $e_Body = $ccr->createElement('Body');
 	   $e_ccr->appendChild($e_Body);
-	   
+
 	   /////////////// Problems
 
 	   $e_Problems = $ccr->createElement('Problems');
@@ -125,16 +125,16 @@ function createCCR($action,$raw="no",$requested_by=""){
 	   $e_Actors = $ccr->createElement('Actors');
 	   require_once("createCCRActor.php");
 	   $e_ccr->appendChild($e_Actors);
-	   
+
 	   if ($action=="generate"){
 	   	gnrtCCR($ccr,$raw,$requested_by);
 	   }
-	   
+
 	   if($action == "viewccd"){
 	   	viewCCD($ccr,$raw,$requested_by);
 	   }
 	}
-	
+
 	function gnrtCCR($ccr,$raw="no",$requested_by=""){
 		global $pid;
 
@@ -208,34 +208,34 @@ function createCCR($action,$raw="no",$requested_by=""){
 			header("Content-type: application/xml");
                 	echo $ccr->saveXml();
 		}
-		
+
 	}
-	
+
 	function viewCCD($ccr,$raw="no",$requested_by=""){
 		global $pid;
-		
+
 		$ccr->preserveWhiteSpace = false;
 		$ccr->formatOutput = true;
-		
+
 		$ccr->save(dirname(__FILE__) .'/generatedXml/ccrForCCD.xml');
 
 		$xmlDom = new DOMDocument();
 		$xmlDom->loadXML($ccr->saveXML());
-		
+
 		$ccr_ccd = new DOMDocument();
 		$ccr_ccd->load(dirname(__FILE__) .'/ccd/ccr_ccd.xsl');
 
 		$xslt = new XSLTProcessor();
 		$xslt->importStylesheet($ccr_ccd);
-		
+
 		$ccd = new DOMDocument();
 		$ccd->preserveWhiteSpace = false;
 		$ccd->formatOutput = true;
-		
+
 		$ccd->loadXML($xslt->transformToXML($xmlDom));
-		
+
 		$ccd->save(dirname(__FILE__) .'/generatedXml/ccdDebug.xml');
-		
+
                 if ($raw == "yes") {
                   // simply send the xml to a textarea (nice debugging tool)
                   echo "<textarea rows='35' cols='500' style='width:95%' readonly>";
@@ -299,26 +299,26 @@ function createCCR($action,$raw="no",$requested_by=""){
 
 		$ss = new DOMDocument();
 		$ss->load(dirname(__FILE__) ."/stylesheet/cda.xsl");
-				
+
 		$xslt->importStyleSheet($ss);
 
 		$html = $xslt->transformToXML($ccd);
 
 		echo $html;
-	
+
 	}
 
-	
+
 	function sourceType($ccr, $uuid){
-		
+
 		$e_Source = $ccr->createElement('Source');
-		
+
 		$e_Actor = $ccr->createElement('Actor');
 		$e_Source->appendChild($e_Actor);
-		
+
 		$e_ActorID = $ccr->createElement('ActorID',$uuid);
 		$e_Actor->appendChild($e_ActorID);
-		
+
 		return $e_Source;
 	}
 
@@ -368,7 +368,7 @@ function createCCR($action,$raw="no",$requested_by=""){
 		header("Content-Disposition: attachment; filename=" . $main_filename . "");
 		echo $main_xml;
 	}
-	
+
 if($_POST['ccrAction']) {
   $raw=$_POST['raw'];
   /* If transmit requested, fail fast if the recipient address fails basic validation */

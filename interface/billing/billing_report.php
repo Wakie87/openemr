@@ -776,7 +776,7 @@ if(is_array($ret))
             EncounterIdArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
 			EncounterNoteArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
             <?php
-            while($rowresult4 = sqlFetchArray($result4))
+            foreach ($result4 as $rowresult4)
              {
             ?>
                 EncounterIdArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars($rowresult4['encounter'], ENT_QUOTES); ?>';
@@ -1070,7 +1070,7 @@ if(is_array($ret))
         $rcount++;
       }
       //checks whether a copay exists for the encounter and if exists displays it.
-      while($rowMoneyGot = sqlFetchArray($resMoneyGot)){
+      foreach ($resMoneyGot as $rowMoneyGot){
         $rowcnt++;
         $PatientPay=$rowMoneyGot['PatientPay'];
         $date=$rowMoneyGot['date'];

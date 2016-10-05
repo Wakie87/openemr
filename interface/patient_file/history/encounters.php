@@ -105,7 +105,7 @@ function getDocListByEncID($encounter,$raw_encounter_date,$pid){
 			$queryString = "SELECT date,note FROM notes WHERE foreign_id = ? ORDER BY date";
 			$noteResultSet = sqlStatement($queryString,array($documentrow['id']));
 			$note = '';
-			while ($row = sqlFetchArray($noteResultSet)) {
+			foreach ($noteResultSet as $row) {
 				$note .= oeFormatShortDate(date('Y-m-d', strtotime($row['date']))) . " : " . attr($row['note']) . "\n";
 			}
 			$docTitle = ($note) ? $note : xla("View document");
@@ -428,7 +428,7 @@ if(($pagesize>0) && ($pagestart+$pagesize <= $numRes))
 $res4 = sqlStatement($query, $sqlBindArray);
 
 
-while ($result4 = sqlFetchArray($res4)) {
+foreach ($res4 as $result4) {
 
         // $href = "javascript:window.toencounter(" . $result4['encounter'] . ")";
         $reason_string = "";
@@ -624,7 +624,7 @@ while ($result4 = sqlFetchArray($res4)) {
                   "WHERE s.pid = ? AND s.encounter = ? " .
                   "ORDER BY s.sale_id";
                 $sres = sqlStatement($query, array($pid,$result4['encounter']));
-                while ($srow = sqlFetchArray($sres)) {
+                foreach ($sres as $srow) {
                   $subresult2[] = array('code_type' => 'PROD',
                     'code' => 'PROD:' . $srow['drug_id'], 'modifier' => '',
                     'code_text' => $srow['name'], 'fee' => $srow['fee']);

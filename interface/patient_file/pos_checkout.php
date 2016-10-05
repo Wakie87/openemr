@@ -225,7 +225,7 @@ function generate_receipt($patient_id, $encounter=0) {
       // "WHERE s.pid = '$patient_id' AND s.encounter = '$encounter' AND s.fee != 0 " .
       "WHERE s.pid = ? AND s.encounter = ? " .
       "ORDER BY s.sale_id", array($patient_id,$encounter));
-    while ($inrow = sqlFetchArray($inres)) {
+    foreach ($inres as $inrow) {
       $charges += sprintf('%01.2f', $inrow['fee']);
       receiptDetailLine($inrow['sale_date'], $inrow['name'],
         $inrow['fee'], $inrow['quantity']);
@@ -236,7 +236,7 @@ function generate_receipt($patient_id, $encounter=0) {
       // "code_type != 'COPAY' AND activity = 1 AND fee != 0 " .
       "code_type != 'COPAY' AND activity = 1 " .
       "ORDER BY id", array($patient_id,$encounter));
-    while ($inrow = sqlFetchArray($inres)) {
+    foreach ($inres as $inrow) {
       $charges += sprintf('%01.2f', $inrow['fee']);
       receiptDetailLine($svcdate, $inrow['code_text'],
         $inrow['fee'], $inrow['units']);
@@ -250,7 +250,7 @@ function generate_receipt($patient_id, $encounter=0) {
       "a.pid = ? AND a.encounter = ? AND " .
       "a.adj_amount != 0 " .
       "ORDER BY s.check_date, a.sequence_no", array($patient_id,$encounter));
-    while ($inrow = sqlFetchArray($inres)) {
+    foreach ($inres as $inrow) {
       $charges -= sprintf('%01.2f', $inrow['adj_amount']);
       $payer = empty($inrow['payer_type']) ? 'Pt' : ('Ins' . $inrow['payer_type']);
       receiptDetailLine($svcdate, $payer . ' ' . $inrow['memo'],
@@ -278,7 +278,7 @@ function generate_receipt($patient_id, $encounter=0) {
       "pid = ? AND encounter = ?  AND " .
       "code_type = 'COPAY' AND activity = 1 AND fee != 0 " .
       "ORDER BY id", array($patient_id,$encounter));
-    while ($inrow = sqlFetchArray($inres)) {
+    foreach ($inres as $inrow) {
       $charges += sprintf('%01.2f', $inrow['fee']);
       receiptPaymentLine($svcdate, 0 - $inrow['fee'], $inrow['code_text']);
     }
@@ -291,7 +291,7 @@ function generate_receipt($patient_id, $encounter=0) {
       "a.pid = ? AND a.encounter = ? AND " .
       "a.pay_amount != 0 " .
       "ORDER BY s.check_date, a.sequence_no", array($patient_id,$encounter));
-    while ($inrow = sqlFetchArray($inres)) {
+    foreach ($inres as $inrow) {
       $payer = empty($inrow['payer_type']) ? 'Pt' : ('Ins' . $inrow['payer_type']);
       $charges -= sprintf('%01.2f', $inrow['pay_amount']);
       receiptPaymentLine($svcdate, $inrow['pay_amount'],
@@ -876,7 +876,7 @@ if ($inv_encounter) {
     <?php
     $query1112 = "SELECT * FROM list_options where list_id=?  ORDER BY seq, title ";
     $bres1112 = sqlStatement($query1112,array('payment_method'));
-    while ($brow1112 = sqlFetchArray($bres1112))
+    foreach ($bres1112 as $brow1112)
      {
       if($brow1112['option_id']=='electronic' || $brow1112['option_id']=='bank_draft')
      continue;

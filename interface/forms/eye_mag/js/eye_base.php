@@ -3125,7 +3125,7 @@ $(document).ready(function() {
                                             $query = "select * from list_options where list_id =? and activity='1' order by seq";
                                             
                                             $DEFAULT_data =sqlStatement($query,array("Eye_defaults_$providerID"));
-                                            while ($row = sqlFetchArray($DEFAULT_data)) {
+                                            foreach ($DEFAULT_data as $row) {
                                             //$row['notes'] is the clinical zone (EXT,ANTSEG,RETINA,NEURO)
                                             //$row['option_id'] is the field name
                                             //$row['title'] is the default value to use for this provider

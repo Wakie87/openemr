@@ -54,7 +54,7 @@ function track_anything_report($pid, $encounter, $cols, $id){
 	$query = sqlStatement($spell0, array($formid));
 	
 	// get all data of this specific track
-	while($myrow = sqlFetchArray($query)){
+	foreach ($query as $myrow){
 		$thistime = $myrow['track_timestamp'];
 		$shownameflag++;
 		$spell  = "SELECT form_track_anything_results.itemid, form_track_anything_results.result, form_track_anything_type.name AS the_name ";
@@ -67,7 +67,7 @@ function track_anything_report($pid, $encounter, $cols, $id){
 		// is this the <tbale>-head?
 		if ($shownameflag==1){
 			echo "<tr><th class='time'>" . xlt('Time') . "</th>";
-			while($myrow2 = sqlFetchArray($query2)){
+			foreach ($query2 as $myrow2){
 				echo "<th class='item'>&nbsp;" . text($myrow2['the_name']) . "&nbsp;</th>";
 				$ofc_name[$col] = $myrow2['the_name']; // save for openflashchart-form
 				$col++;
@@ -80,7 +80,7 @@ function track_anything_report($pid, $encounter, $cols, $id){
 		$ofc_date[$row] = $thistime; // save for openflashchart-form			
 		$col_i = 0; // how many columns
 		$query2  = sqlStatement($spell, array($formid, $thistime));
-		while($myrow2 = sqlFetchArray($query2)){
+		foreach ($query2 as $myrow2){
 			echo "<td class='item'>&nbsp;" . text($myrow2['result']) . "&nbsp;</td>";
 			if (is_numeric($myrow2['result'])) {
 					$ofc_value[$col_i][$row] = $myrow2['result'];// save for openflashchart-form

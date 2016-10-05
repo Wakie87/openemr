@@ -1,5 +1,5 @@
 <?php
-// +-----------------------------------------------------------------------------+ 
+// +-----------------------------------------------------------------------------+
 // Copyright (C) 2011 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 //
 //
@@ -19,7 +19,7 @@
 // openemr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 // Author:   Eldho Chacko <eldho@zhservices.com>
 //           Jacob T Paul <jacob@zhservices.com>
 //
@@ -103,19 +103,19 @@ $rowContext = sqlQuery("SELECT * FROM customlists WHERE cl_list_type=2 AND cl_li
     });
     </script>
      <script type="text/javascript">
-$(document).ready(function(){ 
-						   
+$(document).ready(function(){
+
 	$(function() {
 		$("#menu5 div").sortable({ opacity: 0.3, cursor: 'move', update: function() {
-			var order = $(this).sortable("serialize") + '&action=updateRecordsListings'; 
-			$.post("updateDB.php", order);									 
-		}								  
+			var order = $(this).sortable("serialize") + '&action=updateRecordsListings';
+			$.post("updateDB.php", order);
+		}
 		});
 	});
 
 });
 <?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
-</script> 
+</script>
 </head>
 <body class="body_top">
    <input type="hidden" name="list_id" id="list_id" value="<?php echo $rowContext['cl_list_id'];?>">
@@ -140,7 +140,7 @@ $(document).ready(function(){
                                     <option value=""><?php echo htmlspecialchars(xl('Select category'),ENT_QUOTES);?></option>
                                     <?php
                                     $resTemplates = sqlStatement("SELECT * FROM template_users AS tu LEFT OUTER JOIN customlists AS c ON tu.tu_template_id=c.cl_list_slno WHERE tu.tu_user_id=? AND c.cl_list_type=3 AND cl_list_id=? AND cl_deleted=0 ORDER BY c.cl_list_item_long",array($_SESSION['authId'],$rowContext['cl_list_id']));
-                                    while($rowTemplates = sqlFetchArray($resTemplates)){
+                                    foreach ($resTemplates as $rowTemplates){
                                     echo "<option value='".htmlspecialchars($rowTemplates['cl_list_slno'],ENT_QUOTES)."'>".htmlspecialchars(xl($rowTemplates['cl_list_item_long']),ENT_QUOTES)."</option>";
                                     }
                                     ?>
@@ -158,7 +158,7 @@ $(document).ready(function(){
                                 foreach ($res as $row){
                                 ?>
                                     <a href="#" onclick="top.restoreSession();CKEDITOR.instances.textarea1.insertText('<?php echo $row['cl_list_item_short'];?>');" class="css_button" title="<?php echo htmlspecialchars(xl($row['cl_list_item_long']),ENT_QUOTES);?>"><span><?php echo ucfirst(htmlspecialchars(xl($row['cl_list_item_long']),ENT_QUOTES));?></span></a>
-                                <?php 
+                                <?php
                                 }
                                 ?>
                             </td>
@@ -221,12 +221,12 @@ $(document).ready(function(){
                             </td>
                             <td valign=top style="width:700px;">
                                 <textarea class="ckeditor" cols="100" id="textarea1" name="textarea1" rows="80"></textarea>
-                            </td>                            
+                            </td>
                         </tr>
                     </table>
                     </form>
-                </div>     
-                
+                </div>
+
             </td>
         </tr>
     <?php

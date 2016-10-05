@@ -1,5 +1,5 @@
 <?php
-// +-----------------------------------------------------------------------------+ 
+// +-----------------------------------------------------------------------------+
 // Copyright (C) 2011 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 //
 //
@@ -19,7 +19,7 @@
 // openemr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 // Author:   Eldho Chacko <eldho@zhservices.com>
 //           Jacob T Paul <jacob@zhservices.com>
 //
@@ -52,12 +52,12 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
         if(sqlNumRows($res)){
             Delete_Rows($arr[0]);
             $qry = sqlStatement("SELECT * FROM customlists WHERE cl_list_id=? AND cl_deleted=0",array($arr[0]));
-            while($row=sqlFetchArray($qry)){
+            foreach ($qry as $row){
                 Delete_Rows($row['cl_list_slno']);
             }
         }
     }
-    
+
     //Add new Categories
     foreach($personalized as $key=>$value){
         $arr=explode("|",$value);
@@ -65,9 +65,9 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
             $res = sqlStatement("SELECT * FROM template_users WHERE tu_template_id=? AND tu_user_id=?",array($arr[0],$_SESSION['authId']));
                 Insert_Rows($arr[0]);
                 $qry = sqlStatement("SELECT * FROM customlists WHERE cl_list_id=? AND cl_deleted=0",array($arr[0]));
-                while($row=sqlFetchArray($qry)){
+                foreach ($qry as $row){
                     $qryTU = sqlStatement("SELECT * FROM template_users WHERE tu_template_id=? AND tu_user_id=?",array($row['cl_list_slno'],$arr[1]));
-                    while($rowTU=sqlFetchArray($qryTU)){
+                    foreach ($qryTU as $rowTU){
                     Insert_Rows($rowTU['tu_template_id'],$rowTU['tu_template_order']);
                     }
                 }
@@ -75,7 +75,7 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
         else{
             Insert_Rows($arr[0]);
             $qry = sqlStatement("SELECT * FROM customlists WHERE cl_list_id=? AND cl_deleted=0",array($arr[0]));
-            while($row=sqlFetchArray($qry)){
+            foreach ($qry as $row){
                 Insert_Rows($row['cl_list_slno'],$row['cl_order']);
             }
         }
@@ -102,9 +102,9 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
 
         // fancy box
         enable_modals();
-    
+
         tabbify();
-    
+
         // special size for
             $(".iframe_small").fancybox( {
                     'overlayOpacity' : 0.0,
@@ -160,7 +160,7 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
                         },
                         error:function(){
                             alert("fail");
-                        }	
+                        }
                         });
                     }
                     else{
@@ -199,7 +199,7 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
             for (total_selected; total_selected>= 0; total_selected--)
             {
                document.getElementById(selectedList).options[total_selected].selected=true;
-            } 
+            }
         }
         function all_deselected(selectedList){
             top.restoreSession();
@@ -207,7 +207,7 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
             for (total_selected; total_selected>= 0; total_selected--)
             {
                document.getElementById(selectedList).options[total_selected].selected=false;
-            } 
+            }
         }
         function jsub_selected(form,selectFrom,selectedList)
         {
@@ -258,7 +258,7 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
                 },
                 error:function(){
                     alert("fail");
-                }	
+                }
                 });
                 return;
             }
@@ -313,7 +313,7 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
                                 <?php
                                 $context_sql="SELECT * FROM customlists WHERE cl_list_type=2 AND cl_deleted=0";
                                 $context_res=sqlStatement($context_sql);
-                                while($context_row=sqlFetchArray($context_res)){
+                                foreach ($context_res as $context_row){
                                     echo "<option value='".htmlspecialchars($context_row['cl_list_slno'],ENT_QUOTES)."' ";
                                     echo  ($_REQUEST['filter_context']==$context_row['cl_list_slno']) ? 'selected' : '' ;
                                     echo ">".htmlspecialchars($context_row['cl_list_item_long'],ENT_QUOTES)."</option>";
@@ -328,7 +328,7 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
                                 <?php
                                 $user_sql="SELECT DISTINCT(tu.tu_user_id),u.fname,u.lname FROM template_users AS tu LEFT OUTER JOIN users AS u ON tu.tu_user_id=u.id WHERE tu.tu_user_id!=?";
                                 $user_res=sqlStatement($user_sql,array($_SESSION['authId']));
-                                while($user_row=sqlFetchArray($user_res)){
+                                foreach ($user_res as $user_row){
                                     echo "<option value='".htmlspecialchars($user_row['tu_user_id'],ENT_QUOTES)."' ";
                                     echo  ($_REQUEST['filter_users']==$user_row['tu_user_id']) ? 'selected' : '' ;
                                     echo ">".htmlspecialchars($user_row['fname']." ".$user_row['lname'],ENT_QUOTES)."</option>";
@@ -399,7 +399,7 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
                                 "ORDER BY cl_list_id,tu_user_id,c.cl_list_item_long";
                                 $resTemplates = sqlStatement($sql,$arval1);
                             }
-                            while($rowTemplates = sqlFetchArray($resTemplates)){
+                            foreach ($resTemplates as $rowTemplates){
                             $cntxt='';
                             if(!$_REQUEST['filter_context']){
                             $context=sqlQuery("SELECT * FROM customlists WHERE cl_list_slno=?",array($rowTemplates['cl_list_id']));
@@ -416,7 +416,7 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
                                          $where.
                                          " ORDER BY cl_list_id,cl_list_item_long";
                             $resorphan = sqlStatement($sqlorphan);
-                            while($roworphan = sqlFetchArray($resorphan)){
+                            foreach ($resorphan as $roworphan){
                             $cntxt='';
                             if(!$_REQUEST['filter_context']){
                             $context=sqlQuery("SELECT * FROM customlists WHERE cl_list_slno=?",array($roworphan['cl_list_id']));
@@ -443,7 +443,7 @@ if(isset($_REQUEST['submitform']) && $_REQUEST['submitform']=='save'){
                                 $where .
                                 "ORDER BY c.cl_list_item_long";
                         $resTemplates = sqlStatement($sql,array($_SESSION['authId']));
-                        while($rowTemplates = sqlFetchArray($resTemplates)){
+                        foreach ($resTemplates as $rowTemplates){
                             $cntxt='';
                             if(!$_REQUEST['filter_context']){
                             $context=sqlQuery("SELECT * FROM customlists WHERE cl_list_slno=?",array($rowTemplates['cl_list_id']));

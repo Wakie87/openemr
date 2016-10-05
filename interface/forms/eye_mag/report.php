@@ -72,7 +72,7 @@ if (!$id) $id=$form_id;
 // (and if not the default where a fresh install begins from, or someone else's) 
 $query  = "SELECT * FROM form_eye_mag_prefs where PEZONE='PREFS' AND id=? ORDER BY ZONE_ORDER,ordering";
 $result = sqlStatement($query,array($_SESSION['authUserID']));
-while ($prefs= sqlFetchArray($result))   {
+foreach ($result as $prefs)   {
   $LOCATION = $prefs['LOCATION'];
   $$LOCATION = text($prefs['GOVALUE']);
 }
@@ -447,7 +447,7 @@ function narrative($pid, $encounter, $cols, $form_id,$choice='full') {
 
         $query = "select * from form_eye_mag_wearing where PID=? and FORM_ID=? and ENCOUNTER=? ORDER BY RX_NUMBER";
                 $wear = sqlStatement($query,array($pid,$form_id,$encounter));
-                while ($wearing = sqlFetchArray($wear))   {
+                foreach ($wear as $wearing)   {
                   $count_rx++;
                   ${"display_W_$count_rx"} = '';
                   ${"ODSPH_$count_rx"} = $wearing['ODSPH'];
@@ -1840,7 +1840,7 @@ function narrative($pid, $encounter, $cols, $form_id,$choice='full') {
                   $order   = array("\r\n", "\n", "\r","\v","\f","\x85","\u2028","\u2029");
                   $replace = "<br />";
                   // echo '<ol>';
-                  while ($ip_list = sqlFetchArray($result))   {
+                  foreach ($result as $ip_list)   {
                     $newdata =  array (
                       'form_id'       => $ip_list['form_id'],
                       'pid'           => $ip_list['pid'],

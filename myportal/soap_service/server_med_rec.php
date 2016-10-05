@@ -132,7 +132,7 @@ class Userforms extends UserAudit{
     global $pid;
     $GLOBALS['pid'] = $pid;
     $inclookupres = sqlStatement("SELECT DISTINCT formdir FROM forms WHERE pid = ? AND deleted=0",array($pid));
-    while($result = sqlFetchArray($inclookupres)) {
+    foreach ($inclookupres as $result) {
         $formdir = $result['formdir'];
         if (substr($formdir,0,3) == 'LBF')
           include_once($GLOBALS['incdir'] . "/forms/LBF/report.php");
@@ -142,7 +142,7 @@ class Userforms extends UserAudit{
     $N = 6;
     $inclookupres = sqlStatement("SELECT encounter,form_id,formdir,id FROM forms WHERE pid = ? AND deleted=0
                      AND id =? ",array($pid,$fId));
-    while($result = sqlFetchArray($inclookupres)) {
+    foreach ($inclookupres as $result) {
         $form_encounter=$result['encounter'];
         $form_id=$result['form_id'];
         $formdir = $result['formdir'];
@@ -169,7 +169,7 @@ class Userforms extends UserAudit{
     global $pid;
     global $ISSUE_TYPES;
     $inclookupres = sqlStatement("SELECT DISTINCT formdir FROM forms WHERE pid = ? AND deleted=?",array($pid,0));
-    while($result = sqlFetchArray($inclookupres)) {
+    foreach ($inclookupres as $result) {
         $formdir = $result['formdir'];
         if (substr($formdir,0,3) == 'LBF')
           include_once($GLOBALS['incdir'] . "/forms/LBF/report.php");

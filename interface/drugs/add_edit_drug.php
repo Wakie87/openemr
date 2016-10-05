@@ -376,7 +376,7 @@ else {
     "pw.pw_warehouse = lo.option_id WHERE " .
     "lo.list_id = 'warehouse' AND lo.activity = 1 ORDER BY lo.seq, lo.title",
     array($drug_id));
-  while ($pwrow = sqlFetchArray($pwres)) {
+  foreach ($pwres as $pwrow) {
     $pwarr[] = $pwrow;
     echo "     <td valign='top' nowrap>" .
       text($pwrow['title']) . "</td>\n";

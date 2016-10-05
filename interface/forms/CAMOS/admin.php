@@ -9,19 +9,19 @@ if ($_POST['export']) {
 	else {
 		$query1 = "select id, category from ".mitigateSqlTableUpperCase("form_CAMOS_category");
 		$statement1 = sqlStatement($query1);
-		while ($result1 = sqlFetchArray($statement1)) {
+		foreach ($statement1 as $result1) {
 		        $tmp = $result1['category'];
 		        $tmp = "<category>$tmp</category>"."\n";
 		        fwrite($temp, $tmp);
 		        $query2 = "select id,subcategory from ".mitigateSqlTableUpperCase("form_CAMOS_subcategory")." where category_id=".$result1['id'];
 		        $statement2 = sqlStatement($query2);
-		        while ($result2 = sqlFetchArray($statement2)) {
+		        foreach ($statement2 as $result2) {
 		                $tmp = $result2['subcategory'];
 		                $tmp = "<subcategory>$tmp</subcategory>"."\n";
 		                fwrite($temp, $tmp);
 		                $query3 = "select item, content from ".mitigateSqlTableUpperCase("form_CAMOS_item")." where subcategory_id=".$result2['id'];
 		                $statement3 = sqlStatement($query3);
-		                while ($result3 = sqlFetchArray($statement3)) {
+		                foreach ($statement3 as $result3) {
 		                        $tmp = $result3['item'];
 		                        $tmp = "<item>$tmp</item>"."\n";
 		                        fwrite($temp, $tmp);

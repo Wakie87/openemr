@@ -247,7 +247,7 @@ $(document).ready(function(){
 	if($GLOBALS['erx_enable']){
 		//$soap_status=sqlQuery("select soap_import_status from patient_data where pid=?",array($pid));
 		$soap_status=sqlStatement("select soap_import_status,pid from patient_data where pid=? and soap_import_status in ('1','3')",array($pid));
-		while($row_soapstatus=sqlFetchArray($soap_status)){
+		foreach ($soap_status as $row_soapstatus){
 			//if($soap_status['soap_import_status']=='1' || $soap_status['soap_import_status']=='3'){ ?>
 			top.restoreSession();
 			$.ajax({
@@ -429,7 +429,7 @@ function setMyPatient() {
   $result4 = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
     " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
   if(sqlNumRows($result4)>0) {
-    while($rowresult4 = sqlFetchArray($result4)) {
+    foreach ($result4 as $rowresult4) {
 ?>
  EncounterIdArray[Count] = '<?php echo addslashes($rowresult4['encounter']); ?>';
  EncounterDateArray[Count] = '<?php echo addslashes(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date'])))); ?>';
@@ -1257,7 +1257,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
           $parentId = $myrow2['id'];
           $query = "SELECT id, name FROM categories WHERE parent=?";
           $resNew1 = sqlStatement($query, array($parentId));
-          while ($myrows3 = sqlFetchArray($resNew1)) {
+          foreach ($resNew1 as $myrows3) {
               $categoryId = $myrows3['id'];
               $nameDoc = $myrows3['name'];
               $query = "SELECT documents.date, documents.id " .
@@ -1269,7 +1269,8 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
                    "ORDER BY documents.date DESC";
               $resNew2 = sqlStatement($query, array($categoryId, $pid));
               $limitCounter = 0; // limit to one entry per category
-              while (($myrows4 = sqlFetchArray($resNew2)) && ($limitCounter == 0)) {
+              foreach ($resNew2 as $myrows4) {
+                if($limitCounter == 0) {
                   $dateTimeDoc = $myrows4['date'];
               // remove time from datetime stamp
               $tempParse = explode(" ",$dateTimeDoc);
@@ -1284,6 +1285,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
               $limitCounter = $limitCounter + 1;
               $counterFlag = true;
               }
+          }
           }
           }
           if (!$counterFlag) {
@@ -1571,7 +1573,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
         $fixedWidth = false;
         expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel , $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass, $widgetAuth, $fixedWidth);
         $count = 0;
-        while($row = sqlFetchArray($pres)) {
+        foreach ($pres as $row) {
             $count++;
             $dayname = date("l", strtotime($row['pc_eventDate']));
             $dispampm = "am";

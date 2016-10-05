@@ -164,7 +164,7 @@ function generate_select_list($tag_name, $list_id, $currvalue, $title, $empty_na
         }
 	$got_selected = FALSE;
 	
-	while ($lrow = sqlFetchArray ($lres)) {
+	foreach ($lres as $lrow) {
 		$selectedValues = explode ("|", $currvalue);
 		
 		$optionValue = attr($lrow ['option_id']);
@@ -219,7 +219,7 @@ function generate_select_list($tag_name, $list_id, $currvalue, $title, $empty_na
 		$got_selected_backup = FALSE;
 		if (!empty($backup_list)) {
 			$lres_backup = sqlStatement("SELECT * FROM list_options WHERE list_id = ? AND activity = 1 ORDER BY seq, title", array($list_id));
-			while ($lrow_backup = sqlFetchArray ($lres_backup)) {
+			foreach ($lres_backup as $lrow_backup) {
 				$selectedValues = explode ("|", $currvalue);
 			
 				$optionValue = attr($lrow_backup['option_id']);
@@ -2508,7 +2508,7 @@ function display_layout_tabs_data($formtype, $result1, $result2='') {
 			<table border='0' cellpadding='0'>
 
 			<?php
-				while ($group_fields = sqlFetchArray($group_fields_query)) {
+				foreach ($group_fields_query as $group_fields) {
 
 					$titlecols     = $group_fields['titlecols'];
 					$datacols      = $group_fields['datacols'];
@@ -2646,7 +2646,7 @@ function display_layout_tabs_data_editable($formtype, $result1, $result2='') {
 			<table border='0' cellpadding='0'>
 
 			<?php
-				while ($group_fields = sqlFetchArray($group_fields_query)) {
+				foreach ($group_fields_query as $group_fields) {
 
 					$titlecols  = $group_fields['titlecols'];
 					$datacols   = $group_fields['datacols'];
@@ -3084,7 +3084,7 @@ function expand_collapse_widget($title, $label, $buttonLabel, $buttonLink, $butt
 function billing_facility($name,$select){
 	$qsql = sqlStatement("SELECT id, name FROM facility WHERE billing_location = 1");
 		echo "   <select id='".htmlspecialchars($name, ENT_QUOTES)."' name='".htmlspecialchars($name, ENT_QUOTES)."'>";
-			while ($facrow = sqlFetchArray($qsql)) {
+			foreach ($qsql as $facrow) {
 				$selected = ($facrow['id'] == $select) ? 'selected="selected"' : '' ;
 				 echo "<option value=".htmlspecialchars($facrow['id'],ENT_QUOTES)." $selected>".htmlspecialchars($facrow['name'], ENT_QUOTES)."</option>";
 				}
@@ -3104,7 +3104,7 @@ function getSmokeCodes()
 {
      $smoking_codes_arr = array();
      $smoking_codes = sqlStatement("SELECT option_id,codes FROM list_options WHERE list_id='smoking_status' AND activity = 1");
-     while($codes_row = sqlFetchArray($smoking_codes))
+     foreach ($smoking_codes as $codes_row)
       {
           $smoking_codes_arr[$codes_row['option_id']] = $codes_row['codes'];
       }

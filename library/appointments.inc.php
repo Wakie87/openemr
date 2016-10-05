@@ -164,7 +164,7 @@ function fetchEvents($from_date, $to_date, $where_param = null, $orderby_param =
   $resNotNull = (isset($res) && $res != null);
   }
 
-  while ($event = sqlFetchArray($res)) {
+  foreach ($res as $event) {
     ///////
     if($nextX) $stopDate = $event['pc_endDate'];
     else $stopDate = ($event['pc_endDate'] <= $to_date) ? $event['pc_endDate'] : $to_date;
@@ -644,10 +644,8 @@ WHERE `pc_pid` = ?  AND `pc_recurrtype` > 0;";
 	$sqlBindArray = array();
 	array_push($sqlBindArray, $pid);
 	$res = sqlStatement($query, $sqlBindArray);
-	$row = 0;
-	while($res_arr[$row] = sqlFetchArray($res)) {
-		$res_arr[$row]['pc_recurrspec'] = interpretRecurrence($res_arr[$row]['pc_recurrspec'], $res_arr[$row]['pc_recurrtype']);
-		$row++;
+	foreach ($res as $res_arr) {
+		$res_arr['pc_recurrspec'] = interpretRecurrence($res_arr['pc_recurrspec'], $res_arr['pc_recurrtype']);
 	}
 	return $res_arr;
 }

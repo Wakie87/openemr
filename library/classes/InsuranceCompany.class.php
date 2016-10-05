@@ -317,7 +317,7 @@ class InsuranceCompany extends ORDataObject{
         $results = sqlQ($sql);
         //echo "sql: $sql";
         //print_r($results);
-        while($row = sqlFetchArray($results)) {
+        foreach ($results as $row) {
                 $icompanies[] = new InsuranceCompany($row['id']);
         }
         return $icompanies;

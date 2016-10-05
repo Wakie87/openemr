@@ -447,7 +447,7 @@ var mypcc = '<?php echo htmlspecialchars($GLOBALS['phone_country_code'], ENT_QUO
                        "order by full_name";
 
                 $result = sqlStatement($sql);
-                while($row = sqlFetchArray($result)){
+                foreach ($result as $row){
                   echo '<OPTION VALUE=' . htmlspecialchars($row{'id'}, ENT_QUOTES);
                   echo (isset($administered_by_id) && $administered_by_id != "" ? $administered_by_id : $_SESSION['authId']) == $row{'id'} ? ' selected>' : '>';
                   echo htmlspecialchars($row{'full_name'}, ENT_NOQUOTES) . '</OPTION>';
@@ -537,7 +537,7 @@ var mypcc = '<?php echo htmlspecialchars($GLOBALS['phone_country_code'], ENT_QUO
                        "order by full_name";
 
                 $result = sqlStatement($sql);
-                while($row = sqlFetchArray($result)){
+                foreach ($result as $row){
                   echo '<OPTION VALUE=' . htmlspecialchars($row{'id'}, ENT_QUOTES);
                   echo (isset($ordered_by_id) && $ordered_by_id != "" ? $ordered_by_id : $_SESSION['authId']) == $row{'id'} ? ' selected>' : '>';
                   echo htmlspecialchars($row{'full_name'}, ENT_NOQUOTES) . '</OPTION>';
@@ -756,7 +756,7 @@ var mypcc = '<?php echo htmlspecialchars($GLOBALS['phone_country_code'], ENT_QUO
 <?php
 		$result = getImmunizationList($pid, $_GET['sortby'], true);
 			
-        while($row = sqlFetchArray($result)) {
+        foreach ($result as $row) {
 			$isError = $row['added_erroneously'];
 			
 			if ($isError) {

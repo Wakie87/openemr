@@ -160,7 +160,7 @@ if(!$printable){
 
 	// Select which items to view...
 	$i = 0;
-	while($myrow = sqlFetchArray($query)){
+	foreach ($query as $myrow){
 
 		echo "<input type='checkbox' name='value_code[]' value=" . attr($myrow['value_code']) . " ";
 		if($value_select){
@@ -244,7 +244,7 @@ if($value_select){
 			// get data from db
 			$spell  = $main_spell;
 			$query  = sqlStatement($spell,array($this_value,$pid));
-			while($myrow = sqlFetchArray($query)){
+			foreach ($query as $myrow){
 				
 				$value_array[0][$value_count] 	= $myrow['result'];
 				$date_array[$value_count]	= $myrow['date_collected'];
@@ -349,7 +349,7 @@ if($value_select){
 			$spell  = $main_spell;
 			$query  = sqlStatement($spell,array($this_value,$pid));
 	
-			while($myrow = sqlFetchArray($query)){
+			foreach ($query as $myrow){
 				$value_matrix[$i][procedure_result_id] 	= $myrow['procedure_result_id'];
 				$value_matrix[$i][result_code] 			= $myrow['result_code'];
 				$value_matrix[$i][result_text] 			= $myrow['result_text'];

@@ -61,7 +61,7 @@ require_once(dirname(__FILE__)."/../library/csv_like_join.php");
 
 $code_types = array();
 $ctres = sqlStatement("SELECT * FROM code_types WHERE ct_active=1 ORDER BY ct_seq, ct_key");
-while ($ctrow = sqlFetchArray($ctres)) {
+foreach ($ctres as $ctrow) {
   $code_types[$ctrow['ct_key']] = array(
     'active' => $ctrow['ct_active'  ],
     'id'   => $ctrow['ct_id'  ],

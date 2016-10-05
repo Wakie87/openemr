@@ -757,7 +757,7 @@ function PatientMedication($doc,$r,$pid,$med_limit)
     $res_med=sqlStatement("select * from lists where type='medication' and pid=? and title<>''
 	and erx_uploaded='0' $active order by enddate limit 0,$med_limit",array($pid));
 	$uploaded_med_arr="";
-    while($row_med=sqlFetchArray($res_med))
+    foreach ($res_med as $row_med)
     {
 		$uploaded_med_arr[]=$row_med['id'];
         $b = $doc->createElement("OutsidePrescription");
@@ -868,7 +868,7 @@ function PatientFreeformHealthplans($doc, $r, $pid) {
         array($pid)
     );
 
-    while($row = sqlFetchArray($resource)) {
+    foreach ($resource as $row) {
         $healthplanName = $doc->createElement('healthplanName');
         $healthplanName->appendChild($doc->createTextNode(
             stripSpecialCharacter(trimData($row['name'], 35))

@@ -883,7 +883,7 @@ return false;
 						  </tr>
 						  <?php
 						  }
-							while ($RowSearch = sqlFetchArray($ResultSearch))
+							foreach ($ResultSearch as $RowSearch)
 							 {
 								$CountIndex++;
 								$CountIndexAbove++;
@@ -1104,12 +1104,13 @@ return false;
 						<?php
 
 								
-							 }//while ($RowSearch = sqlFetchArray($ResultSearch))
+							 }//foreach ($ResultSearch as $RowSearch)
 						?>
 						<?php
 						 }//if(sqlNumRows($ResultSearch)>0)
 
-						 }while ($RowSearchSub = sqlFetchArray($ResultSearchSub));
+						 }
+						 while ($RowSearchSub = sqlFetchArray($ResultSearchSub));
 						if($Table=='yes')
 						 {
 						?>

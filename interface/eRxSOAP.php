@@ -538,7 +538,7 @@ class eRxSOAP {
 
 		$resource = $store->selectActiveAllergiesByPatientId($patientId);
 
-		while($row = sqlFetchArray($resource)) {
+		foreach ($resource as $row) {
 			$noMatch = true;
 
 			foreach($allergyArray as $allergy) {

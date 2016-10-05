@@ -195,7 +195,7 @@ class Pharmacy extends ORDataObject{
         $results = sqlQ($sql);
         //echo "sql: $sql";
         //print_r($results);
-        while($row = sqlFetchArray($results)) {
+        foreach ($results as $row) {
                 $pharmacies[] = new Pharmacy($row['id']);
         }
         return $pharmacies;

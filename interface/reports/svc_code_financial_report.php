@@ -252,7 +252,7 @@ $grand_total_amt_balance  = 0;
       $grand_total_amt_adjustment  = 0;
       $grand_total_amt_balance  = 0;
  
-      while ($erow = sqlFetchArray($res)) {
+     foreach ($res as $erow) {
 	  $row = array();
       $row['pid'] = $erow['pid'];
       $row['provider_id'] = $erow['provider_id'];

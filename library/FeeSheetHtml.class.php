@@ -195,7 +195,7 @@ class FeeSheetHtml extends FeeSheet {
     $pricelevel = $this->getPriceLevel();
     $plres = sqlStatement("SELECT option_id, title FROM list_options " .
       "WHERE list_id = 'pricelevel' AND activity = 1 ORDER BY seq");
-    while ($plrow = sqlFetchArray($plres)) {
+    foreach ($plres as $plrow) {
       $key = $plrow['option_id'];
       $val = $plrow['title'];
       $s .= "<option value='" . attr($key) . "'";

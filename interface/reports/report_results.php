@@ -273,7 +273,7 @@ require_once "$srcdir/report_database.inc";
  </tr>
 
 <?php
- } // $row = sqlFetchArray($res) while
+ } //foreach ($res as $row)
 ?>
 </tbody>
 </table>

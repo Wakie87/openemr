@@ -221,7 +221,7 @@ $spell .= "GROUP BY id ";
 $spell .= "ORDER BY sortdate " . escape_sort_order($ASC_DESC);
 //---
 $query = sqlStatement($spell,array($the_procedure,$pid));
-while($myrow = sqlFetchArray($query)){
+foreach ($query as $myrow){
 	$the_track = $myrow["id"];
 	$the_encounter = $myrow["encounter"];
 	$track_count++;
@@ -248,7 +248,7 @@ while($myrow = sqlFetchArray($query)){
 	$spell2 .= "WHERE track_anything_id = ? ";
 	$spell2 .= "ORDER BY track_timestamp " . escape_sort_order($ASC_DESC);
 	$query2 = sqlStatement($spell2, array($the_track));
-	while($myrow2 = sqlFetchArray($query2)){
+	foreach ($query2 as $myrow2){
 		$thistime = $myrow2['track_timestamp'];
 		$shownameflag++;
 		
@@ -265,7 +265,7 @@ while($myrow = sqlFetchArray($query)){
 		// ----------------------------
 		if ($shownameflag==1){
 			echo "<tr><th class='time'>" . xlt('Time') . "</th>";
-			while($myrow3 = sqlFetchArray($query3)){
+			foreach ($query3 as $myrow3){
 				echo "<th class='item'>&nbsp;" . text($myrow3['the_name']) . "&nbsp;</th>";	//  
 
 				if($save_item_flag == 0) {
@@ -286,7 +286,7 @@ while($myrow = sqlFetchArray($query)){
 		$date_local[$row_lc]  = $thistime; // save datetime into local array
 
 		$query3  = sqlStatement($spell3, array($the_track, $thistime));
-		while($myrow3 = sqlFetchArray($query3)){
+		foreach ($query3 as $myrow3){
 			echo "<td class='item'>&nbsp;" . text($myrow3['result']) . "&nbsp;</td>";
 			if (is_numeric($myrow3['result'])) {
 					$value_global[$col_i][$row_gl] = $myrow3['result']; // save value into global array 

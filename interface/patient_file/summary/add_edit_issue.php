@@ -145,7 +145,7 @@ function ActiveIssueCodeRecycleFn($thispid2, $ISSUE_TYPES2) {
 
   $issueCodes2 = sqlStatement("SELECT diagnosis FROM lists WHERE pid = ? AND enddate is NULL AND type IN ($qs2)", $sqlParameters2);
 
-  while ($issueCodesRow2 = sqlFetchArray($issueCodes2)) {
+  foreach ($issueCodes2 as $issueCodesRow2) {
 
     if ($issueCodesRow2['diagnosis'] != "") {
 
@@ -419,7 +419,7 @@ div.section {
   echo " aitypes[$i] = " . attr($value[3]) . ";\n";
   echo " aopts[$i] = new Array();\n";
   $qry = sqlStatement("SELECT * FROM list_options WHERE list_id = ? AND activity = 1",array($key."_issue_list"));
-  while($res = sqlFetchArray($qry)){
+  foreach ($qry as $res){
     echo " aopts[$i][aopts[$i].length] = new Option('".attr(xl_list_label(trim($res['title'])))."', '".attr(trim($res['option_id']))."', false, false);\n";
     if ($res['codes']) {
       echo " aopts[$i][aopts[$i].length-1].setAttribute('data-code','".attr(trim($res['codes']))."');\n";

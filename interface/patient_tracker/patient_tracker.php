@@ -91,7 +91,7 @@ $appointments_status = getApptStatus($appointments);
 // xl('Coding done')
 // xl('Canceled < 24h')
 $lres = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1", array('apptstat'));
-while ($lrow = sqlFetchArray ($lres)) {
+foreach ($lres as $lrow) {
     // if exists, remove the legend character
     if($lrow['title'][1] == ' '){
         $splitTitle = explode(' ', $lrow['title']);
@@ -238,7 +238,7 @@ function openNewTopWindow(newpid,newencounterid) {
                         <?php
                         $categories=fetchAppointmentCategories();
                         echo "<option value='ALL'>".xlt("All")."</option>";
-                        while($cat=sqlFetchArray($categories))
+                        foreach ($categories as $cat)
                         {
                             echo "<option value='".attr($cat['id'])."'";
                             if($cat['id']==$_POST['form_apptcat'])

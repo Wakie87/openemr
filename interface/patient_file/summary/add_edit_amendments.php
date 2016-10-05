@@ -254,7 +254,7 @@ function formValidation() {
 
 	<?php 
 	 if (sqlNumRows($resultSet)) {
-		while ($row = sqlFetchArray($resultSet)) {
+		foreach ($resultSet as $row) {
 			$created_date = date('Y-m-d', strtotime($row['created_time']));
 			echo "<tr>";
 			$userName = $row['lname'] . ", " . $row['fname'];

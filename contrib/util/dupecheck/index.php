@@ -121,7 +121,7 @@ if ($parameters['go'] == "Go") {
     }
 
     $qResults = sqlStatement($sqlstmt);
-    while ($row = sqlFetchArray($qResults)) {
+    foreach ($qResults as $row) {
 
         if ($dupelist[$row['id']] == 1) continue;
 
@@ -162,7 +162,7 @@ if ($parameters['go'] == "Go") {
         echo "<td><input type='button' value=' ? ' class='moreinfo' oemrid='".$row['pid']."' title='More info'></td>";
         echo "</tr>";
 
-        while ($mrow = sqlFetchArray($mResults)) {
+        foreach ($mResults as $mrow) {
             if ($row['id'] == $mrow['id']) continue;
             echo "<tr class='onerow' id='".$mrow['id']."' oemrid='".$mrow['id']."' dupecount='".$dupecount."' title='Merge duplicates into this record'>";
             echo "<td>".$mrow['lname'].", ".$mrow['fname']."</td>";

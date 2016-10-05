@@ -150,7 +150,7 @@ for($i=0; $row=sqlFetchArray($l_res); $i++) {
                                         ?>
                 </tr>
                     <?php
-                    while ($user = sqlFetchArray($u_res)) {
+                    foreach ($u_res as $user) {
                         foreach ($f_arr as $facility) {
                     ?>
                 <tr height="20"  class="text" style="border-bottom: 1px dashed;">

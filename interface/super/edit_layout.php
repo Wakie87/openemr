@@ -268,7 +268,7 @@ else if ($_POST['formaction'] == "addgroup" && $layout_id) {
                         " form_id = '".$_POST['layout_id']."'"
                         );
     $maxnum = '1';
-    while ($result = sqlFetchArray($results)) {
+    foreach ($results as $result) {
       $tmp = substr($result['gname'], 0, 1);
       if ($tmp >= $maxnum) $maxnum = nextGroupOrder($tmp);
     }
@@ -325,7 +325,7 @@ else if ($_POST['formaction'] == "movegroup" && $layout_id) {
     "ORDER BY gname");
   $garray = array();
   $i = 0;
-  while ($result = sqlFetchArray($results)) {
+  foreach ($results as $result) {
     if ($result['gname'] == $_POST['movegroupname']) {
       if ($_POST['movedirection'] == 'up') { // moving up
         if ($i > 0) {

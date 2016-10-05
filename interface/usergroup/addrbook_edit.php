@@ -67,7 +67,7 @@ td { font-size:10pt; }
   // 3 = Company Centric
   $sql = sqlStatement("SELECT option_id, option_value FROM list_options WHERE " .
    "list_id = 'abook_type' AND activity = 1");
-  while ($row_query = sqlFetchArray($sql)) {
+  foreach ($sql as $row_query) {
    echo "type_options_js"."['" . attr($row_query['option_id']) . "']=" . attr($row_query['option_value']) . ";\n";
   }
  ?>

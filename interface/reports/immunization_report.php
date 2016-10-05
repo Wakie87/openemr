@@ -144,7 +144,7 @@ if ($_POST['form_get_hl7']==='true') {
 
   $res = sqlStatement($query);
 
-  while ($r = sqlFetchArray($res)) {
+  foreach ($res as $r) {
     $content .= "MSH|^~\&|OPENEMR||||$nowdate||".
       "VXU^V04^VXU_V04|OPENEMR-110316102457117|P|2.5.1" .
       "$D" ;

@@ -1,5 +1,5 @@
 <?php
-// +-----------------------------------------------------------------------------+ 
+// +-----------------------------------------------------------------------------+
 // Copyright (C) 2011 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 //
 //
@@ -19,7 +19,7 @@
 // openemr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 // Author:   Eldho Chacko <eldho@zhservices.com>
 //           Jacob T Paul <jacob@zhservices.com>
 //
@@ -44,7 +44,7 @@ $content = $_REQUEST['content'];
 
 if($Source=="add_template"){
     $arr = explode("|",$multi);
-    
+
     for($i=0;$i<sizeof($arr)-1;$i++){
     $sql = sqlStatement("SELECT * FROM customlists AS cl LEFT OUTER JOIN template_users AS tu ON cl.cl_list_slno=tu.tu_template_id
                         WHERE cl_list_item_long=? AND cl_list_type=3 AND cl_deleted=0 AND cl_list_id=? AND tu.tu_user_id=?",array($templateid,$arr[$i],$_SESSION['authId']));
@@ -58,7 +58,7 @@ if($Source=="add_template"){
         $resTemplates = sqlStatement("SELECT * FROM template_users AS tu LEFT OUTER JOIN customlists AS c ON tu.tu_template_id=c.cl_list_slno WHERE
                                      tu.tu_user_id=? AND c.cl_list_type=3 AND cl_list_id=? AND cl_deleted=0 ORDER BY tu.tu_template_order,
                                      c.cl_list_item_long",array($_SESSION['authId'],$list_id));
-        while($rowTemplates = sqlFetchArray($resTemplates)){
+        foreach ($resTemplates as $rowTemplates){
         echo "<option value='".htmlspecialchars($rowTemplates['cl_list_slno'],ENT_QUOTES)."'>".htmlspecialchars($rowTemplates['cl_list_item_long'],ENT_QUOTES)."</option>";
         }
     echo "</select>";
@@ -128,7 +128,7 @@ else if($Source=='display_item'){
     $val = str_replace("|",",",$multi);
     echo "<select multiple name='topersonalizeditem[]' id='topersonalizeditem' size='6' style='width:220px' onchange='display_item()'>";
     $resTemplates = sqlStatement("SELECT * FROM customlists WHERE cl_list_type=4 AND cl_deleted=0 AND cl_list_id IN ($val) ORDER BY cl_list_item_long");
-        while($rowTemplates = sqlFetchArray($resTemplates)){
+        foreach ($resTemplates as $rowTemplates){
         echo "<option value='".htmlspecialchars($rowTemplates['cl_list_slno'],ENT_QUOTES)."'>".htmlspecialchars($rowTemplates['cl_list_item_long'],ENT_QUOTES)."</option>";
         }
     echo "</select>";

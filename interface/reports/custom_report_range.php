@@ -290,7 +290,7 @@ if(!(empty($_POST['start']) || empty($_POST['end']))) {
         $res_query.=     " order by date DESC" ;
 		$res =sqlStatement($res_query,$sqlBindArray);
 	
-    while($result = sqlFetchArray($res)) {
+    foreach ($res as $result) {
         if ($result{"form_name"} == "New Patient Encounter") {
             $newpatient[] = $result{"form_id"}.":".$result{"encounter"};
 			$pids[] = $result{"pid"};
@@ -312,7 +312,7 @@ if(!(empty($_POST['start']) || empty($_POST['end']))) {
     foreach($newpatient as $patient){
         /*
         $inclookupres = sqlStatement("select distinct formdir from forms where pid='".$pids[$iCounter]."'");
-        while($result = sqlFetchArray($inclookupres)) {
+        foreach ($inclookupres as $result) {
             include_once("{$GLOBALS['incdir']}/forms/" . $result{"formdir"} . "/report.php");
         }
         */
