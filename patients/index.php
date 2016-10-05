@@ -40,10 +40,7 @@
     //
     // collect default language id (skip this if this is a password update)
     if (!(isset($_SESSION['password_update']))) {
-      $res2 = sqlStatement("select * from lang_languages where lang_description = ?", array($GLOBALS['language_default']));
-      for ($iter = 0;$row = sqlFetchArray($res2);$iter++) {
-        $result2[$iter] = $row;
-      }
+      $result2 = sqlStatement("select * from lang_languages where lang_description = ?", array($GLOBALS['language_default']));
       if (count($result2) == 1) {
         $defaultLangID = $result2[0]{"lang_id"};
         $defaultLangName = $result2[0]{"lang_description"};
@@ -61,7 +58,7 @@
         $mainLangID = empty($_SESSION['language_choice']) ? '1' : $_SESSION['language_choice'];
         if ($mainLangID == '1' && !empty($GLOBALS['skip_english_translation'])) {
           $sql = "SELECT * FROM lang_languages ORDER BY lang_description, lang_id";
-          $res3=SqlStatement($sql);
+          $result3=SqlStatement($sql);
         }
         else {
           // Use and sort by the translated language name.
@@ -73,10 +70,7 @@
                  "LEFT JOIN lang_definitions AS ld ON ld.cons_id = lc.cons_id AND " .
                  "ld.lang_id = ? " .
                  "ORDER BY IF(LENGTH(ld.definition),ld.definition,ll.lang_description), ll.lang_id";
-          $res3=SqlStatement($sql, array($mainLangID));
-        }
-        for ($iter = 0;$row = sqlFetchArray($res3);$iter++) {
-          $result3[$iter] = $row;
+          $result3=SqlStatement($sql, array($mainLangID));
         }
         if (count($result3) == 1) {
           //default to english if only return one language
@@ -87,7 +81,7 @@
         $hiddenLanguageField = "<input type='hidden' name='languageChoice' value='".htmlspecialchars($defaultLangID,ENT_QUOTES)."' />\n";
       }
     }
-    
+
 ?>
 
 <html>
@@ -102,14 +96,14 @@
 
     <script type="text/javascript">
         function process() {
-            
+
             if (!(validate())) {
                 alert ('<?php echo addslashes(xl('Field(s) are missing!')); ?>');
                 return false;
             }
         }
 	function validate() {
-            var pass=true;            
+            var pass=true;
 	    if (document.getElementById('uname').value == "") {
 		document.getElementById('uname').style.border = "1px solid red";
                 pass=false;
@@ -161,14 +155,14 @@
 	body {
 	    font-family: sans-serif;
 	    background-color: #638fd0;
-	    
+
 	    background: -webkit-radial-gradient(circle, white, #638fd0);
 	    background: -moz-radial-gradient(circle, white, #638fd0);
 	}
 
     </style>
-    
-    
+
+
 </head>
 <body>
 <br><br>
@@ -259,7 +253,7 @@
 	    </table>
             <?php if (!(empty($hiddenLanguageField))) echo $hiddenLanguageField; ?>
 	</form>
-    
+
         <div class="copyright"><?php echo htmlspecialchars(xl('Powered by'), ENT_NOQUOTES);?> OpenEMR</div>
       </div>
     <?php } ?>
@@ -270,28 +264,28 @@
       $(document).ready(function() {
 
 <?php // if something went wrong
-     if (isset($_GET['w'])) { ?>    
+     if (isset($_GET['w'])) { ?>
 	var unique_id = $.gritter.add({
 	    title: '<span class="red"><?php echo htmlspecialchars(xl('Oops!'), ENT_QUOTES);?></span>',
 	    text: '<?php echo htmlspecialchars(xl('Something went wrong. Please try again.', ENT_QUOTES)); ?>',
 	    sticky: false,
 	    time: '5000',
 	    class_name: 'my-nonsticky-class'
-	});    
+	});
 <?php } ?>
 
 <?php // if successfully logged out
-     if (isset($_GET['logout'])) { ?>    
+     if (isset($_GET['logout'])) { ?>
 	var unique_id = $.gritter.add({
 	    title: '<span class="green"><?php echo htmlspecialchars(xl('Success'), ENT_QUOTES);?></span>',
 	    text: '<?php echo htmlspecialchars(xl('You have been successfully logged out.'), ENT_QUOTES);?>',
 	    sticky: false,
 	    time: '5000',
 	    class_name: 'my-nonsticky-class'
-	});    
+	});
 <?php } ?>
 	return false;
-    
+
     });
 </script>
 

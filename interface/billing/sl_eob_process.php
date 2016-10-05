@@ -558,10 +558,10 @@ require_once("$srcdir/billing.inc");
               foreach($InsertionId as $key => $value)
                 {
                     $rs= sqlQ("select pay_total from ar_session where session_id='$value'");
-                    $row=sqlFetchArray($rs);
+                    $row=$rs;
                     $pay_total=$row['pay_total'];
                     $rs= sqlQ("select sum(pay_amount) sum_pay_amount from ar_activity where session_id='$value'");
-                    $row=sqlFetchArray($rs);
+                    $row=$rs;
                     $pay_amount=$row['sum_pay_amount'];
                     
                     if(($pay_total-$pay_amount)<>0)

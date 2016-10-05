@@ -38,7 +38,7 @@ if ($_POST['check'] || $_POST['synchronize']){
       // add the new language (first collect the language code)
       $sql = "SELECT lang_code FROM lang_custom WHERE constant_name='' AND lang_description=? ".$case_sensitive_collation." LIMIT 1";
       $res = SqlStatement($sql, array($var));
-      $row = SqlFetchArray($res);
+      $row = $res;
       $sql="INSERT INTO lang_languages SET lang_code=?, lang_description=?";
       SqlStatement($sql, array($row['lang_code'], $var));
       echo htmlspecialchars(xl('Synchronized new custom language:'),ENT_NOQUOTES)." ".htmlspecialchars($var,ENT_NOQUOTES)."<BR><BR>";
@@ -84,19 +84,19 @@ if ($_POST['check'] || $_POST['synchronize']){
     // collect language id
     $sql = "SELECT lang_id FROM lang_languages WHERE lang_description=? ".$case_sensitive_collation." LIMIT 1";
     $res2 = SqlStatement($sql, array($row['lang_description']));
-    $row2 = SqlFetchArray($res2);
+    $row2 = $res2;
     $language_id=$row2['lang_id'];
       
     // collect constant id
     $sql = "SELECT cons_id FROM lang_constants WHERE constant_name=? ".$case_sensitive_collation." LIMIT 1";
     $res2 = SqlStatement($sql, array($row['constant_name']));
-    $row2 = SqlFetchArray($res2);
+    $row2 = $res2;
     $constant_id=$row2['cons_id'];
       
     // collect definition id (if it exists)
     $sql = "SELECT def_id FROM lang_definitions WHERE cons_id=? AND lang_id=? LIMIT 1";
     $res2 = SqlStatement($sql, array($constant_id, $language_id));
-    $row2 = SqlFetchArray($res2);
+    $row2 = $res2;
     $def_id=$row2['def_id'];
     
     if ($def_id) {

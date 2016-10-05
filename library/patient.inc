@@ -1072,7 +1072,7 @@ function newInsuranceData(
 
   $idres = sqlStatement("SELECT * FROM insurance_data WHERE " .
     "pid = '$pid' AND type = '$type' ORDER BY date DESC");
-  $idrow = sqlFetchArray($idres);
+  $idrow = $idres;
 
   // Replace the most recent entry in any of the following cases:
   // * Its effective date is >= this effective date.
@@ -1087,7 +1087,7 @@ function newInsuranceData(
       $replace = true;
     }
     else {
-      if (!$idrow['provider'] && !sqlFetchArray($idres)) {
+      if (!$idrow['provider'] && !$idres) {
         $replace = true;
       }
       else {

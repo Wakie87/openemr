@@ -1,26 +1,26 @@
   <?php
-/** 
-* library/patient_tracker.inc.php Functions used in the Patient Flow Board. 
-* 
+/**
+* library/patient_tracker.inc.php Functions used in the Patient Flow Board.
+*
 * Functions for use in the Patient Flow Board and Patient Flow Board Reports.
-* 
-* 
-* Copyright (C) 2015 Terry Hill <terry@lillysystems.com> 
-* 
-* LICENSE: This program is free software; you can redistribute it and/or 
-* modify it under the terms of the GNU General Public License 
-* as published by the Free Software Foundation; either version 3 
-* of the License, or (at your option) any later version. 
-* This program is distributed in the hope that it will be useful, 
-* but WITHOUT ANY WARRANTY; without even the implied warranty of 
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-* GNU General Public License for more details. 
-* You should have received a copy of the GNU General Public License 
-* along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
-* 
-* @package OpenEMR 
+*
+*
+* Copyright (C) 2015 Terry Hill <terry@lillysystems.com>
+*
+* LICENSE: This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 3
+* of the License, or (at your option) any later version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+*
+* @package OpenEMR
 * @author Terry Hill <terry@lillysystems.com>
-* @link http://www.open-emr.org 
+* @link http://www.open-emr.org
 *
 * Please help the overall project by sending changes you make to the author and to the OpenEMR community.
 *
@@ -156,7 +156,7 @@ function fetch_Patient_Tracker_Events($from_date, $to_date, $provider_id = null,
 
 #check to see if a status code exist as a check in
 function  is_checkin($option) {
-  
+
   $row = sqlQuery("SELECT toggle_setting_1 FROM list_options WHERE " .
     "list_id = 'apptstat' AND option_id = ? AND activity = 1", array($option));
   if (empty($row['toggle_setting_1'])) return(false);
@@ -165,7 +165,7 @@ function  is_checkin($option) {
 
 #check to see if a status code exist as a check out
 function  is_checkout($option) {
-  
+
   $row = sqlQuery("SELECT toggle_setting_2 FROM list_options WHERE " .
     "list_id = 'apptstat' AND option_id = ? AND activity = 1", array($option));
   if (empty($row['toggle_setting_2'])) return(false);
@@ -227,7 +227,7 @@ function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$r
     $tracker_id = $tracker['id'];
     if (($status != $tracker['laststatus']) || ($room != $tracker['lastroom'])) {
       #Status or room has changed, so need to update tracker.
-      #Update lastseq in tracker.	  
+      #Update lastseq in tracker.
 	   sqlStatement("UPDATE `patient_tracker` SET  `lastseq` = ? WHERE `id` = ?",
                    array(($tracker['lastseq']+1),$tracker_id));
       #Add a tracker item.
@@ -270,17 +270,14 @@ function collectApptStatusSettings($option) {
 }
 
 # This is used to collect the tracker elements for the Patient Flow Board Report
-# returns the elements in an array 
+# returns the elements in an array
 function collect_Tracker_Elements($trackerid)
 {
  $res = sqlStatement("SELECT * FROM patient_tracker_element WHERE pt_tracker_id = ? ORDER BY LENGTH(seq), seq ", array($trackerid));
- for($iter=0; $row=sqlFetchArray($res); $iter++) {
-  $returnval[$iter]=$row;
- }
-return $returnval;
+ return $res;
 }
 
-#used to determine check in time 
+#used to determine check in time
 function collect_checkin($trackerid) {
   $tracker = sqlQuery("SELECT patient_tracker_element.start_datetime " .
                                    "FROM patient_tracker_element " .
@@ -347,7 +344,7 @@ function random_drug_test($tracker_id,$percentage,$yearly_limit) {
        }
 
     }
-   #Update the tracker file.    
+   #Update the tracker file.
    sqlStatement("UPDATE patient_tracker SET " .
                  "random_drug_test = ? " .
                  "WHERE id =? ", array($drugtest,$tracker_id));

@@ -57,7 +57,7 @@ class ThumbnailGenerator{
         WHERE mimetype IN (" . implode(',', self::get_types_support()) . ") AND thumb_url IS NULL";
 
         $results = sqlStatement($sql);
-        $row = sqlFetchArray($results);
+        $row = $results;
 
         return $row['c'];
     }

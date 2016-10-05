@@ -101,7 +101,7 @@ function process_commands(&$string_to_process, &$camos_return_data) {
         $replacement_text = '';
         $query = "SELECT content FROM form_CAMOS_item WHERE item like '".$replacement_item."'";
         $statement = sqlStatement($query);
-        if ($result = sqlFetchArray($statement)) {$replacement_text = $result['content'];}
+        if ($result = $statement) {$replacement_text = $result['content'];}
         $replacement_text = formDataCore($replacement_text);
         $string_to_process = str_replace($val,$replacement_text,$string_to_process);
       }
@@ -118,7 +118,7 @@ function process_commands(&$string_to_process, &$camos_return_data) {
     $days = $matches[1];
     $query = "select date_format(date_add(date, interval $days day),'%W, %m-%d-%Y') as date from form_encounter where " . "pid = " . $_SESSION['pid'] . " and encounter = " . $_SESSION['encounter'];
     $statement = sqlStatement($query);
-    if ($result = sqlFetchArray($statement)){
+    if ($result = $statement){
         $string_to_process = str_replace($to_replace,$result['date'],$string_to_process);
     }
   }
@@ -127,7 +127,7 @@ function process_commands(&$string_to_process, &$camos_return_data) {
     $days = $matches[1];
     $query = "select date_format(date_sub(date, interval $days day),'%W, %m-%d-%Y') as date from form_encounter where " . "pid = " . $_SESSION['pid'] . " and encounter = " . $_SESSION['encounter'];
     $statement = sqlStatement($query);
-    if ($result = sqlFetchArray($statement)){
+    if ($result = $statement){
         $string_to_process = str_replace($to_replace,$result['date'],$string_to_process);
     }
   }

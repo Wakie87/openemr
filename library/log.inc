@@ -59,10 +59,7 @@ function getEventByDate($date, $user="", $cols="DISTINCT date, event, user, grou
     if ($user) $sql .= " AND user LIKE '$user'";
     $sql .= " ORDER BY date DESC LIMIT 5000";
     $res = sqlStatement($sql);
-    for($iter=0; $row=sqlFetchArray($res); $iter++) {
-        $all[$iter] = $row;
-    }
-    return $all;
+    return $res;
 }
 
 /******************
@@ -130,10 +127,7 @@ function getEvents($params)
     $sql .= " LIMIT 5000";
     }
     $res = sqlStatement($sql);
-    for($iter=0; $row=sqlFetchArray($res); $iter++) {
-        $all[$iter] = $row;
-    }
-    return $all;
+    return $res;
 }
 
 /* Given an SQL insert/update that was just performeds:

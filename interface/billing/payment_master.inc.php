@@ -77,11 +77,11 @@ function generate_list_payment_category($tag_name, $list_id, $currvalue, $title,
 if($payment_id>0)
  {
     $rs= sqlStatement("select pay_total,global_amount from ar_session where session_id='$payment_id'");
-    $row=sqlFetchArray($rs);
+    $row=$rs;
     $pay_total=$row['pay_total'];
     $global_amount=$row['global_amount'];
     $rs= sqlStatement("select sum(pay_amount) sum_pay_amount from ar_activity where session_id='$payment_id'");
-    $row=sqlFetchArray($rs);
+    $row=$rs;
     $pay_amount=$row['sum_pay_amount'];
     $UndistributedAmount=$pay_total-$pay_amount-$global_amount;
     
@@ -89,7 +89,7 @@ if($payment_id>0)
     payer_id,pay_total,payment_type,post_to_date,patient_id ,
     adjustment_code,description,deposit_date,payment_method
      FROM ar_session left join insurance_companies on ar_session.payer_id=insurance_companies.id    where ar_session.session_id ='$payment_id'");
-    $row = sqlFetchArray($res);
+    $row = $res;
     $InsuranceCompanyName=$row['name'];
     $InsuranceCompanyId=$row['payer_id'];
     $PatientId=$row['patient_id'];
@@ -106,7 +106,7 @@ if($payment_id>0)
      {
         $res = sqlStatement("SELECT insurance_companies.name FROM insurance_companies
                 where insurance_companies.id ='$InsuranceCompanyId'");
-        $row = sqlFetchArray($res);
+        $row = $res;
         $div_after_save=$row['name'];
         $TypeCode=$InsuranceCompanyId;
          if($PaymentType=='')
@@ -118,7 +118,7 @@ if($payment_id>0)
      {
         $res = sqlStatement("SELECT fname,lname,mname FROM patient_data
                 where pid ='$PatientId'");
-        $row = sqlFetchArray($res);
+        $row = $res;
             $fname=$row['fname'];
             $lname=$row['lname'];
             $mname=$row['mname'];

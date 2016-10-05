@@ -64,7 +64,7 @@ class UserAudit extends UserMail{
         $audit_master_id = $var['audit_master_id'];
          $qry = "select * from audit_master WHERE id=? and approval_status=1 and type=1";
          $result=sqlStatement($qry,array($audit_master_id));
-         $rowfield = sqlFetchArray($result);
+         $rowfield = $result;
          if($rowfield['pid']>0)
           {
             $pid=$rowfield['pid'];

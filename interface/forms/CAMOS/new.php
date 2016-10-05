@@ -164,7 +164,7 @@ elseif ($_POST['hidden_mode'] == 'delete') {
     else {
       $query = "SELECT count(id) FROM ".escape_table_name($to_delete_from_subtable)." WHERE ".$tablename."_id like ?";
       $statement = sqlStatement($query, array($to_delete_id));
-      if ($result = sqlFetchArray($statement)) {
+      if ($result = $statement) {
         if ($result['count(id)'] == 0) {
           $query = "DELETE FROM ".escape_table_name($to_delete_from_table)." WHERE id like ?";
           sqlInsert($query, array($to_delete_id));
@@ -210,7 +210,7 @@ elseif ($_POST['hidden_mode'] == 'alter') {
 
     $query = "SELECT category, subcategory, item FROM ".mitigateSqlTableUpperCase("form_CAMOS")." WHERE id = $maxid";
     $statement = sqlStatement($query);
-    if ($result = sqlFetchArray($statement)) {
+    if ($result = $statement) {
       $preselect_category = $result['category'];
       $preselect_subcategory = $result['subcategory'];
       $preselect_item = $result['item'];
@@ -406,7 +406,7 @@ if (!$out_of_encounter) { //do not do stuff that is encounter specific if not in
   $query = "SELECT code_text, code FROM billing WHERE encounter=".$_SESSION['encounter'].
     " AND pid=".$_SESSION['pid']." AND code_type like 'ICD9' AND activity=1";
   $statement = sqlStatement($query);
-  if ($result = sqlFetchArray($statement)) {
+  if ($result = $statement) {
     $icd9_flag = true;
     echo "icd9_list = \"\\n\\n\\\n";
     echo $result['code']." ".$result['code_text']."\\n\\\n";
@@ -656,7 +656,7 @@ if (1) { //we are hiding the clone buttons and still need 'search others' so thi
       if ($_POST['hidden_mode'] == 'clone last visit') {
         $query = "SELECT t1.* FROM form_vitals as t1 join forms as t2 on (t1.id = t2.form_id) WHERE t2.encounter = '$last_encounter_id' and t1.pid=".$_SESSION['pid']." and t2.form_name like 'Vitals'";
         $statement = sqlStatement($query);
-        if ($result = sqlFetchArray($statement)) {
+        if ($result = $statement) {
 		$weight = $result['weight'];
 		$height = $result['height'];
 		$bps = $result['bps'];
@@ -1302,7 +1302,7 @@ function getMyPatientData($form_id, $show_phone_flag) {//return a string of pati
     "datediff(current_date(),t2.date) as days " .
     "from patient_data as t1 join forms as t2 on (t1.pid = t2.pid) where t2.form_id=$form_id " .
     "and form_name like 'CAMOS%'");
-  if ($results = sqlFetchArray($query)) {
+  if ($results = $query) {
     $pid = $results['pid'];
     $fname = $results['fname'];
     $mname = $results['mname'];

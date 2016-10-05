@@ -188,13 +188,8 @@ class UserService extends Userforms
       }else{
         $res = sqlStatement($query);
       }
-      if ($res) {
-        for($iter=0; $row=sqlFetchArray($res); $iter++) {
-          $all[$iter] = $row;
-        }
-      }
       $v = ob_get_clean();
-      return $all;
+      return $res;
     }
   }
 
@@ -344,13 +339,8 @@ class UserService extends Userforms
                   ORDER BY dld.dld_pid ASC ";
 
       $res = sqlStatement($query);
-      if ($res) {
-	for($iter=0; $row=sqlFetchArray($res); $iter++) {
-	    $all[$iter] = $row;
-	}
-      }
       $v = ob_get_clean();
-      return $all;
+      return $res;
     }
   }
 
@@ -362,13 +352,8 @@ class UserService extends Userforms
       ob_start();
 	$query = "SELECT * FROM categories";
 	$res = sqlStatement($query);
-      if ($res) {
-	for($iter=0; $row=sqlFetchArray($res); $iter++) {
-	    $all[$iter] = $row;
-	}
-      }
-      $v = ob_get_clean();
-      return $all;
+    $v = ob_get_clean();
+    return $res;
     }
   }
 
@@ -1299,7 +1284,7 @@ static  public function batch_despatch($var,$func,$data_credentials){
           $module_name = isset($parameter_array[1]) ? $parameter_array[1] : '';
 	  $sql = "SELECT mod_id FROM modules WHERE mod_name = ? AND mod_active = '1'";
 	  $res = sqlStatement($sql, array($module_name));
-	  $row = sqlFetchArray($res);
+	  $row = $res;
 	  return !empty($row);
 
        }

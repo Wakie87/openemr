@@ -45,7 +45,7 @@
 				WHERE `categories_to_documents`.`category_id` = `categories`.`id`
 				AND `categories_to_documents`.`document_id` = ?";
 		$catres = sqlStatement($sql, array($file['id']));
-		$cat = sqlFetchArray($catres);
+		$cat = $catres;
 
 		// find the tree of the documents category
 		$sql = "SELECT name FROM categories WHERE lft < ? AND rght > ? ORDER BY lft ASC";

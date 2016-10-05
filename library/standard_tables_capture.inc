@@ -364,7 +364,7 @@ function icd_import($type) {
 
 		    // now update the revision for this load
                     $res = sqlStatement("SELECT max(revision) rev FROM " . $incoming[$this_key]['#TABLENAME#']);
-                    $row = sqlFetchArray($res);
+                    $row = $res;
                     $next_rev = $row['rev'] + 1;
 		    $run_sql = "UPDATE " . $incoming[$this_key]['#TABLENAME#'] . " SET active = 0"; 
                     sqlQuery($run_sql);

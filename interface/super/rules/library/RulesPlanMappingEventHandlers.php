@@ -91,7 +91,7 @@ function addNewPlan($plan_name, $plan_rules) {
                 "FROM `list_options` " .
                 "WHERE `list_id` = 'clinical_plans' AND `title` = ?;";
     $res = sqlStatement($sql_st, array($plan_name));
-    $row = sqlFetchArray($res);
+    $row = $res;
     if ($row['option_id'] != NULL) {
         throw new Exception("002");
     }
@@ -105,7 +105,7 @@ function addNewPlan($plan_name, $plan_rules) {
                 "FROM `list_options` " .
                 "WHERE `option_id` = ?;";
     $res = sqlStatement($sql_st, array($plan_id));
-    $row = sqlFetchArray($res);
+    $row = $res;
     if ($row != NULL) {
         //001 = plan name taken
         throw new Exception("003");
@@ -249,7 +249,7 @@ function isPlanActive($plan_id) {
 
     $res = sqlStatement($sql_st, array($plan_id));
 
-    $row = sqlFetchArray($res);
+    $row = $res;
     if ($row['normal_flag'] == 1) {
         return true;
     } else {

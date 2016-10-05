@@ -443,7 +443,7 @@ if (is_array($_POST['form_provider'])) {
 
     // obtain the next available unique key to group multiple providers around some event
     $q = sqlStatement ("SELECT MAX(pc_multiple) as max FROM openemr_postcalendar_events");
-    $max = sqlFetchArray($q);
+    $max = $q;
     $new_multiple_value = $max['max'] + 1;
 
     foreach ($_POST['form_provider'] as $provider) {

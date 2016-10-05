@@ -113,7 +113,7 @@ if ($_POST['load']) {
         $sql .= "WHERE ld.def_id=? ";
         $sql .= "AND ll.lang_id = ld.lang_id AND lc.cons_id = ld.cons_id LIMIT 1";
         $res = SqlStatement($sql, array($key));
-        $row = SqlFetchArray($res);
+        $row = $res;
 	insert_language_log($row['lang_description'], $row['lang_code'], $row['constant_name'], $value);
 	  
 	$go = 'yes';
