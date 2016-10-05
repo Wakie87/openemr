@@ -126,7 +126,7 @@ if ($_REQUEST['REFTYPE']) {
         //we have rx_number 1-5 to process...
         $query = "select * from form_eye_mag_wearing where ENCOUNTER=? and FORM_ID=? and PID=? and RX_NUMBER=?";
         $wear = sqlStatement($query,array($encounter,$_REQUEST['form_id'],$_REQUEST['pid'],$_REQUEST['rx_number']));
-        $wearing = sqlFetchArray($wear);
+        $wearing = $wear;
         $ODSPH = $wearing['ODSPH'];
         $ODAXIS = $wearing['ODAXIS'];
         $ODCYL = $wearing['ODCYL'];
@@ -1195,7 +1195,7 @@ exit;
 
     $query = "select id from categories where name like 'Communication'";
     $result = sqlStatement($query);
-    $ID = sqlFetchArray($result);
+    $ID = $result;
     $category_id = $ID['id'];
     $pdf->writeHTML($content, false);
     $content_pdf = $pdf->Output($temp_filename, 'F');

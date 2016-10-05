@@ -313,7 +313,7 @@ if ($_REQUEST["mode"] == "new")             {
     */
     $query = "select id from categories where name = 'Encounters'";
     $result = sqlStatement($query);
-    $ID = sqlFetchArray($result);
+    $ID = $result;
     $category_id = $ID['id'];
     $PDF_OUTPUT='1';
 
@@ -891,7 +891,7 @@ if ($_REQUEST['canvas']) {
   $size = strlen($data);
   $query = "select id from categories where name = 'Drawings'";
   $result = sqlStatement($query);
-  $ID = sqlFetchArray($result);
+  $ID = $result;
   $category_id = $ID['id'];
 
   // We want to overwrite so only one image is stored per zone per form/encounter
