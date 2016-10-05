@@ -150,7 +150,7 @@ function check_search_str()
     $query = "SELECT count(*) as count FROM list_options " .
       "WHERE (list_id = 'immunizations' and title LIKE '%$search_term%' AND activity = 1) " ;
 	$res = sqlStatement($query);
-	if ($row = sqlFetchArray($res))
+	if ($row = $res)
 	{
 	 $no_of_items = addslashes($row['count']);
 	 if($no_of_items < 1)

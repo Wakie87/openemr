@@ -442,7 +442,7 @@ if ($result) {
                   "billing.code_type not like 'COPAY' where ".
                   "form_encounter.pid = ?";
           $statement= sqlStatement($query, array($iter{"pid"}));
-          if ($results = sqlFetchArray($statement)) {
+          if ($results = $statement) {
               $last_date_seen = $results['mydate'];
               $day_diff = $results['day_diff'];
               $next_appt_date= xl($results['next_appt_day']).', '.$results['next_appt'];
@@ -457,7 +457,7 @@ if ($result) {
 	          " day) as next_appt_day from form_encounter " .
                   " where form_encounter.pid = ?";
           $statement= sqlStatement($query, array($iter{"pid"}));
-          if ($results = sqlFetchArray($statement)) {
+          if ($results = $statement) {
               $last_date_seen = $results['mydate'];
               $day_diff = $results['day_diff'];
               $next_appt_date= xl($results['next_appt_day']).', '.$results['next_appt'];
@@ -470,7 +470,7 @@ if ($result) {
                    " where code_type not like 'COPAY' and activity = 1 " .
                    " and pid = ?";
           $statement= sqlStatement($query, array($iter{"pid"}));
-          if ($results = sqlFetchArray($statement)) {
+          if ($results = $statement) {
               $encounter_count_billed = $results['encounter_count'];
           }
           // calculate count of encounters, regardless of billing
@@ -478,7 +478,7 @@ if ($result) {
                       " from form_encounter where ".
                       " pid = ?";
           $statement= sqlStatement($query, array($iter{"pid"}));
-          if ($results = sqlFetchArray($statement)) {
+          if ($results = $statement) {
               $encounter_count = $results['encounter_count'];
           }
           echo "<td class='srNumEnc'>" . htmlspecialchars($encounter_count, ENT_NOQUOTES) . "</td>\n";

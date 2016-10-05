@@ -8,13 +8,13 @@
 //
 //
 // This file contains functions to:
-//   --manage AMC items in the amc_misc_data sql table 
+//   --manage AMC items in the amc_misc_data sql table
 //   --support the AMC Tracking report
 
 // Main function to process items in the amc_misc_data sql table
 // Paramteter:
 //   $amc_id     - amc rule id
-//   $complete   - boolean for whether to complete the date_completed row 
+//   $complete   - boolean for whether to complete the date_completed row
 //   $mode       - 'add' or 'remove'
 //   $patient_id - pid
 //   $object_category - specific item category (such as prescriptions, transactions etc.)
@@ -184,18 +184,12 @@ function amcTrackingRequest($amc_id,$start='',$end='',$provider_id='') {
   $patients = array();
   if (empty($provider)) {
     // Look at entire practice
-    $rez = sqlStatement("SELECT `pid`, `fname`, `lname` FROM `patient_data`");
-    for($iter=0; $row=sqlFetchArray($rez); $iter++) {
-     $patients[$iter]=$row;
-    }
+    $patients = sqlStatement("SELECT `pid`, `fname`, `lname` FROM `patient_data`");
   }
   else {
     // Look at one provider
-    $rez = sqlStatement("SELECT `pid`, `fname`, `lname` FROM `patient_data` " .
+    $patients = sqlStatement("SELECT `pid`, `fname`, `lname` FROM `patient_data` " .
       "WHERE providerID=?", array($provider));
-    for($iter=0; $row=sqlFetchArray($rez); $iter++) {
-     $patients[$iter]=$row;
-    }
   }
 
   $results = array();

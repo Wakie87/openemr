@@ -100,9 +100,7 @@ function getListByType ($pid, $type, $cols = "*", $active = "all", $limit = "all
 
 
 	$res = sqlStatement($sql);
-	for($iter =0;$row = sqlFetchArray($res);$iter++)
-		$all[$iter] = $row;
-	return $all;
+	return $res;
 
 }
 

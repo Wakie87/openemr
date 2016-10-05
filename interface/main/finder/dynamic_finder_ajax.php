@@ -56,19 +56,22 @@ if (isset($_GET['iSortCol_0'])) {
 
 // Global filtering.
 //
+$sqlBindArray = array();
 $where = '';
 if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
-  $sSearch = add_escape_custom($_GET['sSearch']);
+  $sSearch = "%".$_GET['sSearch']."%";
   foreach ($aColumns as $colname) {
     $where .= $where ? "OR " : "WHERE ( ";
     if ($colname == 'name') {
       $where .=
-        "lname LIKE '$sSearch%' OR " .
-        "fname LIKE '$sSearch%' OR " .
-        "mname LIKE '$sSearch%' ";
+        "lname LIKE ? OR " .
+        "fname LIKE ? OR " .
+        "mname LIKE ? ";
+        array_push($sqlBindArray,$sSearch,$sSearch,$sSearch);
     }
     else {
-      $where .= "`" . escape_sql_column_name($colname,array('patient_data')) . "` LIKE '$sSearch%' ";
+      $where .= "`" . escape_sql_column_name($colname,array('patient_data')) . "` LIKE ?";
+      array_push($sqlBindArray,$sSearch);
     }
   }
   if ($where) $where .= ")";
@@ -80,15 +83,17 @@ for ($i = 0; $i < count($aColumns); ++$i) {
   $colname = $aColumns[$i];
   if (isset($_GET["bSearchable_$i"]) && $_GET["bSearchable_$i"] == "true" && $_GET["sSearch_$i"] != '') {
     $where .= $where ? ' AND' : 'WHERE';
-    $sSearch = add_escape_custom($_GET["sSearch_$i"]);
+    $sSearch = "%".$_GET["sSearch_$i"]."%";
     if ($colname == 'name') {
       $where .= " ( " .
-        "lname LIKE '$sSearch%' OR " .
-        "fname LIKE '$sSearch%' OR " .
-        "mname LIKE '$sSearch%' )";
+        "lname LIKE ? OR " .
+        "fname LIKE ? OR " .
+        "mname LIKE ? )";
+        array_push($sqlBindArray,$sSearch,$sSearch,$sSearch);
     }
     else {
-      $where .= " `" . escape_sql_column_name($colname,array('patient_data')) . "` LIKE '$sSearch%'";
+      $where .= " `" . escape_sql_column_name($colname,array('patient_data')) . "` LIKE ?";
+      array_push($sqlBindArray,$sSearch);
     }
   }
 }
@@ -115,7 +120,7 @@ $iTotal = $row['count'];
 
 // Get total number of rows in the table after filtering.
 //
-$row = sqlQuery("SELECT COUNT(id) AS count FROM patient_data $where");
+$row = sqlQuery("SELECT COUNT(id) AS count FROM patient_data $where", $sqlBindArray);
 $iFilteredTotal = $row['count'];
 
 // Build the output data array.
@@ -127,7 +132,7 @@ $out = array(
   "aaData"               => array()
 );
 $query = "SELECT $sellist FROM patient_data $where $orderby $limit";
-$res = sqlStatement($query);
+$res = sqlStatement($query, $sqlBindArray);
 foreach ($res as $row) {
   // Each <tr> will have an ID identifying the patient.
   $arow = array('DT_RowId' => 'pid_' . $row['pid']);
@@ -152,6 +157,5 @@ foreach ($res as $row) {
 // error_log($query); // debugging
 
 // Dump the output array as JSON.
-//
 echo json_encode($out);
 ?>

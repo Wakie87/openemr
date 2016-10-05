@@ -77,7 +77,7 @@ function getEncounters($pid,$dateStart='',$dateEnd='',$encounterRuleType='')
 {
 
         $arraySqlBind = array();
-        
+
         if ($encounterRuleType) {
                 // Only collect certain type of encounters (list_options item from the rule_enc_types list that is mapped via enc_category_map table)
                 $from = "form_encounter LEFT JOIN enc_category_map ON (form_encounter.pc_catid = enc_category_map.main_cat_id)";
@@ -107,12 +107,7 @@ function getEncounters($pid,$dateStart='',$dateEnd='',$encounterRuleType='')
         }
 
         $res = sqlStatement("SELECT distinct encounter FROM $from WHERE $where ORDER by date desc;", $arraySqlBind);
-
-        for($iter=0; $row=sqlFetchArray($res); $iter++)
-        {
-                $all[$iter] = $row;
-        }
-        return $all;
+        return $res;
 }
 
 function getEncounterDateByEncounter($encounter)
@@ -149,12 +144,12 @@ function getDocumentsByEncounter($patientID = null,$encounterID = null) {
 	$allDocuments = null;
 	$currentEncounter = ( $encounterID ) ? $encounterID : $_SESSION['encounter'];
 	$currentPatient = ( $patientID ) ? $patientID : $_SESSION['pid'];
-	
+
 	if($currentPatient != "" && $currentEncounter != "") {
-		$sql = "SELECT d.id, d.type, d.url, d.docdate, d.list_id, c.name,d.encounter_id FROM documents AS d, categories_to_documents AS cd, 
+		$sql = "SELECT d.id, d.type, d.url, d.docdate, d.list_id, c.name,d.encounter_id FROM documents AS d, categories_to_documents AS cd,
 			categories AS c WHERE d.foreign_id = ? AND d.encounter_id=? AND cd.document_id = d.id AND c.id = cd.category_id ORDER BY d.docdate DESC, d.id DESC";
 		$res = sqlStatement($sql,array($currentPatient,$currentEncounter));
-	
+
 		foreach ($res as $row) {
 			$allDocuments[] = $row;
 		}

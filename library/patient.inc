@@ -56,12 +56,10 @@ function getPatientData($pid, $given = "*, DATE_FORMAT(DOB,'%m/%d/%Y') as DOB_TS
 function getLanguages() {
     $returnval = array('','english');
     $sql = "select distinct lower(language) as language from patient_data";
-    $rez = sqlStatement($sql);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++) {
+    $row = sqlStatement($sql);
         if (($row["language"] != "english") && ($row["language"] != "")) {
             array_push($returnval, $row["language"]);
         }
-    }
     return $returnval;
 }
 
@@ -78,12 +76,10 @@ function getInsuranceProviders() {
 
     if (true) {
         $sql = "select name, id from insurance_companies order by name, id";
-        $rez = sqlStatement($sql);
-        for($iter=0; $row=sqlFetchArray($rez); $iter++) {
-            $returnval[$row['id']] = $row['name'];
-        }
-    }
+        $row = sqlStatement($sql);
+        $returnval[$row['id']] = $row['name'];
 
+    }
     // Please leave this here. I have a user who wants to see zip codes and PO
     // box numbers listed along with the insurance company names, as many companies
     // have different billing addresses for different plans.  -- Rod Roark
@@ -95,13 +91,11 @@ function getInsuranceProviders() {
           "where addresses.foreign_id = insurance_companies.id " .
           "order by insurance_companies.name, addresses.zip";
 
-        $rez = sqlStatement($sql);
-
-        for($iter=0; $row=sqlFetchArray($rez); $iter++) {
+        $row = sqlStatement($sql);
             preg_match("/\d+/", $row['line1'], $matches);
             $returnval[$row['id']] = $row['name'] . " (" . $row['zip'] .
               "," . $matches[0] . ")";
-        }
+
     }
 
     return $returnval;
@@ -117,9 +111,7 @@ function getInsuranceProvidersExtra() {
           "where addresses.foreign_id = insurance_companies.id " .
           "order by insurance_companies.name, addresses.zip";
 
-        $rez = sqlStatement($sql);
-
-        for($iter=0; $row=sqlFetchArray($rez); $iter++) {
+        $row = sqlStatement($sql);
     switch ($GLOBALS['insurance_information']) {
         case $GLOBALS['insurance_information'] = '0':
             $returnval[$row['id']] = $row['name'];
@@ -143,7 +135,7 @@ function getInsuranceProvidersExtra() {
               "," . $matches[0] . ")";
         break;
         }
-    }
+
 
     return $returnval;
 }
@@ -152,12 +144,10 @@ function getProviders() {
     $returnval = array("");
     $sql = "select fname, lname from users where authorized = 1 and " .
         "active = 1 and username != ''";
-    $rez = sqlStatement($sql);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++) {
+    $row = sqlStatement($sql);
         if (($row["fname"] != "") && ($row["lname"] != "")) {
             array_push($returnval, $row["fname"] . " " . $row["lname"]);
         }
-    }
     return $returnval;
 }
 
@@ -306,13 +296,12 @@ function getProviderInfo($providerID = "%", $providers_only = true, $facility = 
     // sort by last name -- JRM June 2008
     $query .= " ORDER BY lname, fname ";
     $rez = sqlStatement($query, array($providerID));
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
+    $returnval=$rez;
 
     //if only one result returned take the key/value pairs in array [0] and merge them down the the base array so that $resultval[0]['key'] is also
     //accessible from $resultval['key']
 
-    if($iter==1) {
+    if(count($returnval)==1) {
         $akeys = array_keys($returnval[0]);
         foreach($akeys as $key) {
             $returnval[0][$key] = $returnval[0][$key];
@@ -335,9 +324,6 @@ function getCalendarProviderInfo($providerID = "%", $providers_only = true) {
         "from users where active = 1 and username != '' and id $command  ?" . $param1;
 
     $rez = sqlStatement($query, array($providerID));
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
-
     return $rez;
 }
 
@@ -352,19 +338,15 @@ function getProviderName($providerID) {
 function getProviderId($providerName) {
     $query = "select id from users where username = ?";
     $rez = sqlStatement($query, array($providerName) );
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
-    return $returnval;
+    return $rez;
 }
 
 function getEthnoRacials() {
     $returnval = array("");
     $sql = "select distinct lower(ethnoracial) as ethnoracial from patient_data";
-    $rez = sqlStatement($sql);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++) {
-        if (($row["ethnoracial"] != "")) {
-            array_push($returnval, $row["ethnoracial"]);
-        }
+    $row = sqlStatement($sql);
+    if (($row["ethnoracial"] != "")) {
+        array_push($returnval, $row["ethnoracial"]);
     }
     return $returnval;
 }
@@ -516,12 +498,12 @@ function getPatientLnames($term = "%", $given = "pid, id, lname, fname, mname, p
     $rez = sqlStatement($sql, $sqlBindArray);
 
     $returnval=array();
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter] = $row;
+    $returnval = $rez;
 
     _set_patient_inc_count($limit, count($returnval), $where, $sqlBindArray);
     return $returnval;
 }
+
 /**
  * Accept a string used by a search function expected to find a patient name,
  * then split up the string if a comma or space exists. Return an array having
@@ -583,8 +565,7 @@ function getPatientId($pid = "%", $given = "pid, id, lname, fname, mname, provid
     $sql = "SELECT $given FROM patient_data WHERE $where ORDER BY $orderby";
     if ($limit != "all") $sql .= " limit $start, $limit";
     $rez = sqlStatement($sql, $sqlBindArray);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
+    $returnval=$rez;
 
     _set_patient_inc_count($limit, count($returnval), $where, $sqlBindArray);
     return $returnval;
@@ -593,22 +574,19 @@ function getPatientId($pid = "%", $given = "pid, id, lname, fname, mname, provid
 function getByPatientDemographics($searchTerm = "%", $given = "pid, id, lname, fname, mname, providerID, DATE_FORMAT(DOB,'%m/%d/%Y') as DOB_TS", $orderby = "lname ASC, fname ASC", $limit="all", $start="0")
 {
   $layoutCols = sqlStatement( "SELECT field_id FROM layout_options WHERE form_id='DEM' AND group_name not like (? ) AND uor !=0", array("%".Employer."%") );
-
   $sqlBindArray = array();
   $where = "";
-  for($iter=0; $row=sqlFetchArray($layoutCols); $iter++) {
-    if ( $iter > 0 ) {
+    if (count($layoutCols) > 1) {
       $where .= " or ";
     }
-    $where .= " ".add_escape_custom($row["field_id"])." like ? ";
+    $where .= " ".add_escape_custom($layoutCols["field_id"])." like ? ";
     array_push($sqlBindArray, "%".$searchTerm."%");
-  }
+
 
   $sql = "SELECT $given FROM patient_data WHERE $where ORDER BY $orderby";
   if ($limit != "all") $sql .= " limit $start, $limit";
   $rez = sqlStatement($sql, $sqlBindArray);
-  for($iter=0; $row=sqlFetchArray($rez); $iter++)
-    $returnval[$iter]=$row;
+  $returnval = $rez;
   _set_patient_inc_count($limit, count($returnval), $where, $sqlBindArray);
   return $returnval;
 }
@@ -657,8 +635,7 @@ function getByPatientDemographicsFilter($searchFields, $searchTerm = "%",
   $sql = "SELECT $given FROM patient_data WHERE $where ORDER BY $orderby";
   if ($limit != "all") $sql .= " limit $start, $limit";
   $rez = sqlStatement($sql, $sqlBindArray);
-  for($iter=0; $row=sqlFetchArray($rez); $iter++)
-      $returnval[$iter]=$row;
+  $returnval=$rez;
   _set_patient_inc_count($limit, count($returnval), $where, $sqlBindArray);
   return $returnval;
 }
@@ -691,10 +668,7 @@ function getPatientPID($args)
     if ($limit != "all") $sql .= " limit $start, $limit";
 
     $rez = sqlStatement($sql);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
-
-    return $returnval;
+    return $rez;
 }
 
 /* return a patient's name in the format LAST, FIRST */
@@ -727,11 +701,8 @@ function getPatientDOB($DOB = "%", $given = "pid, id, lname, fname, mname", $ord
     if ($limit != "all") $sql .= " LIMIT $start, $limit";
 
     $rez = sqlStatement($sql, $sqlBindArray);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
-
-    _set_patient_inc_count($limit, count($returnval), $where, $sqlBindArray);
-    return $returnval;
+    _set_patient_inc_count($limit, count($rez), $where, $sqlBindArray);
+    return $rez;
 }
 
 /* find patient data by SSN */
@@ -744,11 +715,8 @@ function getPatientSSN($ss = "%", $given = "pid, id, lname, fname, mname, provid
     if ($limit != "all") $sql .= " LIMIT $start, $limit";
 
     $rez = sqlStatement($sql, $sqlBindArray);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
-
-    _set_patient_inc_count($limit, count($returnval), $where, $sqlBindArray);
-    return $returnval;
+    _set_patient_inc_count($limit, count($rez), $where, $sqlBindArray);
+    return $rez;
 }
 
 //(CHEMED) Search by phone number
@@ -762,11 +730,8 @@ function getPatientPhone($phone = "%", $given = "pid, id, lname, fname, mname, p
     if ($limit != "all") $sql .= " LIMIT $start, $limit";
 
     $rez = sqlStatement($sql, $sqlBindArray);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
-
-    _set_patient_inc_count($limit, count($returnval), $where, $sqlBindArray);
-    return $returnval;
+    _set_patient_inc_count($limit, count($rez), $where, $sqlBindArray);
+    return $rez;
 }
 
 function getPatientIds($given = "pid, id, lname, fname, mname", $orderby = "id ASC", $limit="all", $start="0")
@@ -777,10 +742,7 @@ function getPatientIds($given = "pid, id, lname, fname, mname", $orderby = "id A
         $sql .= " limit $start, $limit";
 
     $rez = sqlStatement($sql);
-    for($iter=0; $row=sqlFetchArray($rez); $iter++)
-        $returnval[$iter]=$row;
-
-    return $returnval;
+    return $rez;
 }
 
 //----------------------input functions
