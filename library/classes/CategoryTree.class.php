@@ -9,7 +9,7 @@ require_once("Tree.class.php");
 
 class CategoryTree extends Tree {
 
-	
+
 	/*
 	*	This just sits on top of the parent constructor, only a shell so that the _table var gets set
 	*/
@@ -17,7 +17,7 @@ class CategoryTree extends Tree {
 		$this->_table = "categories";
 		parent::__construct($root,$root_type);
 	}
-	
+
 	function _get_categories_array($patient_id) {
 		$categories = array();
 		$sql = "SELECT c.id, c.name, d.id AS document_id, d.type, d.url, d.docdate"
@@ -37,16 +37,15 @@ class CategoryTree extends Tree {
 		}
 		$sql .= " ORDER BY c.id ASC, d.docdate DESC, d.url ASC";
 
-		//echo $sql;
-		$result = $this->_db->Execute($sql);
+		$result = sqlStatement($sql);
 
-	  while ($result && !$result->EOF) {
-	  	$categories[$result->fields['id']][$result->fields['document_id']] = $result->fields;
-	  	$result->MoveNext();
-	  }
-	  
+	  foreach ($result as $categories){
+	  	$categories[$result['id']][$result['document_id']] = $result;
+        }
+
 	  return $categories;
-		
+
+
 	}
 }
 ?>

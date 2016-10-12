@@ -34,8 +34,11 @@ function xl($constant,$mode='r',$prepend='',$append='') {
       "lang_definitions.cons_id = lang_constants.cons_id WHERE " .
       "lang_id=? AND constant_name = ? LIMIT 1";
     $res = sqlStatementNoLog($sql,array($lang_id,$constant));
-    $string = $res['definition'];
-    if ($string == '') { $string = "$constant"; }
+    $string = isset($res['definition']) ? $res['definition'] : '';
+    if ($string == '')
+        {
+            $string = "$constant";
+        }
 
     // remove dangerous characters and remove comments
     $patterns = array ('/\n/','/\r/','/"/',"/'/",'/\{\{.*\}\}/');
