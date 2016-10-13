@@ -49,17 +49,18 @@ class Tree {
 	  $tree_tmp = array();
 
 	  //get the left and right value of the root node
-	  $sql = "SELECT * FROM " . $this->_table . " WHERE id=" . $root;
+	  $sql = "SELECT * FROM " . $this->_table . " WHERE id = ?";
 
-	  if ($this->root_type == ROOT_TYPE_NAME) {
-	  	$sql = "SELECT * FROM " . $this->_table . " WHERE name='" . $root;
+	  if ($this->_root_type == ROOT_TYPE_NAME) {
+	  	$sql = "SELECT * FROM " . $this->_table . " WHERE name = ?";
 	  }
-	  $result = sqlStatement($sql);
+	  $result = sqlStatement($sql, array($root));
+
 	  $row = array();
 
-	  if($result) {
-	    $row = $result;
-	  }
+	  if ($result){
+        $row = $result[0];
+        }
 	  else {
 	  	$this->tree = array();
 	  }
@@ -74,11 +75,10 @@ class Tree {
 	  $this->_id_name = array();
 
 
+
 	  foreach ($result as $row) {
 	    $ar = array();
-	    //$row = $result;
-
-	    //create a lookup table of id to name for every node that will end up in this tree, this is used
+	    	    //create a lookup table of id to name for every node that will end up in this tree, this is used
 	    //by the array building code below to find the chain of parents for each node
 
 	    // ADDED below by BM on 06-2009 to translate categories, if applicable
@@ -88,7 +88,6 @@ class Tree {
 	    else {
 	      $this->_id_name[$row['id']] = array("id" => $row['id'], "name" => $row['name'], "parent" => $row['parent']);
 	    }
-
 	    // only check stack if there is one
 	    if (count($right)>0) {
 	      // check if we should remove a node from the stack
@@ -120,9 +119,9 @@ class Tree {
 		//now eval the string to create the tree array
 		//there must be a more efficient way to do this than eval?
 		eval($ar_string);
-
-
-
+            echo '<pre>';
+            var_export($tree);
+            echo '</pre>';
 		//merge the evaled array with all of the already exsiting tree elements,
 		//merge recursive is used so that no keys are replaced in other words a key
 		//with a specific value will not be replace but instead that value will be turned into an array
@@ -131,8 +130,8 @@ class Tree {
 
 		// add this node to the stack
 		$right[] = $row['rght'];
-		//$result->MoveNext();
 	  }
+
 	  $this->tree = $tree;
 
 

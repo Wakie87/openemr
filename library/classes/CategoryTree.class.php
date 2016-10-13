@@ -32,12 +32,12 @@ class CategoryTree extends Tree {
                         }
                         else {
                               // Collect documents for a specific patient
-			      $sql .= " AND d.foreign_id = '" . $patient_id . "'";
+			      $sql .= " AND d.foreign_id = ?";
                         }
 		}
 		$sql .= " ORDER BY c.id ASC, d.docdate DESC, d.url ASC";
 
-		$result = sqlStatement($sql);
+		$result = sqlStatement($sql, array($patient_id));
 
 	  foreach ($result as $categories){
 	  	$categories[$result['id']][$result['document_id']] = $result;

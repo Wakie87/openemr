@@ -121,28 +121,30 @@ class ORDataObject {
 			return $GLOBALS['static']['enums'][$this->_table][$field_name];
 		}
 		else {
-			$sql = "desc ".$this->_table." $field_name";
-            $st = $this->_db->prepare($sql);
+			$sql = "desc ".$this->_table." ". $field_name;
+            $st = sqlStatement($sql);
+                if ($st)
+                {
+                    $row = $st;
+                    if ($row === FALSE)
+                    return FALSE;
 
-            if ($st->execute())
-            {
-                $row = $st->fetch();
-                if ($row === FALSE)
-                return FALSE;
+                 $type_dec = $row['Type'];
+                    if (substr($type_dec, 0, 5) !== 'enum(')
+                    return FALSE;
+                    $values = array();
+                    error_log($type_dec);
+                foreach(explode(',', substr($type_dec, 5, (strlen($type_dec) - 6))) AS $v)
+                {
+                    array_push($values, trim($v, "'"));
+                }
+                $enum = $values;
+                $GLOBALS['static']['enums'][$this->_table][$field_name] = $enum;
+                return $values;
 
-             $type_dec = $row->Type;
-                if (substr($type_dec, 0, 5) !== 'enum(')
-                return FALSE;
-
-                $values = array();
-            foreach(explode(',', substr($type_dec, 5, (strlen($type_dec) - 6))) AS $v)
-            {
-                array_push($values, trim($v, "'"));
             }
-            $enum = $values;
-            return $values;
-        }
 			return $enum;
+
 		}
 	}
 
