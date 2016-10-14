@@ -19,7 +19,7 @@
 * @package   OpenEMR
 * @link      http://www.open-emr.org
 */
-error_reporting(E_WARNING);
+error_reporting(E_ALL);
 ini_set("display_errors", 2);
 require_once(dirname(__FILE__) . "/sqlconf.php");
 require_once(dirname(__FILE__) . "/log.inc");
@@ -327,10 +327,10 @@ function getSqlLastErrorNo() {
 * @return  array
 */
 function sqlListFields($table) {
-  $sql = "SHOW COLUMNS FROM ". add_escape_custom($table);
-  $resource = sqlQ($sql);
+  $sql = "SHOW COLUMNS FROM ?";
+  $resource = sqlStatement($sql, array($table));
   $field_list = array();
-  while($row = sqlFetchArray($resource)) {
+  foreach ($resource as $row) {
     $field_list[] = $row['Field'];
   }
   return $field_list;
@@ -400,7 +400,7 @@ function generate_id () {
 * @param  array   $params      binded variables array (optional)
 * @return recordset
 */
-function sqlQ($statement, $params )
+function sqlQ($statement, $params = null )
 {
 
 

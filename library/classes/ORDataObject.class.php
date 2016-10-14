@@ -70,8 +70,8 @@ class ORDataObject {
 	}
 
 	function populate() {
-		$sql = "SELECT * from " . $this->_prefix  . $this->_table . " WHERE id = '" . add_escape_custom(strval($this->id))  . "'";
-		$results = sqlQuery($sql);
+		$sql = "SELECT * from " . $this->_prefix  . $this->_table . " WHERE id = ? ";
+		$results = sqlQuery($sql, array($this->id));
 		  if (is_array($results)) {
 			foreach ($results as $field_name => $field) {
 				$func = "set_" . $field_name;
