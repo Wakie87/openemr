@@ -130,11 +130,6 @@ class Tree {
 	  }
 
 	  $this->tree = $tree;
-      echo '<pre>';
-        var_export($tree);
-        echo '</pre>';
-
-
 	}
 
 	/*

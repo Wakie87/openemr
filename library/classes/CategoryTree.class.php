@@ -39,13 +39,12 @@ class CategoryTree extends Tree {
 
 		$result = sqlStatement($sql, array($patient_id));
 
-	  foreach ($result as $categories){
-	  	$categories[$result['id']][$result['document_id']] = $result;
+	  foreach ($result as $fields){
+
+	  	$categories[$fields['id']][$fields['document_id']] = $fields;
+
         }
-
 	  return $categories;
-
-
 	}
 }
 ?>

@@ -19,7 +19,7 @@
 * @package   OpenEMR
 * @link      http://www.open-emr.org
 */
-error_reporting(E_ALL);
+error_reporting(E_WARNING);
 ini_set("display_errors", 2);
 require_once(dirname(__FILE__) . "/sqlconf.php");
 require_once(dirname(__FILE__) . "/log.inc");
