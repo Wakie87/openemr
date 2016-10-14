@@ -194,16 +194,16 @@ class Document extends ORDataObject{
 			die("An invalid URL was specified to crete a new document, this would only be caused if files are being deleted as you are working through the queue. '$filename'\n");
 		}
 
-		$sql = "SELECT id FROM  " . $d->_table . " WHERE url= '" . add_escape_custom($url) ."'" ;
-		$result = $d->_db->Execute($sql);
+		$sql = "SELECT id FROM  " . $d->_table . " WHERE url = ?";
+		$result = sqlStatement($sql, array($url));
 
-		if ($result && !$result->EOF) {
+		if ($result) {
 			if (file_exists($filename)) {
-				$d = new Document($result->fields['id']);
+				$d = new Document($result['id']);
 			}
 			else {
-				$sql = "DELETE FROM  " . $d->_table . " WHERE id= '" . $result->fields['id'] ."'";
-				$result = $d->_db->Execute($sql);
+				$sql = "DELETE FROM  " . $d->_table . " WHERE id= ?";
+				$result = sqlStatement($sql, array($result['id']));
 				echo("There is a database for the file but it no longer exists on the file system. Its document entry has been deleted. '$filename'\n");
 			}
 		}
@@ -653,7 +653,7 @@ class Document extends ORDataObject{
       $sql = "REPLACE INTO categories_to_documents set " .
         "category_id = '$category_id', " .
         "document_id = '" . $this->get_id() . "'";
-      $this->_db->Execute($sql);
+     sqlStatment($sql);
     }
     return '';
   }

@@ -729,7 +729,7 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
 
     $event = $event . "-" . $querytype;
 
-    $adodb = $GLOBALS['adodb']['db'];
+    $adodb = DB::instance();
 
     // ViSolve : Don't log sequences - to avoid the affect due to GenID calls
     if (strpos($comments, "sequences") !== FALSE) return;
@@ -756,7 +756,7 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
          $adodb->quote($SSL_CLIENT_S_DN_CN) .")";
 	sqlInsertClean_audit($sql);
 
-	$last_log_id = $GLOBALS['adodb']['db']->Insert_ID();
+	$last_log_id = DB::lastInsertId();
 	$checksumGenerate = '';
 	//July 1, 2014: Ensoftek: Record the encryption checksum in a secondary table(log_comment_encrypt)
 	if ($querytype == 'update') {

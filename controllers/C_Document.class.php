@@ -701,8 +701,8 @@ class C_Document extends Controller {
 
 			//validate that the pod exists
 			$d = new Document($doc_id);
-			$sql = "SELECT pid from patient_data where pubpid = '" . $file['patient_id'] . "'";
-			$result = $d->_db->Execute($sql);
+			$sql = "SELECT pid from patient_data where pubpid = ?";
+			$result = sqlStatement($sql, array($file['patient_id']));
 
 			if (!$result || $result->EOF) {
 				//patient id does not exist
@@ -756,8 +756,8 @@ class C_Document extends Controller {
 		  		$d->populate();
 
 		  		if (is_numeric($d->get_id()) && is_numeric($file['category_id'])) {
-		  		  $sql = "REPLACE INTO categories_to_documents set category_id = '" . $file['category_id'] . "', document_id = '" . $d->get_id() . "'";
-		  		  $d->_db->Execute($sql);
+		  		  $sql = "REPLACE INTO categories_to_documents set category_id = ?, document_id = ?";
+		  		  sqlStatement($sql, array($file['category_id'], $d->get_id()));
 		  		}
 		  	}
 		  	else {
@@ -780,15 +780,15 @@ class C_Document extends Controller {
 			$sql = "UPDATE categories_to_documents set category_id = '" . $new_category_id . "' where document_id = '" . $document_id ."'";
 			$messages .= xl('Document moved to new category','','',' \'') . $this->tree->_id_name[$new_category_id]['name']  . xl('successfully.','','\' ') . "\n";
 			//echo $sql;
-			$this->tree->_db->Execute($sql);
+			sqlStatement($sql);
 		}
 
 		//move to new patient
 		if (is_numeric($new_patient_id) && is_numeric($document_id)) {
 			$d = new Document($document_id);
 			// $sql = "SELECT pid from patient_data where pubpid = '" . $new_patient_id . "'";
-			$sql = "SELECT pid from patient_data where pid = '" . $new_patient_id . "'";
-			$result = $d->_db->Execute($sql);
+			$sql = "SELECT pid from patient_data where pid = ?";
+			$result = sqlStatement($sql, array($new_patient_id));
 
 			if (!$result || $result->EOF) {
 				//patient id does not exist
@@ -828,11 +828,10 @@ class C_Document extends Controller {
 		  		$d->url = "file://" .$new_path.$fname;
 		  		$d->set_foreign_id("");
 				$d->persist();
-		  		$d->persist();
 		  		$d->populate();
 
-		  		$sql = "DELETE FROM categories_to_documents where document_id =" . $d->_db->qstr($document_id);
-				$d->_db->Execute($sql);
+		  		$sql = "DELETE FROM categories_to_documents where document_id = ? ";
+				sqlStatement($sql, array($document_id));
 				$messages .= "Document returned to queue successfully.\n";
 
 		  	}
@@ -975,14 +974,14 @@ class C_Document extends Controller {
 			$sql = "UPDATE documents SET docdate = $docdate, url = '".$_POST['docname']."', " .
 					"list_id = '$issue_id' " .
 					"WHERE id = '$document_id'";
-			$this->tree->_db->Execute($sql);
+			sqlStatement($sql);
 
 			}
 			else{
 			$sql = "UPDATE documents SET docdate = $docdate, " .
 				"list_id = '$issue_id' " .
 				"WHERE id = '$document_id'";
-			$this->tree->_db->Execute($sql);
+			sqlStatement($sql);
 			}
 			$messages .= xl('Document date and issue updated successfully') . "<br>";
 		}

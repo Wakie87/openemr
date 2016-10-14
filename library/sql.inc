@@ -212,7 +212,7 @@ function sqlQuery($statement, $params = [])
 * @param  array   $params      binded variables array (optional)
 * @return array
 */
-function sqlQueryNoLog($statement, $params)
+function sqlQueryNoLog($statement, $params = null)
 {
 
   $recordset =  DB::runNoLog( $statement, $params );
@@ -238,7 +238,7 @@ function sqlQueryNoLog($statement, $params)
 * @param  array   $params      binded variables array (optional)
 * @return array
 */
-function sqlQueryNoLogIgnoreError($statement, $params)
+function sqlQueryNoLogIgnoreError($statement, $params = null)
 {
 
 
@@ -327,8 +327,8 @@ function getSqlLastErrorNo() {
 * @return  array
 */
 function sqlListFields($table) {
-  $sql = "SHOW COLUMNS FROM ?";
-  $resource = sqlStatement($sql, array($table));
+  $sql = "SHOW COLUMNS FROM ". $table;
+  $resource = sqlStatement($sql);
   $field_list = array();
   foreach ($resource as $row) {
     $field_list[] = $row['Field'];
@@ -380,8 +380,7 @@ function HelpfulDie ($statement, $sqlerr='')
 * @todo document use of the generate_id function
 */
 function generate_id () {
-  $database = $GLOBALS['adodb']['db'];
-  return $database->GenID("sequences");
+    return DB::lastInsertId("sequences");
 }
 
 /**
@@ -503,7 +502,7 @@ function generic_sql_affected_rows()
                  */
 function generic_sql_insert_id()
 {
-  return mysqli_insert_id($GLOBALS['dbh']);
+  return DB::lastInsertId();
 }
 
 

@@ -25,7 +25,8 @@ class ORDataObject {
 		//echo "<br><br>";
 		$fields = sqlListFields($this->_table);
 		$db = get_db();
-		$pkeys = $db->MetaPrimaryKeys($this->_table);
+        $sql1 =  "SHOW KEYS FROM ". $this->_table . " WHERE Key_name = 'PRIMARY'";
+		$pkeys = sqlQuery($sql1);
 
 		foreach ($fields as $field) {
 			$func = "get_" . $field;
@@ -37,12 +38,12 @@ class ORDataObject {
 			        // have place several debug statements to allow standardized testing over next several months
 				if (!is_array($val)) {
 				        //DEBUG LINE - error_log("ORDataObject persist before strip: ".$val, 0);
-					$val = strip_escape_custom($val);
+					$val = $val;
 				        //DEBUG LINE - error_log("ORDataObject persist after strip: ".$val, 0);
 				}
 
 				if (in_array($field,$pkeys)  && empty($val)) {
-					$last_id = generate_id();
+					$last_id = DB::lastInsertID();
 					call_user_func(array(&$this,"set_".$field),$last_id);
 					$val = $last_id;
 				}
@@ -52,7 +53,7 @@ class ORDataObject {
 
                                         //modified 01-2010 by BGM to centralize to formdata.inc.php
 			                // have place several debug statements to allow standardized testing over next several months
-					$sql .= " `" . $field . "` = '" . add_escape_custom(strval($val)) ."',";
+					$sql .= " `" . $field . "` = '" .add_escape_custom(strval($val)) ."',";
 				        //DEBUG LINE - error_log("ORDataObject persist after escape: ".add_escape_custom(strval($val)), 0);
 				        //DEBUG LINE - error_log("ORDataObject persist after escape and then stripslashes test: ".stripslashes(add_escape_custom(strval($val))), 0);
 				        //DEBUG LINE - error_log("ORDataObject original before the escape and then stripslashes test: ".strval($val), 0);
