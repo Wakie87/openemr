@@ -1049,7 +1049,7 @@ class C_Document extends Controller {
         }
     }
 
-	function &_array_recurse($array,$categories = array()) {
+	function &_array_recurse($array, $categories = array()) {
 		if (!is_array($array)) {
 			$array = array();
 		}

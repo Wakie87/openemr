@@ -119,9 +119,6 @@ class Tree {
 		//now eval the string to create the tree array
 		//there must be a more efficient way to do this than eval?
 		eval($ar_string);
-            echo '<pre>';
-            var_export($tree);
-            echo '</pre>';
 		//merge the evaled array with all of the already exsiting tree elements,
 		//merge recursive is used so that no keys are replaced in other words a key
 		//with a specific value will not be replace but instead that value will be turned into an array
@@ -133,6 +130,9 @@ class Tree {
 	  }
 
 	  $this->tree = $tree;
+      echo '<pre>';
+        var_export($tree);
+        echo '</pre>';
 
 
 	}
