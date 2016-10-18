@@ -219,7 +219,7 @@ foreach ($ISSUE_TYPES as $key => $arr) {
 //
 $need_head = true;
 foreach (array('treatment_protocols','injury_log') as $formname) {
-    if (sqlNumRows(sqlStatement("SHOW TABLES LIKE ?", array("form_".$formname))) > 0) {
+    if (sqlNumRows(sqlStatement("SHOW TABLES LIKE 'form_".$formname."'")) > 0) {
         $dres = sqlStatement("SELECT tp.id, tp.value FROM forms, " .
                             "form_" . add_escape_custom($formname) .
 			    " AS tp WHERE forms.pid = ? AND " .
