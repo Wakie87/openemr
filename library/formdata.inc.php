@@ -21,6 +21,8 @@
  * @link    http://www.open-emr.org
  */
 
+
+
 /**
  * Escape a parameter to prepare for a sql query.
  *
@@ -29,7 +31,7 @@
  */
 function add_escape_custom($s) {
       //prepare for safe mysql insertion
-      $s = mysqli_real_escape_string($GLOBALS['dbh'], $s);
+      $s = DB::instance()->Quote($s);
       return $s;
 }
 
@@ -234,7 +236,7 @@ function formData($name, $type='P', $isTrim=false) {
     $s = isset($_GET[$name]) ? $_GET[$name] : '';
   else
     $s = isset($_REQUEST[$name]) ? $_REQUEST[$name] : '';
-  
+
   return formDataCore($s,$isTrim);
 }
 

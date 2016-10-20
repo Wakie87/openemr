@@ -27,6 +27,10 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
             'Dompdf\\' => 7,
             'Doctrine\\Common\\Cache\\' => 22,
         ),
+        'A' => 
+        array (
+            'Aura\\Sql\\' => 9,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -45,6 +49,10 @@ class ComposerStaticInit22ddb69348c7ed922c96325249cef3d0
         'Doctrine\\Common\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
+        ),
+        'Aura\\Sql\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/aura/sql/src',
         ),
     );
 
