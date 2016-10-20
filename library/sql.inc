@@ -20,7 +20,7 @@
 * @link      http://www.open-emr.org
 */
 
-error_reporting(E_ALL);
+error_reporting(E_WARNING);
 ini_set("display_errors", 1);
 
 require_once(dirname(__FILE__) . "/sqlconf.php");
@@ -396,9 +396,6 @@ function generate_id () {
 */
 function sqlQ($statement, $params = null )
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($params)) $params = false;
-
   $recordset = DB::run( $statement, $params ) or
     HelpfulDie("query failed: $statement", getSqlLastError());
   return $recordset;
