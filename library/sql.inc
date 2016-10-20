@@ -15,148 +15,17 @@
 * GNU General Public License for more details.
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://opensource.org/licenses/gpl-license.php>.
-* 
+*
 * @package   OpenEMR
 * @link      http://www.open-emr.org
 */
 
+error_reporting(E_WARNING);
+ini_set("display_errors", 1);
+
 require_once(dirname(__FILE__) . "/sqlconf.php");
-require_once(dirname(__FILE__) . "/../vendor/adodb/adodb-php/adodb.inc.php");
-require_once(dirname(__FILE__) . "/../vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php");
 require_once(dirname(__FILE__) . "/log.inc");
-
-/**
-* ADODB_mysql class wrapper to ensure proper auditing in OpenEMR.
-*
-* @author  Kevin Yeh <kevin.y@integralemr.com>
-*/
-class ADODB_mysqli_log extends ADODB_mysqli
-{
-        /**
-        * ADODB Execute function wrapper to ensure proper auditing in OpenEMR.
-        *
-        * @param  string  $sql         query
-        * @param  array   $inputarr    binded variables array (optional)
-        * @return boolean              returns false if error
-        */
-    	function Execute($sql,$inputarr=false)
-        {
-            $retval= parent::Execute($sql,$inputarr);
-            if ($retval === false) {
-              $outcome = false;
-              // Stash the error into last_mysql_error so it doesn't get clobbered when
-              // we insert into the audit log.
-              $GLOBALS['last_mysql_error']=$this->ErrorMsg();
-
-              // Last error no
-              $GLOBALS['last_mysql_error_no']=$this->ErrorNo();
-            }
-            else {
-              $outcome = true;
-            }
-            // Stash the insert ID into lastidado so it doesn't get clobbered when
-            // we insert into the audit log.
-            $GLOBALS['lastidado']=$this->Insert_ID();
-            auditSQLEvent($sql,$outcome,$inputarr);
-            return $retval;
-        }
-
-        /**
-        * ADODB Execute function wrapper to skip auditing in OpenEMR.
-        *
-        * Bypasses the OpenEMR auditing engine.
-        *
-        * @param  string  $sql         query
-        * @param  array   $inputarr    binded variables array (optional)
-        * @return boolean              returns false if error
-        */
-        function ExecuteNoLog($sql,$inputarr=false)
-        {
-            return parent::Execute($sql,$inputarr);
-        }
-
-        /*
-        * ADODB GenID function wrapper to work with OpenEMR.
-        *
-        * Need to override to fix a bug where call to GenID was updating
-        * sequences table but always returning a zero with the OpenEMR audit
-        * engine both on and off. Note this bug only appears to occur in recent
-        * php versions on windows. The fix is to use the ExecuteNoLog() function
-        * rather than the Execute() functions within this function (otherwise,
-        * there are no other changes from the original ADODB GenID function).
-        *
-        * @param  string  $seqname     table name containing sequence (default is adodbseq)
-        * @param  integer $startID     id to start with for a new sequence (default is 1)
-        * @return integer              returns the sequence integer
-        */
-        function GenID($seqname='adodbseq',$startID=1)
-        {
-                // post-nuke sets hasGenID to false
-                if (!$this->hasGenID) return false;
-
-                $getnext = sprintf($this->_genIDSQL,$seqname);
-                $holdtransOK = $this->_transOK; // save the current status
-                $rs = @$this->ExecuteNoLog($getnext);
-                if (!$rs) {
-                        if ($holdtransOK) $this->_transOK = true; //if the status was ok before reset
-                        $u = strtoupper($seqname);
-                        $this->ExecuteNoLog(sprintf($this->_genSeqSQL,$seqname));
-                        $cnt = $this->GetOne(sprintf($this->_genSeqCountSQL,$seqname));
-                        if (!$cnt) $this->ExecuteNoLog(sprintf($this->_genSeq2SQL,$seqname,$startID-1));
-                        $rs = $this->ExecuteNoLog($getnext);
-                }
-
-                if ($rs) {
-                        $this->genID = mysqli_insert_id($this->_connectionID);
-                        $rs->Close();
-                } else
-                        $this->genID = 0;
-
-                return $this->genID;
-        }
-}
-if (!defined('ADODB_FETCH_ASSOC')) define('ADODB_FETCH_ASSOC', 2);
-$database = NewADOConnection("mysqli_log"); // Use the subclassed driver which logs execute events
-// Below clientFlags flag is telling the mysql connection to allow local_infile setting,
-// which is needed to import data in the Administration->Other->External Data Loads feature.
-// Note this is a specific bug to work in Ubuntu 12.04, of which the Data Load feature does not
-// work and is suspicious for a bug in PHP of that OS; Setting this clientFlags fixes this bug
-// and appears to not cause problems in other operating systems.
-$database->clientFlags = 128;
-$database->port = $port;
-$database->PConnect($host, $login, $pass, $dbase);
-$GLOBALS['adodb']['db'] = $database;
-$GLOBALS['dbh'] = $database->_connectionID;
-
-// Modified 5/2009 by BM for UTF-8 project ---------
-if (!$disable_utf8_flag) {
- $success_flag = $database->Execute("SET NAMES 'utf8'");
-  if (!$success_flag) {
-   error_log("PHP custom error: from openemr library/sql.inc  - Unable to set up UTF8 encoding with mysql database: ".getSqlLastError(), 0);
-  }
-}
-
-// Turn off STRICT SQL
-$sql_strict_set_success = $database->Execute("SET sql_mode = ''");
-if (!$sql_strict_set_success) {
- error_log("Unable to set strict sql setting: ".getSqlLastError(), 0);
-}
-
-// set up associations in adodb calls (not sure why above define
-//  command does not work)
-$GLOBALS['adodb']['db']->SetFetchMode(ADODB_FETCH_ASSOC);
-
-//fmg: This makes the login screen informative when no connection can be made
-if (!$GLOBALS['dbh']) {
-  //try to be more helpful
-  if ($host == "localhost") {
-    echo "Check that mysqld is running.<p>";
-  } else {
-    echo "Check that you can ping the server '".text($host)."'.<p>";
-  }//if local
-  HelpfulDie("Could not connect to server!", getSqlLastError());
-  exit;
-}//if no connection
+require_once(dirname(__FILE__) . "/Framework/src/Database/Database.php");
 
 /**
 * Standard sql query in OpenEMR.
@@ -170,21 +39,13 @@ if (!$GLOBALS['dbh']) {
 * utilize the return object.
 *
 * @param  string  $statement  query
-* @param  array   $binds      binded variables array (optional)
+* @param  array   $params      binded variables array (optional)
 * @return recordset
 */
-function sqlStatement($statement, $binds=false )
+function sqlStatement($statement, $params = null )
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($binds)) $binds = false;
 
-  // Use adodb Execute with binding and return a recordset.
-  //   Note that the auditSQLEvent function is embedded
-  //    in the Execute command.
-  $recordset = $GLOBALS['adodb']['db']->Execute( $statement, $binds );
-  if ($recordset === FALSE) {
-    HelpfulDie("query failed: $statement", getSqlLastError());
-  }
+  $recordset = DB::run($statement, $params);
   return $recordset;
 }
 
@@ -194,7 +55,7 @@ function sqlStatement($statement, $binds=false )
 * Function that will allow use of the adodb binding
 * feature to prevent sql-injection. Will continue to
 * be compatible with previous function calls that do
-* not use binding. It is equivalent to the 
+* not use binding. It is equivalent to the
 * sqlStatement() function, EXCEPT it skips the
 * audit engine. This function should only be used
 * in very special situations.
@@ -203,19 +64,13 @@ function sqlStatement($statement, $binds=false )
 * utilize the return object.
 *
 * @param  string  $statement  query
-* @param  array   $binds      binded variables array (optional)
+* @param  array   $params      binded variables array (optional)
 * @return recordset
 */
-function sqlStatementNoLog($statement, $binds=false )
+function sqlStatementNoLog($statement, $params = null )
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($binds)) $binds = false;
-
   // Use adodb ExecuteNoLog with binding and return a recordset.
-  $recordset = $GLOBALS['adodb']['db']->ExecuteNoLog( $statement, $binds );
-  if ($recordset === FALSE) {
-    HelpfulDie("query failed: $statement", getSqlLastError());
-  }
+  $recordset = DB::runNoLog( $statement, $params );
   return $recordset;
 }
 
@@ -223,21 +78,18 @@ function sqlStatementNoLog($statement, $binds=false )
 * sqlStatement() function wrapper for CDR engine in OpenEMR.
 * Allows option to turn on/off auditing specifically for the
 * CDR engine.
-* 
+*
 * @param  string  $statement  query
-* @param  array   $binds      binded variables array (optional)
+* @param  array   $params      binded variables array (optional)
 * @return recordset/resource
 */
-function sqlStatementCdrEngine($statement, $binds=false )
+function sqlStatementCdrEngine($statement, $params = null )
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($binds)) $binds = false;
-
   if ($GLOBALS['audit_events_cdr']) {
-    return sqlStatement($statement,$binds);
+    return sqlStatement($statement, $params);
   }
   else {
-    return sqlStatementNoLog($statement,$binds);
+    return sqlStatementNoLog($statement, $params);
   }
 }
 
@@ -247,41 +99,38 @@ function sqlStatementCdrEngine($statement, $binds=false )
 * Function that will allow use of the adodb binding
 * feature to prevent sql-injection.
 * It will act upon the object returned from the
-* sqlStatement() function (and sqlQ() function).
+* sqlStatement() function.
 *
 * @param recordset $r
 * @return array
 */
 function sqlFetchArray($r)
 {
-  //treat as an adodb recordset
-  if ($r === FALSE)
+    if ($r === FALSE)
     return false;
-  if ($r->EOF)
+    //ensure it's an object (ie. is set)
+    if (!is_object($r))
     return false;
-  //ensure it's an object (ie. is set)
-  if (!is_object($r))
-    return false;
-
-    return $r->FetchRow();
+    return $r->Fetch();
 }
-
 
 /**
  * Wrapper for ADODB getAssoc
- * 
+ *
  * @see http://adodb.org/dokuwiki/doku.php?id=v5:reference:connection:getassoc
- * 
+ *
  * @param string $sql
  * @param string[] $bindvars
  * @param boolean $forceArray
  * @param boolean $first2Cols
  * @return array
  */
-function sqlGetAssoc( $sql, $bindvars=false, $forceArray=false, $first2Cols=false ) {
-  
-  return $GLOBALS['adodb']['db']->getAssoc( $sql, $bindvars, $forceArray, $first2Cols  );
-  
+function sqlGetAssoc($sql, $params = null) {
+
+  $recordset = DB::runNoLog($sql, $params);
+  $rez = $recordset->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_UNIQUE);
+  return $rez;
+
 }
 
 /**
@@ -293,21 +142,13 @@ function sqlGetAssoc( $sql, $bindvars=false, $forceArray=false, $first2Cols=fals
 * the last id generated from the insert.
 *
 * @param  string   $statement  query
-* @param  array    $binds      binded variables array (optional)
+* @param  array    $params      binded variables array (optional)
 * @return integer  Last id generated from the sql insert command
 */
-function sqlInsert($statement, $binds=false)
+function sqlInsert($statement, $params = null)
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($binds)) $binds = false;
 
-  //Run a adodb execute
-  // Note the auditSQLEvent function is embedded in the
-  //   Execute function.
-  $recordset = $GLOBALS['adodb']['db']->Execute($statement, $binds);
-  if ($recordset === FALSE) {
-    HelpfulDie("insert failed: $statement", getSqlLastError());
-  }
+  $recordset = DB::run($statement, $params);
   // Return the correct last id generated using function
   //   that is safe with the audit engine.
   return getSqlLastID();
@@ -321,22 +162,16 @@ function sqlInsert($statement, $binds=false)
 * feature to prevent sql-injection.
 *
 * @param  string  $statement  query
-* @param  array   $binds      binded variables array (optional)
+* @param  array   $params      binded variables array (optional)
 * @return array
 */
-function sqlQuery($statement, $binds=false)
+function sqlQuery($statement, $params = null)
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($binds)) $binds = false;
+  $recordset = DB::run( $statement, $params );
 
-  $recordset = $GLOBALS['adodb']['db']->Execute( $statement, $binds );
-
-  if ($recordset === FALSE) {
-    HelpfulDie("query failed: $statement", getSqlLastError());
-  }
-  if ($recordset->EOF)
+  if (empty($recordset))
    return FALSE;
-  $rez = $recordset->FetchRow();
+  $rez = $recordset->Fetch();
   if ($rez == FALSE)
     return FALSE;
   return $rez;
@@ -353,24 +188,13 @@ function sqlQuery($statement, $binds=false)
 * in very special situations.
 *
 * @param  string  $statement  query
-* @param  array   $binds      binded variables array (optional)
+* @param  array   $params      binded variables array (optional)
 * @return array
 */
-function sqlQueryNoLog($statement, $binds=false)
+function sqlQueryNoLog($statement, $params = null)
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($binds)) $binds = false;
-
-  $recordset = $GLOBALS['adodb']['db']->ExecuteNoLog( $statement, $binds );
-
-  if ($recordset === FALSE) {
-    HelpfulDie("query failed: $statement", getSqlLastError());
-  }
-  if ($recordset->EOF)
-   return FALSE;
-  $rez = $recordset->FetchRow();
-  if ($rez == FALSE)
-    return FALSE;
+  $recordset = DB::runNoLog( $statement, $params );
+  $rez = $recordset->Fetch();
   return $rez;
 }
 
@@ -386,25 +210,17 @@ function sqlQueryNoLog($statement, $binds=false)
 * in very special situations.
 *
 * @param  string  $statement  query
-* @param  array   $binds      binded variables array (optional)
+* @param  array   $params      binded variables array (optional)
 * @return array
 */
-function sqlQueryNoLogIgnoreError($statement, $binds=false)
+function sqlQueryNoLogIgnoreError($statement, $params = null)
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($binds)) $binds = false;
-
-  $recordset = $GLOBALS['adodb']['db']->ExecuteNoLog( $statement, $binds );
-
+  $recordset = DB::runNoLog( $statement, $params );
   if ($recordset === FALSE) {
     // ignore the error and return FALSE
     return FALSE;
   }
-  if ($recordset->EOF)
-   return FALSE;
-  $rez = $recordset->FetchRow();
-  if ($rez == FALSE)
-    return FALSE;
+  $rez = $recordset->Fetch();
   return $rez;
 }
 
@@ -414,19 +230,16 @@ function sqlQueryNoLogIgnoreError($statement, $binds=false)
 * CDR engine.
 *
 * @param  string  $statement  query
-* @param  array   $binds      binded variables array (optional)
+* @param  array   $params      binded variables array (optional)
 * @return array
 */
-function sqlQueryCdrEngine($statement, $binds=false )
+function sqlQueryCdrEngine($statement, $params = null )
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($binds)) $binds = false;
-
   if ($GLOBALS['audit_events_cdr']) {
-    return sqlQuery($statement,$binds);
+    return sqlQuery($statement, $params);
   }
   else {
-    return sqlQueryNoLog($statement,$binds);
+    return sqlQueryNoLog($statement, $params);
   }
 }
 
@@ -437,13 +250,9 @@ function sqlQueryCdrEngine($statement, $binds=false )
 *
 * @param  string  $statement  query
 */
-function sqlInsertClean_audit($statement)
+function sqlInsertClean_audit($statement, $params = null)
 {
-
-  $ret = $GLOBALS['adodb']['db']->ExecuteNoLog($statement);
-  if ($ret === FALSE) {
-    HelpfulDie("insert failed: $statement", getSqlLastError());
-  }
+  $ret = DB::runNoLog($statement, $params);
 }
 
 /**
@@ -453,7 +262,9 @@ function sqlInsertClean_audit($statement)
 * @return  integer Last ID that was inserted into sql
 */
 function getSqlLastID() {
-    return $GLOBALS['lastidado'] > 0 ? $GLOBALS['lastidado'] : $GLOBALS['adodb']['db']->Insert_ID();
+    //return $GLOBALS['lastidado'] > 0 ? $GLOBALS['lastidado'] : DB::lastInsertId();
+    return DB::lastInsertId();
+
 }
 
 /**
@@ -464,7 +275,7 @@ function getSqlLastID() {
 * @return  string        last mysql error
 */
 function getSqlLastError() {
-    return !empty($GLOBALS['last_mysql_error']) ? $GLOBALS['last_mysql_error'] : $GLOBALS['adodb']['db']->ErrorMsg();
+    return !empty($GLOBALS['last_mysql_error']) ? $GLOBALS['last_mysql_error'] : DB::errorInfo();
 }
 
 /**
@@ -475,7 +286,7 @@ function getSqlLastError() {
  * @return  string        last mysql error no
  */
 function getSqlLastErrorNo() {
-    return !empty($GLOBALS['last_mysql_error_no']) ? $GLOBALS['last_mysql_error_no'] : $GLOBALS['adodb']['db']->ErrorNo();
+    return !empty($GLOBALS['last_mysql_error_no']) ? $GLOBALS['last_mysql_error_no'] : DB::errorCode();
 }
 
 /**
@@ -486,8 +297,8 @@ function getSqlLastErrorNo() {
 * @return  array
 */
 function sqlListFields($table) {
-  $sql = "SHOW COLUMNS FROM ". add_escape_custom($table);
-  $resource = sqlQ($sql);
+  $sql = "SHOW COLUMNS FROM ". escape_table_name($table);
+  $resource = sqlStatement($sql);
   $field_list = array();
   while($row = sqlFetchArray($resource)) {
     $field_list[] = $row['Field'];
@@ -503,70 +314,16 @@ function sqlListFields($table) {
 */
 function sqlNumRows($r)
 {
-  return $r->RecordCount();
-}
-
-/**
-* Error function for OpenEMR sql functions
-*
-* @param string $statement
-* @param string $sqlerr
-*/
-function HelpfulDie ($statement, $sqlerr='')
-{
-  echo "<p><p><font color='red'>ERROR:</font> ".text($statement)."<p>";
-  $logMsg="SQL Error with statement:".$statement;
-  if ($sqlerr) {
-    echo "Error: <font color='red'>".text($sqlerr)."</font><p>";
-    $logMsg.="--".$sqlerr;
-  }//if error
-  $backtrace=debug_backtrace();
-  for($level=1;$level<count($backtrace);$level++)
-  {
-      $info=$backtrace[$level];
-      echo "<br>".text($info["file"]." at ".$info["line"].":".$info["function"]);
-      if($level>1){
-          echo "(".text(implode(",",$info["args"])).")";
-      }
-  }
-  $logMsg.="==>".$backtrace[1]["file"]." at ".$backtrace[1]["line"].":".$backtrace[1]["function"];
-  error_log($logMsg);
-  
-  exit;
+  return $r->rowCount();
 }
 
 /**
 * @todo document use of the generate_id function
 */
 function generate_id () {
-  $database = $GLOBALS['adodb']['db'];
-  return $database->GenID("sequences");
-}
 
-/**
-* Deprecated function. Standard sql query in OpenEMR.
-*
-* Function that will allow use of the adodb binding
-* feature to prevent sql-injection. Will continue to
-* be compatible with previous function calls that do
-* not use binding.
-* It will return a recordset object.
-* The sqlFetchArray() function should be used to
-* utilize the return object.
-*
-* @deprecated
-* @param  string  $statement  query
-* @param  array   $binds      binded variables array (optional)
-* @return recordset
-*/
-function sqlQ($statement, $binds=false )
-{
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($binds)) $binds = false;
+  return GenID("sequences");
 
-  $recordset = $GLOBALS['adodb']['db']->Execute( $statement, $binds ) or
-    HelpfulDie("query failed: $statement", getSqlLastError());
-  return $recordset;
 }
 
 /**
@@ -577,15 +334,12 @@ function sqlQ($statement, $binds=false )
 *
 * @deprecated
 * @param  string   $statement  query
-* @param  array    $binds      binded variables array (optional)
+* @param  array    $params      binded variables array (optional)
 * @return integer  Last id generated from the sql insert command
 */
-function idSqlStatement($statement , $binds=false )
+function idSqlStatement($statement , $params = null )
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($binds)) $binds = false;
-
-  return sqlInsert($statement, $binds);
+  return sqlInsert($statement, $params);
 }
 
 /**
@@ -596,15 +350,12 @@ function idSqlStatement($statement , $binds=false )
 *
 * @deprecated
 * @param  string   $statement  query
-* @param  array    $binds      binded variables array (optional)
+* @param  array    $params      binded variables array (optional)
 * @return integer  Last id generated from the sql insert command
 */
-function sqlInsertClean($statement, $binds=false )
+function sqlInsertClean($statement, $params = null )
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($binds)) $binds = false;
-
-  return sqlInsert($statement, $binds);
+  return sqlInsert($statement, $params);
 }
 
 
@@ -619,8 +370,7 @@ function sqlInsertClean($statement, $binds=false )
 function sqlClose()
 {
   //----------Close our mysql connection
-  $closed = $GLOBALS['adodb']['db']->close or
-    HelpfulDie("could not disconnect from mysql server link", getSqlLastError());
+  $closed = $GLOBALS['adodb']['db']->close;
   return $closed;
 }
 
@@ -633,7 +383,7 @@ function sqlClose()
 * @return connection
 */
 function get_db() {
-  return $GLOBALS['adodb']['db'];
+  return DB::instance();
 }
 
 /**
@@ -662,10 +412,10 @@ function generic_sql_affected_rows()
  * Generic mysql insert id function
  * Used when converted to mysqli to centralize special circumstances.
  *
-				 */
+ */
 function generic_sql_insert_id()
 {
-  return mysqli_insert_id($GLOBALS['dbh']);
+  return DB::lastInsertId();
 }
 
 
@@ -674,7 +424,7 @@ function generic_sql_insert_id()
  */
 function sqlBeginTrans()
 {
-    $GLOBALS['adodb']['db']->BeginTrans();
+    DB::beginTransaction();
 }
 
 
@@ -683,7 +433,7 @@ function sqlBeginTrans()
  */
 function sqlCommitTrans($ok=true)
 {
-    $GLOBALS['adodb']['db']->CommitTrans();
+    DB::commit();
 }
 
 
@@ -692,7 +442,52 @@ function sqlCommitTrans($ok=true)
  */
 function sqlRollbackTrans()
 {
-    $GLOBALS['adodb']['db']->RollbackTrans();
+    DB::rollBack();
 }
+
+function db_next_id($seqname='adodbseq') {
+
+  sqlQuery("update " . $seqname . " set id=LAST_INSERT_ID(id+1);");
+  return DB::lastInsertId();
+}
+
+
+
+function GenID($seqname='adodbseq',$startID=1)
+    {
+
+        $_genIDSQL = "update %s set id=LAST_INSERT_ID(id+1);";
+        $_genSeqSQL = "create table if not exists %s (id int not null)";
+        $_genSeqCountSQL = "select count(*) from %s";
+        $_genSeq2SQL = "insert into %s values (%s)";
+        $_dropSeqSQL = "drop table if exists %s";
+
+        // post-nuke sets hasGenID to false
+        //if (!$hasGenID) return false;
+        $getnext = sprintf($_genIDSQL,$seqname);
+        //$holdtransOK = $this->_transOK; // save the current status
+        $rs = DB::runNoLog($getnext);
+        if (!$rs) {
+            //if ($holdtransOK) $this->_transOK = true; //if the status was ok before reset
+            $u = strtoupper($seqname);
+            DB::runNoLog(sprintf($_genSeqSQL,$seqname));
+            $cnt = sqlQuery(sprintf($_genSeqCountSQL,$seqname));
+            if (!$cnt) DB::runNoLog(sprintf($_genSeq2SQL,$seqname,$startID-1));
+            $rs = DB::runNoLog($getnext);
+        }
+        if ($rs) {
+            $genID = DB::lastInsertId();
+            DB::Close();
+        } else
+            $genID = 0;
+
+        return $genID;
+    }
+
+
+
+
+
+
 
 ?>

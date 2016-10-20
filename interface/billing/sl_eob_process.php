@@ -121,7 +121,7 @@ require_once("$srcdir/billing.inc");
              {
                 $bgcolor='#ffdddd';
              }
-             $rs=sqlQ("select reference from ar_session where reference='".$out['check_number'.$check_count]."'");
+             $rs=sqlStatement("select reference from ar_session where reference='".$out['check_number'.$check_count]."'");
              if(sqlNumRows($rs)>0)
              {
                 $bgcolor='#ff0000';
@@ -557,10 +557,10 @@ require_once("$srcdir/billing.inc");
               $StringPrint='No';
               foreach($InsertionId as $key => $value)
                 {
-                    $rs= sqlQ("select pay_total from ar_session where session_id='$value'");
+                    $rs= sqlStatement("select pay_total from ar_session where session_id='$value'");
                     $row=sqlFetchArray($rs);
                     $pay_total=$row['pay_total'];
-                    $rs= sqlQ("select sum(pay_amount) sum_pay_amount from ar_activity where session_id='$value'");
+                    $rs= sqlStatement("select sum(pay_amount) sum_pay_amount from ar_activity where session_id='$value'");
                     $row=sqlFetchArray($rs);
                     $pay_amount=$row['sum_pay_amount'];
                     

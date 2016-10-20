@@ -10,4 +10,5 @@ return array(
     'Zend\\' => array($vendorDir . '/zendframework/zendframework/library/Zend'),
     'Dompdf\\' => array($vendorDir . '/dompdf/dompdf/src'),
     'Doctrine\\Common\\Cache\\' => array($vendorDir . '/doctrine/cache/lib/Doctrine/Common/Cache'),
+    'Aura\\Sql\\' => array($vendorDir . '/aura/sql/src'),
 );

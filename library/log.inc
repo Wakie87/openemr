@@ -4,7 +4,7 @@ require_once(dirname(__FILE__). "/sql.inc");
 require_once(dirname(__FILE__). "/formdata.inc.php");
 
 function newEvent($event, $user, $groupname, $success, $comments="", $patient_id=null, $log_from = 'open-emr', $menu_item = 'dashboard', $ccda_doc_id = 0) {
-    $adodb = $GLOBALS['adodb']['db'];
+    $adodb = DB::instance();
     $crt_user=isset($_SERVER['SSL_CLIENT_S_DN_CN']) ?  $_SERVER['SSL_CLIENT_S_DN_CN'] : null;
 
     $category = $event;
@@ -34,24 +34,23 @@ function newEvent($event, $user, $groupname, $success, $comments="", $patient_id
                 log_from, menu_item_id, crt_user, ccda_doc_id) values ( NOW(), ?,'Patient Portal', ?, ?, ?, ?, ?, ?, ?,?, ?)";
         $ret = sqlStatementNoLog($sql, array($event, $user, $patient_id, $groupname, $success, $comments,$log_from, $menuItemId,$crt_user, $ccda_doc_id));
     } else {
-    
-    /* More details added to the log */
-    $sql = "insert into log ( date, event,category, user, groupname, success, comments, crt_user, patient_id) " .
-            "values ( NOW(), " . $adodb->qstr($event) . ",". $adodb->qstr($category) . "," . $adodb->qstr($user) .
-            "," . $adodb->qstr($groupname) . "," . $adodb->qstr($success) . "," .
-            $adodb->qstr($comments) ."," .
-            $adodb->qstr($crt_user) ."," . $adodb->qstr($patient_id). ")";
 
-    $ret = sqlInsertClean_audit($sql);
+    /* More details added to the log */
+    $sql = "insert into log ( date, event, category, user, groupname, success, comments, crt_user, patient_id) " .
+            "values (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)";
+            $bind_values = array($event, $category, $user, $groupname, $success, $comments, $crt_user, $patient_id);
+    $ret = sqlInsertClean_audit($sql, $bind_values);
+
     }
 
     // Send item to log_comment_encrypt for comment encyption tracking
-    $last_log_id = $GLOBALS['adodb']['db']->Insert_ID();
+    $last_log_id = DB::lastInsertId();
     $encryptLogQry = "INSERT INTO log_comment_encrypt (log_id, encrypt, checksum) ".
                      " VALUES ( ".
-                     $adodb->qstr($last_log_id) . "," .
-                     $adodb->qstr($encrypt_comment) . "," .
+                     $adodb->quote($last_log_id) . "," .
+                     $adodb->quote($encrypt_comment) . "," .
                      "'')";
+
     sqlInsertClean_audit($encryptLogQry);
 
     if(($patient_id=="NULL") || ($patient_id==null))$patient_id=0;
@@ -169,7 +168,7 @@ function sql_checksum_of_modified_row($statement)
         $table = $tokens[2];
         $rid = generic_sql_insert_id();
 	/* For handling the table that doesn't have auto-increment column */
-        if ($rid === 0 || $rid === FALSE) {
+        if ($rid === '0' || $rid === FALSE) {
           if($table == "gacl_aco_map" || $table == "gacl_aro_groups_map" || $table == "gacl_aro_map" || $table == "gacl_axo_groups_map" || $table == "gacl_axo_map")
            $id="acl_id";
           else if($table == "gacl_groups_aro_map" || $table == "gacl_groups_axo_map")
@@ -275,35 +274,35 @@ function sql_checksum_of_modified_row($statement)
     }
    /* Framing sql statements for calculating checksum */
    if ($table == "form_physical_exam") {
-        $sql = "select * from $table where forms_id = $rid";
+        $sql = "select * from $table where forms_id = ?";
     }
    else if ($table == "claims"){
-		$sql = "select * from $table where patient_id = $rid";
+		$sql = "select * from $table where patient_id = ?";
         }
    else if ($table == "openemr_postcalendar_events") {
-            $sql = "select * from $table where pc_eid = $rid";
+            $sql = "select * from $table where pc_eid = ?";
         }
     else if ($table == "lang_languages") {
-            $sql = "select * from $table where lang_id = $rid";
+            $sql = "select * from $table where lang_id = ?";
     }
     else if ($table == "openemr_postcalendar_categories" || $table == "openemr_postcalendar_topics"){
-	    $sql = "select * from $table where pc_catid = $rid";
+	    $sql = "select * from $table where pc_catid = ?";
     	 }
     else if ($table == "openemr_postcalendar_limits"){
-           $sql = "select * from $table where pc_limitid = $rid";
+           $sql = "select * from $table where pc_limitid = ?";
 	 }
     else if ($table ==  "gacl_aco_map" || $table == "gacl_aro_groups_map" || $table == "gacl_aro_map" || $table == "gacl_axo_groups_map" || $table == "gacl_axo_map"){
-           $sql = "select * from $table where acl_id = $rid";
+           $sql = "select * from $table where acl_id = ?";
          }
      else if($table == "gacl_groups_aro_map" || $table == "gacl_groups_axo_map"){
-	   $sql = "select * from $table where group_id = $rid";
+	   $sql = "select * from $table where group_id = ?";
       }
      else {
-        $sql = "select * from $table where id = $rid";
+        $sql = "select * from $table where id = ?";
     }
     // When this function is working perfectly, can then shift to the
     // sqlQueryNoLog() function.
-    $results = sqlQueryNoLogIgnoreError($sql);
+    $results = sqlQueryNoLogIgnoreError($sql, array($rid));
     $column_values = "";
    /* Concatenating the column values for the row inserted/updated */
     if (is_array($results)) {
@@ -671,7 +670,7 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
     				"procedure_order" => "lab-order",
     			    "procedure_order_code" => "lab-order",
     				"procedure_report" => "lab-results",
-    				"procedure_result" => "lab-results" 
+    				"procedure_result" => "lab-results"
                   );
 
     /* When searching for table names, truncate the SQL statement,
@@ -752,8 +751,6 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
 
     $event = $event . "-" . $querytype;
 
-    $adodb = $GLOBALS['adodb']['db'];
-
     // ViSolve : Don't log sequences - to avoid the affect due to GenID calls
     if (strpos($comments, "sequences") !== FALSE) return;
 
@@ -764,23 +761,14 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
 		$encrypt_comment = 'Yes';
 	}
 
-	$current_datetime = date("Y-m-d H:i:s");
     $SSL_CLIENT_S_DN_CN=isset($_SERVER['SSL_CLIENT_S_DN_CN']) ? $_SERVER['SSL_CLIENT_S_DN_CN'] : '';
-    $sql = "insert into log (date, event,category, user, groupname, comments, patient_id, success, checksum,crt_user) " .
-         "values ( ".
-		 $adodb->qstr($current_datetime). ", ".
-         $adodb->qstr($event) . ", " .
-         $adodb->qstr($category) . ", " .
-         $adodb->qstr($user) . "," .
-         $adodb->qstr($group) . "," .
-         $adodb->qstr($comments) . "," .
-         $adodb->qstr($pid) . "," .
-         $adodb->qstr($success) . "," .
-         $adodb->qstr($checksum) . "," .
-         $adodb->qstr($SSL_CLIENT_S_DN_CN) .")";
-	sqlInsertClean_audit($sql);
+    $sql = "insert into log (date, event, category, user, groupname, comments, patient_id, success, checksum,crt_user) " .
+         "values (NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $bind = array($event, $category, $user, $group, $comments, $pid, $success, $checksum, $SSL_CLIENT_S_DN_CN);
 
-	$last_log_id = $GLOBALS['adodb']['db']->Insert_ID();
+	sqlInsertClean_audit($sql, $bind);
+
+	$last_log_id = DB::lastInsertId();
 	$checksumGenerate = '';
 	//July 1, 2014: Ensoftek: Record the encryption checksum in a secondary table(log_comment_encrypt)
 	if ($querytype == 'update') {
@@ -788,11 +776,9 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
 		$checksumGenerate = sha1($concatLogColumns);
 	}
 	$encryptLogQry = "INSERT INTO log_comment_encrypt (log_id, encrypt, checksum) ".
-					 " VALUES ( ".
-					  $adodb->qstr($last_log_id) . "," .
-					  $adodb->qstr($encrypt_comment) . "," .
-					  $adodb->qstr($checksumGenerate) .")";
-	sqlInsertClean_audit($encryptLogQry);
+					 " VALUES (?, ?, ?)";
+     $bind = array($last_log_id, $encrypt_comment, $checksumGenerate);
+     sqlInsertClean_audit($encryptLogQry, $bind);
 
     send_atna_audit_msg($user, $group, $event, $pid, $success, $comments);
     //return $ret;
@@ -809,9 +795,6 @@ function auditSQLAuditTamper($enable)
     $success = 1;
 	$event = "security-administration" . "-" . "insert";
 
-
-    $adodb = $GLOBALS['adodb']['db'];
-
 	if ($enable == "1")
 	{
 		$comments = "Audit Logging Enabled.";
@@ -822,18 +805,10 @@ function auditSQLAuditTamper($enable)
 	}
 
     $SSL_CLIENT_S_DN_CN=isset($_SERVER['SSL_CLIENT_S_DN_CN']) ? $_SERVER['SSL_CLIENT_S_DN_CN'] : '';
-    $sql = "insert into log (date, event, user, groupname, comments, patient_id, success, checksum,crt_user) " .
-         "values ( NOW(), " .
-         $adodb->qstr($event) . ", " .
-         $adodb->qstr($user) . "," .
-         $adodb->qstr($group) . "," .
-         $adodb->qstr($comments) . "," .
-         $adodb->qstr($pid) . "," .
-         $adodb->qstr($success) . "," .
-         $adodb->qstr($checksum) . "," .
-         $adodb->qstr($SSL_CLIENT_S_DN_CN) .")";
-
-    sqlInsertClean_audit($sql);
+    $sql = "insert into log (date, event, user, groupname, comments, patient_id, success, checksum, crt_user) " .
+         "values (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)";
+    $bind = array($event, $user, $group, $comments, $pid, $success, $checksum, $SSL_CLIENT_S_DN_CN);
+    sqlInsertClean_audit($sql, $bind);
     send_atna_audit_msg($user, $group, $event, $pid, $success, $comments);
 }
 
@@ -847,16 +822,13 @@ function auditSQLAuditTamper($enable)
  */
 function recordDisclosure($dates,$event,$pid,$recipient,$description,$user)
 {
-        $adodb = $GLOBALS['adodb']['db'];
         $crt_user= $_SERVER['SSL_CLIENT_S_DN_CN'];
         $groupname=$_SESSION['authProvider'];
         $success=1;
-        $sql = "insert into extended_log ( date, event, user, recipient, patient_id, description) " .
-            "values (" . $adodb->qstr($dates) . "," . $adodb->qstr($event) . "," . $adodb->qstr($user) .
-            "," . $adodb->qstr($recipient) . ",".
-            $adodb->qstr($pid) ."," .
-            $adodb->qstr($description) .")";
-        $ret = sqlInsertClean_audit($sql);
+        $sql = "insert into extended_log (date, event, user, recipient, patient_id, description) " .
+            "values (?, ?, ?, ?, ?, ?)";
+        $bind = array($dates, $event, $user, $recipient, $pid, $description);
+        $ret = sqlInsertClean_audit($sql, $bind);
 }
 /**
  * Edit the disclosures that is recorded.
@@ -868,13 +840,9 @@ function recordDisclosure($dates,$event,$pid,$recipient,$description,$user)
 function updateRecordedDisclosure($dates,$event,$recipient,$description,$disclosure_id)
 {
          $adodb = $GLOBALS['adodb']['db'];
-         $sql="update extended_log set
-                event=" . $adodb->qstr($event) . ",
-                date=" .  $adodb->qstr($dates) . ",
-                recipient=" . $adodb->qstr($recipient) . ",
-                description=" . $adodb->qstr($description) . "
-                where id=" . $adodb->qstr($disclosure_id) . "";
-          $ret = sqlInsertClean_audit($sql);
+         $sql="update extended_log set event = ? date = ? recipient = ? description = ? where id = ?";
+        $bind = array($event, $dates, $recipient, $description, $disclosure_id);
+          $ret = sqlInsertClean_audit($sql, $bind);
 }
 /**
  * Delete the disclosures that is recorded.
@@ -882,8 +850,8 @@ function updateRecordedDisclosure($dates,$event,$recipient,$description,$disclos
  */
 function deleteDisclosure($deletelid)
 {
-        $sql="delete from extended_log where id='" . add_escape_custom($deletelid) . "'";
-        $ret = sqlInsertClean_audit($sql);
+        $sql="delete from extended_log where id= ?";
+        $ret = sqlInsertClean_audit($sql, array($deletelid));
 }
 
 //July 1, 2014: Ensoftek: Function to AES256 encrypt a given string
@@ -939,7 +907,7 @@ function logCommentEncryptData($log_id){
 
 /**
  * Function used to determine category of the event
- * 
+ *
  */
 function eventCategoryFinder($sql,$event,$table){
 	if($event == 'delete'){
@@ -977,7 +945,7 @@ function eventCategoryFinder($sql,$event,$table){
 	else if($table == 'procedure_order' || $table == 'procedure_order_code') return "Lab Order";
 	else if($table == 'procedure_report' || $table == 'procedure_result') return "Lab Result";
 	else if($event == 'security-administration') return "Security";
-	
+
 	return $event;
 }
 ?>

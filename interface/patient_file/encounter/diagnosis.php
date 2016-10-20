@@ -85,7 +85,7 @@ if (isset($mode)) {
 		}
 		if (!empty($sql)) {
 			foreach ($sql as $q) {
-				$results = sqlQ($q);
+				$results = sqlStatement($q);
 			}
 		}
 
