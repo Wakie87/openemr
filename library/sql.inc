@@ -20,7 +20,7 @@
 * @link      http://www.open-emr.org
 */
 
-error_reporting(E_WARNING);
+error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require_once(dirname(__FILE__) . "/sqlconf.php");
@@ -116,6 +116,11 @@ function sqlStatementCdrEngine($statement, $params = null )
 */
 function sqlFetchArray($r)
 {
+    if ($r === FALSE)
+    return false;
+    //ensure it's an object (ie. is set)
+    if (!is_object($r))
+    return false;
     return $r->Fetch();
 }
 
@@ -179,7 +184,11 @@ function sqlQuery($statement, $params = null)
   if ($recordset === FALSE) {
     HelpfulDie("query failed: $statement", getSqlLastError());
   }
+  if (empty($recordset))
+   return FALSE;
   $rez = $recordset->Fetch();
+  if ($rez == FALSE)
+    return FALSE;
   return $rez;
 }
 
@@ -321,8 +330,9 @@ function getSqlLastErrorNo() {
 * @return  array
 */
 function sqlListFields($table) {
-  $sql = "SHOW COLUMNS FROM ". add_escape_custom($table);
-  $resource = sqlQ($sql);
+
+  $sql = "SHOW COLUMNS FROM ". escape_table_name($table);
+  $resource = sqlStatement($sql);
   $field_list = array();
   while($row = sqlFetchArray($resource)) {
     $field_list[] = $row['Field'];
@@ -338,7 +348,7 @@ function sqlListFields($table) {
 */
 function sqlNumRows($r)
 {
-  return count($r);
+  return $r->rowCount();
 }
 
 /**

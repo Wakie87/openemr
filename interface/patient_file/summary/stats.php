@@ -219,12 +219,10 @@ foreach ($ISSUE_TYPES as $key => $arr) {
 //
 $need_head = true;
 foreach (array('treatment_protocols','injury_log') as $formname) {
-    $aformname = "'form_".$formname."'";
-    $result = sqlQuery("SHOW TABLES LIKE ".$aformname);
-
-    if (!empty($result)) {
-        $dres = sqlStatement("SELECT tp.id, tp.value FROM forms, " .
-                            "'".$aformname."'" .
+    $aformname = "form_".$formname;
+    if (sqlNumRows(sqlStatement("SHOW TABLES LIKE '" .$aformname."'")) > 0) {
+        $dres = sqlStatement("SELECT tp.id, tp.value" .
+                             "FROM forms, ".$aformname .
 			                 " AS tp WHERE forms.pid = ? AND " .
                             "forms.formdir = ? AND tp.id = forms.form_id AND " .
                             "tp.rownbr = -1 AND tp.colnbr = -1 AND tp.value LIKE '0%' " .
