@@ -1,6 +1,6 @@
 <?php
 	require_once (dirname(__FILE__) ."/../sql.inc");
-        require_once (dirname(__FILE__) ."/../formdata.inc.php");
+    require_once (dirname(__FILE__) ."/../formdata.inc.php");
 	require_once("Patient.class.php");
 	require_once("Person.class.php");
 	require_once("Provider.class.php");
@@ -17,15 +17,15 @@ class ORDataObject {
 	var $_db;
 
 	function __construct() {
-	  $this->_db = $GLOBALS['adodb']['db'];
+	  $this->_db = DB::instance();
 	}
 
 	function persist() {
 		$sql = "REPLACE INTO " . $_prefix . $this->_table . " SET ";
 		//echo "<br><br>";
 		$fields = sqlListFields($this->_table);
-		$db = get_db();
-		$pkeys = $db->MetaPrimaryKeys($this->_table);
+        $res =  "SHOW KEYS FROM ". $this->_table . " WHERE Key_name = 'PRIMARY'";
+        $pkeys = sqlQuery($res);
 
 		foreach ($fields as $field) {
 			$func = "get_" . $field;
@@ -121,30 +121,24 @@ class ORDataObject {
 			return $GLOBALS['static']['enums'][$this->_table][$field_name];
 		}
 		else {
-			$cols = $this->_db->MetaColumns($this->_table);
-			if ($cols && !$cols->EOF) {
-				//why is there a foreach here? at some point later there will be a scheme to autoload all enums
-				//for an object rather than 1x1 manually as it is now
-				foreach($cols as $col) {
-	  		      if ($col->name == $field_name && $col->type == "enum") {
-                                for($idx=0;$idx<count($col->enums);$idx++)
-                                {
-                                    $col->enums[$idx]=str_replace("'","",$col->enums[$idx]);
-                                }
-	  		        $enum = $col->enums;
-	  		        //for future use
-	  		        //$enum[$col->name] = $enum_types[1];
-	  		      }
-			    }
-			   array_unshift($enum," ");
+            $sql = "SHOW COLUMNS FROM ".$this->_table." LIKE '".$field_name."'";
+            $cols = sqlQuery($sql);
+            if (!empty($cols)) {
+                $type_dec = $cols['Type'];
+                $regex = "/'(.*?)'/";
+                preg_match_all($regex , $type_dec, $enum_array);
+                $enum = $enum_array[1];
 
-			   //keep indexing consistent whether or not a blank is present
-			   if (!$blank) {
-			     unset($enum[0]);
-			   }
-			   $enum = array_flip($enum);
-			  $GLOBALS['static']['enums'][$this->_table][$field_name] = $enum;
-			}
+
+                array_unshift($enum," ");
+
+               if (!$blank) {
+                 unset($enum[0]);
+               }
+                $enum = array_flip($enum);
+                $GLOBALS['static']['enums'][$this->_table][$field_name] = $enum;
+
+             }
 			return $enum;
 		}
 	}

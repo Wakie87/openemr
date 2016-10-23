@@ -20,7 +20,7 @@
 * @link      http://www.open-emr.org
 */
 
-error_reporting(E_ALL);
+error_reporting(E_WARNING);
 ini_set("display_errors", 1);
 
 require_once(dirname(__FILE__) . "/sqlconf.php");
@@ -330,7 +330,6 @@ function getSqlLastErrorNo() {
 * @return  array
 */
 function sqlListFields($table) {
-
   $sql = "SHOW COLUMNS FROM ". escape_table_name($table);
   $resource = sqlStatement($sql);
   $field_list = array();

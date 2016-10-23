@@ -39,8 +39,8 @@ class Tree {
 	*/
 	function __construct($root,$root_type = ROOT_TYPE_ID) {
 		$this->_db = DB::instance();
-		$this->_root = add_escape_custom($root);
-		$this->_root_type = add_escape_custom($root_type);
+		$this->_root = $root;
+		$this->_root_type = $root_type;
 		$this->load_tree();
 	}
 
@@ -55,17 +55,17 @@ class Tree {
 	  if ($this->root_type == ROOT_TYPE_NAME) {
 	  	$sql = "SELECT * FROM " . $this->_table . " WHERE name = ?";
 	  }
-	  $row = $this->_db->fetchAll($sql, array($root));
+	  $result = $this->_db->fetchAll($sql, array($root));
 	  $row = array();
 
-	  if($result && !$result->EOF) {
-	    $row = $result->fields;
+	  if($result) {
+	    $row = $result[0];
 	  }
 	  else {
 	  	$this->tree = array();
 	  }
 
-	  // start with an empty right stack
+  // start with an empty right stack
 	  $right = array();
 
 	  // now, retrieve all descendants of the root node
@@ -74,9 +74,8 @@ class Tree {
 	  $this->_id_name = array();
 
 
-	  while ($result && !$result->EOF) {
+	 foreach ($result as $row) {
 	    $ar = array();
-	    $row = $result->fields;
 
 	    //create a lookup table of id to name for every node that will end up in this tree, this is used
 	    //by the array building code below to find the chain of parents for each node
@@ -127,7 +126,7 @@ class Tree {
 
 		// add this node to the stack
 		$right[] = $row['rght'];
-		$result->MoveNext();
+		//$result->MoveNext();
 	  }
 
 	  $this->tree = $tree;
