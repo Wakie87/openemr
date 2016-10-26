@@ -46,9 +46,6 @@ function sqlStatement($statement, $params = null )
 {
 
   $recordset = DB::run($statement, $params);
-  if ($recordset === FALSE) {
-    HelpfulDie("query failed: $statement", getSqlLastError());
-  }
   return $recordset;
 }
 
@@ -72,12 +69,8 @@ function sqlStatement($statement, $params = null )
 */
 function sqlStatementNoLog($statement, $params = null )
 {
-
   // Use adodb ExecuteNoLog with binding and return a recordset.
   $recordset = DB::runNoLog( $statement, $params );
-  if ($recordset === FALSE) {
-    HelpfulDie("query failed: $statement", getSqlLastError());
-  }
   return $recordset;
 }
 
@@ -92,14 +85,11 @@ function sqlStatementNoLog($statement, $params = null )
 */
 function sqlStatementCdrEngine($statement, $params = null )
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($params)) $params = false;
-
   if ($GLOBALS['audit_events_cdr']) {
-    return sqlStatement($statement,$params);
+    return sqlStatement($statement, $params);
   }
   else {
-    return sqlStatementNoLog($statement,$params);
+    return sqlStatementNoLog($statement, $params);
   }
 }
 
@@ -109,7 +99,7 @@ function sqlStatementCdrEngine($statement, $params = null )
 * Function that will allow use of the adodb binding
 * feature to prevent sql-injection.
 * It will act upon the object returned from the
-* sqlStatement() function (and sqlQ() function).
+* sqlStatement() function.
 *
 * @param recordset $r
 * @return array
@@ -123,7 +113,6 @@ function sqlFetchArray($r)
     return false;
     return $r->Fetch();
 }
-
 
 /**
  * Wrapper for ADODB getAssoc
@@ -158,9 +147,6 @@ function sqlInsert($statement, $params = null)
 {
 
   $recordset = DB::run($statement, $params);
-  if ($recordset === FALSE) {
-    HelpfulDie("insert failed: $statement", getSqlLastError());
-  }
   // Return the correct last id generated using function
   //   that is safe with the audit engine.
   return getSqlLastID();
@@ -181,9 +167,6 @@ function sqlQuery($statement, $params = null)
 {
   $recordset = DB::run( $statement, $params );
 
-  if ($recordset === FALSE) {
-    HelpfulDie("query failed: $statement", getSqlLastError());
-  }
   if (empty($recordset))
    return FALSE;
   $rez = $recordset->Fetch();
@@ -208,15 +191,7 @@ function sqlQuery($statement, $params = null)
 */
 function sqlQueryNoLog($statement, $params = null)
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($params)) $params = false;
-
   $recordset = DB::runNoLog( $statement, $params );
-
-  if ($recordset === FALSE) {
-    HelpfulDie("query failed: $statement", getSqlLastError());
-  }
-
   $rez = $recordset->Fetch();
   return $rez;
 }
@@ -238,17 +213,12 @@ function sqlQueryNoLog($statement, $params = null)
 */
 function sqlQueryNoLogIgnoreError($statement, $params = null)
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($params)) $params = false;
-
   $recordset = DB::runNoLog( $statement, $params );
-
   if ($recordset === FALSE) {
     // ignore the error and return FALSE
     return FALSE;
   }
   $rez = $recordset->Fetch();
-
   return $rez;
 }
 
@@ -263,9 +233,6 @@ function sqlQueryNoLogIgnoreError($statement, $params = null)
 */
 function sqlQueryCdrEngine($statement, $params = null )
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($params)) $params = false;
-
   if ($GLOBALS['audit_events_cdr']) {
     return sqlQuery($statement,$params);
   }
@@ -283,11 +250,7 @@ function sqlQueryCdrEngine($statement, $params = null )
 */
 function sqlInsertClean_audit($statement)
 {
-
   $ret = DB::runNoLog($statement);
-  if ($ret === FALSE) {
-    HelpfulDie("insert failed: $statement", getSqlLastError());
-  }
 }
 
 /**
@@ -308,7 +271,7 @@ function getSqlLastID() {
 * @return  string        last mysql error
 */
 function getSqlLastError() {
-    return !empty($GLOBALS['last_mysql_error']) ? $GLOBALS['last_mysql_error'] : $GLOBALS['adodb']['db']->ErrorMsg();
+    return !empty($GLOBALS['last_mysql_error']) ? $GLOBALS['last_mysql_error'] : DB::errorInfo();
 }
 
 /**
@@ -319,7 +282,7 @@ function getSqlLastError() {
  * @return  string        last mysql error no
  */
 function getSqlLastErrorNo() {
-    return !empty($GLOBALS['last_mysql_error_no']) ? $GLOBALS['last_mysql_error_no'] : $GLOBALS['adodb']['db']->ErrorNo();
+    return !empty($GLOBALS['last_mysql_error_no']) ? $GLOBALS['last_mysql_error_no'] : DB::errorCode();
 }
 
 /**
@@ -351,63 +314,11 @@ function sqlNumRows($r)
 }
 
 /**
-* Error function for OpenEMR sql functions
-*
-* @param string $statement
-* @param string $sqlerr
-*/
-function HelpfulDie ($statement, $sqlerr='')
-{
-  echo "<p><p><font color='red'>ERROR:</font> ".text($statement)."<p>";
-  $logMsg="SQL Error with statement:".$statement;
-  if ($sqlerr) {
-    echo "Error: <font color='red'>".text($sqlerr)."</font><p>";
-    $logMsg.="--".$sqlerr;
-  }//if error
-  $backtrace=debug_backtrace();
-  for($level=1;$level<count($backtrace);$level++)
-  {
-      $info=$backtrace[$level];
-      echo "<br>".text($info["file"]." at ".$info["line"].":".$info["function"]);
-      if($level>1){
-          echo "(".text(implode(",",$info["args"])).")";
-      }
-  }
-  $logMsg.="==>".$backtrace[1]["file"]." at ".$backtrace[1]["line"].":".$backtrace[1]["function"];
-  error_log($logMsg);
-
-  exit;
-}
-
-/**
 * @todo document use of the generate_id function
 */
 function generate_id () {
   $database = $GLOBALS['adodb']['db'];
   return $database->GenID("sequences");
-}
-
-/**
-* Deprecated function. Standard sql query in OpenEMR.
-*
-* Function that will allow use of the adodb binding
-* feature to prevent sql-injection. Will continue to
-* be compatible with previous function calls that do
-* not use binding.
-* It will return a recordset object.
-* The sqlFetchArray() function should be used to
-* utilize the return object.
-*
-* @deprecated
-* @param  string  $statement  query
-* @param  array   $params      binded variables array (optional)
-* @return recordset
-*/
-function sqlQ($statement, $params = null )
-{
-  $recordset = DB::run( $statement, $params ) or
-    HelpfulDie("query failed: $statement", getSqlLastError());
-  return $recordset;
 }
 
 /**
@@ -423,9 +334,6 @@ function sqlQ($statement, $params = null )
 */
 function idSqlStatement($statement , $params = null )
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($params)) $params = false;
-
   return sqlInsert($statement, $params);
 }
 
@@ -442,9 +350,6 @@ function idSqlStatement($statement , $params = null )
 */
 function sqlInsertClean($statement, $params = null )
 {
-  // Below line is to avoid a nasty bug in windows.
-  if (empty($params)) $params = false;
-
   return sqlInsert($statement, $params);
 }
 
@@ -460,8 +365,7 @@ function sqlInsertClean($statement, $params = null )
 function sqlClose()
 {
   //----------Close our mysql connection
-  $closed = $GLOBALS['adodb']['db']->close or
-    HelpfulDie("could not disconnect from mysql server link", getSqlLastError());
+  $closed = $GLOBALS['adodb']['db']->close;
   return $closed;
 }
 
@@ -506,7 +410,7 @@ function generic_sql_affected_rows()
 				 */
 function generic_sql_insert_id()
 {
-  return mysqli_insert_id($GLOBALS['dbh']);
+  return DB::lastInsertId();
 }
 
 
@@ -515,7 +419,7 @@ function generic_sql_insert_id()
  */
 function sqlBeginTrans()
 {
-    $GLOBALS['adodb']['db']->BeginTrans();
+    DB::beginTransaction();
 }
 
 
@@ -524,7 +428,7 @@ function sqlBeginTrans()
  */
 function sqlCommitTrans($ok=true)
 {
-    $GLOBALS['adodb']['db']->CommitTrans();
+    DB::commit();
 }
 
 
@@ -533,7 +437,7 @@ function sqlCommitTrans($ok=true)
  */
 function sqlRollbackTrans()
 {
-    $GLOBALS['adodb']['db']->RollbackTrans();
+    DB::rollBack();
 }
 
 ?>

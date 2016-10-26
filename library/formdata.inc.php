@@ -31,7 +31,7 @@
  */
 function add_escape_custom($s) {
       //prepare for safe mysql insertion
-      $s = DB::instance()->Quote($s);
+      $s = addslashes($s);
       return $s;
 }
 

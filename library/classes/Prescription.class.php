@@ -632,7 +632,7 @@ class Prescription extends ORDataObject {
         $sql = "SELECT id FROM  " . $p->_table . " WHERE patient_id = " .
                 add_escape_custom($patient_id) .
                 " ORDER BY " . add_escape_custom($order_by);
-        $results = sqlQ($sql);
+        $results = sqlStatement($sql);
         while ($row = sqlFetchArray($results) ) {
             $prescriptions[] = new Prescription($row['id']);
         }
