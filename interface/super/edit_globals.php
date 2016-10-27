@@ -216,7 +216,8 @@ if (array_key_exists('form_save', $_POST) && $_POST['form_save'] && !$userMode) 
    */
 
   // Get all the globals from DB
-  $old_globals = sqlGetAssoc( 'SELECT gl_name, gl_index, gl_value FROM `globals` ORDER BY gl_name, gl_index',false,true );
+  $old_globals = sqlGetAssoc("SELECT gl_name, gl_index, gl_value FROM globals ORDER BY gl_name, gl_index");
+
 
   $i = 0;
   foreach ($GLOBALS_METADATA as $grpname => $grparr) {
@@ -236,7 +237,7 @@ if (array_key_exists('form_save', $_POST) && $_POST['form_save'] && !$userMode) 
 
           foreach ($_POST["form_$i"] as $fldvalue) {
             $fldvalue = trim($fldvalue);
-            sqlStatement('INSERT INTO `globals` ( gl_name, gl_index, gl_value ) VALUES ( ?,?,?)', array( $fldid, $fldindex, $fldvalue )  );
+            sqlStatement("INSERT INTO globals ( gl_name, gl_index, gl_value ) VALUES ( ?,?,?)", array( $fldid, $fldindex, $fldvalue )  );
             ++$fldindex;
           }
         }
@@ -272,8 +273,8 @@ if (array_key_exists('form_save', $_POST) && $_POST['form_save'] && !$userMode) 
                 break;
             }
             // Replace old values
-            sqlStatement( 'DELETE FROM `globals` WHERE gl_name = ?', array( $fldid ) );
-            sqlStatement( 'INSERT INTO `globals` ( gl_name, gl_index, gl_value ) VALUES ( ?, ?, ? )', array( $fldid, 0, $fldvalue )  );
+            sqlStatement( "DELETE FROM globals WHERE gl_name = ?", array( $fldid ) );
+            sqlStatement( "INSERT INTO globals ( gl_name, gl_index, gl_value ) VALUES ( ?, ?, ? )", array($fldid, 0, $fldvalue)  );
         } else {
           //error_log("No need to update $fldid");
         }

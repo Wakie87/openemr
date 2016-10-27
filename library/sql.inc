@@ -125,9 +125,11 @@ function sqlFetchArray($r)
  * @param boolean $first2Cols
  * @return array
  */
-function sqlGetAssoc( $sql, $bindvars=false, $forceArray=false, $first2Cols=false ) {
+function sqlGetAssoc($sql, $params = null) {
 
-  return $GLOBALS['adodb']['db']->getAssoc( $sql, $bindvars, $forceArray, $first2Cols  );
+  $recordset = DB::runNoLog($sql, $params);
+  $rez = $recordset->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_UNIQUE);
+  return $rez;
 
 }
 
@@ -407,7 +409,7 @@ function generic_sql_affected_rows()
  * Generic mysql insert id function
  * Used when converted to mysqli to centralize special circumstances.
  *
-				 */
+ */
 function generic_sql_insert_id()
 {
   return DB::lastInsertId();
