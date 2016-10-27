@@ -46,6 +46,7 @@ class DB
           $outcome = false;
           // Stash the error into last_mysql_error so it doesn't get clobbered when we insert into the audit log.
           $GLOBALS['last_mysql_error']=self::instance()->errorInfo();
+          $GLOBALS['last_mysql_error_no']=self::instance()->errorCode();
         }
         else {
           $outcome = true;

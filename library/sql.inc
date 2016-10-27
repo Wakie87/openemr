@@ -20,7 +20,7 @@
 * @link      http://www.open-emr.org
 */
 
-error_reporting(E_WARNING);
+error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require_once(dirname(__FILE__) . "/sqlconf.php");
@@ -234,10 +234,10 @@ function sqlQueryNoLogIgnoreError($statement, $params = null)
 function sqlQueryCdrEngine($statement, $params = null )
 {
   if ($GLOBALS['audit_events_cdr']) {
-    return sqlQuery($statement,$params);
+    return sqlQuery($statement, $params);
   }
   else {
-    return sqlQueryNoLog($statement,$params);
+    return sqlQueryNoLog($statement, $params);
   }
 }
 
@@ -248,9 +248,9 @@ function sqlQueryCdrEngine($statement, $params = null )
 *
 * @param  string  $statement  query
 */
-function sqlInsertClean_audit($statement)
+function sqlInsertClean_audit($statement, $params = null)
 {
-  $ret = DB::runNoLog($statement);
+  $ret = DB::runNoLog($statement, $params);
 }
 
 /**
@@ -378,7 +378,7 @@ function sqlClose()
 * @return connection
 */
 function get_db() {
-  return $GLOBALS['adodb']['db'];
+  return DB::instance();
 }
 
 /**

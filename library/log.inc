@@ -735,8 +735,6 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
 
     $event = $event . "-" . $querytype;
 
-    $adodb = DB::instance();
-
     // ViSolve : Don't log sequences - to avoid the affect due to GenID calls
     if (strpos($comments, "sequences") !== FALSE) return;
 
@@ -750,17 +748,9 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
 	$current_datetime = date("Y-m-d H:i:s");
     $SSL_CLIENT_S_DN_CN=isset($_SERVER['SSL_CLIENT_S_DN_CN']) ? $_SERVER['SSL_CLIENT_S_DN_CN'] : '';
     $sql = "insert into log (date, event, user, groupname, comments, patient_id, success, checksum,crt_user) " .
-         "values ( ".
-		 $adodb->quote($current_datetime). ", ".
-         $adodb->quote($event) . ", " .
-         $adodb->quote($user) . "," .
-         $adodb->quote($group) . "," .
-         $adodb->quote($comments) . "," .
-         $adodb->quote($pid) . "," .
-         $adodb->quote($success) . "," .
-         $adodb->quote($checksum) . "," .
-         $adodb->quote($SSL_CLIENT_S_DN_CN) .")";
-	sqlInsertClean_audit($sql);
+         "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $bind = array($current_datetime, $event, $user, $group, $comments, $pid, $success, $checksum, $SSL_CLIENT_S_DN_CN);
+	sqlInsertClean_audit($sql, $bind);
 
 	$last_log_id = DB::lastInsertId();
 	$checksumGenerate = '';
@@ -770,11 +760,9 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
 		$checksumGenerate = sha1($concatLogColumns);
 	}
 	$encryptLogQry = "INSERT INTO log_comment_encrypt (log_id, encrypt, checksum) ".
-					 " VALUES ( ".
-					  $adodb->quote($last_log_id) . "," .
-					  $adodb->quote($encrypt_comment) . "," .
-					  $adodb->quote($checksumGenerate) .")";
-	sqlInsertClean_audit($encryptLogQry);
+					 " VALUES (?, ?, ?)";
+     $bind = array($last_log_id, $encrypt_comment, $checksumGenerate);
+     sqlInsertClean_audit($encryptLogQry, $bind);
 
     send_atna_audit_msg($user, $group, $event, $pid, $success, $comments);
     //return $ret;
@@ -791,9 +779,6 @@ function auditSQLAuditTamper($enable)
     $success = 1;
 	$event = "security-administration" . "-" . "insert";
 
-
-    $adodb = $GLOBALS['adodb']['db'];
-
 	if ($enable == "1")
 	{
 		$comments = "Audit Logging Enabled.";
@@ -804,18 +789,10 @@ function auditSQLAuditTamper($enable)
 	}
 
     $SSL_CLIENT_S_DN_CN=isset($_SERVER['SSL_CLIENT_S_DN_CN']) ? $_SERVER['SSL_CLIENT_S_DN_CN'] : '';
-    $sql = "insert into log (date, event, user, groupname, comments, patient_id, success, checksum,crt_user) " .
-         "values ( NOW(), " .
-         $adodb->quote($event) . ", " .
-         $adodb->quote($user) . "," .
-         $adodb->quote($group) . "," .
-         $adodb->quote($comments) . "," .
-         $adodb->quote($pid) . "," .
-         $adodb->quote($success) . "," .
-         $adodb->quote($checksum) . "," .
-         $adodb->quote($SSL_CLIENT_S_DN_CN) .")";
-
-    sqlInsertClean_audit($sql);
+    $sql = "insert into log (date, event, user, groupname, comments, patient_id, success, checksum, crt_user) " .
+         "values (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)";
+    $bind = array($event, $user, $group, $comments, $pid, $success, $checksum, $SSL_CLIENT_S_DN_CN);
+    sqlInsertClean_audit($sql, $bind);
     send_atna_audit_msg($user, $group, $event, $pid, $success, $comments);
 }
 
@@ -829,16 +806,13 @@ function auditSQLAuditTamper($enable)
  */
 function recordDisclosure($dates,$event,$pid,$recipient,$description,$user)
 {
-        $adodb = $GLOBALS['adodb']['db'];
         $crt_user= $_SERVER['SSL_CLIENT_S_DN_CN'];
         $groupname=$_SESSION['authProvider'];
         $success=1;
-        $sql = "insert into extended_log ( date, event, user, recipient, patient_id, description) " .
-            "values (" . $adodb->quote($dates) . "," . $adodb->quote($event) . "," . $adodb->quote($user) .
-            "," . $adodb->quote($recipient) . ",".
-            $adodb->quote($pid) ."," .
-            $adodb->quote($description) .")";
-        $ret = sqlInsertClean_audit($sql);
+        $sql = "insert into extended_log (date, event, user, recipient, patient_id, description) " .
+            "values (?, ?, ?, ?, ?, ?)";
+        $bind = array($dates, $event, $user, $recipient, $pid, $description);
+        $ret = sqlInsertClean_audit($sql, $bind);
 }
 /**
  * Edit the disclosures that is recorded.
@@ -850,13 +824,9 @@ function recordDisclosure($dates,$event,$pid,$recipient,$description,$user)
 function updateRecordedDisclosure($dates,$event,$recipient,$description,$disclosure_id)
 {
          $adodb = $GLOBALS['adodb']['db'];
-         $sql="update extended_log set
-                event=" . $adodb->quote($event) . ",
-                date=" .  $adodb->quote($dates) . ",
-                recipient=" . $adodb->quote($recipient) . ",
-                description=" . $adodb->quote($description) . "
-                where id=" . $adodb->quote($disclosure_id) . "";
-          $ret = sqlInsertClean_audit($sql);
+         $sql="update extended_log set event = ? date = ? recipient = ? description = ? where id = ?";
+        $bind = array($event, $dates, $recipient, $description, $disclosure_id);
+          $ret = sqlInsertClean_audit($sql, $bind);
 }
 /**
  * Delete the disclosures that is recorded.
@@ -864,8 +834,8 @@ function updateRecordedDisclosure($dates,$event,$recipient,$description,$disclos
  */
 function deleteDisclosure($deletelid)
 {
-        $sql="delete from extended_log where id='" . add_escape_custom($deletelid) . "'";
-        $ret = sqlInsertClean_audit($sql);
+        $sql="delete from extended_log where id= ?";
+        $ret = sqlInsertClean_audit($sql, array($deletelid));
 }
 
 //July 1, 2014: Ensoftek: Function to AES256 encrypt a given string
